@@ -38,10 +38,14 @@ $ runqemu qemuarm
 
 # Limitations
 
-Currently core-image-minimal is buildable/bootable for ARM, x86, x86_64
-based qemu machines
-MACHINE variable and TCLIBC variables can also be set in conf/local.conf to avoid typing it on commandline on any bitbake invocation
+Currently only few components are building with clang if you want to port/add more then please add
 
+TOOLCHAIN_pn-<recipe-name> = "clang"
+DEPENDS_append_pn-<recipe-name> = " clang-cross "
+
+to clang.conf
+
+and OE will start using clang to cross compile that recipe
 
 # Dependencies
 
