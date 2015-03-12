@@ -8,14 +8,9 @@ SECTION = "devel"
 
 require clang.inc
 
-LLVM_RELEASE = "3.5"
-LLVM_DIR = "llvm${LLVM_RELEASE}"
-
-DEPENDS = "zlib libffi libxml2-native llvm-common"
-
 BRANCH ?= "master"
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=47e311aa9caedd1b3abf098bd7814d1d; \
-                    file://tools/clang/LICENSE.TXT;md5=3954ab76dfb9ce9024cdce4c24268267; \
+LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
+                    file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
                     file://projects/compiler-rt/LICENSE.TXT;md5=1ee2b380c3e34d2dd756b922ab4f8b6c; \
                    "
 SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
@@ -27,7 +22,107 @@ SRCREV_llvm = "${AUTOREV}"
 SRCREV_clang = "${AUTOREV}"
 SRCREV_compiler-rt = "${AUTOREV}"
 
+SRCREV_FORMAT = "llvm_clang_compiler-rt"
 
 S = "${WORKDIR}/git"
 
-BBCLASSEXTEND = "native nativesdk"
+inherit perlnative pythonnative cmake
+
+EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI:BOOL=True \
+               -DLLVM_ENABLE_FFI:BOOL=False \
+               -DCMAKE_SYSTEM_NAME=Linux \
+               -DCMAKE_BUILD_TYPE:STRING=Release \
+               -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
+	      "
+
+EXTRA_OECMAKE_append_class-target = "\
+               -DCMAKE_CROSSCOMPILING=True \
+"
+EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
+
+
+DEPENDS = "zlib libffi libxml2-native binutils"
+
+PROVIDES_append_class-target = "\
+        virtual/${TARGET_PREFIX}compilerlibs \
+        gcc-runtime \
+        libgcc \
+        libgcc-initial \
+        libg2c \
+        libg2c-dev \
+        libssp \
+        libssp-dev \
+        libssp-staticdev \
+        libgfortran \
+        libgfortran-dev \
+        libgfortran-staticdev \
+        libmudflap \
+        libmudflap-dev \
+        libgomp \
+        libgomp-dev \
+        libgomp-staticdev \
+        libitm \
+        libitm-dev \
+        libitm-staticdev \
+        libgcov-dev \
+        \
+        libgcc-dev \
+        libgcc-initial-dev \
+        libstdc++ \
+        libstdc++-dev \
+        libstdc++-staticdev \
+        libatomic \
+        libatomic-dev \
+        libatomic-staticdev \
+        libasan \
+        libasan-dev \
+        libasan-staticdev \
+        libubsan \
+        libubsan-dev \
+        libubsan-staticdev \
+        liblsan \
+        liblsan-dev \
+        liblsan-staticdev \
+        libtsan \
+        libtsan-dev \
+        libtsan-staticdev \
+        libssp \
+        libssp-dev \
+        libssp-staticdev \
+        libgfortran \
+        libgfortran-dev \
+        libgfortran-staticdev \
+        libmudflap \
+        libmudflap-dev \
+        libmudflap-staticdev \
+        libgomp \
+        libgomp-dev \
+        libgomp-staticdev \
+        libitm \
+        libitm-dev \
+        libitm-staticdev \
+"
+
+do_configure_prepend() {
+	# Remove RPATHs
+	sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
+	# Drop "svn" suffix from version string
+	sed -i 's/${PV}svn/${PV}/g' ${S}/configure
+
+	# Fix paths in llvm-config
+	sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
+	sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
+}
+
+do_compile_prepend() {
+        oe_runmake llvm-tblgen
+        oe_runmake clang-tblgen
+}
+
+do_install_append_class-native () {
+        for f in `find ${D}${bindir} -executable -type f -not -type l`; do
+            test -n "`file $f|grep -i ELF`" && ${STRIP} $f
+        done
+}
+
+BBCLASSEXTEND = "native"
