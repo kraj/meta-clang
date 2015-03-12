@@ -42,7 +42,7 @@ Currently only few components are building with clang if you want to port/add mo
 ```Shell
 TOOLCHAIN_pn-<recipe-name> = "clang"
 DEPENDS_append_pn-<recipe-name> = " clang-cross "
-```shell
+```
 
 to clang.conf
 
