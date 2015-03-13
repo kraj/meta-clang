@@ -39,7 +39,7 @@ $ runqemu qemuarm
 # Limitations
 
 Currently only few components are building with clang if you want to port/add more then please add
-```Shell
+```shell
 TOOLCHAIN_pn-<recipe-name> = "clang"
 DEPENDS_append_pn-<recipe-name> = " clang-cross "
 ```
