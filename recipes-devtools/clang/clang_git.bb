@@ -11,7 +11,7 @@ require clang.inc
 BRANCH ?= "master"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
                     file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
-                    file://projects/compiler-rt/LICENSE.TXT;md5=1ee2b380c3e34d2dd756b922ab4f8b6c; \
+                    file://projects/compiler-rt/LICENSE.TXT;md5=27b14ab4ce08d04c3a9a5f0ed7997362; \
                    "
 SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
