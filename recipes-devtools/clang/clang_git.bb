@@ -115,8 +115,8 @@ do_configure_prepend() {
 }
 
 do_compile_prepend() {
-        oe_runmake llvm-tblgen
-        oe_runmake clang-tblgen
+        oe_runmake LLVMNativeTableGen
+        oe_runmake CLANGNativeTableGen
 }
 
 do_install_append_class-native () {
