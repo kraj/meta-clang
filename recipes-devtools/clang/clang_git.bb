@@ -18,9 +18,9 @@ SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/compiler-rt.git;branch=${BRANCH};destsuffix=git/projects/compiler-rt;name=compiler-rt \
           "
 
-SRCREV_llvm = "${AUTOREV}"
-SRCREV_clang = "${AUTOREV}"
-SRCREV_compiler-rt = "${AUTOREV}"
+SRCREV_llvm = "c39f5dd0e2d689a10d1e7de3da07f1975c0aa8f4"
+SRCREV_clang = "35793f330181dae066b999c56ef117763c1df13c"
+SRCREV_compiler-rt = "9b0ca95e42c4e9c4ee4d1d0f0c07d44c85350157"
 
 SRCREV_FORMAT = "llvm_clang_compiler-rt"
 
