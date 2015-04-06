@@ -7,6 +7,8 @@ LICENSE = "NCSA"
 LIC_FILES_CHKSUM = "file://${COREBASE}/meta/files/common-licenses/NCSA;md5=1b5fdec70ee13ad8a91667f16c1959d7"
 SECTION = "devel"
 
+PN = "clang-cross-${TARGET_ARCH}"
+
 require clang.inc
 inherit cross
 DEPENDS += "clang-native binutils-cross-${TARGET_ARCH}"
