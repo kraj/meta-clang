@@ -18,9 +18,9 @@ SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/compiler-rt.git;branch=${BRANCH};destsuffix=git/projects/compiler-rt;name=compiler-rt \
           "
 
-SRCREV_llvm = "c39f5dd0e2d689a10d1e7de3da07f1975c0aa8f4"
-SRCREV_clang = "35793f330181dae066b999c56ef117763c1df13c"
-SRCREV_compiler-rt = "9b0ca95e42c4e9c4ee4d1d0f0c07d44c85350157"
+SRCREV_llvm = "2c64a1129f14d6322631e1c6d610b92c4c4871d0"
+SRCREV_clang = "070ffd29fb0a5a558e8f9bd464f784ff24ef1a54"
+SRCREV_compiler-rt = "6f344e9bbc8fa322818b95f5ab35c8ef5ebfe0a9"
 
 SRCREV_FORMAT = "llvm_clang_compiler-rt"
 
@@ -125,4 +125,4 @@ do_install_append_class-native () {
         done
 }
 
-BBCLASSEXTEND = "native"
+BBCLASSEXTEND = "native nativesdk"
