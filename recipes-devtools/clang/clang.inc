@@ -1,1 +1,3 @@
 PV = "3.7.0"
+LLVM_RELEASE = ""
+LLVM_DIR = "llvm${LLVM_RELEASE}"

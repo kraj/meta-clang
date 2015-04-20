@@ -11,18 +11,15 @@ require clang.inc
 BRANCH ?= "master"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
                     file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
-                    file://projects/compiler-rt/LICENSE.TXT;md5=27b14ab4ce08d04c3a9a5f0ed7997362; \
                    "
 SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
-           git://github.com/llvm-mirror/compiler-rt.git;branch=${BRANCH};destsuffix=git/projects/compiler-rt;name=compiler-rt \
           "
 
 SRCREV_llvm = "2c64a1129f14d6322631e1c6d610b92c4c4871d0"
 SRCREV_clang = "070ffd29fb0a5a558e8f9bd464f784ff24ef1a54"
-SRCREV_compiler-rt = "6f344e9bbc8fa322818b95f5ab35c8ef5ebfe0a9"
 
-SRCREV_FORMAT = "llvm_clang_compiler-rt"
+SRCREV_FORMAT = "llvm_clang"
 
 S = "${WORKDIR}/git"
 
@@ -32,6 +29,7 @@ EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI:BOOL=True \
                -DLLVM_ENABLE_FFI:BOOL=False \
                -DCMAKE_SYSTEM_NAME=Linux \
                -DCMAKE_BUILD_TYPE:STRING=Release \
+	       -DLLVM_BUILD_EXTERNAL_COMPILER_RT:BOOL=True \
                -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
 	      "
 
@@ -43,75 +41,15 @@ EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 
 DEPENDS = "zlib libffi libxml2-native binutils"
 
-PROVIDES_append_class-target = "\
-        virtual/${TARGET_PREFIX}compilerlibs \
-        gcc-runtime \
-        libgcc \
-        libgcc-initial \
-        libg2c \
-        libg2c-dev \
-        libssp \
-        libssp-dev \
-        libssp-staticdev \
-        libgfortran \
-        libgfortran-dev \
-        libgfortran-staticdev \
-        libmudflap \
-        libmudflap-dev \
-        libgomp \
-        libgomp-dev \
-        libgomp-staticdev \
-        libitm \
-        libitm-dev \
-        libitm-staticdev \
-        libgcov-dev \
-        \
-        libgcc-dev \
-        libgcc-initial-dev \
-        libstdc++ \
-        libstdc++-dev \
-        libstdc++-staticdev \
-        libatomic \
-        libatomic-dev \
-        libatomic-staticdev \
-        libasan \
-        libasan-dev \
-        libasan-staticdev \
-        libubsan \
-        libubsan-dev \
-        libubsan-staticdev \
-        liblsan \
-        liblsan-dev \
-        liblsan-staticdev \
-        libtsan \
-        libtsan-dev \
-        libtsan-staticdev \
-        libssp \
-        libssp-dev \
-        libssp-staticdev \
-        libgfortran \
-        libgfortran-dev \
-        libgfortran-staticdev \
-        libmudflap \
-        libmudflap-dev \
-        libmudflap-staticdev \
-        libgomp \
-        libgomp-dev \
-        libgomp-staticdev \
-        libitm \
-        libitm-dev \
-        libitm-staticdev \
-"
-
 do_configure_prepend() {
-	# Remove RPATHs
-	sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
-	# Drop "svn" suffix from version string
-	sed -i 's/${PV}svn/${PV}/g' ${S}/configure
+        # Remove RPATHs
+        sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
+        # Drop "svn" suffix from version string
+        sed -i 's/${PV}svn/${PV}/g' ${S}/configure
 
-	# Fix paths in llvm-config
-	sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
-	sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
+        # Fix paths in llvm-config
+        sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
+        sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
 }
 
 do_compile_prepend() {
