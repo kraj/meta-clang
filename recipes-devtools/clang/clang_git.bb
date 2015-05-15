@@ -16,8 +16,8 @@ SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
           "
 
-SRCREV_llvm = "2c64a1129f14d6322631e1c6d610b92c4c4871d0"
-SRCREV_clang = "070ffd29fb0a5a558e8f9bd464f784ff24ef1a54"
+SRCREV_llvm = "08709687efd951d1d6c3ad5f8d518129c068c737"
+SRCREV_clang = "75805b9d66425462798c88596376b14d69193429"
 
 SRCREV_FORMAT = "llvm_clang"
 
@@ -25,19 +25,50 @@ S = "${WORKDIR}/git"
 
 inherit perlnative pythonnative cmake
 
+def get_clang_target_arch(bb, d):
+    target_arch = d.getVar('TRANSLATED_TARGET_ARCH', True)
+    clang_arches = {
+        "i586"     : "X86",
+        "x86-64"   : "X86",
+        "powerpc"  : "PowerPC",
+        "mips"     : "Mips",
+        "arm"      : "ARM",
+        "arm64"    : "AArch64",
+        "aarch64"  : "AArch64",
+    }
+
+    if target_arch in clang_arches:
+        return clang_arches[target_arch]
+    return ""
+
+#TUNE_CCARGS_remove = "-mthumb-interwork"
+#TUNE_CCARGS_remove = "-march=armv7-a"
+#TUNE_CCARGS_remove = "-marm"
+
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI:BOOL=True \
                -DLLVM_ENABLE_FFI:BOOL=False \
                -DCMAKE_SYSTEM_NAME=Linux \
                -DCMAKE_BUILD_TYPE:STRING=Release \
 	       -DLLVM_BUILD_EXTERNAL_COMPILER_RT:BOOL=True \
-               -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
 	      "
 
-EXTRA_OECMAKE_append_class-target = "\
-               -DCMAKE_CROSSCOMPILING=True \
+EXTRA_OECMAKE_append_class-native = "\
+               -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
 "
+EXTRA_OECMAKE_append_class-nativesdk = "\
+               -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
+"
+EXTRA_OECMAKE_append_class-target = "\
+               -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
+               -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
+               -DLLVM_TARGETS_TO_BUILD:STRING='${@get_clang_target_arch(bb, d)}' \
+               -DLLVM_TARGET_ARCH:STRING='${@get_clang_target_arch(bb, d)}' \
+"
+#               -DCMAKE_CXX_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}g++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
+#               -DCMAKE_C_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}gcc ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
+#
+#
 EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
-
 
 DEPENDS = "zlib libffi libxml2-native binutils"
 
@@ -52,12 +83,14 @@ do_configure_prepend() {
         sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
 }
 
-do_compile_prepend() {
-        oe_runmake LLVMNativeTableGen
-        oe_runmake CLANGNativeTableGen
-}
-
 do_install_append_class-native () {
+	install -Dm 0755 ${B}/NATIVE/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+        for f in `find ${D}${bindir} -executable -type f -not -type l`; do
+            test -n "`file $f|grep -i ELF`" && ${STRIP} $f
+        done
+}
+do_install_append_class-nativesdk () {
+	install -Dm 0755 ${B}/NATIVE/bin/clang-tblgen ${D}${bindir}/clang-tblgen
         for f in `find ${D}${bindir} -executable -type f -not -type l`; do
             test -n "`file $f|grep -i ELF`" && ${STRIP} $f
         done

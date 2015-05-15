@@ -19,7 +19,7 @@ SRC_URI = "git://github.com/llvm-mirror/compiler-rt.git;branch=${BRANCH};name=co
            file://0001-support-a-new-embedded-linux-target.patch \
           "
 
-SRCREV_compiler-rt = "bc4648a579d99cb2a382c40a0fc9fe075da2b330"
+SRCREV_compiler-rt = "0a93a02dc42d75bad5b7c7dad975a488e2833fcc"
 
 SRCREV_FORMAT = "compiler-rt"
 
