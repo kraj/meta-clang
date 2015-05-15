@@ -14,6 +14,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
                    "
 SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
+	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
           "
 
 SRCREV_llvm = "08709687efd951d1d6c3ad5f8d518129c068c737"
@@ -44,6 +45,7 @@ def get_clang_target_arch(bb, d):
 #TUNE_CCARGS_remove = "-mthumb-interwork"
 #TUNE_CCARGS_remove = "-march=armv7-a"
 #TUNE_CCARGS_remove = "-marm"
+TUNE_CCARGS_append_class-target = " -D__extern_always_inline=inline -L${PKG_CONFIG_SYSROOT_DIR}${libdir}/libxml2 -I${PKG_CONFIG_SYSROOT_DIR}${includedir}/libxml2 "
 
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI:BOOL=True \
                -DLLVM_ENABLE_FFI:BOOL=False \
@@ -59,6 +61,7 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
 "
 EXTRA_OECMAKE_append_class-target = "\
+               -DLLVM_ENABLE_PIC=False \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
                -DLLVM_TARGETS_TO_BUILD:STRING='${@get_clang_target_arch(bb, d)}' \
@@ -70,7 +73,7 @@ EXTRA_OECMAKE_append_class-target = "\
 #
 EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 
-DEPENDS = "zlib libffi libxml2-native binutils"
+DEPENDS = "zlib libffi libxml2 binutils"
 
 do_configure_prepend() {
         # Remove RPATHs
@@ -81,6 +84,11 @@ do_configure_prepend() {
         # Fix paths in llvm-config
         sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
         sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
+}
+
+do_compile_prepend_class-native () {
+	oe_runmake LLVM-tablegen-host
+	oe_runmake CLANG-tablegen-host
 }
 
 do_install_append_class-native () {
