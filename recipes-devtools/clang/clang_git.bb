@@ -59,6 +59,8 @@ EXTRA_OECMAKE_append_class-native = "\
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
                -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
+               -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
+               -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
 EXTRA_OECMAKE_append_class-target = "\
                -DLLVM_ENABLE_PIC=False \
@@ -75,6 +77,7 @@ EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 
 DEPENDS = "zlib libffi libxml2 binutils"
 DEPENDS_remove_class-nativesdk = "nativesdk-binutils"
+DEPENDS_append_class-nativesdk = " clang-native "
 
 do_configure_prepend() {
         # Remove RPATHs
@@ -98,8 +101,9 @@ do_install_append_class-native () {
             test -n "`file $f|grep -i ELF`" && ${STRIP} $f
         done
 }
+
 do_install_append_class-nativesdk () {
-	install -Dm 0755 ${B}/NATIVE/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
         for f in `find ${D}${bindir} -executable -type f -not -type l`; do
             test -n "`file $f|grep -i ELF`" && ${STRIP} $f
         done
