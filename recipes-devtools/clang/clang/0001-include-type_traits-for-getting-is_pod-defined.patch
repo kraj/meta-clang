@@ -1,0 +1,26 @@
+From 1e1f29a87f36eb89e37f2e349a63371e6eefc16c Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 10 Jul 2015 16:41:16 -0700
+Subject: [PATCH] include <type_traits> for getting is_pod defined
+
+fixed build errors e.g.
+lib/MC/MCSchedule.cpp:18:15: error: 'is_pod' is not a member of 'std'
+---
+ lib/MC/MCSchedule.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/MC/MCSchedule.cpp b/lib/MC/MCSchedule.cpp
+index 0aa20f9..b19d917 100644
+--- a/lib/MC/MCSchedule.cpp
++++ b/lib/MC/MCSchedule.cpp
+@@ -11,6 +11,7 @@
+ //
+ //===----------------------------------------------------------------------===//
+ 
++#include <type_traits>
+ #include "llvm/MC/MCSchedule.h"
+ 
+ using namespace llvm;
+-- 
+2.1.4
+

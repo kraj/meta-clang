@@ -16,10 +16,11 @@ SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
 	   file://0001-Choose-right-dynamic-linker-when-hard-float-ABI-is-e.patch \
+	   file://0001-include-type_traits-for-getting-is_pod-defined.patch \
           "
 
-SRCREV_llvm = "08709687efd951d1d6c3ad5f8d518129c068c737"
-SRCREV_clang = "75805b9d66425462798c88596376b14d69193429"
+SRCREV_llvm = "d819fac2945672f211b0ef8fdedffa2e124b46e2"
+SRCREV_clang = "22ea838f1b9234b1876fa0220d7a76bcb2a1b27a"
 
 SRCREV_FORMAT = "llvm_clang"
 
@@ -109,5 +110,6 @@ do_install_append_class-nativesdk () {
             test -n "`file $f|grep -i ELF`" && ${STRIP} $f
         done
 }
+PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
 BBCLASSEXTEND = "native nativesdk"
