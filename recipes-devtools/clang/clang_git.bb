@@ -8,7 +8,7 @@ SECTION = "devel"
 
 require clang.inc
 
-BRANCH ?= "master"
+BRANCH ?= "release_37"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
                     file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
                    "
@@ -16,11 +16,10 @@ SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
 	   file://0001-Choose-right-dynamic-linker-when-hard-float-ABI-is-e.patch \
-	   file://0001-include-type_traits-for-getting-is_pod-defined.patch \
           "
 
-SRCREV_llvm = "d819fac2945672f211b0ef8fdedffa2e124b46e2"
-SRCREV_clang = "22ea838f1b9234b1876fa0220d7a76bcb2a1b27a"
+SRCREV_llvm = "abdaa238fdfb7d0353994f5cb57e6fdb1afa7443"
+SRCREV_clang = "85f2a0f98015dd1e05b162651f1d9877340125a1"
 
 SRCREV_FORMAT = "llvm_clang"
 
