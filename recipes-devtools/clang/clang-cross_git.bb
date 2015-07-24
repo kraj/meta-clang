@@ -11,20 +11,20 @@ PN = "clang-cross-${TARGET_ARCH}"
 
 require clang.inc
 inherit cross
-DEPENDS += "clang-native binutils-cross-${TARGET_ARCH}"
+DEPENDS += "clang-native binutils-cross-${TARGET_ARCH} virtual/${TARGET_PREFIX}libc-for-gcc"
 
 S = "${WORKDIR}"
 
 do_install() {
-        install -d  ${D}${bindir_crossscripts}/
-        ln -sf ../clang ${D}${bindir_crossscripts}/${TARGET_PREFIX}clang
-        ln -sf ../clang++ ${D}${bindir_crossscripts}/${TARGET_PREFIX}clang++
+        install -d ${D}${bindir}
+        ln -sf ../clang ${D}${bindir}/${TARGET_PREFIX}clang
+        ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
 }
 
 SYSROOT_PREPROCESS_FUNCS += "clangcross_sysroot_preprocess"
 
 clangcross_sysroot_preprocess () {
-        sysroot_stage_dir ${D}${bindir_crossscripts} ${SYSROOT_DESTDIR}${bindir}
+        sysroot_stage_dir ${D}${bindir} ${SYSROOT_DESTDIR}${bindir}
 }
 SSTATE_SCAN_FILES += "*-clang *-clang++"
 PACKAGES = ""
