@@ -11,7 +11,7 @@ PN = "clang-crosssdk-${TARGET_ARCH}"
 
 require clang.inc
 inherit crosssdk
-DEPENDS += "nativesdk-clang binutils-crosssdk-${TARGET_ARCH}"
+DEPENDS += "clang-native nativesdk-clang-glue virtual/${TARGET_PREFIX}binutils-crosssdk virtual/nativesdk-${TARGET_PREFIX}libc-for-gcc"
 
 S = "${WORKDIR}"
 
@@ -21,10 +21,9 @@ do_install() {
         ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
 }
 
-SYSROOT_PREPROCESS_FUNCS += "clangcrosssdk_sysroot_preprocess"
-
-clangcrosssdk_sysroot_preprocess () {
-        sysroot_stage_dir ${D}${bindir_crossscripts} ${SYSROOT_DESTDIR}${bindir}
+sysroot_stage_all () {
+        sysroot_stage_dir ${D}${bindir} ${SYSROOT_DESTDIR}${bindir}
 }
+
 SSTATE_SCAN_FILES += "*-clang *-clang++"
 PACKAGES = ""
