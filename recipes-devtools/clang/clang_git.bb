@@ -18,8 +18,8 @@ SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
 	   file://0001-Choose-right-dynamic-linker-when-hard-float-ABI-is-e.patch \
           "
 
-SRCREV_llvm = "abdaa238fdfb7d0353994f5cb57e6fdb1afa7443"
-SRCREV_clang = "85f2a0f98015dd1e05b162651f1d9877340125a1"
+SRCREV_llvm = "9dd0401722fd60349c00d0714666f0db3f7a4067"
+SRCREV_clang = "219ecbfdcb845d9657e202500bb75beae99a7688"
 
 SRCREV_FORMAT = "llvm_clang"
 
@@ -108,6 +108,7 @@ do_install_append_class-nativesdk () {
         for f in `find ${D}${bindir} -executable -type f -not -type l`; do
             test -n "`file $f|grep -i ELF`" && ${STRIP} $f
         done
+	rm -rf ${D}${datadir}/llvm/cmake
 }
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
