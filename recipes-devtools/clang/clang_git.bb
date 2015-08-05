@@ -15,11 +15,10 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
 SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
-	   file://0001-Choose-right-dynamic-linker-when-hard-float-ABI-is-e.patch \
           "
 
-SRCREV_llvm = "9dd0401722fd60349c00d0714666f0db3f7a4067"
-SRCREV_clang = "219ecbfdcb845d9657e202500bb75beae99a7688"
+SRCREV_llvm = "937d48bea8f01b02d5f3db05a9e58dfb976e9d3b"
+SRCREV_clang = "0c0116f5826045008e6627967abe0e9320700e2b"
 
 SRCREV_FORMAT = "llvm_clang"
 
