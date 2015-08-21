@@ -22,6 +22,8 @@ SRCREV_clang = "0c0116f5826045008e6627967abe0e9320700e2b"
 
 SRCREV_FORMAT = "llvm_clang"
 
+INHIBIT_DEFAULT_DEPS = "1"
+
 S = "${WORKDIR}/git"
 
 inherit perlnative pythonnative cmake
