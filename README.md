@@ -28,25 +28,30 @@ BBLAYERS ?= " \
 Below we build for qemuarm machine as an example
 
 ```shell
-$ MACHINE=qemuarm bitbake core-image-minimal
+$ MACHINE=qemux86 bitbake core-image-minimal
 ```
 # Running
 
 ```shell
-$ runqemu qemuarm
+$ runqemu qemux86
 ```
 
 # Limitations
 
-Currently only few components are building with clang if you want to port/add more then please add
+Currently only few components do not build with clang, if you have a component to add to that list
+simply create a bbappend under recipes-excluded/nonclangable e.g.
+
 ```shell
-TOOLCHAIN_pn-<recipe-name> = "clang"
-DEPENDS_append_pn-<recipe-name> = " clang-cross-${TARGET_ARCH} "
+TOOLCHAIN = "gcc"
 ```
 
-to clang.conf
+and OE will start using gcc to cross compile that recipe, please note that by default when meta-clang is in layermix
+it will use clang as default system compiler, if you would like to disable that behaviour please add
 
-and OE will start using clang to cross compile that recipe
+```shell
+TOOLCHAIN = "gcc"
+```
+to your local.conf or some other global configuration metadata file.
 
 # Dependencies
 
