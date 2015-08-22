@@ -11,15 +11,11 @@ DEPENDS += "clang-cross-${TRANSLATED_TARGET_ARCH}"
 
 require clang.inc
 
-BRANCH ?= "release_37"
-
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=27b14ab4ce08d04c3a9a5f0ed7997362; \
                    "
 SRC_URI = "git://github.com/llvm-mirror/compiler-rt.git;branch=${BRANCH};name=compiler-rt \
            file://0001-support-a-new-embedded-linux-target.patch \
           "
-
-SRCREV_compiler-rt = "b5214093d4c91ed5352d35ee9126665fabfa97fe"
 
 SRCREV_FORMAT = "compiler-rt"
 

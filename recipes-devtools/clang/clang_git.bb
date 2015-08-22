@@ -8,7 +8,6 @@ SECTION = "devel"
 
 require clang.inc
 
-BRANCH ?= "release_37"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
                     file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
                    "
@@ -16,9 +15,6 @@ SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
            git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
           "
-
-SRCREV_llvm = "937d48bea8f01b02d5f3db05a9e58dfb976e9d3b"
-SRCREV_clang = "0c0116f5826045008e6627967abe0e9320700e2b"
 
 SRCREV_FORMAT = "llvm_clang"
 

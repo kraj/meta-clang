@@ -1,3 +1,10 @@
 PV = "3.7.0"
 LLVM_RELEASE = ""
 LLVM_DIR = "llvm${LLVM_RELEASE}"
+
+BRANCH = "release_37"
+SRCREV_llvm = "937d48bea8f01b02d5f3db05a9e58dfb976e9d3b"
+SRCREV_clang = "0c0116f5826045008e6627967abe0e9320700e2b"
+SRCREV_compiler-rt = "b5214093d4c91ed5352d35ee9126665fabfa97fe"
+SRCREV_libcxxabi = "8f53d45e9ac7d3c078ab3fe8f91c40a4cc6b579a"
+SRCREV_libcxx = "de80a7d886d75188de210eb4d6f0768fdc4d4d0b"
