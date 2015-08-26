@@ -7,7 +7,7 @@ LICENSE = "MIT & UIUC"
 SECTION = "base"
 INHIBIT_DEFAULT_DEPS = "1"
 
-DEPENDS += "clang-cross-${TRANSLATED_TARGET_ARCH}"
+DEPENDS += "clang-cross-${TARGET_ARCH}"
 
 require clang.inc
 
