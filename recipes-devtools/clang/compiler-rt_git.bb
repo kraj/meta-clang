@@ -21,7 +21,8 @@ SRCREV_FORMAT = "compiler-rt"
 
 S = "${WORKDIR}/git"
 
-THUMB_TUNE_CCARGS = " -ffreestanding -nostdlib -nostdinc++ -nobuiltininc"
+THUMB_TUNE_CCARGS = ""
+TUNE_CCARGS += "-ffreestanding -nostdlib"
 
 EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 

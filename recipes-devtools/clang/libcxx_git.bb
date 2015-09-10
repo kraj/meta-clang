@@ -27,8 +27,14 @@ SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
 
 S = "${WORKDIR}/git/projects/libcxx"
 
-THUMB_TUNE_CCARGS = " -ffreestanding -nostdlib -nostdinc++ -nobuiltininc"
+THUMB_TUNE_CCARGS = ""
+TUNE_CCARGS += "-ffreestanding -nostdlib"
 
-EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi -DLIBCXXABI_LIBCXX_PATH=${S}/../libcxx -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/../libcxxabi/include -DLLVM_PATH=${S}/../../"
+EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi \
+                  -DLIBCXXABI_LIBCXX_PATH=${S}/../libcxx \
+                  -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/../libcxxabi/include \
+                  -DLLVM_PATH=${S}/../../ \
+                  -DLIBCXX_ENABLE_SHARED=False \
+                 "
 
 BBCLASSEXTEND = "native nativesdk"
