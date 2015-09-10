@@ -29,6 +29,12 @@ S = "${WORKDIR}/git/projects/libcxxabi"
 THUMB_TUNE_CCARGS = ""
 TUNE_CCARGS += "-ffreestanding -nostdlib"
 
-EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/../libcxx -DLLVM_PATH=${S}/../../ -DLIBCXXABI_LIBCXX_INCLUDES=${S}/../libcxx/include -DLLVM_ENABLE_LIBCXX=True -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True -DLIBCXXABI_ENABLE_SHARED=False"
+EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/../libcxx \
+                  -DLLVM_PATH=${S}/../../ \
+                  -DLLVM_ENABLE_LIBCXX=True \
+                  -DLIBCXXABI_LIBCXX_INCLUDES=${S}/../libcxx/include \
+                  -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
+                  -DLIBCXXABI_ENABLE_SHARED=False \
+                 "
 
 BBCLASSEXTEND = "native nativesdk"
