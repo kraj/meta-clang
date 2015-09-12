@@ -14,6 +14,8 @@ require clang.inc
 inherit cmake
 
 DEPENDS += "libcxx"
+PROVIDES += "libunwind"
+
 LIC_FILES_CHKSUM = "file://../libcxx/LICENSE.TXT;md5=149d2e8e8d99e3a2d702997b5f919fd9; \
                    "
 SRCREV_libunwind = "1d9ef03c3ee017838437e0f3197f2912eebdce5a"
@@ -39,9 +41,11 @@ EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/../libcxxabi \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
                   -DLIBCXXABI_ENABLE_SHARED=False \
                   -DUNIX=True \
-                  -DLIBUNWIND_ENABLE_SHARED=False \
                  "
 do_configure_prepend () {
 	(cd ${S}/include && ln -sf ../../libcxxabi/include/__cxxabi_config.h)
 }
+
+RPROVIDES_${PN} = "libunwind"
+
 BBCLASSEXTEND = "native nativesdk"
