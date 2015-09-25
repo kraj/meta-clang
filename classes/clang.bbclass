@@ -4,6 +4,10 @@ CXX_toolchain-clang = "${TARGET_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTION
 CPP_toolchain-clang = "${TARGET_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
 CCLD_toolchain-clang = "${TARGET_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 THUMB_TUNE_CCARGS_remove_toolchain-clang = "-mthumb-interwork"
+TUNE_CCARGS_remove_toolchain-clang = "-meb"
+TUNE_CCARGS_remove_toolchain-clang = "-mel"
+TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
+
 TUNE_CCARGS_append_toolchain-clang = " -D__extern_always_inline=inline -no-integrated-as"
 
 TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
