@@ -8,6 +8,8 @@ TUNE_CCARGS_remove_toolchain-clang = "-meb"
 TUNE_CCARGS_remove_toolchain-clang = "-mel"
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
 
+TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
+
 TUNE_CCARGS_append_toolchain-clang = " -D__extern_always_inline=inline -no-integrated-as"
 
 TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
