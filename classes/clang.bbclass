@@ -7,6 +7,9 @@ THUMB_TUNE_CCARGS_remove_toolchain-clang = "-mthumb-interwork"
 TUNE_CCARGS_remove_toolchain-clang = "-meb"
 TUNE_CCARGS_remove_toolchain-clang = "-mel"
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
+# Clang/llvm doesnt support armv7ve tunes yet
+TUNE_CCARGS_remove_toolchain-clang = "-march=armv7ve"
+TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "armv7ve", " -march=armv7a", "", d)}"
 
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
 
