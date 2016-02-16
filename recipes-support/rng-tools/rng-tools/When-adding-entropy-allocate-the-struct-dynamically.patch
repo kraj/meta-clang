@@ -1,0 +1,50 @@
+From 27f234a1bb97f7196466a3535a072fda1b66ea1e Mon Sep 17 00:00:00 2001
+From: Christopher Larson <chris_larson@mentor.com>
+Date: Mon, 15 Feb 2016 16:46:46 -0700
+Subject: [PATCH] When adding entropy, allocate the struct dynamically
+
+Clang/LLVM does not support struct fields without a constant size. Also, we
+can use the existing struct defined by linux/random.h.
+
+Upstream-Status: Pending
+Signed-off-by: Christopher Larson <chris_larson@mentor.com>
+---
+ rngd_linux.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/rngd_linux.c b/rngd_linux.c
+index c4f45de..8f6cca7 100644
+--- a/rngd_linux.c
++++ b/rngd_linux.c
+@@ -120,21 +120,19 @@ void init_kernel_rng(const char* randomdev)
+ 
+ void random_add_entropy(void *buf, size_t size)
+ {
+-	struct {
+-		int ent_count;
+-		int size;
+-		unsigned char data[size];
+-	} entropy;
++	struct rand_pool_info *entropy = malloc(sizeof(struct rand_pool_info) + size);
+ 
+-	entropy.ent_count = size * 8;
+-	entropy.size = size;
+-	memcpy(entropy.data, buf, size);
++	entropy->entropy_count = size * 8;
++	entropy->buf_size = size;
++	memcpy(entropy->buf, buf, size);
+ 
+-	if (ioctl(random_fd, RNDADDENTROPY, &entropy) != 0) {
++	if (ioctl(random_fd, RNDADDENTROPY, entropy) != 0) {
+ 		message(LOG_DAEMON|LOG_ERR, "RNDADDENTROPY failed: %s\n",
+ 			strerror(errno));
++		free(entropy);
+ 		exit(1);
+ 	}
++	free(entropy);
+ }
+ 
+ void random_sleep(void)
+-- 
+2.2.1
+
