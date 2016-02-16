@@ -33,21 +33,10 @@ OVERRIDES[vardepsexclude] += "TOOLCHAIN"
 #DEPENDS_remove_toolchain-clang_allarch = "clang-cross-${TARGET_ARCH}"
 
 def clang_dep_prepend(d):
-    #
-    # Ideally this will check a flag so we will operate properly in
-    # the case where host == build == target, for now we don't work in
-    # that case though.
-    #
-
-    deps = ""
-    # INHIBIT_DEFAULT_DEPS doesn't apply to the patch command.  Whether or  not
-    # we need that built is the responsibility of the patch function / class, not
-    # the application.
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch'):
-            deps += " clang-cross-${TARGET_ARCH} "
-    return deps
+            return " clang-cross-${TARGET_ARCH}"
+    return ""
 
-CLANGDEPENDS = "${@clang_dep_prepend(d)}"
-
-DEPENDS_prepend_toolchain-clang_class-target = "${CLANGDEPENDS} "
+BASEDEPENDS_remove_toolchain-clang_class-target = "virtual/${TARGET_PREFIX}gcc"
+BASEDEPENDS_append_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
