@@ -3,7 +3,7 @@
 
 DESCRIPTION = "libc++ is a new implementation of the C++ standard library, targeting C++11"
 HOMEPAGE = "http://libcxx.llvm.org/"
-LICENSE = "MIT & UIUC"
+LICENSE = "MIT & NCSA"
 SECTION = "base"
 INHIBIT_DEFAULT_DEPS = "1"
 

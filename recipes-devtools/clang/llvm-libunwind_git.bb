@@ -3,7 +3,7 @@
 
 DESCRIPTION = "libunwind implements a stack unwinder, needed to perform C++ exception handling."
 HOMEPAGE = "http://llvm.org/"
-LICENSE = "MIT & UIUC"
+LICENSE = "MIT & NSCA"
 SECTION = "base"
 INHIBIT_DEFAULT_DEPS = "1"
 

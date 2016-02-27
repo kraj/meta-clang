@@ -3,7 +3,7 @@
 
 DESCRIPTION = "LLVM based C/C++ compiler Runtime"
 HOMEPAGE = "http://compiler-rt.llvm.org/"
-LICENSE = "MIT & UIUC"
+LICENSE = "MIT & NCSA"
 SECTION = "base"
 INHIBIT_DEFAULT_DEPS = "1"
 
