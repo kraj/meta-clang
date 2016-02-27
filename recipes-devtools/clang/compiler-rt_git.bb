@@ -10,6 +10,7 @@ INHIBIT_DEFAULT_DEPS = "1"
 DEPENDS += "clang-cross-${TARGET_ARCH}"
 
 require clang.inc
+PV .= "+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=27b14ab4ce08d04c3a9a5f0ed7997362; \
                    "

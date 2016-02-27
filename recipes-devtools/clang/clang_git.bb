@@ -8,6 +8,8 @@ SECTION = "devel"
 
 require clang.inc
 
+PV .= "+git${SRCPV}"
+
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
                     file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
                    "
@@ -110,3 +112,14 @@ do_install_append_class-nativesdk () {
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
 BBCLASSEXTEND = "native nativesdk"
+
+FILES_${PN} += "\
+  ${libdir}/BugpointPasses.so \
+  ${libdir}/LLVMHello.so \
+  ${datadir}/scan-* \
+"
+
+FILES_${PN}-dev += "\
+  ${datadir}/llvm/cmake \
+"
+

@@ -12,6 +12,7 @@ DEPENDS += "clang-cross-${TARGET_ARCH}"
 require clang.inc
 
 inherit cmake
+PV .= "+git${SRCPV}"
 
 DEPENDS += "compiler-rt"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=9041c9f38eb0f718f408e28ce138bb9a; \

@@ -12,6 +12,7 @@ DEPENDS += "clang-cross-${TARGET_ARCH}"
 require clang.inc
 
 inherit cmake
+PV .= "+git${SRCPV}"
 
 DEPENDS += "libcxxabi"
 
