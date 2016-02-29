@@ -14,7 +14,7 @@ git clone git://github.com/kraj/meta-clang.git
 $ . ./oe-init-build-env
 ```
 
-Edit conf/bblayers.conf to add meta-musl to layer mix e.g.
+Edit conf/bblayers.conf to add meta-clang to layer mix e.g.
 
 ```python
 BBLAYERS ?= " \
