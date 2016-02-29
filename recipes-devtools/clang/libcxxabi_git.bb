@@ -18,9 +18,9 @@ DEPENDS += "compiler-rt"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=9041c9f38eb0f718f408e28ce138bb9a; \
                    "
 SRC_URI = "\
-	   git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
-           git://github.com/llvm-mirror/libcxx.git;branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
-           git://github.com/llvm-mirror/libcxxabi.git;branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
+           ${CLANG_GIT}/llvm.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
+           ${CLANG_GIT}/libcxx.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
+           ${CLANG_GIT}/libcxxabi.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
           "
 
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi"

@@ -13,8 +13,8 @@ PV .= "+git${SRCPV}"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
                     file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
                    "
-SRC_URI = "git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
-           git://github.com/llvm-mirror/clang.git;branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
+SRC_URI = "${CLANG_GIT}/llvm.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
+           ${CLANG_GIT}/clang.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
           "
 
