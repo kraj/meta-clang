@@ -20,10 +20,10 @@ PROVIDES += "libunwind"
 LIC_FILES_CHKSUM = "file://../libcxx/LICENSE.TXT;md5=149d2e8e8d99e3a2d702997b5f919fd9; \
                    "
 SRC_URI = "\
-	   git://github.com/llvm-mirror/llvm.git;branch=${BRANCH};name=llvm \
-           git://github.com/llvm-mirror/libcxx.git;branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
-           git://github.com/llvm-mirror/libcxxabi.git;branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
-           git://github.com/llvm-mirror/libunwind.git;branch=${BRANCH};name=libunwind;destsuffix=git/projects/libunwind \
+           ${CLANG_GIT}/llvm.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
+           ${CLANG_GIT}/libcxx.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
+           ${CLANG_GIT}/libcxxabi.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
+           ${CLANG_GIT}/libunwind.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=libunwind;destsuffix=git/projects/libunwind \
            file://0001-aarch64-Use-x29-and-x30-for-fp-and-lr-respectively.patch \
           "
 
