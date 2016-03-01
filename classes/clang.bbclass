@@ -18,6 +18,8 @@ TUNE_CCARGS_append_toolchain-clang = " -D__extern_always_inline=inline -no-integ
 TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
 TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
 
+TOOLCHAIN_OPTIONS_append_toolchain-clang = " -Wno-error=unused-command-line-argument"
+
 # choose between 'gcc' 'clang' an empty '' can be used as well
 TOOLCHAIN ??= "clang"
 
