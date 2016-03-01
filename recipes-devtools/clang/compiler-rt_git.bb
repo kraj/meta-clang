@@ -14,7 +14,7 @@ PV .= "+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=27b14ab4ce08d04c3a9a5f0ed7997362; \
                    "
-SRC_URI = "${CLANG_GIT}/compiler-rt.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
+SRC_URI = "${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
            file://0001-support-a-new-embedded-linux-target.patch \
           "
 

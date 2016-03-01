@@ -2,8 +2,8 @@ PV = "3.8.0"
 LLVM_RELEASE = ""
 LLVM_DIR = "llvm${LLVM_RELEASE}"
 
-CLANG_GIT ?= "git://github.com/llvm-mirror"
-CLANG_GIT_PROTOCOL ?= "git"
+LLVM_GIT ?= "git://github.com/llvm-mirror"
+LLVM_GIT_PROTOCOL ?= "git"
 
 BRANCH = "release_38"
 SRCREV_llvm = "27c964e2ae0b573cf1e6551a3da255539db03d3c"
