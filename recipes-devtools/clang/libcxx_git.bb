@@ -19,9 +19,9 @@ DEPENDS += "libcxxabi"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=149d2e8e8d99e3a2d702997b5f919fd9; \
                    "
 SRC_URI = "\
-           ${CLANG_GIT}/llvm.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
-           ${CLANG_GIT}/libcxx.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
-           ${CLANG_GIT}/libcxxabi.git;protocol=${CLANG_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
+           ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
+           ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
+           ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
           "
 
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
