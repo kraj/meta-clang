@@ -12,6 +12,7 @@ TUNE_CCARGS_remove_toolchain-clang = "-march=armv7ve"
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "armv7ve", " -march=armv7a", "", d)}"
 
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
+TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
 
 TUNE_CCARGS_append_toolchain-clang = " -D__extern_always_inline=inline -no-integrated-as -Wno-error=unused-command-line-argument"
 
