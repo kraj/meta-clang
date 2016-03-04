@@ -104,10 +104,11 @@ do_install_append_class-native () {
 
 do_install_append_class-nativesdk () {
 	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
-        for f in `find ${D}${bindir} -executable -type f -not -type l`; do
-            test -n "`file $f|grep -i ELF`" && ${STRIP} $f
-        done
+	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
+		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
+	done
 	rm -rf ${D}${datadir}/llvm/cmake
+	rm -rf ${D}${datadir}/llvm
 }
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
