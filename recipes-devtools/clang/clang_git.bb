@@ -124,3 +124,5 @@ FILES_${PN}-dev += "\
   ${datadir}/llvm/cmake \
 "
 
+INSANE_SKIP_${PN} += "already-stripped"
+INSANE_SKIP_${PN}-dev += "dev-elf"
