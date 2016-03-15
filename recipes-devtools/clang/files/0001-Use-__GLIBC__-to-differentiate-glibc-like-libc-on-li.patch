@@ -1,0 +1,39 @@
+From f85abde580d2ba399bfc7538a28f7b6f96912bc6 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 15 Mar 2016 03:10:42 +0000
+Subject: [PATCH] Use __GLIBC__ to differentiate glibc-like libc on linux
+
+glibc/uclibc define __GLIBC_PREREQ but musl does not therefore we need
+to check if its on glibc system before using it
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ include/__config | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/include/__config b/include/__config
+index db5a832..0859b5f 100644
+--- a/include/__config
++++ b/include/__config
+@@ -392,15 +392,15 @@ typedef __char32_t char32_t;
+ #elif defined(__ANDROID__)
+ #define _LIBCPP_HAS_QUICK_EXIT
+ #elif defined(__linux__)
+-#if !defined(_LIBCPP_HAS_MUSL_LIBC)
++#if defined(__GLIBC__)
+ # include <features.h>
+-#if __GLIBC_PREREQ(2, 15)
++#if  __GLIBC_PREREQ(2, 15)
+ #define _LIBCPP_HAS_QUICK_EXIT
+ #endif
+ #if __GLIBC_PREREQ(2, 17)
+ #define _LIBCPP_HAS_C11_FEATURES
+ #endif
+-#else // defined(_LIBCPP_HAS_MUSL_LIBC)
++#else // defined(__GLIBC__)
+ #define _LIBCPP_HAS_QUICK_EXIT
+ #define _LIBCPP_HAS_C11_FEATURES
+ #endif
+-- 
+1.9.1
+

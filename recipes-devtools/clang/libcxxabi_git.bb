@@ -23,6 +23,8 @@ SRC_URI = "\
            ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
           "
 
+SRC_URI += "file://0001-Use-__GLIBC__-to-differentiate-glibc-like-libc-on-li.patch;patchdir=../libcxx"
+
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
 
 S = "${WORKDIR}/git/projects/libcxxabi"

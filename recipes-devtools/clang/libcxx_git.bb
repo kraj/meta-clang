@@ -23,6 +23,10 @@ SRC_URI = "\
            ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
            ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
           "
+SRC_URI += "file://0001-Use-__GLIBC__-to-differentiate-glibc-like-libc-on-li.patch \
+            file://0001-use-constexpr-when-using-glibc.patch \
+"
+SRC_URI_append_libc-musl = " file://0001-replace-strtoll_l-with-strtoll-on-musl.patch "
 
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
 

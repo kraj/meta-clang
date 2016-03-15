@@ -1,0 +1,56 @@
+From 21ddd574f6e9b321614d39a7765f1ad98aa09f54 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 15 Mar 2016 04:56:27 +0000
+Subject: [PATCH] use constexpr when using glibc
+
+POSIX does not permit using PTHREAD_COND_INITIALIZER except for static
+initialization, and certainly does not permit using it as a value
+
+also POSIX does not specify the type of the object (it's opaque) so if
+there are any types for which their code would be invalid C++, then their
+code is invalid
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ include/__mutex_base | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/include/__mutex_base b/include/__mutex_base
+index b019b47..10ad9f2 100644
+--- a/include/__mutex_base
++++ b/include/__mutex_base
+@@ -33,7 +33,10 @@ class _LIBCPP_TYPE_VIS mutex
+ public:
+     _LIBCPP_INLINE_VISIBILITY
+ #ifndef _LIBCPP_HAS_NO_CONSTEXPR
+-     constexpr mutex() _NOEXCEPT : __m_(PTHREAD_MUTEX_INITIALIZER) {}
++#ifdef __GLIBC__
++     constexpr
++#endif
++     mutex() _NOEXCEPT : __m_(PTHREAD_MUTEX_INITIALIZER) {}
+ #else
+      mutex() _NOEXCEPT {__m_ = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;}
+ #endif
+@@ -63,7 +66,6 @@ extern const try_to_lock_t try_to_lock;
+ extern const adopt_lock_t  adopt_lock;
+ 
+ #else
+-
+ constexpr defer_lock_t  defer_lock  = defer_lock_t();
+ constexpr try_to_lock_t try_to_lock = try_to_lock_t();
+ constexpr adopt_lock_t  adopt_lock  = adopt_lock_t();
+@@ -272,7 +274,10 @@ class _LIBCPP_TYPE_VIS condition_variable
+ public:
+     _LIBCPP_INLINE_VISIBILITY
+ #ifndef _LIBCPP_HAS_NO_CONSTEXPR
+-    constexpr condition_variable() : __cv_(PTHREAD_COND_INITIALIZER) {}
++#ifdef __GLIBC__
++    constexpr
++#endif
++    condition_variable() : __cv_(PTHREAD_COND_INITIALIZER) {}
+ #else
+     condition_variable() {__cv_ = (pthread_cond_t)PTHREAD_COND_INITIALIZER;}
+ #endif
+-- 
+1.9.1
+
