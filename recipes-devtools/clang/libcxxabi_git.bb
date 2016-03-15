@@ -23,8 +23,6 @@ SRC_URI = "\
            ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
           "
 
-SRC_URI += "file://0001-Use-__GLIBC__-to-differentiate-glibc-like-libc-on-li.patch;patchdir=../libcxx"
-
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
 
 S = "${WORKDIR}/git/projects/libcxxabi"
@@ -39,5 +37,6 @@ EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/../libcxx \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
                   -DLIBCXXABI_ENABLE_SHARED=False \
                  "
+CXXFLAGS_append_libc-musl = " -D_LIBCPP_HAS_MUSL_LIBC "
 
 BBCLASSEXTEND = "native nativesdk"

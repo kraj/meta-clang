@@ -23,10 +23,7 @@ SRC_URI = "\
            ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
            ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
           "
-SRC_URI += "file://0001-Use-__GLIBC__-to-differentiate-glibc-like-libc-on-li.patch \
-            file://0001-use-constexpr-when-using-glibc.patch \
-"
-SRC_URI_append_libc-musl = " file://0001-replace-strtoll_l-with-strtoll-on-musl.patch "
+SRC_URI_append_libc-musl = " file://0001-use-constexpr-when-using-glibc.patch "
 
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
 
@@ -36,10 +33,11 @@ THUMB_TUNE_CCARGS = ""
 TUNE_CCARGS += "-ffreestanding -nostdlib"
 
 EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi \
-                  -DLIBCXXABI_LIBCXX_PATH=${S}/../libcxx \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/../libcxxabi/include \
                   -DLLVM_PATH=${S}/../../ \
                   -DLIBCXX_ENABLE_SHARED=False \
                  "
+
+EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=True "
 
 BBCLASSEXTEND = "native nativesdk"
