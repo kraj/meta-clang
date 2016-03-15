@@ -16,7 +16,10 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
 SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
+           file://0002-Do-not-assume-linux-glibc.patch \
           "
+
+SRC_URI_append_libc-musl_class-target = " file://0001-remove-fopen64-fseeko64-ftello64-tmpfile64-on-musl.patch "
 
 SRCREV_FORMAT = "llvm_clang"
 
@@ -45,7 +48,8 @@ def get_clang_target_arch(bb, d):
 #TUNE_CCARGS_remove = "-mthumb-interwork"
 #TUNE_CCARGS_remove = "-march=armv7-a"
 #TUNE_CCARGS_remove = "-marm"
-TUNE_CCARGS_append_class-target = " -D__extern_always_inline=inline -L${PKG_CONFIG_SYSROOT_DIR}${libdir}/libxml2 -I${PKG_CONFIG_SYSROOT_DIR}${includedir}/libxml2 "
+TUNE_CCARGS_append_class-target = " -D__extern_always_inline=inline -I${PKG_CONFIG_SYSROOT_DIR}${includedir}/libxml2 "
+LDFLAGS_append_class-target = " -L${PKG_CONFIG_SYSROOT_DIR}${libdir}/libxml2 "
 
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI:BOOL=True \
                -DLLVM_ENABLE_FFI:BOOL=False \
