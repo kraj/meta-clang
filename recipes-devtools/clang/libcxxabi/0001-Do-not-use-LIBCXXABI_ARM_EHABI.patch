@@ -1,0 +1,30 @@
+From 141910ae8cee87307a89a9e43894000dcf47366e Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 24 Mar 2016 06:31:35 +0000
+Subject: [PATCH] Do not use LIBCXXABI_ARM_EHABI
+
+Fixes errors like
+libcxxabi/src/cxa_exception.cpp:258:21: error: unknown type name '_Unwind_Control_Block'
+        static_cast<_Unwind_Control_Block*>(unwind_exception)->barrier_cache.bitpattern[0]);
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ include/__cxxabi_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/__cxxabi_config.h b/include/__cxxabi_config.h
+index 68e325f..41fc953 100644
+--- a/include/__cxxabi_config.h
++++ b/include/__cxxabi_config.h
+@@ -12,7 +12,7 @@
+ 
+ #if defined(__arm__) && !defined(__USING_SJLJ_EXCEPTIONS__) &&                 \
+     !defined(__ARM_DWARF_EH__)
+-#define LIBCXXABI_ARM_EHABI 1
++#define LIBCXXABI_ARM_EHABI 0
+ #else
+ #define LIBCXXABI_ARM_EHABI 0
+ #endif
+-- 
+1.9.1
+
