@@ -1,0 +1,111 @@
+From 31a62e652efc8e582e3febda0a300fd3f345e260 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 30 Mar 2016 19:55:41 -0700
+Subject: [PATCH] triplet: Add musl support
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ include/llvm/ADT/Triple.h           | 13 +++++++++++++
+ lib/Support/Triple.cpp              | 10 +++++++++-
+ lib/Target/ARM/ARMSubtarget.h       |  3 +++
+ lib/Target/ARM/ARMTargetMachine.cpp |  2 ++
+ 4 files changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/include/llvm/ADT/Triple.h b/include/llvm/ADT/Triple.h
+index d163ac7..a4ffc55 100644
+--- a/include/llvm/ADT/Triple.h
++++ b/include/llvm/ADT/Triple.h
+@@ -175,6 +175,10 @@ public:
+     GNUEABI,
+     GNUEABIHF,
+     GNUX32,
++    MUSL,
++    MUSLEABI,
++    MUSLEABIHF,
++    MUSLX32,
+     CODE16,
+     EABI,
+     EABIHF,
+@@ -497,6 +501,15 @@ public:
+     return getOS() == Triple::Win32 && getEnvironment() == Triple::GNU;
+   }
+ 
++  /// Checks if the environment is Linux with musl
++  bool isLinuxMuslEnvironment() const {
++    return getOS() == Triple::Linux &&
++           (getEnvironment() == Triple::MUSL ||
++            getEnvironment() == Triple::MUSLX32 ||
++            getEnvironment() == Triple::MUSLEABI ||
++            getEnvironment() == Triple::MUSLEABIHF);
++  }
++
+   /// Tests for either Cygwin or MinGW OS
+   bool isOSCygMing() const {
+     return isWindowsCygwinEnvironment() || isWindowsGNUEnvironment();
+diff --git a/lib/Support/Triple.cpp b/lib/Support/Triple.cpp
+index 1967fac..146ed82 100644
+--- a/lib/Support/Triple.cpp
++++ b/lib/Support/Triple.cpp
+@@ -201,6 +201,10 @@ const char *Triple::getEnvironmentTypeName(EnvironmentType Kind) {
+   case GNUEABIHF: return "gnueabihf";
+   case GNUEABI: return "gnueabi";
+   case GNUX32: return "gnux32";
++  case MUSL: return "musl";
++  case MUSLEABIHF: return "musleabihf";
++  case MUSLEABI: return "musleabi";
++  case MUSLX32: return "muslx32";
+   case CODE16: return "code16";
+   case EABI: return "eabi";
+   case EABIHF: return "eabihf";
+@@ -460,7 +464,11 @@ static Triple::EnvironmentType parseEnvironment(StringRef EnvironmentName) {
+     .StartsWith("eabi", Triple::EABI)
+     .StartsWith("gnueabihf", Triple::GNUEABIHF)
+     .StartsWith("gnueabi", Triple::GNUEABI)
+-    .StartsWith("gnux32", Triple::GNUX32)
++    .StartsWith("musl", Triple::MUSL)
++    .StartsWith("gnux32", Triple::MUSLX32)
++    .StartsWith("musleabihf", Triple::MUSLEABIHF)
++    .StartsWith("musleabi", Triple::MUSLEABI)
++    .StartsWith("muslx32", Triple::GNUX32)
+     .StartsWith("code16", Triple::CODE16)
+     .StartsWith("gnu", Triple::GNU)
+     .StartsWith("android", Triple::Android)
+diff --git a/lib/Target/ARM/ARMSubtarget.h b/lib/Target/ARM/ARMSubtarget.h
+index ec1212d..902ce4a 100644
+--- a/lib/Target/ARM/ARMSubtarget.h
++++ b/lib/Target/ARM/ARMSubtarget.h
+@@ -424,8 +424,10 @@ public:
+   bool isTargetEHABICompatible() const {
+     return (TargetTriple.getEnvironment() == Triple::EABI ||
+             TargetTriple.getEnvironment() == Triple::GNUEABI ||
++            TargetTriple.getEnvironment() == Triple::MUSLEABI ||
+             TargetTriple.getEnvironment() == Triple::EABIHF ||
+             TargetTriple.getEnvironment() == Triple::GNUEABIHF ||
++            TargetTriple.getEnvironment() == Triple::MUSLEABIHF ||
+             isTargetAndroid()) &&
+            !isTargetDarwin() && !isTargetWindows();
+   }
+@@ -433,6 +435,7 @@ public:
+   bool isTargetHardFloat() const {
+     // FIXME: this is invalid for WindowsCE
+     return TargetTriple.getEnvironment() == Triple::GNUEABIHF ||
++           TargetTriple.getEnvironment() == Triple::MUSLEABIHF ||
+            TargetTriple.getEnvironment() == Triple::EABIHF ||
+            isTargetWindows() || isAAPCS16_ABI();
+   }
+diff --git a/lib/Target/ARM/ARMTargetMachine.cpp b/lib/Target/ARM/ARMTargetMachine.cpp
+index 390b39c..9840c11 100644
+--- a/lib/Target/ARM/ARMTargetMachine.cpp
++++ b/lib/Target/ARM/ARMTargetMachine.cpp
+@@ -99,6 +99,8 @@ computeTargetABI(const Triple &TT, StringRef CPU,
+     case llvm::Triple::Android:
+     case llvm::Triple::GNUEABI:
+     case llvm::Triple::GNUEABIHF:
++    case llvm::Triple::MUSLEABI:
++    case llvm::Triple::MUSLEABIHF:
+     case llvm::Triple::EABIHF:
+     case llvm::Triple::EABI:
+       TargetABI = ARMBaseTargetMachine::ARM_ABI_AAPCS;
+-- 
+2.7.4
+

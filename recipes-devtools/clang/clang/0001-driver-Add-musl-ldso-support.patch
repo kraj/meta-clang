@@ -1,0 +1,68 @@
+From 8fddf3128d740d2e8831367c827fa1b747364563 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 30 Mar 2016 19:56:10 -0700
+Subject: [PATCH] driver: Add musl ldso support
+
+Linux/musl libc implementation has different ldso
+this needs to take effect when target arch is detected
+as a musl based Linux platform
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Driver/Tools.cpp | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
+
+diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
+index e72e4bd..968542c 100644
+--- a/lib/Driver/Tools.cpp
++++ b/lib/Driver/Tools.cpp
+@@ -8240,6 +8240,46 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+       return "/system/bin/linker64";
+     else
+       return "/system/bin/linker";
++  } else if (ToolChain.getTriple().isLinuxMuslEnvironment()) {
++    switch (Arch) {
++      case llvm::Triple::x86:
++        return "/lib/ld-musl-i386.so.1";
++      case llvm::Triple::x86_64:
++        if (ToolChain.getTriple().getEnvironment() == llvm::Triple::MUSLX32)
++          return "/lib/ld-musl-x32.so.1";
++        else
++          return "/lib/ld-musl-x86_64.so.1";
++      case llvm::Triple::aarch64:
++        return "/lib/ld-musl-aarch64.so.1";
++      case llvm::Triple::aarch64_be:
++        return "/lib/ld-musl-aarch64_be.so.1";
++      case llvm::Triple::ppc:
++        return "/lib/ld-musl-powerpc.so.1";
++      case llvm::Triple::ppc64:
++        return "/lib/ld-musl-powerpc64.so.1";
++      case llvm::Triple::arm:
++      case llvm::Triple::thumb:
++        if(arm::getARMFloatABI(ToolChain, Args) == arm::FloatABI::Hard)
++          return "/lib/ld-musl-armhf.so.1";
++        else
++          return "/lib/ld-musl-arm.so.1";
++      case llvm::Triple::armeb:
++      case llvm::Triple::thumbeb:
++        if(arm::getARMFloatABI(ToolChain, Args) == arm::FloatABI::Hard)
++          return "/lib/ld-musl-armebhf.so.1";
++        else
++          return "/lib/ld-musl-armeb.so.1";
++      case llvm::Triple::mips:
++        return "/lib/ld-musl-mips.so.1";
++      case llvm::Triple::mipsel:
++        return "/lib/ld-musl-mipsel.so.1";
++      case llvm::Triple::mips64:
++        return "/lib/ld-musl-mips64.so.1";
++      case llvm::Triple::mips64el:
++        return "/lib/ld-musl-mipsel64el.so.1";
++      default:
++        break;
++  }
+   } else if (Arch == llvm::Triple::x86 || Arch == llvm::Triple::sparc ||
+              Arch == llvm::Triple::sparcel)
+     return "/lib/ld-linux.so.2";
+-- 
+2.7.4
+

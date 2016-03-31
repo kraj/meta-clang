@@ -17,6 +17,8 @@ SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};n
            ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
            file://0002-Do-not-assume-linux-glibc.patch \
+           file://0001-triplet-Add-musl-support.patch \
+           file://0001-driver-Add-musl-ldso-support.patch;patchdir=tools/clang \
           "
 
 SRC_URI_append_libc-musl_class-target = " file://0001-remove-fopen64-fseeko64-ftello64-tmpfile64-on-musl.patch "
