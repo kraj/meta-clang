@@ -24,6 +24,7 @@ do_install() {
         install -d  ${D}${bindir}
         ln -sf ../clang ${D}${bindir}/${TARGET_PREFIX}clang
         ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
+        cross_canadian_bindirlinks
 }
 
 SSTATE_SCAN_FILES += "*-clang *-clang++"
