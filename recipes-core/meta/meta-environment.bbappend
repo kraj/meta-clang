@@ -1,5 +1,8 @@
 export TARGET_CLANGCC_ARCH = "${TARGET_CC_ARCH}"
 TARGET_CLANGCC_ARCH_remove = "-mthumb-interwork"
+TARGET_CLANGCC_ARCH_remove = "-mmusl"
+TARGET_CLANGCC_ARCH_remove = "-muclibc"
+
 create_sdk_files_append() {
         script=${SDK_OUTPUT}/${SDKPATH}/environment-setup-${REAL_MULTIMACH_TARGET_SYS}
         echo 'export CLANGCC="${TARGET_PREFIX}clang ${TARGET_CLANGCC_ARCH} --sysroot=$SDKTARGETSYSROOT"' >> $script
