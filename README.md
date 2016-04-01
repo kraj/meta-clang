@@ -78,4 +78,4 @@ of course accepted as well, 'git fetch <remote>' works the same on all of them.
 We recommend github because it is free, easy to use, has been proven to be reliable 
 and has a really good web GUI.
 
-Layer Maintainer: Khem Raj <mailto:raj.khem@gmail.com>
+Layer Maintainer: [Khem Raj](<mailto:raj.khem@gmail.com>)
