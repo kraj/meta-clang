@@ -22,6 +22,7 @@ SRC_URI = "\
            ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
            ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
            file://0001-Do-not-use-LIBCXXABI_ARM_EHABI.patch \
+           file://0001-include-stdlib.h-earlier-to-avoid-limit.h-defining-M.patch \
           "
 
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
