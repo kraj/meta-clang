@@ -1,0 +1,65 @@
+From 69e09408a6a8ddb08d3f148c0eeba68714c1891b Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sun, 3 Apr 2016 07:59:59 +0000
+Subject: [PATCH] dont include stdlib.h and limits.h together
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/profile/InstrProfiling.c                            | 2 +-
+ lib/profile/InstrProfilingValue.c                       | 2 +-
+ lib/sanitizer_common/sanitizer_platform_limits_posix.cc | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/lib/profile/InstrProfiling.c b/lib/profile/InstrProfiling.c
+index 711f2b6..9028be5 100644
+--- a/lib/profile/InstrProfiling.c
++++ b/lib/profile/InstrProfiling.c
+@@ -9,9 +9,9 @@
+ 
+ #include "InstrProfiling.h"
+ #include "InstrProfilingInternal.h"
++#include <stdlib.h>
+ #include <limits.h>
+ #include <stdio.h>
+-#include <stdlib.h>
+ #include <string.h>
+ #define INSTR_PROF_VALUE_PROF_DATA
+ #include "InstrProfData.inc"
+diff --git a/lib/profile/InstrProfilingValue.c b/lib/profile/InstrProfilingValue.c
+index 68e16cf..d04cc30 100644
+--- a/lib/profile/InstrProfilingValue.c
++++ b/lib/profile/InstrProfilingValue.c
+@@ -9,9 +9,9 @@
+ 
+ #include "InstrProfiling.h"
+ #include "InstrProfilingInternal.h"
+-#include <limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <limits.h>
+ #include <string.h>
+ #define INSTR_PROF_VALUE_PROF_DATA
+ #define INSTR_PROF_COMMON_API_IMPL
+diff --git a/lib/sanitizer_common/sanitizer_platform_limits_posix.cc b/lib/sanitizer_common/sanitizer_platform_limits_posix.cc
+index b642cba..5d7edcb 100644
+--- a/lib/sanitizer_common/sanitizer_platform_limits_posix.cc
++++ b/lib/sanitizer_common/sanitizer_platform_limits_posix.cc
+@@ -32,7 +32,6 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <grp.h>
+-#include <limits.h>
+ #include <net/if.h>
+ #include <netdb.h>
+ #include <poll.h>
+@@ -51,6 +50,7 @@
+ #include <termios.h>
+ #include <time.h>
+ #include <wchar.h>
++//#include <limits.h>
+ 
+ #if !SANITIZER_IOS
+ #include <net/route.h>
+-- 
+1.9.1
+
