@@ -40,4 +40,6 @@ EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi \
 
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=True "
 
+ALLOW_EMPTY_${PN} = "1"
+
 BBCLASSEXTEND = "native nativesdk"

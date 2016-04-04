@@ -46,6 +46,8 @@ do_configure_prepend () {
 	(cd ${S}/include && ln -sf ../../libcxxabi/include/__cxxabi_config.h)
 }
 
+ALLOW_EMPTY_${PN} = "1"
+
 RPROVIDES_${PN} = "libunwind"
 
 BBCLASSEXTEND = "native nativesdk"
