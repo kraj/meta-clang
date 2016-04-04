@@ -27,18 +27,24 @@ S = "${WORKDIR}/git"
 inherit cmake pkgconfig pythonnative
 
 THUMB_TUNE_CCARGS = ""
+TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
-                  -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
+                  -DCOMPILER_RT_BUILD_SANITIZERS=ON \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${MULTIMACH_HOST_SYS} \
 "
 
 do_install_append () {
-	install -d ${D}${base_libdir}
-	mv ${D}${libdir}/linux/*.a ${D}${base_libdir}
+	install -d ${D}${libdir}
+	mv ${D}${libdir}/linux/* ${D}${libdir}
+	mv ${D}${exec_prefix}/*.txt ${D}${libdir}
+	rm -rf ${D}${libdir}/libclang_rt.asan*.so
 	rmdir ${D}${libdir}/linux
-	rmdir ${D}${libdir}
 }
+
+FILES_SOLIBSDEV = ""
+FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
+INSANE_SKIP_${PN} = "dev-so"
 
 #PROVIDES_append_class-target = "\
 #        virtual/${TARGET_PREFIX}compilerlibs \
@@ -48,4 +54,9 @@ do_install_append () {
 #        libgcc-initial-dev \
 #        "
 #
+
+FILES_${PN}-dev += "${libdir}/*.syms ${libdir}/*.txt"
+
 BBCLASSEXTEND = "native nativesdk"
+
+ALLOW_EMPTY_${PN} = "1"
