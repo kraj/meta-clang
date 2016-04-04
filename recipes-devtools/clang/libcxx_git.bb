@@ -3,7 +3,7 @@
 
 DESCRIPTION = "libc++ is a new implementation of the C++ standard library, targeting C++11"
 HOMEPAGE = "http://libcxx.llvm.org/"
-LICENSE = "MIT & NCSA"
+LICENSE = "MIT | NCSA"
 SECTION = "base"
 INHIBIT_DEFAULT_DEPS = "1"
 
@@ -30,7 +30,7 @@ SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
 S = "${WORKDIR}/git/projects/libcxx"
 
 THUMB_TUNE_CCARGS = ""
-TUNE_CCARGS += "-ffreestanding -nostdlib"
+TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/../libcxxabi/include \

@@ -3,7 +3,7 @@
 
 DESCRIPTION = "libunwind implements a stack unwinder, needed to perform C++ exception handling."
 HOMEPAGE = "http://llvm.org/"
-LICENSE = "MIT & NSCA"
+LICENSE = "MIT | NCSA"
 SECTION = "base"
 INHIBIT_DEFAULT_DEPS = "1"
 
@@ -32,7 +32,7 @@ SRCREV_FORMAT = "llvm_libcxx_libcxxabi_libunwind"
 S = "${WORKDIR}/git/projects/libunwind"
 
 THUMB_TUNE_CCARGS = ""
-TUNE_CCARGS += "-ffreestanding -nostdlib"
+TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/../libcxxabi \
                   -DLLVM_PATH=${S}/../../ \
