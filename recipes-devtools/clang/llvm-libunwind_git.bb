@@ -32,14 +32,14 @@ SRCREV_FORMAT = "llvm_libcxx_libcxxabi_libunwind"
 S = "${WORKDIR}/git/projects/libunwind"
 
 THUMB_TUNE_CCARGS = ""
-TUNE_CCARGS += "-nostdlib"
+#TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/../libcxxabi \
                   -DLLVM_PATH=${S}/../../ \
                   -DLLVM_ENABLE_LIBCXX=True \
                   -DLLVM_ENABLE_LIBCXXABI=True \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
-                  -DLIBCXXABI_ENABLE_SHARED=False \
+                  -DLIBUNWIND_ENABLE_SHARED=ON \
                   -DUNIX=True \
                  "
 do_configure_prepend () {

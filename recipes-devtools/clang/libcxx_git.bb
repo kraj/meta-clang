@@ -30,12 +30,12 @@ SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
 S = "${WORKDIR}/git/projects/libcxx"
 
 THUMB_TUNE_CCARGS = ""
-TUNE_CCARGS += "-nostdlib"
+#TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/../libcxxabi/include \
                   -DLLVM_PATH=${S}/../../ \
-                  -DLIBCXX_ENABLE_SHARED=False \
+                  -DLIBCXX_ENABLE_SHARED=ON \
                  "
 
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=True "

@@ -27,7 +27,7 @@ S = "${WORKDIR}/git"
 inherit cmake pkgconfig pythonnative
 
 THUMB_TUNE_CCARGS = ""
-TUNE_CCARGS += "-nostdlib"
+#TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
                   -DCOMPILER_RT_BUILD_SANITIZERS=ON \
