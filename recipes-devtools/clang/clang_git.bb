@@ -86,14 +86,14 @@ DEPENDS_remove_class-nativesdk = "nativesdk-binutils"
 DEPENDS_append_class-nativesdk = " clang-native "
 
 do_configure_prepend() {
-        # Remove RPATHs
-        sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
-        # Drop "svn" suffix from version string
-        sed -i 's/${PV}svn/${PV}/g' ${S}/configure
+	# Remove RPATHs
+	sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
+	# Drop "svn" suffix from version string
+	sed -i 's/${PV}svn/${PV}/g' ${S}/configure
 
-        # Fix paths in llvm-config
-        sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
-        sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
+	# Fix paths in llvm-config
+	sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
+	sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
 }
 
 do_compile_prepend_class-native () {
@@ -103,9 +103,10 @@ do_compile_prepend_class-native () {
 
 do_install_append_class-native () {
 	install -Dm 0755 ${B}/NATIVE/bin/clang-tblgen ${D}${bindir}/clang-tblgen
-        for f in `find ${D}${bindir} -executable -type f -not -type l`; do
-            test -n "`file $f|grep -i ELF`" && ${STRIP} $f
-        done
+	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
+		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
+		echo "stripped $f"
+	done
 }
 
 do_install_append_class-nativesdk () {
@@ -116,6 +117,7 @@ do_install_append_class-nativesdk () {
 	rm -rf ${D}${datadir}/llvm/cmake
 	rm -rf ${D}${datadir}/llvm
 }
+
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
 BBCLASSEXTEND = "native nativesdk"
