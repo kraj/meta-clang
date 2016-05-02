@@ -10,8 +10,8 @@ require clang.inc
 
 PV .= "+git${SRCPV}"
 
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=4c0bc17c954e99fd547528d938832bfa; \
-                    file://tools/clang/LICENSE.TXT;md5=82ed8fe1976ca709bbd81f4f10a48ccd; \
+LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
+                    file://tools/clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
                    "
 SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
@@ -87,9 +87,9 @@ DEPENDS_append_class-nativesdk = " clang-native "
 
 do_configure_prepend() {
 	# Remove RPATHs
-	sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
+#	sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
 	# Drop "svn" suffix from version string
-	sed -i 's/${PV}svn/${PV}/g' ${S}/configure
+#	sed -i 's/${PV}svn/${PV}/g' ${S}/configure
 
 	# Fix paths in llvm-config
 	sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
