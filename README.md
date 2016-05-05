@@ -23,6 +23,23 @@ BBLAYERS ?= " \
   "
 ```
 
+# Default Compiler Switch
+
+Note that by default clang will become the system compiler, however if you wish to keep
+gcc be the default compiler and select clang for some packages only then you should
+add
+
+```python
+TOOLCHAIN ?= "gcc"
+```
+
+to local.conf, this would now revert to using gcc as default compiler and then you
+can select clang for packages of your choices by writing bbappends for them containing
+
+```python
+TOOLCHAIN = "clang"
+```
+
 # Building
 
 Below we build for qemuarm machine as an example
@@ -38,7 +55,7 @@ $ runqemu qemux86
 
 # Limitations
 
-Currently only few components do not build with clang, if you have a component to add to that list
+Few components do not build with clang, if you have a component to add to that list
 simply create a bbappend under recipes-excluded/nonclangable e.g.
 
 ```shell
@@ -72,10 +89,10 @@ When sending single patches, please use something like:
 'git send-email -M -1 --to openembedded-devel@lists.openembedded.org --subject-prefix=meta-clang][PATCH'
 
 You are encouraged to fork the mirror on [github](https://github.com/kraj/meta-clang/)
-to share your patches, this is preferred for patch sets consisting of more than 
-one patch. Other services like gitorious, repo.or.cz or self hosted setups are 
+to share your patches, this is preferred for patch sets consisting of more than
+one patch. Other services like gitorious, repo.or.cz or self hosted setups are
 of course accepted as well, 'git fetch <remote>' works the same on all of them.
-We recommend github because it is free, easy to use, has been proven to be reliable 
+We recommend github because it is free, easy to use, has been proven to be reliable
 and has a really good web GUI.
 
 Layer Maintainer: [Khem Raj](<mailto:raj.khem@gmail.com>)
