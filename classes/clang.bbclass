@@ -20,7 +20,7 @@ TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic
 TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
 
 # choose between 'gcc' 'clang' an empty '' can be used as well
-TOOLCHAIN ??= "clang"
+TOOLCHAIN ??= "gcc"
 
 TOOLCHAIN_class-native = "gcc"
 TOOLCHAIN_class-nativesdk = "gcc"

@@ -25,16 +25,15 @@ BBLAYERS ?= " \
 
 # Default Compiler Switch
 
-Note that by default clang will become the system compiler, however if you wish to keep
-gcc be the default compiler and select clang for some packages only then you should
-add
+Note that by default gcc will remain the system compiler, however if you wish
+clang to be the default compiler then set
 
 ```python
-TOOLCHAIN ?= "gcc"
+TOOLCHAIN ?= "clang"
 ```
 
-to local.conf, this would now revert to using gcc as default compiler and then you
-can select clang for packages of your choices by writing bbappends for them containing
+in local.conf, this would now switch to using clang as default compiler systemwide
+you can select clang per package too by writing bbappends for them containing
 
 ```python
 TOOLCHAIN = "clang"
@@ -62,13 +61,7 @@ simply create a bbappend under recipes-excluded/nonclangable e.g.
 TOOLCHAIN = "gcc"
 ```
 
-and OE will start using gcc to cross compile that recipe, please note that by default when meta-clang is in layermix
-it will use clang as default system compiler, if you would like to disable that behaviour please add
-
-```shell
-TOOLCHAIN = "gcc"
-```
-to your local.conf or some other global configuration metadata file.
+and OE will start using gcc to cross compile that recipe,
 
 # Dependencies
 
