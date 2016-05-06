@@ -55,10 +55,10 @@ $ runqemu qemux86
 # Limitations
 
 Few components do not build with clang, if you have a component to add to that list
-simply create a bbappend under recipes-excluded/nonclangable e.g.
+simply add it to conf/nonclangable.inc e.g.
 
 ```shell
-TOOLCHAIN = "gcc"
+TOOLCHAIN_pn-<recipe> = "gcc"
 ```
 
 and OE will start using gcc to cross compile that recipe,
