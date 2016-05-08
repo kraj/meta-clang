@@ -26,6 +26,7 @@ TOOLCHAIN_class-native = "gcc"
 TOOLCHAIN_class-nativesdk = "gcc"
 TOOLCHAIN_class-cross-canadian = "gcc"
 TOOLCHAIN_class-crosssdk = "gcc"
+TOOLCHAIN_class-cross = "gcc"
 
 OVERRIDES .= "${@['', ':toolchain-${TOOLCHAIN}']['${TOOLCHAIN}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN"

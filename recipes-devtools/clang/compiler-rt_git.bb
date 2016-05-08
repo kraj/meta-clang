@@ -14,11 +14,11 @@ require clang.inc
 PV .= "+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=27b14ab4ce08d04c3a9a5f0ed7997362; \
-                   "
-SRC_URI = "${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
-           file://0001-support-a-new-embedded-linux-target.patch \
-           file://0001-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
-          "
+"
+SRC_URI =  "${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
+            file://0001-support-a-new-embedded-linux-target.patch \
+            file://0001-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
+"
 
 SRCREV_FORMAT = "compiler-rt"
 
@@ -29,17 +29,20 @@ inherit cmake pkgconfig pythonnative
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
 
-EXTRA_OECMAKE += "-DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
-                  -DCOMPILER_RT_BUILD_SANITIZERS=ON \
-                  -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${MULTIMACH_HOST_SYS} \
+EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=ON \
+                  -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_SYS} \
 "
 
+EXTRA_OECMAKE_append_libc-glibc = " -DCOMPILER_RT_BUILD_SANITIZERS=ON "
+EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF "
+
 do_install_append () {
-	install -d ${D}${libdir}
-	mv ${D}${libdir}/linux/* ${D}${libdir}
-	mv ${D}${exec_prefix}/*.txt ${D}${libdir}
-	rm -rf ${D}${libdir}/libclang_rt.asan*.so
+	mv -f ${D}${libdir}/linux/* ${D}${libdir}
 	rmdir ${D}${libdir}/linux
+	if [ -z `ls -A ${D}${exec_prefix}` ]; then
+		mv -f ${D}${exec_prefix}/*.txt ${D}${libdir}
+	fi
+	rm -rf ${D}${libdir}/libclang_rt.asan*.so
 }
 
 FILES_SOLIBSDEV = ""

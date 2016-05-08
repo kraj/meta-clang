@@ -32,9 +32,10 @@ THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
 EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/../libcxx \
                   -DLLVM_PATH=${S}/../../ \
-                  -DLLVM_ENABLE_LIBCXX=True \
+                  -DLLVM_ENABLE_LIBCXX=OFF \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/../libcxx/include \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
+                  -DCXX_SUPPORTS_CXX11=ON \
                   -DLIBCXXABI_ENABLE_SHARED=ON \
 "
 CXXFLAGS_append_libc-musl = " -D_LIBCPP_HAS_MUSL_LIBC "
