@@ -7,7 +7,7 @@ LICENSE = "MIT | NCSA"
 SECTION = "base"
 INHIBIT_DEFAULT_DEPS = "1"
 
-DEPENDS += "clang-cross-${TARGET_ARCH}"
+DEPENDS += "clang-cross-${TARGET_ARCH} virtual/${TARGET_PREFIX}libc-for-gcc"
 
 require clang.inc
 
