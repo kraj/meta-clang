@@ -37,11 +37,15 @@ EXTRA_OECMAKE_append_libc-glibc = " -DCOMPILER_RT_BUILD_SANITIZERS=ON "
 EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF "
 
 do_install_append () {
-	mv -f ${D}${libdir}/linux/* ${D}${libdir}
+	for f in `find ${D}${libdir}/linux -maxdepth 1 -type f`
+	do
+		mv $f ${D}${libdir}
+	done
 	rmdir ${D}${libdir}/linux
-	if [ -z `ls -A ${D}${exec_prefix}` ]; then
-		mv -f ${D}${exec_prefix}/*.txt ${D}${libdir}
-	fi
+	for f in `find ${D}${exec_prefix} -maxdepth 1 -name '*.txt' -type f`
+	do
+		mv $f ${D}${libdir}
+	done
 	rm -rf ${D}${libdir}/libclang_rt.asan*.so
 }
 
