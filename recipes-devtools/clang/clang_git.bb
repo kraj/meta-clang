@@ -20,6 +20,7 @@ SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};n
            file://0001-triplet-Add-musl-support.patch \
            file://0001-driver-Add-musl-ldso-support.patch;patchdir=tools/clang \
            file://0001-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
+           file://0001-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
           "
 
 SRC_URI_append_libc-musl_class-target = " file://0001-remove-fopen64-fseeko64-ftello64-tmpfile64-on-musl.patch "

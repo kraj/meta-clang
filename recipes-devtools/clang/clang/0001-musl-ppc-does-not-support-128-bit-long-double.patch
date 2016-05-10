@@ -1,0 +1,27 @@
+From 04668daf04919786807fbdd40ee412bb788ed4e7 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 10 May 2016 02:00:11 -0700
+Subject: [PATCH] musl/ppc does not support 128-bit long double
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Basic/Targets.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/lib/Basic/Targets.cpp b/lib/Basic/Targets.cpp
+index af8aea0..ad5ebee 100644
+--- a/lib/Basic/Targets.cpp
++++ b/lib/Basic/Targets.cpp
+@@ -1505,7 +1505,8 @@ public:
+       break;
+     }
+ 
+-    if (getTriple().getOS() == llvm::Triple::FreeBSD) {
++    if (getTriple().getOS() == llvm::Triple::FreeBSD
++        || getTriple().isLinuxMuslEnvironment()) {
+       LongDoubleWidth = LongDoubleAlign = 64;
+       LongDoubleFormat = &llvm::APFloat::IEEEdouble;
+     }
+-- 
+2.8.2
+
