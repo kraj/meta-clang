@@ -1,4 +1,4 @@
-From 31a62e652efc8e582e3febda0a300fd3f345e260 Mon Sep 17 00:00:00 2001
+From 6ea56dabfd56ad4d1f994378b3f5ce46c02cb85c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 30 Mar 2016 19:55:41 -0700
 Subject: [PATCH] triplet: Add musl support
@@ -6,13 +6,13 @@ Subject: [PATCH] triplet: Add musl support
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  include/llvm/ADT/Triple.h           | 13 +++++++++++++
- lib/Support/Triple.cpp              | 10 +++++++++-
+ lib/Support/Triple.cpp              |  8 ++++++++
  lib/Target/ARM/ARMSubtarget.h       |  3 +++
  lib/Target/ARM/ARMTargetMachine.cpp |  2 ++
- 4 files changed, 27 insertions(+), 1 deletion(-)
+ 4 files changed, 26 insertions(+)
 
 diff --git a/include/llvm/ADT/Triple.h b/include/llvm/ADT/Triple.h
-index d163ac7..a4ffc55 100644
+index c89cf4d..29ec600 100644
 --- a/include/llvm/ADT/Triple.h
 +++ b/include/llvm/ADT/Triple.h
 @@ -175,6 +175,10 @@ public:
@@ -32,7 +32,7 @@ index d163ac7..a4ffc55 100644
  
 +  /// Checks if the environment is Linux with musl
 +  bool isLinuxMuslEnvironment() const {
-+    return getOS() == Triple::Linux &&
++    return isOSLinux() &&
 +           (getEnvironment() == Triple::MUSL ||
 +            getEnvironment() == Triple::MUSLX32 ||
 +            getEnvironment() == Triple::MUSLEABI ||
@@ -43,7 +43,7 @@ index d163ac7..a4ffc55 100644
    bool isOSCygMing() const {
      return isWindowsCygwinEnvironment() || isWindowsGNUEnvironment();
 diff --git a/lib/Support/Triple.cpp b/lib/Support/Triple.cpp
-index 1967fac..146ed82 100644
+index 1967fac..f8b6236 100644
 --- a/lib/Support/Triple.cpp
 +++ b/lib/Support/Triple.cpp
 @@ -201,6 +201,10 @@ const char *Triple::getEnvironmentTypeName(EnvironmentType Kind) {
@@ -57,16 +57,14 @@ index 1967fac..146ed82 100644
    case CODE16: return "code16";
    case EABI: return "eabi";
    case EABIHF: return "eabihf";
-@@ -460,7 +464,11 @@ static Triple::EnvironmentType parseEnvironment(StringRef EnvironmentName) {
-     .StartsWith("eabi", Triple::EABI)
+@@ -461,6 +465,10 @@ static Triple::EnvironmentType parseEnvironment(StringRef EnvironmentName) {
      .StartsWith("gnueabihf", Triple::GNUEABIHF)
      .StartsWith("gnueabi", Triple::GNUEABI)
--    .StartsWith("gnux32", Triple::GNUX32)
+     .StartsWith("gnux32", Triple::GNUX32)
 +    .StartsWith("musl", Triple::MUSL)
-+    .StartsWith("gnux32", Triple::MUSLX32)
 +    .StartsWith("musleabihf", Triple::MUSLEABIHF)
 +    .StartsWith("musleabi", Triple::MUSLEABI)
-+    .StartsWith("muslx32", Triple::GNUX32)
++    .StartsWith("muslx32", Triple::MUSLX32)
      .StartsWith("code16", Triple::CODE16)
      .StartsWith("gnu", Triple::GNU)
      .StartsWith("android", Triple::Android)
@@ -107,5 +105,5 @@ index 390b39c..9840c11 100644
      case llvm::Triple::EABI:
        TargetABI = ARMBaseTargetMachine::ARM_ABI_AAPCS;
 -- 
-2.7.4
+2.8.2
 

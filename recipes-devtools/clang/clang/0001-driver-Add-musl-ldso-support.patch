@@ -1,4 +1,4 @@
-From 8fddf3128d740d2e8831367c827fa1b747364563 Mon Sep 17 00:00:00 2001
+From 2b8900f80027da90a41043f8d428c208cb6fdae2 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 30 Mar 2016 19:56:10 -0700
 Subject: [PATCH] driver: Add musl ldso support
@@ -9,14 +9,14 @@ as a musl based Linux platform
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/Tools.cpp | 40 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+ lib/Driver/Tools.cpp | 47 ++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 42 insertions(+), 5 deletions(-)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index e72e4bd..968542c 100644
+index e45c5c5..34237c4 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
-@@ -8240,6 +8240,46 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+@@ -8953,6 +8953,47 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
        return "/system/bin/linker64";
      else
        return "/system/bin/linker";
@@ -58,11 +58,25 @@ index e72e4bd..968542c 100644
 +      case llvm::Triple::mips64el:
 +        return "/lib/ld-musl-mipsel64el.so.1";
 +      default:
++        llvm_unreachable("unsupported musl architecture");
 +        break;
-+  }
++    }
    } else if (Arch == llvm::Triple::x86 || Arch == llvm::Triple::sparc ||
               Arch == llvm::Triple::sparcel)
      return "/lib/ld-linux.so.2";
+@@ -8981,11 +9022,7 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+     bool IsNaN2008 = mips::isNaN2008(Args, ToolChain.getTriple());
+     if (mips::isUCLibc(Args))
+       LibName = IsNaN2008 ? "ld-uClibc-mipsn8.so.0" : "ld-uClibc.so.0";
+-    else if (!ToolChain.getTriple().hasEnvironment()) {
+-      bool LE = (ToolChain.getTriple().getArch() == llvm::Triple::mipsel) ||
+-                (ToolChain.getTriple().getArch() == llvm::Triple::mips64el);
+-      LibName = LE ? "ld-musl-mipsel.so.1" : "ld-musl-mips.so.1";
+-    } else
++    else
+       LibName = IsNaN2008 ? "ld-linux-mipsn8.so.1" : "ld.so.1";
+ 
+     return (LibDir + "/" + LibName).str();
 -- 
-2.7.4
+2.8.2
 
