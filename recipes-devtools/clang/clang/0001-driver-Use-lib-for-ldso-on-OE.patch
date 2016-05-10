@@ -1,0 +1,66 @@
+From 5a999b10efbc59834d93d8f52694b3423fc83c42 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 9 May 2016 23:29:24 -0700
+Subject: [PATCH] driver: Use /lib for ldso on OE
+
+OE does not follow the default base_libdir
+that clang has, therefore adjust it for OE
+it wont be able to support multilib since
+in multilib case OE switches the base libdir
+for 64bit to /lib64 instead of /lib
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Driver/Tools.cpp | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
+index 34237c4..94ad9db 100644
+--- a/lib/Driver/Tools.cpp
++++ b/lib/Driver/Tools.cpp
+@@ -9016,8 +9016,6 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+       return "/lib/ld-linux.so.3";
+   } else if (Arch == llvm::Triple::mips || Arch == llvm::Triple::mipsel ||
+              Arch == llvm::Triple::mips64 || Arch == llvm::Triple::mips64el) {
+-    std::string LibDir =
+-        "/lib" + mips::getMipsABILibSuffix(Args, ToolChain.getTriple());
+     StringRef LibName;
+     bool IsNaN2008 = mips::isNaN2008(Args, ToolChain.getTriple());
+     if (mips::isUCLibc(Args))
+@@ -9025,26 +9023,26 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+     else
+       LibName = IsNaN2008 ? "ld-linux-mipsn8.so.1" : "ld.so.1";
+ 
+-    return (LibDir + "/" + LibName).str();
++    return ("/lib/" + LibName).str();
+   } else if (Arch == llvm::Triple::ppc)
+     return "/lib/ld.so.1";
+   else if (Arch == llvm::Triple::ppc64) {
+     if (ppc::hasPPCAbiArg(Args, "elfv2"))
+-      return "/lib64/ld64.so.2";
+-    return "/lib64/ld64.so.1";
++      return "/lib/ld64.so.2";
++    return "/lib/ld64.so.1";
+   } else if (Arch == llvm::Triple::ppc64le) {
+     if (ppc::hasPPCAbiArg(Args, "elfv1"))
+-      return "/lib64/ld64.so.1";
+-    return "/lib64/ld64.so.2";
++      return "/lib/ld64.so.1";
++    return "/lib/ld64.so.2";
+   } else if (Arch == llvm::Triple::systemz)
+     return "/lib/ld64.so.1";
+   else if (Arch == llvm::Triple::sparcv9)
+     return "/lib64/ld-linux.so.2";
+   else if (Arch == llvm::Triple::x86_64 &&
+            ToolChain.getTriple().getEnvironment() == llvm::Triple::GNUX32)
+-    return "/libx32/ld-linux-x32.so.2";
++    return "/lib/ld-linux-x32.so.2";
+   else
+-    return "/lib64/ld-linux-x86-64.so.2";
++    return "/lib/ld-linux-x86-64.so.2";
+ }
+ 
+ static void AddRunTimeLibs(const ToolChain &TC, const Driver &D,
+-- 
+2.8.2
+
