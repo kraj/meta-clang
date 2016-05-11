@@ -9,7 +9,8 @@ INHIBIT_DEFAULT_DEPS = "1"
 
 require clang.inc
 
-DEPENDS += "clang-cross-${TARGET_ARCH} virtual/${TARGET_PREFIX}libc-for-gcc"
+# libgcc gcc-runtime needed during configuring compiler-rt
+DEPENDS += "clang-cross-${TARGET_ARCH} virtual/${TARGET_PREFIX}libc-for-gcc libgcc gcc-runtime"
 
 PV .= "+git${SRCPV}"
 
@@ -38,11 +39,13 @@ EXTRA_OECMAKE_append_libc-glibc = " -DCOMPILER_RT_BUILD_SANITIZERS=ON "
 EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF "
 
 do_install_append () {
-	for f in `find ${D}${libdir}/linux -maxdepth 1 -type f`
-	do
-		mv $f ${D}${libdir}
-	done
-	rmdir ${D}${libdir}/linux
+	if [ -d ${D}${libdir}/linux ]; then
+		for f in `find ${D}${libdir}/linux -maxdepth 1 -type f`
+		do
+			mv $f ${D}${libdir}
+		done
+		rmdir ${D}${libdir}/linux
+	fi
 	for f in `find ${D}${exec_prefix} -maxdepth 1 -name '*.txt' -type f`
 	do
 		mv $f ${D}${libdir}
