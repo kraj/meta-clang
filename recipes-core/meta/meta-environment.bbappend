@@ -3,12 +3,12 @@ TARGET_CLANGCC_ARCH_remove = "-mthumb-interwork"
 TARGET_CLANGCC_ARCH_remove = "-mmusl"
 TARGET_CLANGCC_ARCH_remove = "-muclibc"
 TARGET_CLANGCC_ARCH_remove = "-march=armv7ve"
-TARGET_CLANGCC_ARCH_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "armv7ve", " -march=armv7a", "", d)}"
-TARGET_CLANGCC_ARCH_remove_toolchain-clang = "-meb"
-TARGET_CLANGCC_ARCH_remove_toolchain-clang = "-mel"
-TARGET_CLANGCC_ARCH_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
-TARGET_CLANGCC_ARCH_remove_toolchain-clang_powerpc = "-mhard-float"
-TARGET_CLANGCC_ARCH_remove_toolchain-clang_powerpc = "-mno-spe"
+TARGET_CLANGCC_ARCH_append = "${@bb.utils.contains("TUNE_FEATURES", "armv7ve", " -march=armv7a", "", d)}"
+TARGET_CLANGCC_ARCH_remove = "-meb"
+TARGET_CLANGCC_ARCH_remove = "-mel"
+TARGET_CLANGCC_ARCH_append = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
+TARGET_CLANGCC_ARCH_remove_powerpc = "-mhard-float"
+TARGET_CLANGCC_ARCH_remove_powerpc = "-mno-spe"
 
 create_sdk_files_append() {
         script=${SDK_OUTPUT}/${SDKPATH}/environment-setup-${REAL_MULTIMACH_TARGET_SYS}
