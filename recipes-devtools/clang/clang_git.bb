@@ -87,6 +87,7 @@ EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 DEPENDS = "zlib libffi libxml2 binutils"
 DEPENDS_remove_class-nativesdk = "nativesdk-binutils"
 DEPENDS_append_class-nativesdk = " clang-native "
+DEPENDS_append_class-target = " clang-native "
 
 do_configure_prepend() {
 	# Remove RPATHs
