@@ -16,7 +16,7 @@ PV .= "+git${SRCPV}"
 
 DEPENDS += "libcxxabi"
 
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=149d2e8e8d99e3a2d702997b5f919fd9; \
+LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=19a8c2f1fc295558b4e55b076321d5f4; \
                    "
 SRC_URI = "\
            ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
