@@ -17,9 +17,9 @@ PV .= "+git${SRCPV}"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=27b14ab4ce08d04c3a9a5f0ed7997362; \
 "
 SRC_URI =  "${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
-            file://0001-support-a-new-embedded-linux-target.patch \
-            file://0001-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
             file://0001-Remove-fatal-check-for-explicit-COMPILER_RT_DEFAULT_.patch \
+            file://0002-support-a-new-embedded-linux-target.patch \
+            file://0003-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
 "
 
 SRCREV_FORMAT = "compiler-rt"

@@ -1,7 +1,7 @@
-From a004191b8e3976ac4a201ddc78c03a777d3193d9 Mon Sep 17 00:00:00 2001
+From 002d533f62fb3a25e8515e3b53d384fb055ddac6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 May 2015 12:13:17 -0700
-Subject: [PATCH] Remove CMAKE_CROSSCOMPILING so it can cross compile
+Subject: [PATCH 2/4] llvm: Remove CMAKE_CROSSCOMPILING so it can cross compile
 
 we already have llvm-config from clang-native
 
@@ -11,10 +11,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tools/llvm-config/CMakeLists.txt b/tools/llvm-config/CMakeLists.txt
-index d2ef45a..3d8b7b1 100644
+index 32d0f4c..8d90b3b 100644
 --- a/tools/llvm-config/CMakeLists.txt
 +++ b/tools/llvm-config/CMakeLists.txt
-@@ -34,7 +34,7 @@ add_llvm_tool(llvm-config
+@@ -51,7 +51,7 @@ add_definitions(-DCMAKE_CFG_INTDIR="${CMAKE_CFG_INTDIR}")
  # Add the dependency on the generation step.
  add_file_dependencies(${CMAKE_CURRENT_SOURCE_DIR}/llvm-config.cpp ${BUILDVARIABLES_OBJPATH})
  
@@ -23,12 +23,12 @@ index d2ef45a..3d8b7b1 100644
    set(${project}_LLVM_CONFIG_EXE "${LLVM_NATIVE_BUILD}/bin/llvm-config")
    set(${project}_LLVM_CONFIG_EXE ${${project}_LLVM_CONFIG_EXE} PARENT_SCOPE)
  
-@@ -47,4 +47,4 @@ if(CMAKE_CROSSCOMPILING)
+@@ -64,4 +64,4 @@ if(CMAKE_CROSSCOMPILING)
    add_dependencies(${project}NativeLLVMConfig CONFIGURE_LLVM_NATIVE)
  
    add_dependencies(llvm-config ${project}NativeLLVMConfig)
 -endif(CMAKE_CROSSCOMPILING)
 +endif(CMAKE_CROSSCOMPILING1)
 -- 
-2.1.4
+2.8.2
 

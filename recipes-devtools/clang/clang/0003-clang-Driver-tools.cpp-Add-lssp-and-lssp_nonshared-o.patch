@@ -1,0 +1,35 @@
+From be020e5e63464204a9459ecb807c9706f422f1da Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 19 May 2016 21:11:06 -0700
+Subject: [PATCH 3/4] clang: Driver/tools.cpp: Add -lssp and -lssp_nonshared on
+ musl
+
+musl driver will need to add ssp libraries to linker cmdline
+when using stack protector commands on compiler cmdline
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Driver/Tools.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
+index d318b10..38d8e27 100644
+--- a/lib/Driver/Tools.cpp
++++ b/lib/Driver/Tools.cpp
+@@ -9366,6 +9366,13 @@ void gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+ 
+       CmdArgs.push_back("-lc");
+ 
++      if (ToolChain.getTriple().isLinuxMuslEnvironment() &&
++          (Args.hasArg(options::OPT_fstack_protector) ||
++          Args.hasArg(options::OPT_fstack_protector_strong) ||
++          Args.hasArg(options::OPT_fstack_protector_all))) {
++        CmdArgs.push_back("-lssp_nonshared");
++        CmdArgs.push_back("-lssp");
++      }
+       if (Args.hasArg(options::OPT_static))
+         CmdArgs.push_back("--end-group");
+       else
+-- 
+2.8.2
+

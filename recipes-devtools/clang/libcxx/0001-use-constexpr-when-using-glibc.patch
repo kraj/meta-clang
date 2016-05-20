@@ -1,6 +1,6 @@
-From 21ddd574f6e9b321614d39a7765f1ad98aa09f54 Mon Sep 17 00:00:00 2001
+From a97e50970942df6bf0f3f2fda5ba44e10ef63713 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
-Date: Tue, 15 Mar 2016 04:56:27 +0000
+Date: Thu, 19 May 2016 23:22:52 -0700
 Subject: [PATCH] use constexpr when using glibc
 
 POSIX does not permit using PTHREAD_COND_INITIALIZER except for static
@@ -12,45 +12,37 @@ code is invalid
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- include/__mutex_base | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ include/__mutex_base | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/include/__mutex_base b/include/__mutex_base
-index b019b47..10ad9f2 100644
+index 32536a6..58430c7 100644
 --- a/include/__mutex_base
 +++ b/include/__mutex_base
-@@ -33,7 +33,10 @@ class _LIBCPP_TYPE_VIS mutex
+@@ -39,7 +39,10 @@ class _LIBCPP_TYPE_VIS _LIBCPP_THREAD_SAFETY_ANNOTATION(capability("mutex")) mut
  public:
      _LIBCPP_INLINE_VISIBILITY
  #ifndef _LIBCPP_HAS_NO_CONSTEXPR
--     constexpr mutex() _NOEXCEPT : __m_(PTHREAD_MUTEX_INITIALIZER) {}
-+#ifdef __GLIBC__
-+     constexpr
-+#endif
-+     mutex() _NOEXCEPT : __m_(PTHREAD_MUTEX_INITIALIZER) {}
- #else
-      mutex() _NOEXCEPT {__m_ = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;}
- #endif
-@@ -63,7 +66,6 @@ extern const try_to_lock_t try_to_lock;
- extern const adopt_lock_t  adopt_lock;
- 
- #else
--
- constexpr defer_lock_t  defer_lock  = defer_lock_t();
- constexpr try_to_lock_t try_to_lock = try_to_lock_t();
- constexpr adopt_lock_t  adopt_lock  = adopt_lock_t();
-@@ -272,7 +274,10 @@ class _LIBCPP_TYPE_VIS condition_variable
- public:
-     _LIBCPP_INLINE_VISIBILITY
- #ifndef _LIBCPP_HAS_NO_CONSTEXPR
--    constexpr condition_variable() : __cv_(PTHREAD_COND_INITIALIZER) {}
+-    constexpr mutex() _NOEXCEPT : __m_(_LIBCPP_MUTEX_INITIALIZER) {}
 +#ifdef __GLIBC__
 +    constexpr
 +#endif
-+    condition_variable() : __cv_(PTHREAD_COND_INITIALIZER) {}
++    mutex() _NOEXCEPT : __m_(_LIBCPP_MUTEX_INITIALIZER) {}
  #else
-     condition_variable() {__cv_ = (pthread_cond_t)PTHREAD_COND_INITIALIZER;}
+     mutex() _NOEXCEPT {__m_ = (__libcpp_mutex_t)_LIBCPP_MUTEX_INITIALIZER;}
+ #endif
+@@ -278,7 +281,10 @@ class _LIBCPP_TYPE_VIS condition_variable
+ public:
+     _LIBCPP_INLINE_VISIBILITY
+ #ifndef _LIBCPP_HAS_NO_CONSTEXPR
+-    constexpr condition_variable() : __cv_(_LIBCPP_CONDVAR_INITIALIZER) {}
++#ifdef __GLIBC__
++    constexpr
++#endif
++    condition_variable() : __cv_(_LIBCPP_CONDVAR_INITIALIZER) {}
+ #else
+     condition_variable() {__cv_ = (__libcpp_condvar_t)_LIBCPP_CONDVAR_INITIALIZER;}
  #endif
 -- 
-1.9.1
+2.8.2
 

@@ -24,7 +24,6 @@ SRC_URI = "\
            ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
            ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
            ${LLVM_GIT}/libunwind.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libunwind;destsuffix=git/projects/libunwind \
-           file://0001-aarch64-Use-x29-and-x30-for-fp-and-lr-respectively.patch \
           "
 
 SRCREV_FORMAT = "llvm_libcxx_libcxxabi_libunwind"

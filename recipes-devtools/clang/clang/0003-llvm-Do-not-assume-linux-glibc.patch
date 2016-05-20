@@ -1,7 +1,7 @@
-From 9f7b677d3a6582b232e16cb5518935633b2e65fb Mon Sep 17 00:00:00 2001
+From 877eeefccde262eda3bd022fff2ad6d147a6ad54 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 15 Mar 2016 05:26:47 +0000
-Subject: [PATCH 2/2] Do not assume linux == glibc
+Subject: [PATCH 3/4] llvm: Do not assume linux == glibc
 
 musl's implementation of std functions is different
 
@@ -24,5 +24,5 @@ index 9a7aeb5..e3b7fe2 100644
      EXPLICIT_SYMBOL(stderr);
      EXPLICIT_SYMBOL(stdout);
 -- 
-1.9.1
+2.8.2
 

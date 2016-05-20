@@ -15,16 +15,15 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
                    "
 SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
-	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
-           file://0002-Do-not-assume-linux-glibc.patch \
-           file://0001-triplet-Add-musl-support.patch \
-           file://0001-driver-Add-musl-ldso-support.patch;patchdir=tools/clang \
-           file://0001-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
-           file://0001-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
-           file://0001-Frontend-support-I-path-for-sysroot-expansion.patch;patchdir=tools/clang \
+           file://0001-llvm-triplet-Add-musl-support.patch \
+           file://0002-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
+           file://0003-llvm-Do-not-assume-linux-glibc.patch \
+           file://0004-llvm-remove-fopen64-fseeko64-ftello64-tmpfile64-on-m.patch \
+           file://0001-clang-driver-Add-musl-ldso-support.patch;patchdir=tools/clang \
+           file://0002-clang-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
+           file://0003-clang-Driver-tools.cpp-Add-lssp-and-lssp_nonshared-o.patch;patchdir=tools/clang \
+           file://0004-clang-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
           "
-
-SRC_URI_append_libc-musl_class-target = " file://0001-remove-fopen64-fseeko64-ftello64-tmpfile64-on-musl.patch "
 
 SRCREV_FORMAT = "llvm_clang"
 

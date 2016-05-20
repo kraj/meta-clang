@@ -1,7 +1,7 @@
-From 2b8900f80027da90a41043f8d428c208cb6fdae2 Mon Sep 17 00:00:00 2001
+From 21cb1801f0da97918ce5a567cd1f60413b4de726 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 30 Mar 2016 19:56:10 -0700
-Subject: [PATCH] driver: Add musl ldso support
+Subject: [PATCH 1/4] clang: driver: Add musl ldso support
 
 Linux/musl libc implementation has different ldso
 this needs to take effect when target arch is detected
@@ -9,14 +9,14 @@ as a musl based Linux platform
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/Tools.cpp | 47 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 42 insertions(+), 5 deletions(-)
+ lib/Driver/Tools.cpp | 48 ++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 42 insertions(+), 6 deletions(-)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index e45c5c5..34237c4 100644
+index 8a1cb54..0ce548c 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
-@@ -8953,6 +8953,47 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+@@ -8994,6 +8994,47 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
        return "/system/bin/linker64";
      else
        return "/system/bin/linker";
@@ -64,13 +64,14 @@ index e45c5c5..34237c4 100644
    } else if (Arch == llvm::Triple::x86 || Arch == llvm::Triple::sparc ||
               Arch == llvm::Triple::sparcel)
      return "/lib/ld-linux.so.2";
-@@ -8981,11 +9022,7 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
-     bool IsNaN2008 = mips::isNaN2008(Args, ToolChain.getTriple());
+@@ -9021,12 +9062,7 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+     bool IsNaN2008 = mips::isNaN2008(Args, Triple);
      if (mips::isUCLibc(Args))
        LibName = IsNaN2008 ? "ld-uClibc-mipsn8.so.0" : "ld-uClibc.so.0";
--    else if (!ToolChain.getTriple().hasEnvironment()) {
--      bool LE = (ToolChain.getTriple().getArch() == llvm::Triple::mipsel) ||
--                (ToolChain.getTriple().getArch() == llvm::Triple::mips64el);
+-    else if (!Triple.hasEnvironment() &&
+-             Triple.getVendor() == llvm::Triple::VendorType::MipsTechnologies) {
+-      bool LE = (Triple.getArch() == llvm::Triple::mipsel) ||
+-                (Triple.getArch() == llvm::Triple::mips64el);
 -      LibName = LE ? "ld-musl-mipsel.so.1" : "ld-musl-mips.so.1";
 -    } else
 +    else

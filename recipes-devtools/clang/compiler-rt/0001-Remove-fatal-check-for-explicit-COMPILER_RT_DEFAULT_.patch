@@ -1,7 +1,7 @@
-From 14f4f8e55b363037ae881084e4594934a869cf5d Mon Sep 17 00:00:00 2001
+From b0de87ae88ff187820624d461fbb8fde84a90eb1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 10 May 2016 10:37:55 -0700
-Subject: [PATCH] Remove fatal check for explicit
+Subject: [PATCH 1/3] Remove fatal check for explicit
  COMPILER_RT_DEFAULT_TARGET_ARCH
 
 In OE, we do not deduce float-abi via target triplet
@@ -11,14 +11,14 @@ ignore the test, we are doing the right job from recipe
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- cmake/config-ix.cmake | 4 ----
+ cmake/Modules/CompilerRTUtils.cmake | 4 ----
  1 file changed, 4 deletions(-)
 
-diff --git a/cmake/config-ix.cmake b/cmake/config-ix.cmake
-index 264085e..299682d 100644
---- a/cmake/config-ix.cmake
-+++ b/cmake/config-ix.cmake
-@@ -128,10 +128,6 @@ macro(test_target_arch arch def)
+diff --git a/cmake/Modules/CompilerRTUtils.cmake b/cmake/Modules/CompilerRTUtils.cmake
+index b4a2b48..086d9ba 100644
+--- a/cmake/Modules/CompilerRTUtils.cmake
++++ b/cmake/Modules/CompilerRTUtils.cmake
+@@ -125,9 +125,5 @@ macro(test_target_arch arch def)
    endif()
    if(${CAN_TARGET_${arch}})
      list(APPEND COMPILER_RT_SUPPORTED_ARCH ${arch})
@@ -28,7 +28,6 @@ index 264085e..299682d 100644
 -    message(FATAL_ERROR "Cannot compile for ${arch}:\n${TARGET_${arch}_OUTPUT}")
    endif()
  endmacro()
- 
 -- 
 2.8.2
 
