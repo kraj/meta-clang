@@ -1,0 +1,61 @@
+From b1b73874dc3b81e6dd5e05b9f00b2010c9ab18fb Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 21 May 2016 00:33:20 +0000
+Subject: [PATCH] llvm: TargetLibraryInfo: Undefine libc functions if they are
+ macros
+
+musl defines some functions as macros and not inline functions
+if this is the case then make sure to undefine them
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ include/llvm/Analysis/TargetLibraryInfo.def | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/include/llvm/Analysis/TargetLibraryInfo.def b/include/llvm/Analysis/TargetLibraryInfo.def
+index b2a593d..834f257 100644
+--- a/include/llvm/Analysis/TargetLibraryInfo.def
++++ b/include/llvm/Analysis/TargetLibraryInfo.def
+@@ -531,6 +531,9 @@ TLI_DEFINE_STRING_INTERNAL("fmodl")
+ TLI_DEFINE_ENUM_INTERNAL(fopen)
+ TLI_DEFINE_STRING_INTERNAL("fopen")
+ /// FILE *fopen64(const char *filename, const char *opentype)
++#ifdef fopen64
++#undef fopen64
++#endif
+ TLI_DEFINE_ENUM_INTERNAL(fopen64)
+ TLI_DEFINE_STRING_INTERNAL("fopen64")
+ /// int fprintf(FILE *stream, const char *format, ...);
+@@ -566,6 +569,9 @@ TLI_DEFINE_STRING_INTERNAL("fseek")
+ /// int fseeko(FILE *stream, off_t offset, int whence);
+ TLI_DEFINE_ENUM_INTERNAL(fseeko)
+ TLI_DEFINE_STRING_INTERNAL("fseeko")
++#ifdef fseeko64
++#undef fseeko64
++#endif
+ /// int fseeko64(FILE *stream, off64_t offset, int whence)
+ TLI_DEFINE_ENUM_INTERNAL(fseeko64)
+ TLI_DEFINE_STRING_INTERNAL("fseeko64")
+@@ -591,6 +597,9 @@ TLI_DEFINE_STRING_INTERNAL("ftell")
+ TLI_DEFINE_ENUM_INTERNAL(ftello)
+ TLI_DEFINE_STRING_INTERNAL("ftello")
+ /// off64_t ftello64(FILE *stream)
++#ifdef ftello64
++#undef ftello64
++#endif
+ TLI_DEFINE_ENUM_INTERNAL(ftello64)
+ TLI_DEFINE_STRING_INTERNAL("ftello64")
+ /// int ftrylockfile(FILE *file);
+@@ -1056,6 +1065,9 @@ TLI_DEFINE_STRING_INTERNAL("times")
+ TLI_DEFINE_ENUM_INTERNAL(tmpfile)
+ TLI_DEFINE_STRING_INTERNAL("tmpfile")
+ /// FILE *tmpfile64(void)
++#ifdef tmpfile64
++#undef tmpfile64
++#endif
+ TLI_DEFINE_ENUM_INTERNAL(tmpfile64)
+ TLI_DEFINE_STRING_INTERNAL("tmpfile64")
+ /// int toascii(int c);
+-- 
+1.8.3.1
+

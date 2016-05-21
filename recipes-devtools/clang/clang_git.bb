@@ -18,7 +18,7 @@ SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};n
            file://0001-llvm-triplet-Add-musl-support.patch \
            file://0002-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
            file://0003-llvm-Do-not-assume-linux-glibc.patch \
-           file://0004-llvm-remove-fopen64-fseeko64-ftello64-tmpfile64-on-m.patch \
+           file://0004-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
            file://0001-clang-driver-Add-musl-ldso-support.patch;patchdir=tools/clang \
            file://0002-clang-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
            file://0003-clang-Driver-tools.cpp-Add-lssp-and-lssp_nonshared-o.patch;patchdir=tools/clang \
@@ -86,7 +86,7 @@ EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 DEPENDS = "zlib libffi libxml2 binutils"
 DEPENDS_remove_class-nativesdk = "nativesdk-binutils"
 DEPENDS_append_class-nativesdk = " clang-native "
-DEPENDS_append_class-target = " clang-native "
+DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} "
 
 do_configure_prepend() {
 	# Remove RPATHs
