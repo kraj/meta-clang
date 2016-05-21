@@ -133,6 +133,7 @@ FILES_${PN} += "\
 
 FILES_${PN}-dev += "\
   ${datadir}/llvm/cmake \
+  ${libdir}/cmake \
 "
 
 INSANE_SKIP_${PN} += "already-stripped"
