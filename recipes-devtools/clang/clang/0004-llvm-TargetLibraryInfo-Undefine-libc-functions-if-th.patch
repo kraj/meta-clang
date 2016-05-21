@@ -12,10 +12,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  include/llvm/Analysis/TargetLibraryInfo.def | 12 ++++++++++++
  1 file changed, 12 insertions(+)
 
-diff --git a/include/llvm/Analysis/TargetLibraryInfo.def b/include/llvm/Analysis/TargetLibraryInfo.def
-index b2a593d..834f257 100644
---- a/include/llvm/Analysis/TargetLibraryInfo.def
-+++ b/include/llvm/Analysis/TargetLibraryInfo.def
+Index: git/include/llvm/Analysis/TargetLibraryInfo.def
+===================================================================
+--- git.orig/include/llvm/Analysis/TargetLibraryInfo.def
++++ git/include/llvm/Analysis/TargetLibraryInfo.def
 @@ -531,6 +531,9 @@ TLI_DEFINE_STRING_INTERNAL("fmodl")
  TLI_DEFINE_ENUM_INTERNAL(fopen)
  TLI_DEFINE_STRING_INTERNAL("fopen")
@@ -36,7 +36,17 @@ index b2a593d..834f257 100644
  /// int fseeko64(FILE *stream, off64_t offset, int whence)
  TLI_DEFINE_ENUM_INTERNAL(fseeko64)
  TLI_DEFINE_STRING_INTERNAL("fseeko64")
-@@ -591,6 +597,9 @@ TLI_DEFINE_STRING_INTERNAL("ftell")
+@@ -576,6 +582,9 @@ TLI_DEFINE_STRING_INTERNAL("fsetpos")
+ TLI_DEFINE_ENUM_INTERNAL(fstat)
+ TLI_DEFINE_STRING_INTERNAL("fstat")
+ /// int fstat64(int filedes, struct stat64 *buf)
++#ifdef fstat64
++#undef fstat64
++#endif
+ TLI_DEFINE_ENUM_INTERNAL(fstat64)
+ TLI_DEFINE_STRING_INTERNAL("fstat64")
+ /// int fstatvfs(int fildes, struct statvfs *buf);
+@@ -591,6 +600,9 @@ TLI_DEFINE_STRING_INTERNAL("ftell")
  TLI_DEFINE_ENUM_INTERNAL(ftello)
  TLI_DEFINE_STRING_INTERNAL("ftello")
  /// off64_t ftello64(FILE *stream)
@@ -46,7 +56,27 @@ index b2a593d..834f257 100644
  TLI_DEFINE_ENUM_INTERNAL(ftello64)
  TLI_DEFINE_STRING_INTERNAL("ftello64")
  /// int ftrylockfile(FILE *file);
-@@ -1056,6 +1065,9 @@ TLI_DEFINE_STRING_INTERNAL("times")
+@@ -711,6 +723,9 @@ TLI_DEFINE_STRING_INTERNAL("logl")
+ TLI_DEFINE_ENUM_INTERNAL(lstat)
+ TLI_DEFINE_STRING_INTERNAL("lstat")
+ /// int lstat64(const char *path, struct stat64 *buf);
++#ifdef lstat64
++#undef lstat64
++#endif
+ TLI_DEFINE_ENUM_INTERNAL(lstat64)
+ TLI_DEFINE_STRING_INTERNAL("lstat64")
+ /// void *malloc(size_t size);
+@@ -927,6 +942,9 @@ TLI_DEFINE_STRING_INTERNAL("sscanf")
+ TLI_DEFINE_ENUM_INTERNAL(stat)
+ TLI_DEFINE_STRING_INTERNAL("stat")
+ /// int stat64(const char *path, struct stat64 *buf);
++#ifdef stat64
++#undef stat64
++#endif
+ TLI_DEFINE_ENUM_INTERNAL(stat64)
+ TLI_DEFINE_STRING_INTERNAL("stat64")
+ /// int statvfs(const char *path, struct statvfs *buf);
+@@ -1056,6 +1074,9 @@ TLI_DEFINE_STRING_INTERNAL("times")
  TLI_DEFINE_ENUM_INTERNAL(tmpfile)
  TLI_DEFINE_STRING_INTERNAL("tmpfile")
  /// FILE *tmpfile64(void)
@@ -56,6 +86,3 @@ index b2a593d..834f257 100644
  TLI_DEFINE_ENUM_INTERNAL(tmpfile64)
  TLI_DEFINE_STRING_INTERNAL("tmpfile64")
  /// int toascii(int c);
--- 
-1.8.3.1
-
