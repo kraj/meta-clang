@@ -1,21 +1,21 @@
-From b1b73874dc3b81e6dd5e05b9f00b2010c9ab18fb Mon Sep 17 00:00:00 2001
+From 31b3fb49da19c4c729520c1333f3dc4cfbb57c0c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 00:33:20 +0000
-Subject: [PATCH] llvm: TargetLibraryInfo: Undefine libc functions if they are
- macros
+Subject: [PATCH 4/4] llvm: TargetLibraryInfo: Undefine libc functions if they
+ are macros
 
 musl defines some functions as macros and not inline functions
 if this is the case then make sure to undefine them
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- include/llvm/Analysis/TargetLibraryInfo.def | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ include/llvm/Analysis/TargetLibraryInfo.def | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-Index: git/include/llvm/Analysis/TargetLibraryInfo.def
-===================================================================
---- git.orig/include/llvm/Analysis/TargetLibraryInfo.def
-+++ git/include/llvm/Analysis/TargetLibraryInfo.def
+diff --git a/include/llvm/Analysis/TargetLibraryInfo.def b/include/llvm/Analysis/TargetLibraryInfo.def
+index b2a593d..327894c 100644
+--- a/include/llvm/Analysis/TargetLibraryInfo.def
++++ b/include/llvm/Analysis/TargetLibraryInfo.def
 @@ -531,6 +531,9 @@ TLI_DEFINE_STRING_INTERNAL("fmodl")
  TLI_DEFINE_ENUM_INTERNAL(fopen)
  TLI_DEFINE_STRING_INTERNAL("fopen")
@@ -86,3 +86,6 @@ Index: git/include/llvm/Analysis/TargetLibraryInfo.def
  TLI_DEFINE_ENUM_INTERNAL(tmpfile64)
  TLI_DEFINE_STRING_INTERNAL("tmpfile64")
  /// int toascii(int c);
+-- 
+2.8.2
+

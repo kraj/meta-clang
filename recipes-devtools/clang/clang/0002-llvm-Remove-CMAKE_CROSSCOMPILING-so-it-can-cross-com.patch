@@ -1,4 +1,4 @@
-From 002d533f62fb3a25e8515e3b53d384fb055ddac6 Mon Sep 17 00:00:00 2001
+From dcbc09369c9a031a8c6bbf725b7596765e32b234 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 May 2015 12:13:17 -0700
 Subject: [PATCH 2/4] llvm: Remove CMAKE_CROSSCOMPILING so it can cross compile

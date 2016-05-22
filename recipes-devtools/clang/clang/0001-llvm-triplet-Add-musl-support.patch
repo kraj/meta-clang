@@ -1,4 +1,4 @@
-From a585b7edd91dd64d1d9a8b171f82e28413e574b9 Mon Sep 17 00:00:00 2001
+From ff9b9c7b143b51d9f9c203f6bc74e1f479d883b9 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 30 Mar 2016 19:55:41 -0700
 Subject: [PATCH 1/4] llvm: triplet: Add musl support
