@@ -31,7 +31,9 @@ INHIBIT_DEFAULT_DEPS = "1"
 
 S = "${WORKDIR}/git"
 
-inherit perlnative pythonnative cmake
+inherit cmake
+
+OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
 def get_clang_target_arch(bb, d):
     target_arch = d.getVar('TRANSLATED_TARGET_ARCH', True)
