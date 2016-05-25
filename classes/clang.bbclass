@@ -42,3 +42,6 @@ def clang_dep_prepend(d):
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "virtual/${TARGET_PREFIX}gcc"
 BASEDEPENDS_append_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
+
+PREFERRED_PROVIDER_libunwind = "libunwind"
+PREFERRED_PROVIDER_libunwind_toolchain-clang = "llvm-libunwind"
