@@ -18,6 +18,7 @@ SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};n
 	   file://0001-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-compile.patch \
            file://0002-Do-not-assume-linux-glibc.patch \
            file://0001-triplet-Add-musl-support.patch \
+           file://0001-ARMTargetLowering-Handle-MUSLEABI-to-fix-AEABI-helpe.patch \
            file://0001-driver-Add-musl-ldso-support.patch;patchdir=tools/clang \
            file://0001-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
            file://0001-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
