@@ -16,6 +16,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
 SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
            file://0001-llvm-triplet-Add-musl-support.patch \
+           file://0001-ARMTargetLowering-Handle-MUSLEABI-to-fix-AEABI-helpe.patch \
            file://0002-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
            file://0003-llvm-Do-not-assume-linux-glibc.patch \
            file://0004-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
