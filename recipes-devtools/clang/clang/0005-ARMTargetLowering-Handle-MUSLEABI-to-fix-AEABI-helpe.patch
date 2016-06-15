@@ -1,7 +1,7 @@
-From fded84c3b6db127a0520b8216a82fe6c4b400247 Mon Sep 17 00:00:00 2001
+From 694404d57821bd3da38cfcbaa3123c88d1f071b1 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Dominic=20Sacr=C3=A9?= <dominic.sacre@gmx.de>
 Date: Tue, 14 Jun 2016 09:50:21 +0200
-Subject: [PATCH] ARMTargetLowering: Handle MUSLEABI to fix AEABI helper
+Subject: [PATCH 5/5] ARMTargetLowering: Handle MUSLEABI to fix AEABI helper
  calling convention
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -18,10 +18,10 @@ Signed-off-by: Dominic Sacré <dominic.sacre@gmx.de>
  2 files changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/lib/Target/ARM/ARMISelLowering.cpp b/lib/Target/ARM/ARMISelLowering.cpp
-index a2daa89..f4ed6f3 100644
+index 55de31b..32df88c 100644
 --- a/lib/Target/ARM/ARMISelLowering.cpp
 +++ b/lib/Target/ARM/ARMISelLowering.cpp
-@@ -254,7 +254,7 @@ ARMTargetLowering::ARMTargetLowering(const TargetMachine &TM,
+@@ -255,7 +255,7 @@ ARMTargetLowering::ARMTargetLowering(const TargetMachine &TM,
    // RTLIB
    if (Subtarget->isAAPCS_ABI() &&
        (Subtarget->isTargetAEABI() || Subtarget->isTargetGNUAEABI() ||
@@ -31,10 +31,10 @@ index a2daa89..f4ed6f3 100644
        const RTLIB::Libcall Op;
        const char * const Name;
 diff --git a/lib/Target/ARM/ARMSubtarget.h b/lib/Target/ARM/ARMSubtarget.h
-index 4d54e57..3ba330b 100644
+index 6f3cbd8..00f21fd 100644
 --- a/lib/Target/ARM/ARMSubtarget.h
 +++ b/lib/Target/ARM/ARMSubtarget.h
-@@ -399,6 +399,11 @@ public:
+@@ -422,6 +422,11 @@ public:
              TargetTriple.getEnvironment() == Triple::GNUEABIHF) &&
             !isTargetDarwin() && !isTargetWindows();
    }
@@ -47,5 +47,5 @@ index 4d54e57..3ba330b 100644
    // ARM Targets that support EHABI exception handling standard
    // Darwin uses SjLj. Other targets might need more checks.
 -- 
-2.8.4
+2.8.3
 

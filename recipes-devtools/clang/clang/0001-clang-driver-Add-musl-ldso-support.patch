@@ -1,4 +1,4 @@
-From eccb9b3f6745b82c666ad7546035bae3139a5bdf Mon Sep 17 00:00:00 2001
+From 0cc06b502547b54f976a9cbd12aa529b95a97c5b Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:49:08 -0700
 Subject: [PATCH 1/4] clang: driver: Add musl ldso support
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 107 insertions(+)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index 35ca470..bde9fa9 100644
+index e73c22d..737cd02 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
-@@ -8984,6 +8984,113 @@ static void AddLibgcc(const llvm::Triple &Triple, const Driver &D,
+@@ -9076,6 +9076,113 @@ static void AddLibgcc(const llvm::Triple &Triple, const Driver &D,
      CmdArgs.push_back("-ldl");
  }
  
@@ -131,5 +131,5 @@ index 35ca470..bde9fa9 100644
                             ArgStringList &CmdArgs, const ArgList &Args) {
    // Make use of compiler-rt if --rtlib option is used
 -- 
-2.8.2
+2.8.3
 

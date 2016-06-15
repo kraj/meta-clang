@@ -1,4 +1,4 @@
-From f642d770c9bef63cdb0362afd2922a1d94ea625f Mon Sep 17 00:00:00 2001
+From 965c0c46fcec3580829a9d28c6e1af7fea5def87 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
 Subject: [PATCH 3/4] clang: Driver/tools.cpp: Add -lssp and -lssp_nonshared on
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index 7831911..9783251 100644
+index 1b4c469..b850b0f 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
-@@ -9371,6 +9371,13 @@ void gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+@@ -9463,6 +9463,13 @@ void gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
  
        CmdArgs.push_back("-lc");
  
@@ -31,5 +31,5 @@ index 7831911..9783251 100644
          CmdArgs.push_back("--end-group");
        else
 -- 
-2.8.2
+2.8.3
 

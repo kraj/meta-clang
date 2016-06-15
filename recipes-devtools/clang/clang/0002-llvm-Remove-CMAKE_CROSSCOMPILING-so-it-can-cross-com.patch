@@ -1,7 +1,7 @@
-From dcbc09369c9a031a8c6bbf725b7596765e32b234 Mon Sep 17 00:00:00 2001
+From dc8cd377118609209b864b4cfc64e3acfef25d67 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 May 2015 12:13:17 -0700
-Subject: [PATCH 2/4] llvm: Remove CMAKE_CROSSCOMPILING so it can cross compile
+Subject: [PATCH 2/5] llvm: Remove CMAKE_CROSSCOMPILING so it can cross compile
 
 we already have llvm-config from clang-native
 
@@ -30,5 +30,5 @@ index 32d0f4c..8d90b3b 100644
 -endif(CMAKE_CROSSCOMPILING)
 +endif(CMAKE_CROSSCOMPILING1)
 -- 
-2.8.2
+2.8.3
 
