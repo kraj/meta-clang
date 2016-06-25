@@ -1,7 +1,7 @@
-From b466434ed4abbf43018bc4dbeb2ae0b3d0bd59f8 Mon Sep 17 00:00:00 2001
+From d9873239ee2dc198c7d2a1225d71a6d1ca5aa283 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 00:33:20 +0000
-Subject: [PATCH 4/5] llvm: TargetLibraryInfo: Undefine libc functions if they
+Subject: [PATCH 3/3] llvm: TargetLibraryInfo: Undefine libc functions if they
  are macros
 
 musl defines some functions as macros and not inline functions
@@ -87,5 +87,5 @@ index b2a593d..327894c 100644
  TLI_DEFINE_STRING_INTERNAL("tmpfile64")
  /// int toascii(int c);
 -- 
-2.8.3
+2.9.0
 

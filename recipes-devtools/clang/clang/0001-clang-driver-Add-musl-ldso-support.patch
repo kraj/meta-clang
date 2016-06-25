@@ -1,4 +1,4 @@
-From 0cc06b502547b54f976a9cbd12aa529b95a97c5b Mon Sep 17 00:00:00 2001
+From 88840f268e6e86ea56654ef62c75b1ee52badee0 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:49:08 -0700
 Subject: [PATCH 1/4] clang: driver: Add musl ldso support
@@ -9,14 +9,14 @@ as a musl based Linux platform
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/Tools.cpp | 107 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 107 insertions(+)
+ lib/Driver/Tools.cpp | 104 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index e73c22d..737cd02 100644
+index c4ac773..cf3b4ae 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
-@@ -9076,6 +9076,113 @@ static void AddLibgcc(const llvm::Triple &Triple, const Driver &D,
+@@ -9108,6 +9108,110 @@ static void AddLibgcc(const llvm::Triple &Triple, const Driver &D,
      CmdArgs.push_back("-ldl");
  }
  
@@ -32,9 +32,6 @@ index e73c22d..737cd02 100644
 +      case llvm::Triple::x86:
 +        return "/lib/ld-musl-i386.so.1";
 +      case llvm::Triple::x86_64:
-+        if (ToolChain.getTriple().getEnvironment() == llvm::Triple::MUSLX32)
-+          return "/lib/ld-musl-x32.so.1";
-+        else
 +          return "/lib/ld-musl-x86_64.so.1";
 +      case llvm::Triple::aarch64:
 +        return "/lib/ld-musl-aarch64.so.1";
@@ -131,5 +128,5 @@ index e73c22d..737cd02 100644
                             ArgStringList &CmdArgs, const ArgList &Args) {
    // Make use of compiler-rt if --rtlib option is used
 -- 
-2.8.3
+2.9.0
 

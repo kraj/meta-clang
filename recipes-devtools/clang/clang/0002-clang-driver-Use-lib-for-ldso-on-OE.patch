@@ -1,4 +1,4 @@
-From 5dd25c4c9ed04093361569b63a96a8b1cb8b51f9 Mon Sep 17 00:00:00 2001
+From 73106ac819c30f7f86dad3b459693cd11dd54963 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:52:36 -0700
 Subject: [PATCH 2/4] clang: driver: Use /lib for ldso on OE
@@ -15,10 +15,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index 737cd02..1b4c469 100644
+index cf3b4ae..1196eac 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
-@@ -9162,24 +9162,24 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
+@@ -9191,24 +9191,24 @@ static std::string getLinuxDynamicLinker(const ArgList &Args,
    case llvm::Triple::ppc:
      return "/lib/ld.so.1";
    case llvm::Triple::ppc64:
@@ -51,5 +51,5 @@ index 737cd02..1b4c469 100644
  }
  
 -- 
-2.8.3
+2.9.0
 
