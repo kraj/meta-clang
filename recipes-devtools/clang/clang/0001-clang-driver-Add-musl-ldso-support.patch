@@ -1,4 +1,4 @@
-From 88840f268e6e86ea56654ef62c75b1ee52badee0 Mon Sep 17 00:00:00 2001
+From fb45cce576a5a748df271ba9e3aa4c4acaece100 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:49:08 -0700
 Subject: [PATCH 1/4] clang: driver: Add musl ldso support
@@ -13,7 +13,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 104 insertions(+)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index c4ac773..cf3b4ae 100644
+index c4ac773..ea8b528 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
 @@ -9108,6 +9108,110 @@ static void AddLibgcc(const llvm::Triple &Triple, const Driver &D,
@@ -27,7 +27,7 @@ index c4ac773..cf3b4ae 100644
 +
 +  if (Triple.isAndroid())
 +    return Triple.isArch64Bit() ? "/system/bin/linker64" : "/system/bin/linker";
-+  if (ToolChain.getTriple().isLinuxMuslEnvironment()) {
++  if (ToolChain.getTriple().isMusl()) {
 +    switch (Arch) {
 +      case llvm::Triple::x86:
 +        return "/lib/ld-musl-i386.so.1";
