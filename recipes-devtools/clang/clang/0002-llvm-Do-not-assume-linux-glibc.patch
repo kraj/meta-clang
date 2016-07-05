@@ -1,4 +1,4 @@
-From 267078b86f351f2806604a74a05cf02e4ba0a7b8 Mon Sep 17 00:00:00 2001
+From 4a90b1c48b3aa8fe43a93e337def93bdbf82bf0f Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 15 Mar 2016 05:26:47 +0000
 Subject: [PATCH 2/3] llvm: Do not assume linux == glibc
