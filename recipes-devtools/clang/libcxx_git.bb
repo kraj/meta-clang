@@ -21,11 +21,11 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=19a8c2f1fc295558b4e55b076321d5f4; \
 SRC_URI = "\
            ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
-           ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
+           ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=cxxabi;destsuffix=git/projects/libcxxabi \
           "
 SRC_URI_append_libc-musl = " file://0001-use-constexpr-when-using-glibc.patch "
 
-SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
+SRCREV_FORMAT = "llvm_libcxx_cxxabi"
 
 S = "${WORKDIR}/git/projects/libcxx"
 

@@ -22,11 +22,11 @@ LIC_FILES_CHKSUM = "file://../libcxx/LICENSE.TXT;md5=19a8c2f1fc295558b4e55b07632
 SRC_URI = "\
            ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
-           ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
+           ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=cxxabi;destsuffix=git/projects/libcxxabi \
            ${LLVM_GIT}/libunwind.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libunwind;destsuffix=git/projects/libunwind \
           "
 
-SRCREV_FORMAT = "llvm_libcxx_libcxxabi_libunwind"
+SRCREV_FORMAT = "llvm_libcxx_cxxabi_libunwind"
 
 S = "${WORKDIR}/git/projects/libunwind"
 

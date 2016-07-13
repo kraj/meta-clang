@@ -20,11 +20,11 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=d0e0873d07a25650544fb86c75a572d8; \
 SRC_URI = "\
            ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/libcxx.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxx;destsuffix=git/projects/libcxx \
-           ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=libcxxabi;destsuffix=git/projects/libcxxabi \
+           ${LLVM_GIT}/libcxxabi.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=cxxabi;destsuffix=git/projects/libcxxabi \
            file://0001-Do-not-use-LIBCXXABI_ARM_EHABI.patch \
 "
 
-SRCREV_FORMAT = "llvm_libcxx_libcxxabi"
+SRCREV_FORMAT = "llvm_libcxx_cxxabi"
 
 S = "${WORKDIR}/git/projects/libcxxabi"
 
