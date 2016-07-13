@@ -1,4 +1,4 @@
-From 30fb1a92b9d0899a2f25cf1917000aad2f4578c5 Mon Sep 17 00:00:00 2001
+From 56cdacb669a182e69159b840a6a440f7f19211f9 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 4 Jul 2016 20:14:52 -0700
 Subject: [PATCH 4/4] clang: Check for float ABI on arm
@@ -9,23 +9,22 @@ also check for float ABI which can be
 set on commandline
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
-
-xx
 ---
- lib/Driver/ToolChains.cpp | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/Driver/ToolChains.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/lib/Driver/ToolChains.cpp b/lib/Driver/ToolChains.cpp
-index 706612d..8bac35a 100644
+index bcd91f0..fd31d7e 100644
 --- a/lib/Driver/ToolChains.cpp
 +++ b/lib/Driver/ToolChains.cpp
-@@ -4169,7 +4169,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -4212,7 +4212,9 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      default:
        ArchName = Triple.getArchName().str();
      }
 -    if (Triple.getEnvironment() == llvm::Triple::MuslEABIHF)
 +    if (Triple.getEnvironment() == llvm::Triple::MuslEABIHF ||
-+        tools::arm::getARMFloatABI(*this, Args) == tools::arm::FloatABI::Hard)
++        (Triple.getEnvironment() == llvm::Triple::MuslEABI &&
++        tools::arm::getARMFloatABI(*this, Args) == tools::arm::FloatABI::Hard))
        ArchName += "hf";
  
      return "/lib/ld-musl-" + ArchName + ".so.1";

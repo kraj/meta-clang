@@ -1,4 +1,4 @@
-From 8a9808b868c81d3fc65a84af74f0969dfc2df877 Mon Sep 17 00:00:00 2001
+From 2cf62aa12f3161bc366bfc873964d6fed8454702 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 10 May 2016 02:00:11 -0700
 Subject: [PATCH 3/4] clang: musl/ppc does not support 128-bit long double
@@ -9,10 +9,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/lib/Basic/Targets.cpp b/lib/Basic/Targets.cpp
-index 5e9ea68..33f0d89 100644
+index c3ca8c8..bd54075 100644
 --- a/lib/Basic/Targets.cpp
 +++ b/lib/Basic/Targets.cpp
-@@ -1592,7 +1592,8 @@ public:
+@@ -1593,7 +1593,8 @@ public:
        break;
      }
  

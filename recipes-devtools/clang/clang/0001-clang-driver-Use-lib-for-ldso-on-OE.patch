@@ -1,4 +1,4 @@
-From 5273f61c9e93d1fa263fba29f0d62ab2860cde65 Mon Sep 17 00:00:00 2001
+From f34c165de2b0365cb9931956db78315c8e4dc688 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:52:36 -0700
 Subject: [PATCH 1/4] clang: driver: Use /lib for ldso on OE
@@ -15,10 +15,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/lib/Driver/ToolChains.cpp b/lib/Driver/ToolChains.cpp
-index 7884c40..706612d 100644
+index 4ecbf2b..bcd91f0 100644
 --- a/lib/Driver/ToolChains.cpp
 +++ b/lib/Driver/ToolChains.cpp
-@@ -4227,12 +4227,12 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -4270,12 +4270,12 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      Loader = "ld.so.1";
      break;
    case llvm::Triple::ppc64:
@@ -33,7 +33,7 @@ index 7884c40..706612d 100644
      Loader =
          (tools::ppc::hasPPCAbiArg(Args, "elfv1")) ? "ld64.so.1" : "ld64.so.2";
      break;
-@@ -4242,7 +4242,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -4285,7 +4285,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      Loader = "ld-linux.so.2";
      break;
    case llvm::Triple::sparcv9:
@@ -42,7 +42,7 @@ index 7884c40..706612d 100644
      Loader = "ld-linux.so.2";
      break;
    case llvm::Triple::systemz:
-@@ -4256,7 +4256,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -4299,7 +4299,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
    case llvm::Triple::x86_64: {
      bool X32 = Triple.getEnvironment() == llvm::Triple::GNUX32;
  
