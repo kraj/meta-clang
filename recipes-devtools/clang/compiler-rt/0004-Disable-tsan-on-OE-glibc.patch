@@ -1,0 +1,29 @@
+From a74650380d930a049aeee3c90c70141ad4178d0b Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 18 Jul 2016 08:05:02 +0000
+Subject: [PATCH 4/4] Disable tsan on OE/glibc
+
+It does not build see
+http://lists.llvm.org/pipermail/llvm-dev/2016-July/102235.html
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ cmake/config-ix.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/config-ix.cmake b/cmake/config-ix.cmake
+index ddb0304..4241771 100644
+--- a/cmake/config-ix.cmake
++++ b/cmake/config-ix.cmake
+@@ -452,7 +452,7 @@ else()
+ endif()
+ 
+ if (COMPILER_RT_HAS_SANITIZER_COMMON AND TSAN_SUPPORTED_ARCH AND
+-    OS_NAME MATCHES "Darwin|Linux|FreeBSD")
++    OS_NAME MATCHES "Darwin|FreeBSD")
+   set(COMPILER_RT_HAS_TSAN TRUE)
+ else()
+   set(COMPILER_RT_HAS_TSAN FALSE)
+-- 
+2.9.0
+
