@@ -30,6 +30,11 @@ SRCREV_FORMAT = "llvm_libcxx_cxxabi_libunwind"
 
 S = "${WORKDIR}/git/projects/libunwind"
 
+COMPATIBLE_HOST_mips = "null"
+COMPATIBLE_HOST_mipsel = "null"
+COMPATIBLE_HOST_mips64 = "null"
+COMPATIBLE_HOST_mips64el = "null"
+
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
 
