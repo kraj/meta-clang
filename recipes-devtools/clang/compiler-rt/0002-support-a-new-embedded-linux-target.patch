@@ -1,7 +1,7 @@
-From 7b7cdc3fcbec45f08b20600c8410c125edeb67ef Mon Sep 17 00:00:00 2001
+From 4bdc7871ab0a6134ee01c138e863476de9c08e25 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 19 Apr 2015 15:16:23 -0700
-Subject: [PATCH 2/3] support a new embedded linux target
+Subject: [PATCH 2/4] support a new embedded linux target
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -322,5 +322,5 @@ diff --git a/make/platform/clang_linux_embedded_test_input.c b/make/platform/cla
 new file mode 100644
 index 0000000..e69de29
 -- 
-2.8.2
+2.9.0
 

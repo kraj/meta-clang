@@ -1,7 +1,7 @@
-From f8617c08ad6e38ccb4623a777cd8c9601af6e2ec Mon Sep 17 00:00:00 2001
+From 6676553c56ac1879d8d597351b457ba2e087168c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:11:45 -0700
-Subject: [PATCH 3/3] Simplify cross-compilation. Don't use native-compiled
+Subject: [PATCH 3/4] Simplify cross-compilation. Don't use native-compiled
  llvm-config.
 
     Note: AddLLVM.cmake does not expose the LLVM source directory.
@@ -20,10 +20,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 6 insertions(+), 26 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d8794b5..d5477cf 100644
+index a067581..ce904c0 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -60,32 +60,12 @@ option(COMPILER_RT_BUILD_SANITIZERS "Build sanitizers" ON)
+@@ -39,32 +39,12 @@ option(COMPILER_RT_BUILD_SANITIZERS "Build sanitizers" ON)
  mark_as_advanced(COMPILER_RT_BUILD_SANITIZERS)
  
  if (COMPILER_RT_STANDALONE_BUILD)
@@ -63,5 +63,5 @@ index d8794b5..d5477cf 100644
    set(LLVM_LIBRARY_OUTPUT_INTDIR
      ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${LLVM_LIBDIR_SUFFIX})
 -- 
-2.8.2
+2.9.0
 
