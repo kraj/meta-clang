@@ -56,21 +56,21 @@ def get_clang_target_arch(bb, d):
 #TUNE_CCARGS_remove = "-mthumb-interwork"
 #TUNE_CCARGS_remove = "-march=armv7-a"
 #TUNE_CCARGS_remove = "-marm"
-TUNE_CCARGS_append_class-target = " -D__extern_always_inline=inline -I${PKG_CONFIG_SYSROOT_DIR}${includedir}/libxml2 "
-LDFLAGS_append_class-target = " -L${PKG_CONFIG_SYSROOT_DIR}${libdir}/libxml2 "
+#TUNE_CCARGS_append_class-target = " -D__extern_always_inline=inline -I${PKG_CONFIG_SYSROOT_DIR}${includedir}/libxml2 "
+#LDFLAGS_append_class-target = " -L${PKG_CONFIG_SYSROOT_DIR}${libdir}/libxml2 "
 
-EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI:BOOL=True \
-               -DLLVM_ENABLE_FFI:BOOL=False \
+EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
+               -DLLVM_ENABLE_FFI=False \
                -DCMAKE_SYSTEM_NAME=Linux \
-               -DCMAKE_BUILD_TYPE:STRING=Release \
-	       -DLLVM_BUILD_EXTERNAL_COMPILER_RT:BOOL=True \
+               -DCMAKE_BUILD_TYPE=Release \
+	       -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
 	      "
 
 EXTRA_OECMAKE_append_class-native = "\
-               -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
+               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;Mips;PowerPC;X86' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
-               -DLLVM_TARGETS_TO_BUILD:STRING='AArch64;ARM;Mips;PowerPC;X86' \
+               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;Mips;PowerPC;X86' \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
@@ -78,8 +78,8 @@ EXTRA_OECMAKE_append_class-target = "\
                -DLLVM_ENABLE_PIC=False \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-               -DLLVM_TARGETS_TO_BUILD:STRING='${@get_clang_target_arch(bb, d)}' \
-               -DLLVM_TARGET_ARCH:STRING='${@get_clang_target_arch(bb, d)}' \
+               -DLLVM_TARGETS_TO_BUILD=${@get_clang_target_arch(bb, d)} \
+               -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
 "
 #               -DCMAKE_CXX_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}g++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
 #               -DCMAKE_C_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}gcc ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
