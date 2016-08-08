@@ -1,0 +1,27 @@
+From 28df3d17ac3f7925aba87eb2dc191342c11e59ae Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sun, 7 Aug 2016 22:52:09 -0700
+Subject: [PATCH 5/5] llvm: Fix build on mips/ppc disable EH table support
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/ExecutionEngine/RuntimeDyld/RTDyldMemoryManager.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/lib/ExecutionEngine/RuntimeDyld/RTDyldMemoryManager.cpp b/lib/ExecutionEngine/RuntimeDyld/RTDyldMemoryManager.cpp
+index e39acc7..69e165e 100644
+--- a/lib/ExecutionEngine/RuntimeDyld/RTDyldMemoryManager.cpp
++++ b/lib/ExecutionEngine/RuntimeDyld/RTDyldMemoryManager.cpp
+@@ -34,7 +34,8 @@ RTDyldMemoryManager::~RTDyldMemoryManager() {}
+ 
+ // Determine whether we can register EH tables.
+ #if (defined(__GNUC__) && !defined(__ARM_EABI__) && !defined(__ia64__) && \
+-     !defined(__SEH__) && !defined(__USING_SJLJ_EXCEPTIONS__))
++     !defined(__SEH__) && !defined(__USING_SJLJ_EXCEPTIONS__)) && \
++     !defined(__mips__) && !defined(__ppc__)
+ #define HAVE_EHTABLE_SUPPORT 1
+ #else
+ #define HAVE_EHTABLE_SUPPORT 0
+-- 
+2.9.2
+
