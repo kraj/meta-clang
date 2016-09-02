@@ -10,7 +10,7 @@ LLVM_GIT_PROTOCOL ?= "git"
 
 PV = "3.9.0"
 BRANCH = "release_39"
-SRCREV_llvm = "3aa4a350b49916c74f3e9bf7ff5a8f61b9937ab2"
+SRCREV_llvm = "fbbabf3203c01be7bf5fe904be52aa16f2abf895"
 SRCREV_clang = "07307f95d5c82d453cdc5c23f9ccd53d5ff75426"
 SRCREV_compiler-rt = "38631afc1dec4d5b13b6460e808b5dae6c009081"
 SRCREV_cxxabi = "47803aa110d52c542c7a116b5b40daab7265fd27"
