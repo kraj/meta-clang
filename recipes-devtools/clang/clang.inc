@@ -8,9 +8,9 @@ LLVM_GIT_PROTOCOL ?= "git"
 # Uncomment below to enable master version of clang/llvm
 #
 
-PV = "3.9.0"
+PV = "3.9.1"
 BRANCH = "release_39"
-SRCREV_llvm = "fbbabf3203c01be7bf5fe904be52aa16f2abf895"
+SRCREV_llvm = "69e56220929e4bffe0cd01251f47e1540809c3d9"
 SRCREV_clang = "07307f95d5c82d453cdc5c23f9ccd53d5ff75426"
 SRCREV_compiler-rt = "38631afc1dec4d5b13b6460e808b5dae6c009081"
 SRCREV_cxxabi = "47803aa110d52c542c7a116b5b40daab7265fd27"
