@@ -67,11 +67,11 @@ and OE will start using gcc to cross compile that recipe,
 
 ```
 URI: git://github.com/openembedded/openembedded-core.git
-branch: master
+branch: morty
 revision: HEAD
 
 URI: git://github.com/openembedded/bitbake.git
-branch: master
+branch: 1.32
 revision: HEAD
 ```
 
