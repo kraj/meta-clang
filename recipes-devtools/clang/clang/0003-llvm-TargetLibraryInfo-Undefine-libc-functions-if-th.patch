@@ -1,7 +1,7 @@
-From 9992bf63b2fa53e87d80372f89b6be51678cf6e5 Mon Sep 17 00:00:00 2001
+From 594e0c73c9c37b3016a558914bf3024dc78746ac Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 00:33:20 +0000
-Subject: [PATCH 3/5] llvm: TargetLibraryInfo: Undefine libc functions if they
+Subject: [PATCH 3/3] llvm: TargetLibraryInfo: Undefine libc functions if they
  are macros
 
 musl defines some functions as macros and not inline functions
@@ -13,7 +13,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 21 insertions(+)
 
 diff --git a/include/llvm/Analysis/TargetLibraryInfo.def b/include/llvm/Analysis/TargetLibraryInfo.def
-index b2a593d..327894c 100644
+index 5d5e5b1..af4d901 100644
 --- a/include/llvm/Analysis/TargetLibraryInfo.def
 +++ b/include/llvm/Analysis/TargetLibraryInfo.def
 @@ -531,6 +531,9 @@ TLI_DEFINE_STRING_INTERNAL("fmodl")
@@ -66,7 +66,7 @@ index b2a593d..327894c 100644
  TLI_DEFINE_ENUM_INTERNAL(lstat64)
  TLI_DEFINE_STRING_INTERNAL("lstat64")
  /// void *malloc(size_t size);
-@@ -927,6 +942,9 @@ TLI_DEFINE_STRING_INTERNAL("sscanf")
+@@ -930,6 +945,9 @@ TLI_DEFINE_STRING_INTERNAL("sscanf")
  TLI_DEFINE_ENUM_INTERNAL(stat)
  TLI_DEFINE_STRING_INTERNAL("stat")
  /// int stat64(const char *path, struct stat64 *buf);
@@ -76,7 +76,7 @@ index b2a593d..327894c 100644
  TLI_DEFINE_ENUM_INTERNAL(stat64)
  TLI_DEFINE_STRING_INTERNAL("stat64")
  /// int statvfs(const char *path, struct statvfs *buf);
-@@ -1056,6 +1074,9 @@ TLI_DEFINE_STRING_INTERNAL("times")
+@@ -1059,6 +1077,9 @@ TLI_DEFINE_STRING_INTERNAL("times")
  TLI_DEFINE_ENUM_INTERNAL(tmpfile)
  TLI_DEFINE_STRING_INTERNAL("tmpfile")
  /// FILE *tmpfile64(void)
@@ -87,5 +87,5 @@ index b2a593d..327894c 100644
  TLI_DEFINE_STRING_INTERNAL("tmpfile64")
  /// int toascii(int c);
 -- 
-2.9.2
+2.10.0
 

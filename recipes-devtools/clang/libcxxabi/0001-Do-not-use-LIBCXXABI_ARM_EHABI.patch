@@ -1,4 +1,4 @@
-From 141910ae8cee87307a89a9e43894000dcf47366e Mon Sep 17 00:00:00 2001
+From d072fa3f959a559e6913ebbc62bcdeb7f4a55143 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 24 Mar 2016 06:31:35 +0000
 Subject: [PATCH] Do not use LIBCXXABI_ARM_EHABI
@@ -13,7 +13,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/__cxxabi_config.h b/include/__cxxabi_config.h
-index 68e325f..41fc953 100644
+index 61555f1..a979694 100644
 --- a/include/__cxxabi_config.h
 +++ b/include/__cxxabi_config.h
 @@ -12,7 +12,7 @@
@@ -26,5 +26,5 @@ index 68e325f..41fc953 100644
  #define LIBCXXABI_ARM_EHABI 0
  #endif
 -- 
-1.9.1
+2.9.0
 

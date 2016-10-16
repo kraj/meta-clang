@@ -18,13 +18,10 @@ SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};n
            file://0001-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
            file://0002-llvm-Do-not-assume-linux-glibc.patch \
            file://0003-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
-           file://0004-llvm-Fix-inconsistent-uses-of-.cfi_sections.patch \
-           file://0005-llvm-Fix-build-on-mips-ppc-disable-EH-table-support.patch \
            \
            file://0001-clang-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
            file://0002-clang-Driver-tools.cpp-Add-lssp-and-lssp_nonshared-o.patch;patchdir=tools/clang \
            file://0003-clang-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
-           file://0004-clang-Check-for-float-ABI-on-arm.patch;patchdir=tools/clang \
           "
 
 SRCREV_FORMAT = "llvm_clang"

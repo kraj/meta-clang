@@ -1,7 +1,7 @@
-From a30d994ddc3611bca15ff3138c6d0ee7f9fd4021 Mon Sep 17 00:00:00 2001
+From 600e639657ff82be38456919003a11289d35d200 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
-Subject: [PATCH 2/4] clang: Driver/tools.cpp: Add -lssp and -lssp_nonshared on
+Subject: [PATCH 2/3] clang: Driver/tools.cpp: Add -lssp and -lssp_nonshared on
  musl
 
 musl driver will need to add ssp libraries to linker cmdline
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+)
 
 diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index d3844dd..de7d1b5 100644
+index b7a323f..18f0513 100644
 --- a/lib/Driver/Tools.cpp
 +++ b/lib/Driver/Tools.cpp
-@@ -9460,6 +9460,13 @@ void gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+@@ -9836,6 +9836,13 @@ void gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
        if (IsIAMCU)
          CmdArgs.push_back("-lgloss");
  
@@ -31,5 +31,5 @@ index d3844dd..de7d1b5 100644
          CmdArgs.push_back("--end-group");
        else
 -- 
-2.9.0
+2.10.0
 

@@ -1,4 +1,4 @@
-From 7d5006df84aeec510a07717310e17a35043e1f9e Mon Sep 17 00:00:00 2001
+From a5b8426cf21c3c303349a5be4d735123f514c435 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:22:52 -0700
 Subject: [PATCH] use constexpr when using glibc
@@ -44,5 +44,5 @@ index 38a76ac..0fb1e2f 100644
      condition_variable() _NOEXCEPT {__cv_ = (__libcpp_condvar_t)_LIBCPP_CONDVAR_INITIALIZER;}
  #endif
 -- 
-2.9.0
+2.10.0
 

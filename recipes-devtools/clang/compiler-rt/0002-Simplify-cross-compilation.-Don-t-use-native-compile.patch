@@ -1,0 +1,45 @@
+From dc8fde5074321b80d23419127d28ce90ac984c96 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 19 May 2016 23:11:45 -0700
+Subject: [PATCH 2/3] Simplify cross-compilation. Don't use native-compiled
+ llvm-config.
+
+    Note: AddLLVM.cmake does not expose the LLVM source directory.
+    So if you want to run the test suite, you need to either:
+
+    1) set LLVM_MAIN_SRC_DIR explicitly (to find lit.py)
+    2) change AddLLVM.cmake to point to an installed 'lit'.
+    3) add_subdirectory(compiler-rt/test) from clang instead of compiler-rt.
+
+https://us.codeaurora.org/patches/quic/llvm/50683/compiler-rt-cross-compilation.patch
+
+Signed-off-by: Greg Fitzgerald <gregf@codeaurora.org>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ CMakeLists.txt | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5b1591e..7c6c0f4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -42,7 +42,15 @@ option(COMPILER_RT_BUILD_XRAY "Build xray" ON)
+ mark_as_advanced(COMPILER_RT_BUILD_XRAY)
+ 
+ if (COMPILER_RT_STANDALONE_BUILD)
+-  load_llvm_config()
++  find_package(LLVM REQUIRED)
++  list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
++
++  # Variables that AddLLVM.cmake depends on (included by AddCompilerRT)
++  set(LLVM_TOOLS_BINARY_DIR "${LLVM_INSTALL_PREFIX}/bin")
++  set(LLVM_LIBRARY_DIR "${LLVM_INSTALL_PREFIX}/lib")
++
++  set(LLVM_LIBRARY_OUTPUT_INTDIR
++    ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${LLVM_LIBDIR_SUFFIX})
+ 
+   # Find Python interpreter.
+   set(Python_ADDITIONAL_VERSIONS 2.7 2.6 2.5)
+-- 
+2.10.0
+
