@@ -1,4 +1,4 @@
-From a5b8426cf21c3c303349a5be4d735123f514c435 Mon Sep 17 00:00:00 2001
+From 7d56f7fc304a4acf69c44b4c6f4ffb5e2af1fc0c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:22:52 -0700
 Subject: [PATCH] use constexpr when using glibc
@@ -16,18 +16,18 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/include/__mutex_base b/include/__mutex_base
-index 38a76ac..0fb1e2f 100644
+index 59458ec..0a12e62 100644
 --- a/include/__mutex_base
 +++ b/include/__mutex_base
 @@ -43,7 +43,10 @@ class _LIBCPP_TYPE_VIS _LIBCPP_THREAD_SAFETY_ANNOTATION(capability("mutex")) mut
  public:
      _LIBCPP_INLINE_VISIBILITY
  #ifndef _LIBCPP_HAS_NO_CONSTEXPR
--    constexpr mutex() _NOEXCEPT _LIBCPP_DEFAULT
+-    constexpr mutex() _NOEXCEPT = default;
 +#ifdef __GLIBC__
 +    constexpr
 +#endif
-+    mutex() _NOEXCEPT _LIBCPP_DEFAULT
++    mutex() _NOEXCEPT = default;
  #else
      mutex() _NOEXCEPT {__m_ = (__libcpp_mutex_t)_LIBCPP_MUTEX_INITIALIZER;}
  #endif
@@ -35,14 +35,14 @@ index 38a76ac..0fb1e2f 100644
  public:
      _LIBCPP_INLINE_VISIBILITY
  #ifndef _LIBCPP_HAS_NO_CONSTEXPR
--    constexpr condition_variable() _NOEXCEPT _LIBCPP_DEFAULT
+-    constexpr condition_variable() _NOEXCEPT = default;
 +#ifdef __GLIBC__
 +    constexpr
 +#endif
-+    condition_variable() _NOEXCEPT _LIBCPP_DEFAULT
++    condition_variable() _NOEXCEPT = default;
  #else
      condition_variable() _NOEXCEPT {__cv_ = (__libcpp_condvar_t)_LIBCPP_CONDVAR_INITIALIZER;}
  #endif
 -- 
-2.10.0
+2.10.2
 
