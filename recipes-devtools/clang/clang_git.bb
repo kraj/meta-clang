@@ -22,6 +22,7 @@ SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};n
            file://0001-clang-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
            file://0002-clang-Driver-tools.cpp-Add-lssp-and-lssp_nonshared-o.patch;patchdir=tools/clang \
            file://0003-clang-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
+           file://0004-clang-Do-not-search-clang-install-dir-relative-.-lib.patch;patchdir=tools/clang \
           "
 
 SRCREV_FORMAT = "llvm_clang"
