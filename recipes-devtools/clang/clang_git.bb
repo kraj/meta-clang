@@ -87,7 +87,7 @@ EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 
 DEPENDS = "zlib libffi libxml2 binutils"
 DEPENDS_remove_class-nativesdk = "nativesdk-binutils"
-DEPENDS_append_class-nativesdk = " clang-native "
+DEPENDS_append_class-nativesdk = " clang-native virtual/${TARGET_PREFIX}binutils-crosssdk virtual/${TARGET_PREFIX}gcc-crosssdk virtual/${TARGET_PREFIX}g++-crosssdk"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} "
 
 do_configure_prepend() {
