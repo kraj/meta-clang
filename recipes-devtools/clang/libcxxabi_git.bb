@@ -15,7 +15,7 @@ inherit cmake
 PV .= "+git${SRCPV}"
 
 DEPENDS += "compiler-rt"
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=d0e0873d07a25650544fb86c75a572d8; \
+LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=8ae94dd6195890583eee15a988b6ea79; \
                    "
 SRC_URI = "\
            ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
