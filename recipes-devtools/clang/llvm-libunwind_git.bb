@@ -17,7 +17,7 @@ PV .= "+git${SRCPV}"
 DEPENDS += "libcxx"
 PROVIDES += "libunwind"
 
-LIC_FILES_CHKSUM = "file://../libcxx/LICENSE.TXT;md5=19a8c2f1fc295558b4e55b076321d5f4; \
+LIC_FILES_CHKSUM = "file://../libcxx/LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \
                    "
 SRC_URI = "\
            ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
