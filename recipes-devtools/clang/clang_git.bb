@@ -59,12 +59,6 @@ def get_clang_target_arch(bb, d):
         return clang_arches[target_arch]
     return ""
 
-#TUNE_CCARGS_remove = "-mthumb-interwork"
-#TUNE_CCARGS_remove = "-march=armv7-a"
-#TUNE_CCARGS_remove = "-marm"
-#TUNE_CCARGS_append_class-target = " -D__extern_always_inline=inline -I${PKG_CONFIG_SYSROOT_DIR}${includedir}/libxml2 "
-#LDFLAGS_append_class-target = " -L${PKG_CONFIG_SYSROOT_DIR}${libdir}/libxml2 "
-
 PACKAGECONFIG ??= "compiler-rt libcplusplus"
 PACKAGECONFIG_class-native = ""
 
@@ -95,10 +89,6 @@ EXTRA_OECMAKE_append_class-target = "\
                -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
-#               -DCMAKE_CXX_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}g++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
-#               -DCMAKE_C_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}gcc ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
-#
-#
 EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 
 DEPENDS = "zlib libffi libxml2 binutils"
@@ -107,11 +97,6 @@ DEPENDS_append_class-nativesdk = " clang-native virtual/${TARGET_PREFIX}binutils
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains('TOOLCHAIN', 'gcc', 'virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}g++', '', d)}"
 
 do_configure_prepend() {
-	# Remove RPATHs
-#	sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' ${S}/Makefile.rules
-	# Drop "svn" suffix from version string
-#	sed -i 's/${PV}svn/${PV}/g' ${S}/configure
-
 	# Fix paths in llvm-config
 	sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
 	sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
