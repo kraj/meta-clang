@@ -75,8 +75,8 @@ EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
                -DLLVM_ENABLE_FFI=False \
                -DCMAKE_SYSTEM_NAME=Linux \
                -DCMAKE_BUILD_TYPE=Release \
-	       -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
-	      "
+               -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
+"
 
 EXTRA_OECMAKE_append_class-native = "\
                -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;Mips;PowerPC;X86' \
