@@ -10,6 +10,11 @@ require clang.inc
 
 PV .= "+git${SRCPV}"
 
+#
+# Default to building only required targets (user overridable).
+#
+LLVM_TARGETS_TO_BUILD ?= "${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
+
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
                     file://tools/clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
                    "
@@ -44,11 +49,11 @@ inherit cmake
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
-def get_clang_target_arch(bb, d):
-    target_arch = d.getVar('TRANSLATED_TARGET_ARCH', True)
+def get_clang_arch(bb, d, arch_var):
+    target_arch = d.getVar(arch_var, True)
     clang_arches = {
         "i586"     : "X86",
-        "x86-64"   : "X86",
+        "x86_64"   : "X86",
         "powerpc"  : "PowerPC",
         "mips"     : "Mips",
         "arm"      : "ARM",
@@ -59,6 +64,13 @@ def get_clang_target_arch(bb, d):
     if target_arch in clang_arches:
         return clang_arches[target_arch]
     return ""
+
+
+def get_clang_host_arch(bb, d):
+    return get_clang_arch(bb, d, 'HOST_ARCH')
+
+def get_clang_target_arch(bb, d):
+    return get_clang_arch(bb, d, 'TARGET_ARCH')
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus"
 PACKAGECONFIG_class-native = ""
@@ -74,10 +86,10 @@ EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
-               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;Mips;PowerPC;X86' \
+               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
-               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;Mips;PowerPC;X86' \
+               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
@@ -87,7 +99,7 @@ EXTRA_OECMAKE_append_class-target = "\
                -DLLVM_ENABLE_PIC=ON \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-               -DLLVM_TARGETS_TO_BUILD=${@get_clang_target_arch(bb, d)} \
+               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
                -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
