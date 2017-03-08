@@ -11,7 +11,7 @@ DEPENDS += "clang-cross-${TARGET_ARCH}"
 
 require clang.inc
 
-inherit cmake
+inherit cmake pythonnative
 PV .= "+git${SRCPV}"
 
 DEPENDS += "libcxxabi"
