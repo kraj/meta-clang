@@ -78,7 +78,7 @@ EXTRA_OECMAKE_append_class-target = "\
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
                -DLLVM_TARGETS_TO_BUILD=${@get_clang_target_arch(bb, d)} \
                -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
-               -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_ARCH} \
+               -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
 #               -DCMAKE_CXX_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}g++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
 #               -DCMAKE_C_FLAGS='-target armv7a -ccc-gcc-name ${HOST_PREFIX}gcc ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -v -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0 -I ${PKG_CONFIG_SYSROOT_DIR}${includedir}/c++/5.1.0/arm-rdk-linux-gnueabi' \
