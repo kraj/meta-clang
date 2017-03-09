@@ -41,22 +41,23 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=ON \
 EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER_RT_BUILD_XRAY=OFF "
 
 do_install_append () {
+	install -d ${D}${libdir}/clang/${BASEPV}/lib/linux
 	if [ -d ${D}${libdir}/linux ]; then
 		for f in `find ${D}${libdir}/linux -maxdepth 1 -type f`
 		do
-			mv $f ${D}${libdir}
+			mv $f ${D}${libdir}/clang/${BASEPV}/lib/linux
 		done
 		rmdir ${D}${libdir}/linux
 	fi
 	for f in `find ${D}${exec_prefix} -maxdepth 1 -name '*.txt' -type f`
 	do
-		mv $f ${D}${libdir}
+		mv $f ${D}${libdir}/clang/${BASEPV}
 	done
-	rm -rf ${D}${libdir}/libclang_rt.asan*.so
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
+FILES_${PN} += "${libdir}/clang/${BASEPV}/lib/linux/lib*${SOLIBSDEV}"
+FILES_${PN}-staticdev += "${libdir}/clang/${BASEPV}/lib/linux/*.a"
 INSANE_SKIP_${PN} = "dev-so"
 
 #PROVIDES_append_class-target = "\
@@ -68,7 +69,7 @@ INSANE_SKIP_${PN} = "dev-so"
 #        "
 #
 
-FILES_${PN}-dev += "${libdir}/*.syms ${libdir}/*.txt"
+FILES_${PN}-dev += "${libdir}/clang/${BASEPV}/lib/linux/*.syms ${libdir}/clang/${BASEPV}/lib/linux/*.txt"
 
 BBCLASSEXTEND = "native nativesdk"
 
