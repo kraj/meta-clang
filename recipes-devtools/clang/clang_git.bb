@@ -73,7 +73,8 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
 EXTRA_OECMAKE_append_class-target = "\
-               -DLLVM_ENABLE_PIC=False \
+               -DBUILD_SHARED_LIBS=OFF \
+               -DLLVM_ENABLE_PIC=OFF \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
                -DLLVM_TARGETS_TO_BUILD=${@get_clang_target_arch(bb, d)} \
