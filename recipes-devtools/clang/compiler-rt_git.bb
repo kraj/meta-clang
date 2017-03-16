@@ -48,23 +48,23 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
 EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER_RT_BUILD_XRAY=OFF "
 
 do_install_append () {
-	install -d ${D}${libdir}/clang/${BASEPV}/lib/linux
+	install -d ${D}${libdir}/clang/${PV}/lib/linux
 	if [ -d ${D}${libdir}/linux ]; then
 		for f in `find ${D}${libdir}/linux -maxdepth 1 -type f`
 		do
-			mv $f ${D}${libdir}/clang/${BASEPV}/lib/linux
+			mv $f ${D}${libdir}/clang/${PV}/lib/linux
 		done
 		rmdir ${D}${libdir}/linux
 	fi
 	for f in `find ${D}${exec_prefix} -maxdepth 1 -name '*.txt' -type f`
 	do
-		mv $f ${D}${libdir}/clang/${BASEPV}
+		mv $f ${D}${libdir}/clang/${PV}
 	done
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/clang/${BASEPV}/lib/linux/lib*${SOLIBSDEV} ${libdir}/clang/${BASEPV}/*.txt"
-FILES_${PN}-staticdev += "${libdir}/clang/${BASEPV}/lib/linux/*.a"
+FILES_${PN} += "${libdir}/clang/${PV}/lib/linux/lib*${SOLIBSDEV} ${libdir}/clang/${PV}/*.txt"
+FILES_${PN}-staticdev += "${libdir}/clang/${PV}/lib/linux/*.a"
 INSANE_SKIP_${PN} = "dev-so"
 
 #PROVIDES_append_class-target = "\
@@ -76,7 +76,7 @@ INSANE_SKIP_${PN} = "dev-so"
 #        "
 #
 
-FILES_${PN}-dev += "${libdir}/clang/${BASEPV}/lib/linux/*.syms"
+FILES_${PN}-dev += "${libdir}/clang/${PV}/lib/linux/*.syms"
 
 BBCLASSEXTEND = "native nativesdk"
 

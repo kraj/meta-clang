@@ -7,8 +7,10 @@ LLVM_GIT_PROTOCOL ?= "git"
 #
 # Uncomment below to enable master version of clang/llvm
 #
-BASEPV = "4.0.0"
-PV = "${BASEPV}"
+MAJOR_VER="4"
+MINOR_VER="0"
+PATCH_VER="0"
+PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 BRANCH = "release_40"
 SRCREV_llvm = "4423e351176a92975739dd4ea43c2ff5877236ae"
 SRCREV_clang = "559aa046fe3260d8640791f2249d7b0d458b5700"
