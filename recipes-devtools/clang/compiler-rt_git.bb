@@ -5,12 +5,10 @@ DESCRIPTION = "LLVM based C/C++ compiler Runtime"
 HOMEPAGE = "http://compiler-rt.llvm.org/"
 LICENSE = "MIT | NCSA"
 SECTION = "base"
-INHIBIT_DEFAULT_DEPS = "1"
 
 require clang.inc
 
-# libgcc gcc-runtime needed during configuring compiler-rt
-DEPENDS += "clang-cross-${TARGET_ARCH} virtual/${TARGET_PREFIX}libc-for-gcc libgcc gcc-runtime"
+TOOLCHAIN = "clang"
 
 PV .= "+git${SRCPV}"
 

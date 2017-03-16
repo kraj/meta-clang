@@ -5,9 +5,6 @@ DESCRIPTION = "libunwind implements a stack unwinder, needed to perform C++ exce
 HOMEPAGE = "http://llvm.org/"
 LICENSE = "MIT | NCSA"
 SECTION = "base"
-INHIBIT_DEFAULT_DEPS = "1"
-
-DEPENDS += "clang-cross-${TARGET_ARCH}"
 
 require clang.inc
 

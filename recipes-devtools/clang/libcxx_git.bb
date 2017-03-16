@@ -5,9 +5,6 @@ DESCRIPTION = "libc++ is a new implementation of the C++ standard library, targe
 HOMEPAGE = "http://libcxx.llvm.org/"
 LICENSE = "MIT | NCSA"
 SECTION = "base"
-INHIBIT_DEFAULT_DEPS = "1"
-
-DEPENDS += "clang-cross-${TARGET_ARCH}"
 
 require clang.inc
 
@@ -43,3 +40,4 @@ EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=True "
 ALLOW_EMPTY_${PN} = "1"
 
 BBCLASSEXTEND = "native nativesdk"
+TOOLCHAIN = "clang"

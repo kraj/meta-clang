@@ -5,16 +5,16 @@ DESCRIPTION = "libc++ is a new implementation of the C++ standard library, targe
 HOMEPAGE = "http://libcxxabi.llvm.org/"
 LICENSE = "MIT | NCSA"
 SECTION = "base"
-INHIBIT_DEFAULT_DEPS = "1"
-
-DEPENDS += "clang-cross-${TARGET_ARCH}"
 
 require clang.inc
+
+TOOLCHAIN = "clang"
 
 inherit cmake
 PV .= "+git${SRCPV}"
 
 DEPENDS += "compiler-rt"
+
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=8ae94dd6195890583eee15a988b6ea79; \
                    "
 SRC_URI = "\
