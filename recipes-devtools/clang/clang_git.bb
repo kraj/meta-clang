@@ -22,6 +22,7 @@ SRC_URI += "\
            file://0001-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
            file://0002-llvm-Do-not-assume-linux-glibc.patch \
            file://0003-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
+           file://0004-llvm-allow-env-override-of-exe-path.patch \
           "
 
 # Clang patches
@@ -95,12 +96,6 @@ DEPENDS = "zlib libffi libxml2 binutils"
 DEPENDS_remove_class-nativesdk = "nativesdk-binutils nativesdk-compiler-rt nativesdk-libcxx nativesdk-llvm-unwind"
 DEPENDS_append_class-nativesdk = " clang-native virtual/${TARGET_PREFIX}binutils-crosssdk virtual/${TARGET_PREFIX}gcc-crosssdk virtual/${TARGET_PREFIX}g++-crosssdk"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains('TOOLCHAIN', 'gcc', 'virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}g++', '', d)}"
-
-do_configure_prepend() {
-	# Fix paths in llvm-config
-	sed -i "s|sys::path::parent_path(CurrentPath))\.str()|sys::path::parent_path(sys::path::parent_path(CurrentPath))).str()|g" ${S}/tools/llvm-config/llvm-config.cpp
-	sed -ri "s#/(bin|include|lib)(/?\")#/\1/${LLVM_DIR}\2#g" ${S}/tools/llvm-config/llvm-config.cpp
-}
 
 do_compile_prepend_class-native () {
 	oe_runmake LLVM-tablegen-host

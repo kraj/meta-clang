@@ -1,10 +1,35 @@
-#!/bin/sh
-# Wrapper script for real llvm-config. Simply calls
+#!/bin/bash
+#
+# Wrapper script for llvm-config. Supplies the right environment variables
+# for the target and delegates to the native llvm-config for anything else. This
+# is needed because arguments like --ldflags, --cxxflags, etc. are set by the
+# native compile rather than the target compile.
+#
 
-if [ $WANT_LLVM_RELEASE ]; then
-	exec `dirname $0`/${TARGET_PREFIX}llvm-config$WANT_LLVM_RELEASE ${@}
-else
-  echo "The variable WANT_LLVM_RELEASE is not defined and exported"
-	echo "by your build recipe. Go figure."
-  exit 1
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+NEXT_LLVM_CONFIG="$(which -a llvm-config | sed -n 2p)"
+export YOCTO_ALTERNATE_EXE_PATH="$(readlink -f "$SCRIPT_DIR/../llvm-config")"
+
+if [[ $# == 0 ]]; then
+  exec "$NEXT_LLVM_CONFIG"
 fi
+
+for arg in "$@"; do
+  case "$arg" in
+    --cppflags)
+      echo $TARGET_CPPFLAGS
+      ;;
+    --cflags)
+      echo $TARGET_CFLAGS
+      ;;
+    --cxxflags)
+      echo $TARGET_CXXFLAGS
+      ;;
+    --ldflags)
+      echo $TARGET_LDFLAGS
+      ;;
+    *)
+      echo "$("$NEXT_LLVM_CONFIG" "$arg")"
+      ;;
+  esac
+done
