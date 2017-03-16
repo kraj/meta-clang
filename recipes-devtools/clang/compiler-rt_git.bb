@@ -56,7 +56,7 @@ do_install_append () {
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/clang/${BASEPV}/lib/linux/lib*${SOLIBSDEV}"
+FILES_${PN} += "${libdir}/clang/${BASEPV}/lib/linux/lib*${SOLIBSDEV} ${libdir}/clang/${BASEPV}/*.txt"
 FILES_${PN}-staticdev += "${libdir}/clang/${BASEPV}/lib/linux/*.a"
 INSANE_SKIP_${PN} = "dev-so"
 
@@ -69,7 +69,7 @@ INSANE_SKIP_${PN} = "dev-so"
 #        "
 #
 
-FILES_${PN}-dev += "${libdir}/clang/${BASEPV}/lib/linux/*.syms ${libdir}/clang/${BASEPV}/lib/linux/*.txt"
+FILES_${PN}-dev += "${libdir}/clang/${BASEPV}/lib/linux/*.syms"
 
 BBCLASSEXTEND = "native nativesdk"
 

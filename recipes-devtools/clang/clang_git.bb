@@ -15,14 +15,21 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
                    "
 SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
            ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
+          "
+
+# llvm patches
+SRC_URI += "\
            file://0001-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
            file://0002-llvm-Do-not-assume-linux-glibc.patch \
            file://0003-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
-           \
+          "
+
+# Clang patches
+SRC_URI += "\
            file://0001-clang-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
            file://0002-clang-Driver-tools.cpp-Add-lssp-and-lssp_nonshared-o.patch;patchdir=tools/clang \
            file://0003-clang-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
-           file://0004-clang-Do-not-search-clang-install-dir-relative-.-lib.patch;patchdir=tools/clang \
+           file://0004-clang-Prepend-trailing-to-sysroot.patch;patchdir=tools/clang \
           "
 
 SRCREV_FORMAT = "llvm_clang"
@@ -56,6 +63,12 @@ def get_clang_target_arch(bb, d):
 #TUNE_CCARGS_remove = "-marm"
 #TUNE_CCARGS_append_class-target = " -D__extern_always_inline=inline -I${PKG_CONFIG_SYSROOT_DIR}${includedir}/libxml2 "
 #LDFLAGS_append_class-target = " -L${PKG_CONFIG_SYSROOT_DIR}${libdir}/libxml2 "
+
+PACKAGECONFIG ??= "compiler-rt libcplusplus"
+PACKAGECONFIG_class-native = ""
+
+PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,compiler-rt"
+PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
 
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
                -DLLVM_ENABLE_FFI=False \
