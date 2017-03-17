@@ -30,6 +30,7 @@ SRC_URI += "\
            file://0002-clang-Driver-tools.cpp-Add-lssp-and-lssp_nonshared-o.patch;patchdir=tools/clang \
            file://0003-clang-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
            file://0004-clang-Prepend-trailing-to-sysroot.patch;patchdir=tools/clang \
+           file://0005-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch;patchdir=tools/clang \
           "
 
 SRCREV_FORMAT = "llvm_clang"

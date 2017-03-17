@@ -1,0 +1,41 @@
+From 63b01a5bf84c836a42b792cdee5ac6322296ae0b Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 16 Mar 2017 17:06:45 -0700
+Subject: [PATCH 5/5] clang: Look inside the target sysroot for compiler
+ runtime
+
+In OE compiler-rt and libc++ are built and staged into target
+sysroot and not into resourcedir which is relative to clang
+driver installation where the libraries are not instlled
+
+Specific to cross compiling the way yocto/OE works
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Driver/ToolChain.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+Index: clang/lib/Driver/ToolChain.cpp
+===================================================================
+--- clang.orig/lib/Driver/ToolChain.cpp
++++ clang/lib/Driver/ToolChain.cpp
+@@ -10,6 +10,7 @@
+ #include "clang/Driver/ToolChain.h"
+ #include "Tools.h"
+ #include "clang/Basic/ObjCRuntime.h"
++#include "clang/Basic/Version.h"
+ #include "clang/Config/config.h"
+ #include "clang/Driver/Action.h"
+ #include "clang/Driver/Driver.h"
+@@ -306,7 +307,10 @@ std::string ToolChain::getCompilerRT(con
+   const char *Suffix = Shared ? (Triple.isOSWindows() ? ".dll" : ".so")
+                               : (IsITANMSVCWindows ? ".lib" : ".a");
+ 
+-  SmallString<128> Path(getDriver().ResourceDir);
++  SmallString<128> Path(getDriver().SysRoot);
++  StringRef ClangLibdirSuffix(CLANG_LIBDIR_SUFFIX);
++  llvm::sys::path::append(Path, "/usr/", Twine("lib") + ClangLibdirSuffix, "clang",
++                            CLANG_VERSION_STRING);
+   StringRef OSLibName = Triple.isOSFreeBSD() ? "freebsd" : getOS();
+   llvm::sys::path::append(Path, "lib", OSLibName);
+   llvm::sys::path::append(Path, Prefix + Twine("clang_rt.") + Component + "-" +
