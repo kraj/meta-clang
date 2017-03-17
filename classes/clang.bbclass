@@ -36,8 +36,8 @@ OVERRIDES[vardepsexclude] += "TOOLCHAIN"
 
 def clang_dep_prepend(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
-        if not oe.utils.inherits(d, 'allarch'):
-            return " clang-cross-${TARGET_ARCH}"
+        if not oe.utils.inherits(d, 'allarch') :
+            return " clang-cross-${TARGET_ARCH} compiler-rt libcxx llvm-libunwind"
     return ""
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "virtual/${TARGET_PREFIX}gcc"

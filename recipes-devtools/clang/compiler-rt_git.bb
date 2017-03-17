@@ -23,6 +23,10 @@ SRC_URI =  "${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${B
 
 SRCREV_FORMAT = "compiler-rt"
 
+BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
+BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
+BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
+
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig pythonnative

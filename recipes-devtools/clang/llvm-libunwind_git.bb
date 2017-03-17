@@ -12,6 +12,8 @@ inherit cmake
 PV .= "+git${SRCPV}"
 
 DEPENDS += "libcxx"
+BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
+BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 PROVIDES += "libunwind"
 
 LIC_FILES_CHKSUM = "file://../libcxx/LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \

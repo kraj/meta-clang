@@ -12,6 +12,10 @@ inherit cmake pythonnative
 PV .= "+git${SRCPV}"
 
 DEPENDS += "libcxxabi"
+BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
+BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
+BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
+
 
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \
                    "
