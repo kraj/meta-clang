@@ -1,0 +1,27 @@
+From 87a102f4a9a9143b589971a43e93e3b5f8638321 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 22 Mar 2017 22:25:18 -0700
+Subject: [PATCH] Include limits.h for PATH_MAX definition
+
+Helps compiling on musl targets
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ source/Host/common/FileSpec.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/source/Host/common/FileSpec.cpp b/source/Host/common/FileSpec.cpp
+index 7f46d303a..2be162d63 100644
+--- a/source/Host/common/FileSpec.cpp
++++ b/source/Host/common/FileSpec.cpp
+@@ -19,6 +19,7 @@
+ #include <fstream>
+ #include <set>
+ #include <string.h>
++#include <limits.h>
+ 
+ #include "lldb/Host/Config.h" // Have to include this before we test the define...
+ #ifdef LLDB_CONFIG_TILDE_RESOLVES_TO_USER
+-- 
+2.12.1
+

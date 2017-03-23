@@ -40,6 +40,10 @@ SRC_URI += "\
            file://0004-clang-Prepend-trailing-to-sysroot.patch;patchdir=tools/clang \
            file://0005-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch;patchdir=tools/clang \
           "
+# lldb patches
+SRC_URI += "\
+           file://0001-Include-limits.h-for-PATH_MAX-definition.patch;patchdir=tools/lldb \
+          "
 SRCREV_FORMAT = "llvm_clang_lldb"
 
 S = "${WORKDIR}/git"
