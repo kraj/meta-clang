@@ -112,13 +112,8 @@ DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains(
 
 RRECOMMENDS_${PN} = "binutils"
 
-do_compile_prepend_class-native () {
-	oe_runmake LLVM-tablegen-host
-	oe_runmake CLANG-tablegen-host
-}
-
 do_install_append_class-native () {
-	install -Dm 0755 ${B}/NATIVE/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 		echo "stripped $f"
