@@ -38,6 +38,7 @@ HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
 EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=ON \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
+                  -DCOMPILER_RT_BUILD_XRAY=OFF \
 "
 
 EXTRA_OECMAKE_append_class-nativesdk = "\
