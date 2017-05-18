@@ -45,22 +45,17 @@ inherit cmake
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
 def get_clang_arch(bb, d, arch_var):
-    target_arch = d.getVar(arch_var, True)
-    clang_arches = {
-        "i586"     : "X86",
-        "x86_64"   : "X86",
-        "powerpc"  : "PowerPC",
-        "mips"     : "Mips",
-        "arm"      : "ARM",
-        "arm64"    : "AArch64",
-        "aarch64"  : "AArch64",
-        "riscv"    : "RISCV",
-    }
-
-    if target_arch in clang_arches:
-        return clang_arches[target_arch]
+    import re
+    a = d.getVar(arch_var, True)
+    if   re.match('(i.86|athlon|x86.64)$', a):         return 'X86'
+    elif re.match('armeb$', a):                        return 'ARM'
+    elif re.match('aarch64$', a):                      return 'AArch64'
+    elif re.match('aarch64_be$', a):                   return 'AArch64'
+    elif re.match('mips(isa|)(32|64|)(r6|)(el|)$', a): return 'Mips'
+    elif re.match('p(pc|owerpc)(|64)', a):             return 'PowerPC'
+    else:
+        bb.error("cannot map '%s' to a supported llvm architecture" % a)
     return ""
-
 
 def get_clang_host_arch(bb, d):
     return get_clang_arch(bb, d, 'HOST_ARCH')
