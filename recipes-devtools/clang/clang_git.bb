@@ -10,11 +10,6 @@ require clang.inc
 
 PV .= "+git${SRCPV}"
 
-#
-# Default to building only required targets (user overridable).
-#
-LLVM_TARGETS_TO_BUILD ?= "${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
-
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
                     file://tools/clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
                    "
@@ -50,21 +45,17 @@ inherit cmake
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
 def get_clang_arch(bb, d, arch_var):
-    target_arch = d.getVar(arch_var, True)
-    clang_arches = {
-        "i586"     : "X86",
-        "x86_64"   : "X86",
-        "powerpc"  : "PowerPC",
-        "mips"     : "Mips",
-        "arm"      : "ARM",
-        "arm64"    : "AArch64",
-        "aarch64"  : "AArch64",
-    }
-
-    if target_arch in clang_arches:
-        return clang_arches[target_arch]
+    import re
+    a = d.getVar(arch_var, True)
+    if   re.match('(i.86|athlon|x86.64)$', a):         return 'X86'
+    elif re.match('armeb$', a):                        return 'ARM'
+    elif re.match('aarch64$', a):                      return 'AArch64'
+    elif re.match('aarch64_be$', a):                   return 'AArch64'
+    elif re.match('mips(isa|)(32|64|)(r6|)(el|)$', a): return 'Mips'
+    elif re.match('p(pc|owerpc)(|64)', a):             return 'PowerPC'
+    else:
+        bb.error("cannot map '%s' to a supported llvm architecture" % a)
     return ""
-
 
 def get_clang_host_arch(bb, d):
     return get_clang_arch(bb, d, 'HOST_ARCH')
@@ -77,6 +68,11 @@ PACKAGECONFIG_class-native = ""
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
+#
+# Default to build all OE-Core supported target arches (user overridable).
+#
+LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;Mips;PowerPC;X86"
+LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
                -DLLVM_ENABLE_FFI=False \
@@ -86,10 +82,10 @@ EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
-               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
+               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
-               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
+               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
@@ -99,7 +95,7 @@ EXTRA_OECMAKE_append_class-target = "\
                -DLLVM_ENABLE_PIC=ON \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
+               -DLLVM_TARGETS_TO_BUILD=${@get_clang_target_arch(bb, d)} \
                -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
