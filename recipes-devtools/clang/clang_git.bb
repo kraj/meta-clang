@@ -10,11 +10,6 @@ require clang.inc
 
 PV .= "+git${SRCPV}"
 
-#
-# Default to building only required targets (user overridable).
-#
-LLVM_TARGETS_TO_BUILD ?= "${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
-
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
                     file://tools/clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
                    "
@@ -59,6 +54,7 @@ def get_clang_arch(bb, d, arch_var):
         "arm"      : "ARM",
         "arm64"    : "AArch64",
         "aarch64"  : "AArch64",
+        "riscv"    : "RISCV",
     }
 
     if target_arch in clang_arches:
@@ -77,6 +73,11 @@ PACKAGECONFIG_class-native = ""
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
+#
+# Default to build all OE-Core supported target arches (user overridable).
+#
+LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;Mips;PowerPC;X86"
+LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
                -DLLVM_ENABLE_FFI=False \
@@ -86,10 +87,10 @@ EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
-               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
+               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
-               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
+               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
@@ -99,7 +100,7 @@ EXTRA_OECMAKE_append_class-target = "\
                -DLLVM_ENABLE_PIC=ON \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-               -DLLVM_TARGETS_TO_BUILD="${LLVM_TARGETS_TO_BUILD}" \
+               -DLLVM_TARGETS_TO_BUILD=${@get_clang_target_arch(bb, d)} \
                -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
