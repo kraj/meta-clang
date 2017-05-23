@@ -7,32 +7,19 @@ LICENSE = "NCSA"
 SECTION = "devel"
 
 require clang.inc
+require common.inc
 
 PV .= "+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
                     file://tools/clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
                    "
-SRC_URI = "${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
-           ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
-          "
-
-# llvm patches
-SRC_URI += "\
-           file://0001-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
-           file://0002-llvm-Do-not-assume-linux-glibc.patch \
-           file://0003-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
-           file://0004-llvm-allow-env-override-of-exe-path.patch \
-          "
-
-# Clang patches
-SRC_URI += "\
-           file://0001-clang-driver-Use-lib-for-ldso-on-OE.patch;patchdir=tools/clang \
-           file://0002-clang-Driver-tools.cpp-Add-lssp-and-lssp_nonshared-o.patch;patchdir=tools/clang \
-           file://0003-clang-musl-ppc-does-not-support-128-bit-long-double.patch;patchdir=tools/clang \
-           file://0004-clang-Prepend-trailing-to-sysroot.patch;patchdir=tools/clang \
-           file://0005-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch;patchdir=tools/clang \
-          "
+SRC_URI = "\
+    ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
+    ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
+    ${LLVMPATCHES} \
+    ${CLANGPATCHES} \
+   "
 
 SRCREV_FORMAT = "llvm_clang"
 
@@ -76,6 +63,7 @@ LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;Mips;PowerPC;X86"
 LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
+               -DLLVM_ENABLE_EH=True \
                -DLLVM_ENABLE_FFI=False \
                -DCMAKE_SYSTEM_NAME=Linux \
                -DCMAKE_BUILD_TYPE=Release \

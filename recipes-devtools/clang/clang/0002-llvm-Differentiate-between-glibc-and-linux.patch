@@ -1,0 +1,26 @@
+From c838ab629c64a98e194520f10b391f174fbccc96 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 9 May 2017 15:16:45 -0700
+Subject: [PATCH 2/3] llvm: Differentiate between glibc and linux
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Support/Unix/DynamicLibrary.inc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/Support/Unix/DynamicLibrary.inc b/lib/Support/Unix/DynamicLibrary.inc
+index a0526fa2c1b..aca85c62e54 100644
+--- a/lib/Support/Unix/DynamicLibrary.inc
++++ b/lib/Support/Unix/DynamicLibrary.inc
+@@ -104,7 +104,7 @@ static void *DoSearch(const char* SymbolName) {
+ // On linux we have a weird situation. The stderr/out/in symbols are both
+ // macros and global variables because of standards requirements. So, we
+ // boldly use the EXPLICIT_SYMBOL macro without checking for a #define first.
+-#if defined(__linux__) and !defined(__ANDROID__)
++#if defined(__linux__) and !defined(__ANDROID__) and defined(__GLIBC__)
+   {
+     EXPLICIT_SYMBOL(stderr);
+     EXPLICIT_SYMBOL(stdout);
+-- 
+2.13.0
+

@@ -1,0 +1,27 @@
+From b56c57ef523bed20dc9e9beb271667a85cf56478 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sun, 21 May 2017 15:38:25 -0700
+Subject: [PATCH 6/6] clang: Define / releative gcc installation dir
+
+This is required for OE gcc installation to work.
+Without this its not able to find the paths for libgcc
+and other standard headers and libraries from gcc
+installation in OE
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Driver/ToolChains/Gnu.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+Index: clang/lib/Driver/ToolChains/Gnu.cpp
+===================================================================
+--- clang.orig/lib/Driver/ToolChains/Gnu.cpp
++++ clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -2101,6 +2101,7 @@ void Generic_GCC::GCCInstallationDetecto
+ 
+     // Debian puts cross-compilers in gcc-cross.
+     {"gcc-cross/" + CandidateTriple.str(), "../..", true},
++    {"/" + CandidateTriple.str(), "..", true},
+ 
+     // The Freescale PPC SDK has the gcc libraries in
+     // <sysroot>/usr/lib/<triple>/x.y.z so have a look there as well. Only do

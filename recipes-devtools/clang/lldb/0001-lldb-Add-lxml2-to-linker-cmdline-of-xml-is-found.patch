@@ -1,0 +1,42 @@
+From 6a38064611f3506b67656e5de680a957ee95adb6 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 22 May 2017 17:36:16 -0700
+Subject: [PATCH] lldb: Add -lxml2 to linker cmdline of xml is found
+
+When cross compiling for systems where static libs
+for libxml are not available cmake's detection mechanism
+resort to linking with libxml.so but doesnt use -lxml2
+liblldbHost.a however requires libxml on linker
+cmdline _after_ itself so its use of symbols from libxml2
+can be resolved. Here check for libxml2 being detected and
+add it if its found.
+
+Fixes
+
+| ../../../../lib/liblldbHost.a(XML.cpp.o): In function `lldb_private::XMLDocument::Clear()':
+| /usr/src/debug/lldb/5.0.0+gitAUTOINC+69edad7913_08d6b47db9_cf6c5b3386-r0/git/tools/lldb/source/Host/common/XML.cpp:29: undefined reference to `xmlFreeDoc'
+| /usr/src/debug/lldb/5.0.0+gitAUTOINC+69edad7913_08d6b47db9_cf6c5b3386-r0/git/tools/lldb/source/Host/common/XML.cpp:29: undefined reference to `xmlFreeDoc'
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ source/Host/CMakeLists.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/source/Host/CMakeLists.txt b/source/Host/CMakeLists.txt
+index 2a73c30f8..f5e132fee 100644
+--- a/source/Host/CMakeLists.txt
++++ b/source/Host/CMakeLists.txt
+@@ -163,6 +163,10 @@ if (CMAKE_SYSTEM_NAME MATCHES "NetBSD")
+  set(EXTRA_LIBS kvm)
+ endif ()
+ 
++if (LIBXML2_FOUND)
++ list(APPEND EXTRA_LIBS xml2)
++endif ()
++
+ add_lldb_library(lldbHost
+   ${HOST_SOURCES}
+   
+-- 
+2.13.0
+

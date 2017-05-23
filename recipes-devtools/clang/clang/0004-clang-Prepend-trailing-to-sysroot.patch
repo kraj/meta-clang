@@ -1,7 +1,7 @@
-From b261f7a113462c8f91e729e4dd090b93ea7528e1 Mon Sep 17 00:00:00 2001
+From 3257464995af44e5baafa1d1dd80b79b6260754d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 09:02:13 -0700
-Subject: [PATCH 4/4] clang: Prepend trailing '/' to sysroot
+Subject: [PATCH 4/6] clang: Prepend trailing '/' to sysroot
 
 This is needed to handle a case where clang
 isntall and target sysroot are perilously same
@@ -20,14 +20,14 @@ installation and not sysroot
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/ToolChains.cpp | 2 +-
+ lib/Driver/ToolChains/Linux.cpp | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/Driver/ToolChains.cpp b/lib/Driver/ToolChains.cpp
-index 9d2e343536..2f3aa0680f 100644
---- a/lib/Driver/ToolChains.cpp
-+++ b/lib/Driver/ToolChains.cpp
-@@ -4095,7 +4095,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
+diff --git a/lib/Driver/ToolChains/Linux.cpp b/lib/Driver/ToolChains/Linux.cpp
+index 4865ec99da..719525ad7d 100644
+--- a/lib/Driver/ToolChains/Linux.cpp
++++ b/lib/Driver/ToolChains/Linux.cpp
+@@ -193,7 +193,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
    GCCInstallation.init(Triple, Args);
    Multilibs = GCCInstallation.getMultilibs();
    llvm::Triple::ArchType Arch = Triple.getArch();
@@ -37,5 +37,5 @@ index 9d2e343536..2f3aa0680f 100644
    // Cross-compiling binutils and GCC installations (vanilla and openSUSE at
    // least) put various tools in a triple-prefixed directory off of the parent
 -- 
-2.12.0
+2.13.0
 

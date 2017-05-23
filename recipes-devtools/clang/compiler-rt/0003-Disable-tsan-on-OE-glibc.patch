@@ -1,4 +1,4 @@
-From 00ac81c887f0f6eb31bed1e516374b6aa01b6389 Mon Sep 17 00:00:00 2001
+From 9390b3a6552d8f122e186797416904066df418be Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
 Subject: [PATCH 3/4] Disable tsan on OE/glibc
@@ -13,15 +13,15 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/cmake/config-ix.cmake b/cmake/config-ix.cmake
-index e0e43552e..bb3c77f6d 100644
+index ae2a262a1..edc6dc63e 100644
 --- a/cmake/config-ix.cmake
 +++ b/cmake/config-ix.cmake
-@@ -491,7 +491,7 @@ else()
+@@ -497,7 +497,7 @@ else()
  endif()
  
  if (COMPILER_RT_HAS_SANITIZER_COMMON AND TSAN_SUPPORTED_ARCH AND
--    OS_NAME MATCHES "Darwin|Linux|FreeBSD")
-+    OS_NAME MATCHES "Darwin|FreeBSD")
+-    OS_NAME MATCHES "Darwin|Linux|FreeBSD|Android")
++    OS_NAME MATCHES "Darwin|FreeBSD|Android")
    set(COMPILER_RT_HAS_TSAN TRUE)
  else()
    set(COMPILER_RT_HAS_TSAN FALSE)
@@ -38,5 +38,5 @@ index 9b4070b0f..e76f2680c 100644
    list(APPEND SUPPORTED_TOOLS lsan)
  endif()
 -- 
-2.12.0
+2.13.0
 

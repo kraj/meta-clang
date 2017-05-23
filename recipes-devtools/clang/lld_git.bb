@@ -9,6 +9,7 @@ SECTION = "devel"
 DEPENDS += "clang-native libcxx"
 
 require clang.inc
+require common.inc
 
 FILESPATH =. "${FILE_DIRNAME}/clang:"
 
@@ -20,12 +21,11 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
                    "
 
 SRC_URI = "\
-           ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
-           ${LLVM_GIT}/lld.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/lld;name=lld \
-           file://0001-llvm-Remove-CMAKE_CROSSCOMPILING-so-it-can-cross-com.patch \
-           file://0002-llvm-Do-not-assume-linux-glibc.patch \
-           file://0003-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
-          "
+    ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
+    ${LLVM_GIT}/lld.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/lld;name=lld \
+    ${LLVMPATCHES} \
+   "
+
 SRCREV_FORMAT = "llvm_lld"
 
 S = "${WORKDIR}/git"

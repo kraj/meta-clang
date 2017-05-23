@@ -1,7 +1,7 @@
-From 89b429136b2850025919b6f2f5c616a0f22d0daf Mon Sep 17 00:00:00 2001
+From 94d3e80a88c58043bd22d7aafbfcb0579c8356e7 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
-Subject: [PATCH 2/3] clang: Driver/tools.cpp: Add -lssp and -lssp_nonshared on
+Subject: [PATCH 2/6] clang: Driver/tools.cpp: Add -lssp and -lssp_nonshared on
  musl
 
 musl driver will need to add ssp libraries to linker cmdline
@@ -9,14 +9,14 @@ when using stack protector commands on compiler cmdline
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/Tools.cpp | 7 +++++++
+ lib/Driver/ToolChains/Gnu.cpp | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/lib/Driver/Tools.cpp b/lib/Driver/Tools.cpp
-index 3b20805..740205b 100644
---- a/lib/Driver/Tools.cpp
-+++ b/lib/Driver/Tools.cpp
-@@ -10192,6 +10192,13 @@ void gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+diff --git a/lib/Driver/ToolChains/Gnu.cpp b/lib/Driver/ToolChains/Gnu.cpp
+index f1015e62ee..1843150b45 100644
+--- a/lib/Driver/ToolChains/Gnu.cpp
++++ b/lib/Driver/ToolChains/Gnu.cpp
+@@ -609,6 +609,13 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
        if (IsIAMCU)
          CmdArgs.push_back("-lgloss");
  
@@ -31,5 +31,5 @@ index 3b20805..740205b 100644
          CmdArgs.push_back("--end-group");
        else
 -- 
-2.10.2
+2.13.0
 

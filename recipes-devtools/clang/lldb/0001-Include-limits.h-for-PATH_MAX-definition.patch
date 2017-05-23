@@ -1,27 +1,28 @@
-From 87a102f4a9a9143b589971a43e93e3b5f8638321 Mon Sep 17 00:00:00 2001
+From eba8b855017605c42368e509e599875f71440940 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
-Date: Wed, 22 Mar 2017 22:25:18 -0700
+Date: Thu, 18 May 2017 23:12:34 -0700
 Subject: [PATCH] Include limits.h for PATH_MAX definition
 
 Helps compiling on musl targets
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- source/Host/common/FileSpec.cpp | 1 +
- 1 file changed, 1 insertion(+)
+ source/Utility/FileSpec.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/source/Host/common/FileSpec.cpp b/source/Host/common/FileSpec.cpp
-index 7f46d303a..2be162d63 100644
---- a/source/Host/common/FileSpec.cpp
-+++ b/source/Host/common/FileSpec.cpp
-@@ -19,6 +19,7 @@
- #include <fstream>
- #include <set>
- #include <string.h>
-+#include <limits.h>
+diff --git a/source/Utility/FileSpec.cpp b/source/Utility/FileSpec.cpp
+index 3c4e3407d..2d071fa36 100644
+--- a/source/Utility/FileSpec.cpp
++++ b/source/Utility/FileSpec.cpp
+@@ -31,7 +31,7 @@
+ #include <assert.h> // for assert
+ #include <stdio.h>  // for size_t, NULL, snpr...
+ #include <string.h> // for strcmp
+-
++#include <limits.h> // for PATH_MAX
+ using namespace lldb;
+ using namespace lldb_private;
  
- #include "lldb/Host/Config.h" // Have to include this before we test the define...
- #ifdef LLDB_CONFIG_TILDE_RESOLVES_TO_USER
 -- 
-2.12.1
+2.13.0
 

@@ -14,11 +14,12 @@ PV .= "+git${SRCPV}"
 
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=bf24bca27049b52e9738451aa55771d4; \
 "
-SRC_URI =  "${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
-            file://0001-support-a-new-embedded-linux-target.patch \
-            file://0002-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
-            file://0003-Disable-tsan-on-OE-glibc.patch \
-            file://0004-cmake-mips-Do-not-specify-target-with-OE.patch \
+SRC_URI =  "\
+    ${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
+    file://0001-support-a-new-embedded-linux-target.patch \
+    file://0002-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
+    file://0003-Disable-tsan-on-OE-glibc.patch \
+    file://0004-cmake-mips-Do-not-specify-target-with-OE.patch \
 "
 
 SRCREV_FORMAT = "compiler-rt"
