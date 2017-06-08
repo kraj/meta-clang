@@ -5,8 +5,7 @@ FILESEXTRAPATHS =. "${FILE_DIRNAME}/clang:"
 #
 LLVMPATCHES = "\
     file://0001-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
-    file://0002-llvm-Differentiate-between-glibc-and-linux.patch \
-    file://0003-llvm-allow-env-override-of-exe-path.patch \
+    file://0002-llvm-allow-env-override-of-exe-path.patch \
 "
 
 # Clang patches

@@ -1,4 +1,4 @@
-From 7eef5975d0c68e8b34505a334061610efe50df3b Mon Sep 17 00:00:00 2001
+From e57d8fcd1d70c4be85f8f07722d1c1d61fe51d2a Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:22:52 -0700
 Subject: [PATCH] libcxx: use constexpr when using glibc
@@ -12,26 +12,26 @@ code is invalid
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- include/__mutex_base | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ include/__mutex_base | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Index: libcxx/include/__mutex_base
-===================================================================
---- libcxx.orig/include/__mutex_base
-+++ libcxx/include/__mutex_base
-@@ -44,7 +44,10 @@ class _LIBCPP_TYPE_VIS _LIBCPP_THREAD_SA
+diff --git a/include/__mutex_base b/include/__mutex_base
+index 3b2453f1b..08f35434f 100644
+--- a/include/__mutex_base
++++ b/include/__mutex_base
+@@ -48,7 +48,10 @@ class _LIBCPP_TYPE_VIS _LIBCPP_THREAD_SAFETY_ANNOTATION(capability("mutex")) mut
  public:
      _LIBCPP_INLINE_VISIBILITY
  #ifndef _LIBCPP_CXX03_LANG
--    constexpr mutex() _NOEXCEPT = default;
+-    constexpr mutex() = default;
 +#ifdef __GLIBC__
 +    constexpr
 +#endif
-+    mutex() _NOEXCEPT = default;
++    mutex() = default;
  #else
      mutex() _NOEXCEPT {__m_ = (__libcpp_mutex_t)_LIBCPP_MUTEX_INITIALIZER;}
  #endif
-@@ -289,7 +292,10 @@ class _LIBCPP_TYPE_VIS condition_variabl
+@@ -296,7 +299,10 @@ class _LIBCPP_TYPE_VIS condition_variable
  public:
      _LIBCPP_INLINE_VISIBILITY
  #ifndef _LIBCPP_CXX03_LANG
@@ -43,3 +43,6 @@ Index: libcxx/include/__mutex_base
  #else
      condition_variable() _NOEXCEPT {__cv_ = (__libcpp_condvar_t)_LIBCPP_CONDVAR_INITIALIZER;}
  #endif
+-- 
+2.13.1
+
