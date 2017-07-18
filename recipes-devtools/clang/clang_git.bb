@@ -62,6 +62,9 @@ PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
 LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;Mips;PowerPC;X86"
 LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
+LLVM_TARGETS_TO_BUILD_TARGET ?= ""
+LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
+
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
                -DLLVM_ENABLE_EH=True \
                -DLLVM_ENABLE_FFI=False \
@@ -84,7 +87,7 @@ EXTRA_OECMAKE_append_class-target = "\
                -DLLVM_ENABLE_PIC=ON \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-               -DLLVM_TARGETS_TO_BUILD=${@get_clang_target_arch(bb, d)} \
+               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD_TARGET}' \
                -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
