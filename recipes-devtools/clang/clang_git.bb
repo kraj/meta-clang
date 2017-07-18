@@ -127,6 +127,7 @@ FILES_${PN} += "\
   ${libdir}/BugpointPasses.so \
   ${libdir}/LLVMHello.so \
   ${datadir}/scan-* \
+  ${datadir}/opt-viewer/ \
 "
 
 FILES_${PN}-libllvm += "\
