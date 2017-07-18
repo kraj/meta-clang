@@ -34,7 +34,7 @@ OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 EXTRA_OECMAKE = "\
     -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
 "
-CXXFLAGS += "-stdlib=libc++"
+CXXFLAGS_append_toolchain-clang = " -stdlib=libc++"
 
 do_compile() {
 	cd ${B}/tools/lld
