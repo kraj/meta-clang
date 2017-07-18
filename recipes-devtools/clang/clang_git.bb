@@ -131,6 +131,7 @@ FILES_${PN} += "\
 
 FILES_${PN}-libllvm += "\
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}.so \
+  ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}svn.so \
 "
 
 FILES_${PN}-dev += "\
