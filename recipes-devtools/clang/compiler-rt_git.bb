@@ -20,6 +20,7 @@ SRC_URI =  "\
     file://0002-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
     file://0003-Disable-tsan-on-OE-glibc.patch \
     file://0004-cmake-mips-Do-not-specify-target-with-OE.patch \
+    file://0005-Pass-march-armv8.1-a-instead-of-mcrc.patch \
 "
 
 SRCREV_FORMAT = "compiler-rt"
