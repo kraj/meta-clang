@@ -66,3 +66,5 @@ do_install() {
        cd ${B}/tools/lldb
        oe_runmake 'DESTDIR=${D}' install
 }
+
+INSANE_SKIP_${PN}-dbg = "libdir"
