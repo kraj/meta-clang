@@ -23,7 +23,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
 SRC_URI = "\
     ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
     ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
-    ${LLVM_GIT}/lldb.git;protocol=${LLVM_GIT_PROTOCOL};branch=master;destsuffix=git/tools/lldb;name=lldb \
+    ${LLVM_GIT}/lldb.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/lldb;name=lldb \
     ${LLVMPATCHES} \
     ${CLANGPATCHES} \
    "
