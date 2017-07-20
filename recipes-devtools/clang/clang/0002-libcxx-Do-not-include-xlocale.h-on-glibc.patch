@@ -1,0 +1,30 @@
+From 906b5542f9b2c608ae1782b1c1c2dcd710fb84c8 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 20 Jul 2017 12:58:30 -0700
+Subject: [PATCH] libcxx: Do not include xlocale.h on glibc
+
+xlocale.h has been removed from glibc 2.26
+see
+https://sourceware.org/glibc/wiki/Release/2.26#Packaging_Changes
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ include/__locale | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/__locale b/include/__locale
+index 766842294..91ed9e709 100644
+--- a/include/__locale
++++ b/include/__locale
+@@ -34,7 +34,7 @@
+ # include <support/solaris/xlocale.h>
+ #elif defined(_NEWLIB_VERSION)
+ # include <support/newlib/xlocale.h>
+-#elif (defined(__GLIBC__) || defined(__APPLE__)      || defined(__FreeBSD__) \
++#elif (defined(__APPLE__)      || defined(__FreeBSD__) \
+     || defined(__EMSCRIPTEN__) || defined(__IBMCPP__))
+ # include <xlocale.h>
+ #elif defined(__Fuchsia__)
+-- 
+2.13.3
+
