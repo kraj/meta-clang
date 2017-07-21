@@ -68,3 +68,4 @@ do_install() {
 }
 
 INSANE_SKIP_${PN}-dbg = "libdir"
+INSANE_SKIP_${PN} = "libdir"
