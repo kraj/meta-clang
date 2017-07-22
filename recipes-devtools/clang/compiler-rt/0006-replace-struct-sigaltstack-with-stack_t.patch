@@ -1,0 +1,28 @@
+From 2bbd4dfe98ed1e5287b0a1ab0464e6b8bf344432 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 22 Jul 2017 10:00:12 -0700
+Subject: [PATCH] replace struct sigaltstack with stack_t
+
+glibc 2.26 has removed struct sigaltstack
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/esan/esan_sideline_linux.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/esan/esan_sideline_linux.cpp b/lib/esan/esan_sideline_linux.cpp
+index d04f5909d..bc272dfe4 100644
+--- a/lib/esan/esan_sideline_linux.cpp
++++ b/lib/esan/esan_sideline_linux.cpp
+@@ -70,7 +70,7 @@ int SidelineThread::runSideline(void *Arg) {
+ 
+   // Set up a signal handler on an alternate stack for safety.
+   InternalScopedBuffer<char> StackMap(SigAltStackSize);
+-  struct sigaltstack SigAltStack;
++  stack_t SigAltStack;
+   SigAltStack.ss_sp = StackMap.data();
+   SigAltStack.ss_size = SigAltStackSize;
+   SigAltStack.ss_flags = 0;
+-- 
+2.13.3
+

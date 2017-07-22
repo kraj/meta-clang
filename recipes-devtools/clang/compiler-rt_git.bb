@@ -21,6 +21,7 @@ SRC_URI =  "\
     file://0003-Disable-tsan-on-OE-glibc.patch \
     file://0004-cmake-mips-Do-not-specify-target-with-OE.patch \
     file://0005-Pass-march-armv8.1-a-instead-of-mcrc.patch \
+    file://0006-replace-struct-sigaltstack-with-stack_t.patch \
 "
 
 SRCREV_FORMAT = "compiler-rt"

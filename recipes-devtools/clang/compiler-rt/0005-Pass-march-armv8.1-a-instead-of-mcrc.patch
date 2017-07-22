@@ -20,19 +20,18 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  lib/scudo/CMakeLists.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/scudo/CMakeLists.txt b/lib/scudo/CMakeLists.txt
-index 14c199fa8..857bdccd3 100644
---- a/lib/scudo/CMakeLists.txt
-+++ b/lib/scudo/CMakeLists.txt
-@@ -26,7 +26,7 @@ endif()
+Index: git/lib/scudo/CMakeLists.txt
+===================================================================
+--- git.orig/lib/scudo/CMakeLists.txt
++++ git/lib/scudo/CMakeLists.txt
+@@ -26,7 +26,9 @@ endif()
  # Enable the AArch64 CRC32 feature for scudo_crc32.cpp, if available.
  # Note that it is enabled by default starting with armv8.1-a.
  if (COMPILER_RT_HAS_MCRC_FLAG)
 -  set_source_files_properties(scudo_crc32.cpp PROPERTIES COMPILE_FLAGS -mcrc)
-+  set_source_files_properties(scudo_crc32.cpp PROPERTIES COMPILE_FLAGS -march=armv8.1-a)
++  if ("${COMPILER_RT_DEFAULT_TARGET_ARCH}" MATCHES "aarch64")
++    set_source_files_properties(scudo_crc32.cpp PROPERTIES COMPILE_FLAGS -march=armv8.1-a)
++  endif()
  endif()
  
  if(COMPILER_RT_HAS_SCUDO)
--- 
-2.13.3
-
