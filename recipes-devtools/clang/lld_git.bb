@@ -6,7 +6,7 @@ HOMEPAGE = "http://lld.llvm.org/"
 LICENSE = "MIT | NCSA"
 SECTION = "devel"
 
-DEPENDS += "clang-native libcxx"
+DEPENDS += "clang-native libcxx ninja-native"
 
 require clang.inc
 require common.inc
@@ -32,17 +32,19 @@ S = "${WORKDIR}/git"
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 EXTRA_OECMAKE = "\
+    -DCMAKE_CROSSCOMPILING=1 \
     -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
+    -DCMAKE_BUILD_TYPE=Release \
+    -G Ninja \
+    ${S} \
 "
 CXXFLAGS_append_toolchain-clang = " -stdlib=libc++"
 
 do_compile() {
-	cd ${B}/tools/lld
-	base_do_compile VERBOSE=1
+	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE} lld
 }
 
 do_install() {
-	cd ${B}/tools/lld
-	oe_runmake 'DESTDIR=${D}' install
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} tools/lld/install
 }
 BBCLASSEXTEND = "native nativesdk"

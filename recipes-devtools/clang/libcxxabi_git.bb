@@ -14,7 +14,7 @@ TOOLCHAIN = "clang"
 inherit cmake
 PV .= "+git${SRCPV}"
 
-DEPENDS += "compiler-rt"
+DEPENDS += "compiler-rt ninja-native"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
 
@@ -43,9 +43,18 @@ EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/projects/libcxx \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
                   -DCXX_SUPPORTS_CXX11=ON \
                   -DLIBCXXABI_ENABLE_SHARED=ON \
+                  -G Ninja \
                   ${S}/projects/libcxxabi \
 "
 CXXFLAGS_append_libc-musl = " -D_LIBCPP_HAS_MUSL_LIBC "
+
+do_compile() {
+	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+}
+
+do_install() {
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+}
 
 ALLOW_EMPTY_${PN} = "1"
 

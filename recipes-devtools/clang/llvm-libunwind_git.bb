@@ -12,7 +12,7 @@ require common.inc
 inherit cmake
 PV .= "+git${SRCPV}"
 
-DEPENDS += "libcxx"
+DEPENDS += "libcxx ninja-native"
 BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 PROVIDES += "libunwind"
@@ -48,10 +48,19 @@ EXTRA_OECMAKE += "-DLIBCXXABI_LIBCXX_PATH=${S}/projects/libcxxabi \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
                   -DLIBUNWIND_ENABLE_SHARED=ON \
                   -DUNIX=True \
+                  -G Ninja \
                   ${S}/projects/libunwind \
 "
 do_configure_prepend () {
 	(cd ${S}/projects/libunwind/include && ln -sf ../../libcxxabi/include/__cxxabi_config.h)
+}
+
+do_compile() {
+	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+}
+
+do_install() {
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
 }
 
 ALLOW_EMPTY_${PN} = "1"

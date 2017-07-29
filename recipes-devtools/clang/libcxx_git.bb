@@ -12,7 +12,7 @@ require common.inc
 inherit cmake pythonnative
 PV .= "+git${SRCPV}"
 
-DEPENDS += "libcxxabi"
+DEPENDS += "libcxxabi ninja-native"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
@@ -41,10 +41,19 @@ EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi \
                   -DLLVM_PATH=${S} \
                   -DLIBCXX_ENABLE_SHARED=ON \
                   -DLIBCXX_ENABLE_EXCEPTIONS=ON \
+                  -G Ninja \
                   ${S}/projects/libcxx \
 "
 
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=True "
+
+do_compile() {
+	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+}
+
+do_install() {
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+}
 
 ALLOW_EMPTY_${PN} = "1"
 

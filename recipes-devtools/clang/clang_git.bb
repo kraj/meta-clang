@@ -72,6 +72,7 @@ EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
                -DCMAKE_SYSTEM_NAME=Linux \
                -DCMAKE_BUILD_TYPE=Release \
                -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
+               -G Ninja \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
@@ -94,12 +95,20 @@ EXTRA_OECMAKE_append_class-target = "\
 "
 EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 
-DEPENDS = "zlib libffi libxml2"
+DEPENDS = "zlib libffi libxml2 ninja-native"
 DEPENDS_remove_class-nativesdk = "nativesdk-binutils nativesdk-compiler-rt nativesdk-libcxx nativesdk-llvm-unwind"
 DEPENDS_append_class-nativesdk = " clang-native virtual/${TARGET_PREFIX}binutils-crosssdk virtual/${TARGET_PREFIX}gcc-crosssdk virtual/${TARGET_PREFIX}g++-crosssdk"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains('TOOLCHAIN', 'gcc', 'virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}g++', '', d)}"
 
 RRECOMMENDS_${PN} = "binutils"
+
+do_compile() {
+	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+}
+
+do_install() {
+        NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+}
 
 do_install_append_class-native () {
 	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen

@@ -30,6 +30,8 @@ BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
 
+DEPENDS += "ninja-native"
+
 S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig pythonnative
@@ -42,6 +44,7 @@ HF[vardepvalue] = "${HF}"
 EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=ON \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_XRAY=OFF \
+                  -G Ninja \
 "
 
 EXTRA_OECMAKE_append_class-nativesdk = "\
@@ -50,6 +53,15 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
 "
 
 EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER_RT_BUILD_XRAY=OFF "
+
+do_compile() {
+	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+}
+
+do_install() {
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+}
+
 
 do_install_append () {
 	install -d ${D}${libdir}/clang/${PV}/lib/linux
