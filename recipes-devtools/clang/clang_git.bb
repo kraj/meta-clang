@@ -67,7 +67,8 @@ LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
 
 EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
                -DLLVM_ENABLE_EH=True \
-               -DLLVM_ENABLE_FFI=False \
+               -DLLVM_ENABLE_FFI=ON \
+               -DFFI_INCLUDE_DIR=$(pkg-config --variable=includedir libffi) \
                -DCMAKE_SYSTEM_NAME=Linux \
                -DCMAKE_BUILD_TYPE=Release \
                -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
