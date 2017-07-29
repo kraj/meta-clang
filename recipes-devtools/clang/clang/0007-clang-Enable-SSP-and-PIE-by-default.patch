@@ -1,0 +1,95 @@
+From 013035de788d1e2e00a4238fb2fdd39591c5c009 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 29 Jul 2017 08:29:19 -0700
+Subject: [PATCH 7/7] clang: Enable SSP and PIE by default
+
+This is a minimal set of changes needed to make clang use SSP and PIE by
+default on Arch Linux. Tests that were easy to adjust have been changed
+accordingly; only test/Driver/linux-ld.c has been marked as "expected
+failure" due to the number of changes it would require (mostly replacing
+crtbegin.o with crtbeginS.o).
+
+Doing so is needed in order to align clang with the new default GCC
+behavior in Arch which generates PIE executables by default and also
+defaults to -fstack-protector-strong. It is not meant to be a long term
+solution, but a simple temporary fix.
+
+Hopefully these changes will be obsoleted by the introduction upstream
+of a compile-time option (https://bugs.llvm.org/show_bug.cgi?id=13410)
+
+From: Evangelos Foutras <evangelos@foutrelis.com>
+
+https://git.archlinux.org/svntogit/packages.git/tree/trunk/0002-Enable-SSP-and-PIE-by-default.patch?h=packages/llvm
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Driver/ToolChains/FreeBSD.cpp |  1 +
+ lib/Driver/ToolChains/Gnu.cpp     |  1 +
+ lib/Driver/ToolChains/Linux.cpp   | 14 +++++++++++++-
+ lib/Driver/ToolChains/Linux.h     |  1 +
+ 4 files changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/lib/Driver/ToolChains/FreeBSD.cpp b/lib/Driver/ToolChains/FreeBSD.cpp
+index c6626e922e..39d0d6fb0d 100644
+--- a/lib/Driver/ToolChains/FreeBSD.cpp
++++ b/lib/Driver/ToolChains/FreeBSD.cpp
+@@ -128,6 +128,7 @@ void freebsd::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+   const llvm::Triple::ArchType Arch = ToolChain.getArch();
+   const bool IsPIE =
+       !Args.hasArg(options::OPT_shared) &&
++      !Args.hasArg(options::OPT_nopie) &&
+       (Args.hasArg(options::OPT_pie) || ToolChain.isPIEDefault());
+   ArgStringList CmdArgs;
+ 
+diff --git a/lib/Driver/ToolChains/Gnu.cpp b/lib/Driver/ToolChains/Gnu.cpp
+index 8eb7401b24..8d06196231 100644
+--- a/lib/Driver/ToolChains/Gnu.cpp
++++ b/lib/Driver/ToolChains/Gnu.cpp
+@@ -417,6 +417,7 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+   const bool IsIAMCU = ToolChain.getTriple().isOSIAMCU();
+   const bool IsPIE =
+       !Args.hasArg(options::OPT_shared) && !Args.hasArg(options::OPT_static) &&
++      !Args.hasArg(options::OPT_nopie) &&
+       (Args.hasArg(options::OPT_pie) || ToolChain.isPIEDefault());
+   const bool HasCRTBeginEndFiles =
+       ToolChain.getTriple().hasEnvironment() ||
+diff --git a/lib/Driver/ToolChains/Linux.cpp b/lib/Driver/ToolChains/Linux.cpp
+index 6dd6d52633..773063249a 100644
+--- a/lib/Driver/ToolChains/Linux.cpp
++++ b/lib/Driver/ToolChains/Linux.cpp
+@@ -810,7 +810,19 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
+   }
+ }
+ 
+-bool Linux::isPIEDefault() const { return getSanitizerArgs().requiresPIE(); }
++bool Linux::isPIEDefault() const {
++  const bool IsMips = tools::isMipsArch(getTriple().getArch());
++  const bool IsAndroid = getTriple().isAndroid();
++
++  if (IsMips || IsAndroid)
++    return getSanitizerArgs().requiresPIE();
++
++  return true;
++}
++
++unsigned Linux::GetDefaultStackProtectorLevel(bool KernelOrKext) const {
++  return 2;
++}
+ 
+ SanitizerMask Linux::getSupportedSanitizers() const {
+   const bool IsX86 = getTriple().getArch() == llvm::Triple::x86;
+diff --git a/lib/Driver/ToolChains/Linux.h b/lib/Driver/ToolChains/Linux.h
+index 9778c1832c..ddd46a1d58 100644
+--- a/lib/Driver/ToolChains/Linux.h
++++ b/lib/Driver/ToolChains/Linux.h
+@@ -36,6 +36,7 @@ public:
+   void AddIAMCUIncludeArgs(const llvm::opt::ArgList &DriverArgs,
+                            llvm::opt::ArgStringList &CC1Args) const override;
+   bool isPIEDefault() const override;
++  unsigned GetDefaultStackProtectorLevel(bool KernelOrKext) const override;
+   SanitizerMask getSupportedSanitizers() const override;
+   void addProfileRTLibs(const llvm::opt::ArgList &Args,
+                         llvm::opt::ArgStringList &CmdArgs) const override;
+-- 
+2.13.3
+

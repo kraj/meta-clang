@@ -4,8 +4,6 @@ CXX_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN
 CPP_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
 CCLD_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 
-SECURITY_PIE_CFLAGS_toolchain-clang= "-pie -fPIE"
-
 THUMB_TUNE_CCARGS_remove_toolchain-clang = "-mthumb-interwork"
 TUNE_CCARGS_remove_toolchain-clang = "-meb"
 TUNE_CCARGS_remove_toolchain-clang = "-mel"

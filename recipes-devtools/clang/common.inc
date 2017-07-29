@@ -7,6 +7,8 @@ LLVMPATCHES = "\
     file://0001-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
     file://0002-llvm-allow-env-override-of-exe-path.patch \
 "
+# Fallback to no-PIE if not set
+GCCPIE ??= ""
 
 # Clang patches
 CLANGPATCHES = "\
@@ -17,6 +19,7 @@ CLANGPATCHES = "\
     file://0005-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch;patchdir=tools/clang \
     file://0006-clang-Define-releative-gcc-installation-dir.patch;patchdir=tools/clang \
 "
+CLANGPATCHES += "${@'file://0007-clang-Enable-SSP-and-PIE-by-default.patch;patchdir=tools/clang' if '${GCCPIE}' else ''}"
 
 # libcxxabi patches
 LIBCXXABIPATCHES ="\
