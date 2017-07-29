@@ -23,7 +23,6 @@ CLANGPATCHES += "${@'file://0007-clang-Enable-SSP-and-PIE-by-default.patch;patch
 
 # libcxxabi patches
 LIBCXXABIPATCHES ="\
-    file://0001-libcxxabi-Fix-arm-EHABI-code-to-work.-armhf-had-exce.patch;patchdir=projects/libcxxabi \
 "
 
 # libc++ patches
