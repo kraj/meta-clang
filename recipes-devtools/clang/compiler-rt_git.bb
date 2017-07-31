@@ -63,23 +63,25 @@ do_install() {
 
 
 do_install_append () {
-	install -d ${D}${libdir}/clang/${PV}/lib/linux
+	install -d ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux
 	if [ -d ${D}${libdir}/linux ]; then
 		for f in `find ${D}${libdir}/linux -maxdepth 1 -type f`
 		do
-			mv $f ${D}${libdir}/clang/${PV}/lib/linux
+			mv $f ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux
 		done
 		rmdir ${D}${libdir}/linux
 	fi
 	for f in `find ${D}${exec_prefix} -maxdepth 1 -name '*.txt' -type f`
 	do
-		mv $f ${D}${libdir}/clang/${PV}
+		mv $f ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
 	done
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/clang/${PV}/lib/linux/lib*${SOLIBSDEV} ${libdir}/clang/${PV}/*.txt"
-FILES_${PN}-staticdev += "${libdir}/clang/${PV}/lib/linux/*.a"
+FILES_${PN} += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
+                ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt"
+FILES_${PN}-staticdev += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
+FILES_${PN}-dev += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms"
 INSANE_SKIP_${PN} = "dev-so"
 
 #PROVIDES_append_class-target = "\
@@ -90,8 +92,6 @@ INSANE_SKIP_${PN} = "dev-so"
 #        libgcc-initial-dev \
 #        "
 #
-
-FILES_${PN}-dev += "${libdir}/clang/${PV}/lib/linux/*.syms"
 
 BBCLASSEXTEND = "native nativesdk"
 
