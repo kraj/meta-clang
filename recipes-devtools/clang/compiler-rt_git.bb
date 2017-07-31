@@ -28,7 +28,6 @@ SRCREV_FORMAT = "compiler-rt"
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
-BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
 
 DEPENDS += "ninja-native"
 

@@ -24,7 +24,6 @@ SRCREV_FORMAT = "openmp"
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
-BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
 
 S = "${WORKDIR}/git/runtime"
 
