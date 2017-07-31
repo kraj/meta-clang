@@ -29,8 +29,3 @@ LIBCXXABIPATCHES ="\
 LIBCXXPATCHES = "\
     file://0002-libcxx-Do-not-include-xlocale.h-on-glibc.patch;patchdir=projects/libcxx \
 "
-
-LIBCXXPATCHES_append_libc-musl = "\
-    file://0001-libcxx-use-constexpr-when-using-glibc.patch;patchdir=projects/libcxx \
-"
-

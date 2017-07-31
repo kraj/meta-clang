@@ -12,10 +12,10 @@ require common.inc
 inherit cmake pythonnative
 PV .= "+git${SRCPV}"
 
-DEPENDS += "libcxxabi ninja-native"
+DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 BASEDEPENDS_remove_toolchain-clang_class-target = "llvm-libunwind"
-BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
+#BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 
 
 LIC_FILES_CHKSUM = "file://projects/libcxx/LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \
@@ -36,23 +36,26 @@ S = "${WORKDIR}/git"
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
 
-EXTRA_OECMAKE += "-DLIBCXX_CXX_ABI=libcxxabi \
-                  -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/projects/libcxxabi/include \
-                  -DLLVM_PATH=${S} \
+EXTRA_OECMAKE += "\
+                  -DLIBCXX_CXX_ABI=libcxxabi \
                   -DLIBCXX_ENABLE_SHARED=ON \
-                  -DLIBCXX_ENABLE_EXCEPTIONS=ON \
+                  -DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
+                  -DCXX_SUPPORTS_CXX11=ON \
+                  -DLIBCXXABI_LIBCXX_INCLUDES=${S}/projects/libcxx/include \
+                  -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/projects/libcxxabi/include \
+                  -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
                   -G Ninja \
-                  ${S}/projects/libcxx \
+                  ${S} \
 "
 
-EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=True "
+EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} cxxabi cxx
 }
 
 do_install() {
-	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxxabi install-cxx
 }
 
 ALLOW_EMPTY_${PN} = "1"
