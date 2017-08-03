@@ -64,36 +64,41 @@ LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_tar
 
 LLVM_TARGETS_TO_BUILD_TARGET ?= ""
 LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
-
-EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
-               -DLLVM_ENABLE_EH=True \
-               -DLLVM_ENABLE_FFI=ON \
-               -DFFI_INCLUDE_DIR=$(pkg-config --variable=includedir libffi) \
-               -DCMAKE_SYSTEM_NAME=Linux \
-               -DCMAKE_BUILD_TYPE=Release \
-               -DLLVM_BUILD_EXTERNAL_COMPILER_RT=True \
-               -G Ninja \
+EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
+                  -DLLVM_ENABLE_EXPENSIVE_CHECKS=OFF \
+                  -DLLVM_ENABLE_PIC=ON \
+                  -DLLVM_BINDINGS_LIST='' \
+                  -DLLVM_ENABLE_FFI=ON \
+                  -DFFI_INCLUDE_DIR=$(pkg-config --variable=includedir libffi) \
+                  -DLLVM_OPTIMIZED_TABLEGEN=ON \
+                  -DLLVM_ENABLE_RTTI=ON \
+                  -DLLVM_ENABLE_EH=ON \
+                  -DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
+                  -DCMAKE_SYSTEM_NAME=Linux \
+                  -DCMAKE_BUILD_TYPE=Release \
+                  -DBUILD_SHARED_LIBS=OFF \
+                  -G Ninja \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
-               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
+                  -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
-               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
-               -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
-               -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
+                  -DCMAKE_CROSSCOMPILING:BOOL=ON \
+                  -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
+                  -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
+                  -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
 EXTRA_OECMAKE_append_class-target = "\
-               -DBUILD_SHARED_LIBS=OFF \
-               -DLLVM_BUILD_LLVM_DYLIB=ON \
-               -DLLVM_ENABLE_PIC=ON \
-               -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
-               -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-               -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD_TARGET}' \
-               -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
-               -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
+                  -DCMAKE_CROSSCOMPILING:BOOL=ON \
+                  -DLLVM_BUILD_LLVM_DYLIB=ON \
+                  -DLLVM_LINK_LLVM_DYLIB=ON \
+                  -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
+                  -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
+                  -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD_TARGET}' \
+                  -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
+                  -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
-EXTRA_OEMAKE += "REQUIRES_RTTI=1 VERBOSE=1"
 
 DEPENDS = "zlib libffi libxml2 ninja-native"
 DEPENDS_remove_class-nativesdk = "nativesdk-binutils nativesdk-compiler-rt nativesdk-libcxx nativesdk-llvm-unwind"
