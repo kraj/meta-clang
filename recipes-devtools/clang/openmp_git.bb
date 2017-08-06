@@ -10,6 +10,9 @@ require clang.inc
 
 DEPENDS += "ninja-native"
 
+RPROVIDES_${PN} += "libgomp"
+RPROVIDES_${PN}-dev += "libgomp-dev"
+
 TOOLCHAIN = "clang"
 
 PV .= "+git${SRCPV}"
