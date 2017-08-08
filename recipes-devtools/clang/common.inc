@@ -27,5 +27,4 @@ LIBCXXABIPATCHES ="\
 
 # libc++ patches
 LIBCXXPATCHES = "\
-    file://0002-libcxx-Do-not-include-xlocale.h-on-glibc.patch;patchdir=projects/libcxx \
 "
