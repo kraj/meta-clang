@@ -1,6 +1,6 @@
 RDEPENDS_${PN}_toolchain-clang += "\
     libcxx-dev \
-    libcxx-static-dev \
+    libcxx-staticdev \
     compiler-rt-dev \
     compiler-rt-staticdev \
 "
