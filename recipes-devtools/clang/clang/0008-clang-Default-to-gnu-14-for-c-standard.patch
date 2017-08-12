@@ -1,0 +1,28 @@
+From 521fdfcc2031d22b50125b3295b837229c77abd6 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 12 Aug 2017 12:56:06 -0700
+Subject: [PATCH 8/8] clang: Default to gnu++14 for c++ standard
+
+GCC 7.x and newer default to same as well
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Frontend/CompilerInvocation.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/Frontend/CompilerInvocation.cpp b/lib/Frontend/CompilerInvocation.cpp
+index b2c14554a4..eed925fac4 100644
+--- a/lib/Frontend/CompilerInvocation.cpp
++++ b/lib/Frontend/CompilerInvocation.cpp
+@@ -1667,7 +1667,7 @@ void CompilerInvocation::setLangDefaults(LangOptions &Opts, InputKind IK,
+       if (T.isPS4())
+         LangStd = LangStandard::lang_gnucxx11;
+       else
+-        LangStd = LangStandard::lang_gnucxx98;
++        LangStd = LangStandard::lang_gnucxx14;
+       break;
+     case InputKind::RenderScript:
+       LangStd = LangStandard::lang_c99;
+-- 
+2.14.1
+
