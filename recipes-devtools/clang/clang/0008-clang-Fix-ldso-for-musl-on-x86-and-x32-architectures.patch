@@ -1,0 +1,41 @@
+From cdae04d9e1950f07e89ea5aa8eed7ed7ce6b7938 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 16 Aug 2017 15:16:15 -0700
+Subject: [PATCH] clang: Fix ldso for musl on x86 and x32 architectures
+
+x32 linker is called ld-musl-x32.so.1 and x86 linker
+is called ld-musl-i386.so.1, Currently, linker for
+x86 is returned as ld-musl-i586.so.1, when default
+arch is i586, which is not the right thing
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Driver/ToolChains/Linux.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+Index: clang/lib/Driver/ToolChains/Linux.cpp
+===================================================================
+--- clang.orig/lib/Driver/ToolChains/Linux.cpp
++++ clang/lib/Driver/ToolChains/Linux.cpp
+@@ -422,6 +422,7 @@ std::string Linux::getDynamicLinker(cons
+   if (Triple.isMusl()) {
+     std::string ArchName;
+     bool IsArm = false;
++    bool isX32 = false;
+ 
+     switch (Arch) {
+     case llvm::Triple::arm:
+@@ -434,6 +435,13 @@ std::string Linux::getDynamicLinker(cons
+       ArchName = "armeb";
+       IsArm = true;
+       break;
++    case llvm::Triple::x86:
++      ArchName = "i386";
++      break;
++    case llvm::Triple::x86_64:
++      isX32 = Triple.getEnvironment() == llvm::Triple::GNUX32;
++      ArchName = isX32 ? "x32" : Triple.getArchName().str();
++      break;
+     default:
+       ArchName = Triple.getArchName().str();
+     }
