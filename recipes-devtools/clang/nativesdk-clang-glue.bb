@@ -25,3 +25,4 @@ sysroot_stage_all () {
 }
 
 FILES_${PN} += "${prefix_nativesdk}"
+FILES_${PN}-dbg = ""
