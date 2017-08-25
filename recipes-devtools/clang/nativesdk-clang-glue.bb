@@ -14,10 +14,10 @@ DEPENDS += "nativesdk-clang"
 S = "${WORKDIR}"
 
 do_install() {
-        install -d ${D}${prefix_nativesdk}
-	cd ${D}${prefix_nativesdk}
-	ln -s ..${libdir} .
-	ln -s ..${includedir} .
+    install -d ${D}${prefix_nativesdk}
+    cd ${D}${prefix_nativesdk}
+    ln -s ..${libdir} .
+    ln -s ..${includedir} .
 }
 
 sysroot_stage_all () {
