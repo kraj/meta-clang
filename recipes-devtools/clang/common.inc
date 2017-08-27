@@ -24,6 +24,7 @@ CLANGPATCHES += "${@'file://0007-clang-Enable-SSP-and-PIE-by-default.patch;patch
 
 # libcxxabi patches
 LIBCXXABIPATCHES ="\
+    file://0001-libcxxabi-Find-libunwind-headers-when-LIBCXXABI_LIBU.patch;patchdir=projects/libcxxabi \
 "
 
 # libc++ patches

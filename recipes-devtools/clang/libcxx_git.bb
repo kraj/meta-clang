@@ -41,14 +41,15 @@ EXTRA_OECMAKE += "\
                   -DLIBCXX_CXX_ABI=libcxxabi \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
                   -DCXX_SUPPORTS_CXX11=ON \
+                  -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/projects/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/projects/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
-                  -DLIBCXXABI_USE_LLVM_UNWINDER=1 \
+                  -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
                   -G Ninja \
                   ${S} \
 "
-EXTRA_OECMAKE_remove_mipsarch = "-DLIBCXXABI_USE_LLVM_UNWINDER=1"
+EXTRA_OECMAKE_remove_mipsarch = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON"
 
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
