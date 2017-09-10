@@ -26,7 +26,7 @@ TOOLCHAIN_class-cross-canadian = "gcc"
 TOOLCHAIN_class-crosssdk = "gcc"
 TOOLCHAIN_class-cross = "gcc"
 
-OVERRIDES .= "${@['', ':toolchain-${TOOLCHAIN}']['${TOOLCHAIN}' != '']}"
+OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN"
 
 #DEPENDS_append_toolchain-clang_class-target = " clang-cross-${TARGET_ARCH} "
