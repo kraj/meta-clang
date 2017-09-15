@@ -56,7 +56,9 @@ EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} unwind cxxabi cxx
+	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} unwind
+	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} cxxabi
+	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} cxx
 }
 
 do_install() {
