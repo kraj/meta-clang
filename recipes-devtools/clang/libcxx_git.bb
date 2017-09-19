@@ -45,28 +45,33 @@ EXTRA_OECMAKE += "\
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/projects/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/projects/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
-                  -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
+                  -DLIBCXXABI_USE_LLVM_UNWINDER=${USE_LLVM_UNWINDER} \
                   -G Ninja \
                   ${S} \
 "
-EXTRA_OECMAKE_remove_mipsarch = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON"
+USE_LLVM_UNWINDER ?= "ON"
+USE_LLVM_UNWINDER_mipsarch = "OFF"
 
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
+COMPILE_TARGETS ?= "unwind cxxabi"
+COMPILE_TARGETS_mipsarch = "cxxabi"
 
+INSTALL_TARGETS ?= "projects/libunwind/install install-cxxabi"
+INSTALL_TARGETS_mipsarch = "install-cxxabi"
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} unwind
-	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} cxxabi
+	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} ${COMPILE_TARGETS}
 	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} cxx
 }
 
 do_install() {
-	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} projects/libunwind/install install-cxxabi install-cxx
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALL_TARGETS}
+	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx
 }
 
 PACKAGES =+ "libunwind"
-
+PACKAGES_remove_mipsarch = "libunwind"
 FILES_libunwind += "${libdir}/libunwind.so.*"
 
 ALLOW_EMPTY_${PN} = "1"
