@@ -23,6 +23,7 @@ SRC_URI += "\
            file://0002-llvm-Do-not-assume-linux-glibc.patch \
            file://0003-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
            file://0004-llvm-allow-env-override-of-exe-path.patch \
+           file://0005-llvm-ARM-Use-correct-calling-convention-for-libm.patch \
           "
 
 # Clang patches
