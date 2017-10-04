@@ -63,7 +63,7 @@ LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;Mips;PowerPC;X86"
 LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
 LLVM_TARGETS_TO_BUILD_TARGET ?= ""
-LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
+LLVM_TARGETS_TO_BUILD_TARGET_append ?= ";${@get_clang_target_arch(bb, d)}"
 EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_ENABLE_EXPENSIVE_CHECKS=OFF \
                   -DLLVM_ENABLE_PIC=ON \
