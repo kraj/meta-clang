@@ -7,7 +7,6 @@ LLVMPATCHES = "\
     file://0001-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
     file://0002-llvm-allow-env-override-of-exe-path.patch \
     file://0003-llvm-ARM-Use-correct-calling-convention-for-libm.patch \
-    file://0004-llvm-AArch64-Fix-bug-in-store-of-vector-0-DAGCombine.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
