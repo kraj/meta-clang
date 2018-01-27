@@ -1,4 +1,4 @@
-From ad79d6051f2c4299b7b286d5a60e2aa1b9a92898 Mon Sep 17 00:00:00 2001
+From 38ec6e5550b9f50a7393182b48c5c26cad4d541f Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 27 Aug 2017 10:37:49 -0700
 Subject: [PATCH] libcxxabi: Find libunwind headers when
@@ -17,10 +17,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4db3328..29cba1a 100644
+index 1adbdb3..ba4e9d7 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -402,15 +402,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${LIBCXXABI_C_FLAGS}")
+@@ -409,15 +409,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${LIBCXXABI_C_FLAGS}")
  # Setup Source Code
  #===============================================================================
  
@@ -37,7 +37,7 @@ index 4db3328..29cba1a 100644
      libunwind.h
      PATHS ${LIBCXXABI_LIBUNWIND_INCLUDES}
            ${LIBCXXABI_LIBUNWIND_PATH}/include
-@@ -420,15 +415,21 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
+@@ -427,15 +422,21 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
      NO_DEFAULT_PATH
    )
  
@@ -64,5 +64,5 @@ index 4db3328..29cba1a 100644
  # soname, etc...
  add_subdirectory(src)
 -- 
-2.14.1
+2.16.1
 

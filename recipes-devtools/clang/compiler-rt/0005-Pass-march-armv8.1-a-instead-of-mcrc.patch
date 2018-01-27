@@ -1,4 +1,4 @@
-From ce33b77707e708348311aea2a9b2401ed4685aa2 Mon Sep 17 00:00:00 2001
+From ef9b0bacf7a2fd097c241da674ed726c3dfb11d2 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 20 Jul 2017 12:14:03 -0700
 Subject: [PATCH 5/5] Pass -march=armv8.1-a instead of -mcrc
@@ -20,18 +20,19 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  lib/scudo/CMakeLists.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: git/lib/scudo/CMakeLists.txt
-===================================================================
---- git.orig/lib/scudo/CMakeLists.txt
-+++ git/lib/scudo/CMakeLists.txt
-@@ -26,7 +26,9 @@ endif()
+diff --git a/lib/scudo/CMakeLists.txt b/lib/scudo/CMakeLists.txt
+index 4d26a3477..965174727 100644
+--- a/lib/scudo/CMakeLists.txt
++++ b/lib/scudo/CMakeLists.txt
+@@ -28,7 +28,7 @@ endif()
  # Enable the AArch64 CRC32 feature for scudo_crc32.cpp, if available.
  # Note that it is enabled by default starting with armv8.1-a.
  if (COMPILER_RT_HAS_MCRC_FLAG)
 -  set_source_files_properties(scudo_crc32.cpp PROPERTIES COMPILE_FLAGS -mcrc)
-+  if ("${COMPILER_RT_DEFAULT_TARGET_ARCH}" MATCHES "aarch64")
-+    set_source_files_properties(scudo_crc32.cpp PROPERTIES COMPILE_FLAGS -march=armv8.1-a)
-+  endif()
++  set_source_files_properties(scudo_crc32.cpp PROPERTIES COMPILE_FLAGS -march=armv8.1-a)
  endif()
  
  if(COMPILER_RT_HAS_SCUDO)
+-- 
+2.16.1
+

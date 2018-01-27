@@ -1,7 +1,7 @@
-From b47912e2304c1e3d3bca7e973037b859739aea15 Mon Sep 17 00:00:00 2001
+From d4121c0c5ad01dab4f3c35d4fc59ec92bdca36b7 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
-Subject: [PATCH 5/6] clang: Look inside the target sysroot for compiler
+Subject: [PATCH 5/7] clang: Look inside the target sysroot for compiler
  runtime
 
 In OE compiler-rt and libc++ are built and staged into target
@@ -16,7 +16,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/lib/Driver/ToolChain.cpp b/lib/Driver/ToolChain.cpp
-index 4f82503276..507e051afc 100644
+index f96a1182e3..d286622f8d 100644
 --- a/lib/Driver/ToolChain.cpp
 +++ b/lib/Driver/ToolChain.cpp
 @@ -12,6 +12,7 @@
@@ -27,18 +27,18 @@ index 4f82503276..507e051afc 100644
  #include "clang/Basic/VirtualFileSystem.h"
  #include "clang/Config/config.h"
  #include "clang/Driver/Action.h"
-@@ -320,7 +321,10 @@ std::string ToolChain::getCompilerRT(const ArgList &Args, StringRef Component,
-   const char *Suffix = Shared ? (Triple.isOSWindows() ? ".dll" : ".so")
-                               : (IsITANMSVCWindows ? ".lib" : ".a");
+@@ -324,7 +325,10 @@ static StringRef getArchNameForCompilerRTLib(const ToolChain &TC,
+ }
  
+ std::string ToolChain::getCompilerRTPath() const {
 -  SmallString<128> Path(getDriver().ResourceDir);
 +  SmallString<128> Path(getDriver().SysRoot);
 +  StringRef ClangLibdirSuffix(CLANG_LIBDIR_SUFFIX);
 +  llvm::sys::path::append(Path, "/usr/", Twine("lib") + ClangLibdirSuffix, "clang",
 +                            CLANG_VERSION_STRING);
-   StringRef OSLibName = Triple.isOSFreeBSD() ? "freebsd" : getOS();
-   llvm::sys::path::append(Path, "lib", OSLibName);
-   llvm::sys::path::append(Path, Prefix + Twine("clang_rt.") + Component + "-" +
+   if (Triple.isOSUnknown()) {
+     llvm::sys::path::append(Path, "lib");
+   } else {
 -- 
-2.13.0
+2.16.1
 

@@ -1,7 +1,7 @@
-From 0be126894e872108eaa7eae3629a5564598ee25e Mon Sep 17 00:00:00 2001
+From 39e3271f270f75a4d65128f79be1dd3e455f5c85 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 11 Feb 2017 17:54:33 +0000
-Subject: [PATCH 4/4] cmake/mips: Do not specify --target with OE
+Subject: [PATCH 4/5] cmake/mips: Do not specify --target with OE
 
 OE already specifies cross compiler correctly, adding this additional
 --target confuses the clang driver and it resorts to invoke host assembler
@@ -20,10 +20,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/cmake/base-config-ix.cmake b/cmake/base-config-ix.cmake
-index 6f9f15139..7002a60ac 100644
+index b208f0852..2555b5e5b 100644
 --- a/cmake/base-config-ix.cmake
 +++ b/cmake/base-config-ix.cmake
-@@ -161,11 +161,11 @@ macro(test_targets)
+@@ -169,11 +169,11 @@ macro(test_targets)
        # clang's default CPU's. In the 64-bit case, we must also specify the ABI
        # since the default ABI differs between gcc and clang.
        # FIXME: Ideally, we would build the N32 library too.
@@ -40,5 +40,5 @@ index 6f9f15139..7002a60ac 100644
        if(WIN32)
          test_target_arch(arm "" "" "")
 -- 
-2.13.0
+2.16.1
 

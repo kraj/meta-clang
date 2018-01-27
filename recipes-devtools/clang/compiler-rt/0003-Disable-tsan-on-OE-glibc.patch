@@ -1,7 +1,7 @@
-From 9390b3a6552d8f122e186797416904066df418be Mon Sep 17 00:00:00 2001
+From 2e8c6df7fe6e120063c3bdb87fb95e1326cf8434 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
-Subject: [PATCH 3/4] Disable tsan on OE/glibc
+Subject: [PATCH 3/5] Disable tsan on OE/glibc
 
 It does not build see
 http://lists.llvm.org/pipermail/llvm-dev/2016-July/102235.html
@@ -13,30 +13,30 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/cmake/config-ix.cmake b/cmake/config-ix.cmake
-index ae2a262a1..edc6dc63e 100644
+index 9e0c47748..227d661ae 100644
 --- a/cmake/config-ix.cmake
 +++ b/cmake/config-ix.cmake
-@@ -497,7 +497,7 @@ else()
+@@ -549,7 +549,7 @@ else()
  endif()
  
  if (COMPILER_RT_HAS_SANITIZER_COMMON AND TSAN_SUPPORTED_ARCH AND
--    OS_NAME MATCHES "Darwin|Linux|FreeBSD|Android")
-+    OS_NAME MATCHES "Darwin|FreeBSD|Android")
+-    OS_NAME MATCHES "Darwin|Linux|FreeBSD|Android|NetBSD")
++    OS_NAME MATCHES "Darwin|FreeBSD|Android|NetBSD")
    set(COMPILER_RT_HAS_TSAN TRUE)
  else()
    set(COMPILER_RT_HAS_TSAN FALSE)
 diff --git a/test/sanitizer_common/CMakeLists.txt b/test/sanitizer_common/CMakeLists.txt
-index 9b4070b0f..e76f2680c 100644
+index 8b210a08a..50b6f7166 100644
 --- a/test/sanitizer_common/CMakeLists.txt
 +++ b/test/sanitizer_common/CMakeLists.txt
-@@ -8,7 +8,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux|FreeBSD" AND NOT ANDROID)
+@@ -8,7 +8,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux|FreeBSD|NetBSD")
    list(APPEND SUPPORTED_TOOLS asan)
  endif()
  if(CMAKE_SYSTEM_NAME MATCHES "Linux" AND NOT ANDROID)
 -  list(APPEND SUPPORTED_TOOLS tsan)
    list(APPEND SUPPORTED_TOOLS msan)
    list(APPEND SUPPORTED_TOOLS lsan)
- endif()
+   list(APPEND SUPPORTED_TOOLS ubsan)
 -- 
-2.13.0
+2.16.1
 

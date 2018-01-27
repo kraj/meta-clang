@@ -1,7 +1,7 @@
-From 489a11bdd48c04983e5d042808b91c9f9844d403 Mon Sep 17 00:00:00 2001
+From 1a82e4a75ef6bf24597e886446ca06aa063a0c7f Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 19 Apr 2015 15:16:23 -0700
-Subject: [PATCH 1/4] support a new embedded linux target
+Subject: [PATCH 1/5] support a new embedded linux target
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  create mode 100644 make/platform/clang_linux_embedded_test_input.c
 
 diff --git a/lib/builtins/int_util.c b/lib/builtins/int_util.c
-index 420d1e237..0e4614100 100644
+index de87410db..0d5b56fe1 100644
 --- a/lib/builtins/int_util.c
 +++ b/lib/builtins/int_util.c
-@@ -48,8 +48,7 @@ void compilerrt_abort_impl(const char *file, int line, const char *function) {
+@@ -58,8 +58,7 @@ void compilerrt_abort_impl(const char *file, int line, const char *function) {
  #else
  
  /* Get the system definition of abort() */
@@ -322,5 +322,5 @@ diff --git a/make/platform/clang_linux_embedded_test_input.c b/make/platform/cla
 new file mode 100644
 index 000000000..e69de29bb
 -- 
-2.13.0
+2.16.1
 

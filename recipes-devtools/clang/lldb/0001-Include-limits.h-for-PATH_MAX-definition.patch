@@ -1,7 +1,7 @@
-From eba8b855017605c42368e509e599875f71440940 Mon Sep 17 00:00:00 2001
+From d630a82a405c44843bae28286a09ac5f9fa202bd Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 18 May 2017 23:12:34 -0700
-Subject: [PATCH] Include limits.h for PATH_MAX definition
+Subject: [PATCH 1/2] Include limits.h for PATH_MAX definition
 
 Helps compiling on musl targets
 
@@ -11,7 +11,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/source/Utility/FileSpec.cpp b/source/Utility/FileSpec.cpp
-index 3c4e3407d..2d071fa36 100644
+index 72f86917b..965ac744f 100644
 --- a/source/Utility/FileSpec.cpp
 +++ b/source/Utility/FileSpec.cpp
 @@ -31,7 +31,7 @@
@@ -24,5 +24,5 @@ index 3c4e3407d..2d071fa36 100644
  using namespace lldb_private;
  
 -- 
-2.13.0
+2.16.1
 

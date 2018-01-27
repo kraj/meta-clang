@@ -31,7 +31,7 @@ SRC_URI = "\
 # lldb patches
 SRC_URI += "\
     file://0001-Include-limits.h-for-PATH_MAX-definition.patch;patchdir=tools/lldb \
-    file://0001-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch;patchdir=tools/lldb \
+    file://0002-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch;patchdir=tools/lldb \
    "
 SRCREV_FORMAT = "llvm_clang_lldb"
 
