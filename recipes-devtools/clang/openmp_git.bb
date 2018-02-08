@@ -17,7 +17,7 @@ TOOLCHAIN = "clang"
 
 PV .= "+git${SRCPV}"
 
-LIC_FILES_CHKSUM = "file://../LICENSE.txt;md5=5dcbca021bcb2fbc22186bc7a8a159e6; \
+LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=5dcbca021bcb2fbc22186bc7a8a159e6; \
 "
 SRC_URI =  "\
     ${LLVM_GIT}/openmp.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=openmp \
@@ -28,7 +28,7 @@ SRCREV_FORMAT = "openmp"
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 
-S = "${WORKDIR}/git/runtime"
+S = "${WORKDIR}/git"
 
 inherit cmake pkgconfig perlnative
 
