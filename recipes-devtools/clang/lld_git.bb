@@ -6,7 +6,7 @@ HOMEPAGE = "http://lld.llvm.org/"
 LICENSE = "MIT | NCSA"
 SECTION = "devel"
 
-DEPENDS += "clang-native libcxx ninja-native"
+DEPENDS += "clang-native libcxx libxml2 ninja-native"
 
 require clang.inc
 require common.inc
