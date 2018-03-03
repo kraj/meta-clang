@@ -58,7 +58,7 @@ EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 COMPILE_TARGETS ?= "unwind cxxabi"
 COMPILE_TARGETS_mipsarch = "cxxabi"
 
-INSTALL_TARGETS ?= "projects/libunwind/install install-cxxabi"
+INSTALL_TARGETS ?= "install-unwind install-cxxabi"
 INSTALL_TARGETS_mipsarch = "install-cxxabi"
 
 do_compile() {
