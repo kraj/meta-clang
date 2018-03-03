@@ -14,6 +14,7 @@ PV .= "+git${SRCPV}"
 
 DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
+TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 
 PROVIDES = "libunwind"
 PROVIDES_remove_mipsarch = "libunwind"

@@ -27,6 +27,7 @@ SRCREV_FORMAT = "compiler-rt"
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
+TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 
 DEPENDS += "ninja-native"
 
