@@ -67,10 +67,10 @@ EXTRA_OECMAKE="-DLLVM_ENABLE_RTTI=True \
 	      "
 
 EXTRA_OECMAKE_append_class-native = "\
-               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;Mips;PowerPC;X86' \
+               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;BPF;Mips;PowerPC;X86' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
-               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;Mips;PowerPC;X86' \
+               -DLLVM_TARGETS_TO_BUILD='AArch64;ARM;BPF;Mips;PowerPC;X86' \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
