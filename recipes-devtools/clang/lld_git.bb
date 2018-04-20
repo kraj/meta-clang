@@ -41,10 +41,10 @@ EXTRA_OECMAKE = "\
 CXXFLAGS_append_toolchain-clang = " -stdlib=libc++"
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE} lld
+	ninja ${PARALLEL_MAKE} lld
 }
 
 do_install() {
-	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} tools/lld/install
+	DESTDIR=${D} ninja ${PARALLEL_MAKE} tools/lld/install
 }
 BBCLASSEXTEND = "native nativesdk"

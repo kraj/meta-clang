@@ -109,11 +109,11 @@ DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains(
 RRECOMMENDS_${PN} = "binutils"
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+	ninja ${PARALLEL_MAKE}
 }
 
 do_install() {
-        NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+        DESTDIR=${D} ninja ${PARALLEL_MAKE} install
 }
 
 do_install_append_class-native () {

@@ -60,11 +60,11 @@ EXTRA_OECMAKE="\
 EXTRA_OEMAKE = "VERBOSE=1"
 
 do_compile() {
-       NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE} lldb
+       ninja ${PARALLEL_MAKE} lldb
 }
 
 do_install() {
-       NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} tools/lldb/install
+       DESTDIR=${D} ninja ${PARALLEL_MAKE} tools/lldb/install
 }
 
 INSANE_SKIP_${PN}-dbg = "libdir"

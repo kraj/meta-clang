@@ -62,13 +62,13 @@ INSTALL_TARGETS ?= "install-unwind install-cxxabi"
 INSTALL_TARGETS_mipsarch = "install-cxxabi"
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} ${COMPILE_TARGETS}
-	NINJA_STATUS="[%p] " ninja -v ${PARALLEL_MAKE} cxx
+	ninja -v ${PARALLEL_MAKE} ${COMPILE_TARGETS}
+	ninja -v ${PARALLEL_MAKE} cxx
 }
 
 do_install() {
-	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALL_TARGETS}
-	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx
+	DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALL_TARGETS}
+	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx
 }
 
 PACKAGES =+ "libunwind"

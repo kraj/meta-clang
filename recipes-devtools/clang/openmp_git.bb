@@ -37,11 +37,11 @@ EXTRA_OECMAKE = "-G Ninja"
 THUMB_TUNE_CCARGS = ""
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+	ninja ${PARALLEL_MAKE}
 }
 
 do_install() {
-	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+	DESTDIR=${D} ninja ${PARALLEL_MAKE} install
 }
 
 FILES_SOLIBSDEV = ""

@@ -54,11 +54,11 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
 EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER_RT_BUILD_XRAY=OFF "
 
 do_compile() {
-	NINJA_STATUS="[%p] " ninja ${PARALLEL_MAKE}
+	ninja ${PARALLEL_MAKE}
 }
 
 do_install() {
-	NINJA_STATUS="[%p] " DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+	DESTDIR=${D} ninja ${PARALLEL_MAKE} install
 }
 
 
