@@ -1,4 +1,4 @@
-From 7b0b7262849c2e0ff713cd1ce1b38b70ea04f4e5 Mon Sep 17 00:00:00 2001
+From e847b02f05519e1f93d26c1c7985dca9a111f091 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 16 Aug 2017 15:16:15 -0700
 Subject: [PATCH 7/7] clang: Fix ldso for musl on x86 and x32 architectures
@@ -40,5 +40,5 @@ index 624953b17f..69624f8432 100644
        ArchName = Triple.getArchName().str();
      }
 -- 
-2.16.1
+2.17.0
 

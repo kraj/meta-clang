@@ -1,4 +1,4 @@
-From fa869f4c31bf70694014d24f7b50623aa6247f47 Mon Sep 17 00:00:00 2001
+From a71c6f6cad70c1cb094ffd53ca28135eb87df406 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:52:36 -0700
 Subject: [PATCH 1/7] clang: driver: Use /lib for ldso on OE
@@ -52,5 +52,5 @@ index 1301cdf114..d59512627d 100644
      break;
    }
 -- 
-2.16.1
+2.17.0
 

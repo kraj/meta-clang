@@ -1,4 +1,4 @@
-From d4121c0c5ad01dab4f3c35d4fc59ec92bdca36b7 Mon Sep 17 00:00:00 2001
+From 183123464de1762bf755af4f50d77353121188c1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
 Subject: [PATCH 5/7] clang: Look inside the target sysroot for compiler
@@ -40,5 +40,5 @@ index f96a1182e3..d286622f8d 100644
      llvm::sys::path::append(Path, "lib");
    } else {
 -- 
-2.16.1
+2.17.0
 

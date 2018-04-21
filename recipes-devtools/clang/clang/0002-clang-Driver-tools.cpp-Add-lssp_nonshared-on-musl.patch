@@ -1,22 +1,22 @@
-From 1d96d952f5c293847a405d3566011e015aaa0e88 Mon Sep 17 00:00:00 2001
+From 0ace54d609aac7d5f1b67d9474e3782a17bec8bf Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
-Subject: [PATCH 2/7] clang: Driver/tools.cpp: Add -lssp and -lssp_nonshared on
- musl
+Subject: [PATCH 2/7] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
 
-musl driver will need to add ssp libraries to linker cmdline
-when using stack protector commands on compiler cmdline
+musl driver will need to add ssp_nonshared for stack_check_local
+on the linker cmdline when using stack protector commands on
+compiler cmdline
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/ToolChains/Gnu.cpp | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/Driver/ToolChains/Gnu.cpp | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/lib/Driver/ToolChains/Gnu.cpp b/lib/Driver/ToolChains/Gnu.cpp
-index 7845781f12..802d2e4e4f 100644
+index 7845781f12..bbe7845765 100644
 --- a/lib/Driver/ToolChains/Gnu.cpp
 +++ b/lib/Driver/ToolChains/Gnu.cpp
-@@ -518,6 +518,13 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+@@ -518,6 +518,12 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
        if (IsIAMCU)
          CmdArgs.push_back("-lgloss");
  
@@ -25,11 +25,10 @@ index 7845781f12..802d2e4e4f 100644
 +          Args.hasArg(options::OPT_fstack_protector_strong) ||
 +          Args.hasArg(options::OPT_fstack_protector_all))) {
 +        CmdArgs.push_back("-lssp_nonshared");
-+        CmdArgs.push_back("-lssp");
 +      }
        if (Args.hasArg(options::OPT_static))
          CmdArgs.push_back("--end-group");
        else
 -- 
-2.16.1
+2.17.0
 
