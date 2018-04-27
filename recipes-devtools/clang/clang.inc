@@ -7,9 +7,9 @@ LLVM_GIT_PROTOCOL ?= "git"
 #
 # Uncomment below to enable master version of clang/llvm
 #
-MAJOR_VER="6"
-MINOR_VER="0"
-PATCH_VER="1"
+MAJOR_VER = "6"
+MINOR_VER = "0"
+PATCH_VER = "1"
 
 PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 BRANCH = "release_60"
