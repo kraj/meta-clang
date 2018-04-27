@@ -9,9 +9,11 @@ LLVM_GIT_PROTOCOL ?= "git"
 #
 MAJOR_VER="6"
 MINOR_VER="0"
-PATCH_VER="0"
+PATCH_VER="1"
+
 PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 BRANCH = "release_60"
+
 SRCREV_llvm = "f1b37feef3d5f09dadf6a46fdb11fa7e4218cf6c"
 SRCREV_clang = "0e746072ed897a85b4f533ab050b9f506941a097"
 SRCREV_compiler-rt = "9d61c78bced84866cc886f1f1111c8e51c1d52d5"
