@@ -20,7 +20,6 @@ SRC_URI =  "\
     file://0002-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
     file://0003-Disable-tsan-on-OE-glibc.patch \
     file://0004-cmake-mips-Do-not-specify-target-with-OE.patch \
-    file://0005-Pass-march-armv8.1-a-instead-of-mcrc.patch \
 "
 
 SRCREV_FORMAT = "compiler-rt"
@@ -28,6 +27,7 @@ SRCREV_FORMAT = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
+TUNE_CCARGS_remove = "-no-integrated-as"
 
 DEPENDS += "ninja-native"
 
