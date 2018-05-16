@@ -27,7 +27,7 @@ do_buildscan() {
         #export MAKE="${mk}"
         export CC="${cc}"
         export CXX="${cxx}"
-        scan-build --use-cc=${cc} --use-c++=${cxx} --analyzer-target=${HOST_SYS} --html-title="${BP}" -o ${SCAN_RESULTS_DIR} ${EXTRA_ANALYZER_OPTIONS} ${MAKE} ${EXTRA_OEMAKE} "$@" -C ${S}
+        scan-build --use-cc=${cc} --use-c++=${cxx} --analyzer-target=${HOST_SYS} --html-title="${BP}" -o ${SCAN_RESULTS_DIR} ${EXTRA_ANALYZER_OPTIONS} ${MAKE} ${EXTRA_OEMAKE}
 }
 
 do_viewscan() {
@@ -40,7 +40,8 @@ do_viewscan() {
 
 do_viewscan[depends] += "${PN}:do_buildscan"
 do_buildscan[cleandirs] += "${SCAN_RESULTS_DIR}"
-do_buildscan[dirs] += "${SCAN_RESULTS_DIR}"
+do_buildscan[dirs] += "${B}"
+do_viewscan[dirs] += "${SCAN_RESULTS_DIR}"
 #do_build[recrdeptask] += "do_buildscan"
 
 do_buildscan[doc] = "Build and scan static analysis data using clang"
