@@ -77,5 +77,7 @@ FILES_libunwind += "${libdir}/libunwind.so.*"
 
 ALLOW_EMPTY_${PN} = "1"
 
+RDEPENDS_${PN}-dev += "${PN}-staticdev"
+
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN = "clang"
