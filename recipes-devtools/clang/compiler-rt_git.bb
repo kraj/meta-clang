@@ -94,6 +94,9 @@ INSANE_SKIP_${PN} = "dev-so"
 #        "
 #
 
+RDEPENDS_${PN}-dev += "${PN}-staticdev"
+
 BBCLASSEXTEND = "native nativesdk"
 
 ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY_${PN}-dev = "1"
