@@ -19,6 +19,7 @@ CLANGPATCHES = "\
     file://0006-clang-Define-releative-gcc-installation-dir.patch;patchdir=tools/clang \
     file://0007-clang-Fix-ldso-for-musl-on-x86-and-x32-architectures.patch;patchdir=tools/clang \
     file://0008-clang-scan-view-needs-python-2.x.patch;patchdir=tools/clang \
+    file://0009-clang-Driver-Avoid-invalidated-iterator-in-insertTar.patch;patchdir=tools/clang \
 "
 #CLANGPATCHES += "${@'file://0007-clang-Enable-SSP-and-PIE-by-default.patch;patchdir=tools/clang' if '${GCCPIE}' else ''}"
 
