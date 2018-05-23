@@ -51,11 +51,14 @@ def get_clang_host_arch(bb, d):
 def get_clang_target_arch(bb, d):
     return get_clang_arch(bb, d, 'TARGET_ARCH')
 
-PACKAGECONFIG ??= "compiler-rt libcplusplus"
+PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs"
 PACKAGECONFIG_class-native = ""
+PACKAGECONFIG_class-nativesdk = "compiler-rt libcplusplus"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
+PACKAGECONFIG[shared-libs] = "-DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_LINK_LLVM_DYLIB=ON,,,"
+
 #
 # Default to build all OE-Core supported target arches (user overridable).
 #
@@ -92,8 +95,6 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
 "
 EXTRA_OECMAKE_append_class-target = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
-                  -DLLVM_BUILD_LLVM_DYLIB=ON \
-                  -DLLVM_LINK_LLVM_DYLIB=ON \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD_TARGET}' \
