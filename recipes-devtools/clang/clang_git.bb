@@ -159,3 +159,6 @@ FILES_${PN}-dev += "\
 
 INSANE_SKIP_${PN} += "already-stripped"
 INSANE_SKIP_${PN}-dev += "dev-elf"
+
+#Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
+SSTATE_SCAN_FILES_remove = "*-config"
