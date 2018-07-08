@@ -1,4 +1,4 @@
-RDEPENDS_${PN}_toolchain-clang += "\
+RDEPENDS_${PN} += "\
     libcxx-dev \
     libcxx-staticdev \
     compiler-rt-dev \
