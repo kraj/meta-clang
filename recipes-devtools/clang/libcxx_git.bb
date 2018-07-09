@@ -16,8 +16,11 @@ DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 
-PROVIDES = "libunwind"
-PROVIDES_remove_mipsarch = "libunwind"
+PACKAGECONFIG ??= "unwind"
+PACKAGECONFIG_mipsarch = ""
+PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
+
+PROVIDES = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 
 LIC_FILES_CHKSUM = "file://projects/libcxx/LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \
 "
@@ -42,37 +45,34 @@ EXTRA_OECMAKE += "\
                   -DLIBCXX_CXX_ABI=libcxxabi \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
                   -DCXX_SUPPORTS_CXX11=ON \
-                  -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/projects/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/projects/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
-                  -DLIBCXXABI_USE_LLVM_UNWINDER=${USE_LLVM_UNWINDER} \
                   -G Ninja \
                   ${S} \
 "
-USE_LLVM_UNWINDER ?= "ON"
-USE_LLVM_UNWINDER_mipsarch = "OFF"
 
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
-COMPILE_TARGETS ?= "unwind cxxabi"
-COMPILE_TARGETS_mipsarch = "cxxabi"
-
-INSTALL_TARGETS ?= "install-unwind install-cxxabi"
-INSTALL_TARGETS_mipsarch = "install-cxxabi"
-
 do_compile() {
-	ninja -v ${PARALLEL_MAKE} ${COMPILE_TARGETS}
+
+	ninja -v ${PARALLEL_MAKE} cxxabi
 	ninja -v ${PARALLEL_MAKE} cxx
+	if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
+		ninja -v ${PARALLEL_MAKE} unwind
+	fi
+
 }
 
 do_install() {
-	DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALL_TARGETS}
+	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxxabi
 	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx
+	if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
+		DESTDIR=${D} ninja ${PARALLEL_MAKE} install-unwind
+	fi
 }
 
-PACKAGES =+ "libunwind"
-PACKAGES_remove_mipsarch = "libunwind"
+PACKAGES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 FILES_libunwind += "${libdir}/libunwind.so.*"
 
 ALLOW_EMPTY_${PN} = "1"
