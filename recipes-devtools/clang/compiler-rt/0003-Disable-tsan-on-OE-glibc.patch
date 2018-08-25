@@ -1,4 +1,4 @@
-From 2e8c6df7fe6e120063c3bdb87fb95e1326cf8434 Mon Sep 17 00:00:00 2001
+From c90304ffca9c886443e5736ae312e32415651dfe Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
 Subject: [PATCH 3/5] Disable tsan on OE/glibc
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/cmake/config-ix.cmake b/cmake/config-ix.cmake
-index 9e0c47748..227d661ae 100644
+index f3935ffd6..2c651b756 100644
 --- a/cmake/config-ix.cmake
 +++ b/cmake/config-ix.cmake
-@@ -549,7 +549,7 @@ else()
+@@ -564,7 +564,7 @@ else()
  endif()
  
  if (COMPILER_RT_HAS_SANITIZER_COMMON AND TSAN_SUPPORTED_ARCH AND
@@ -26,17 +26,17 @@ index 9e0c47748..227d661ae 100644
  else()
    set(COMPILER_RT_HAS_TSAN FALSE)
 diff --git a/test/sanitizer_common/CMakeLists.txt b/test/sanitizer_common/CMakeLists.txt
-index 8b210a08a..50b6f7166 100644
+index 4e2c80390..990315f11 100644
 --- a/test/sanitizer_common/CMakeLists.txt
 +++ b/test/sanitizer_common/CMakeLists.txt
-@@ -8,7 +8,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux|FreeBSD|NetBSD")
+@@ -8,7 +8,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux|FreeBSD|NetBSD|SunOS")
    list(APPEND SUPPORTED_TOOLS asan)
  endif()
- if(CMAKE_SYSTEM_NAME MATCHES "Linux" AND NOT ANDROID)
+ if(CMAKE_SYSTEM_NAME MATCHES "NetBSD" OR (CMAKE_SYSTEM_NAME MATCHES "Linux" AND NOT ANDROID))
 -  list(APPEND SUPPORTED_TOOLS tsan)
    list(APPEND SUPPORTED_TOOLS msan)
-   list(APPEND SUPPORTED_TOOLS lsan)
    list(APPEND SUPPORTED_TOOLS ubsan)
+ endif()
 -- 
-2.16.1
+2.18.0
 

@@ -1,7 +1,7 @@
-From 9a91d0b82ba48a9e2f634197809a1323298ef285 Mon Sep 17 00:00:00 2001
+From e6232d22df73b80ced3784fd85166ebe24e6c31b Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 21 May 2017 15:38:25 -0700
-Subject: [PATCH 6/7] clang: Define / releative gcc installation dir
+Subject: [PATCH 6/8] clang: Define / releative gcc installation dir
 
 This is required for OE gcc installation to work.
 Without this its not able to find the paths for libgcc
@@ -10,21 +10,23 @@ installation in OE
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/ToolChains/Gnu.cpp | 1 +
- 1 file changed, 1 insertion(+)
+ lib/Driver/ToolChains/Gnu.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/lib/Driver/ToolChains/Gnu.cpp b/lib/Driver/ToolChains/Gnu.cpp
-index bbe7845765..692385ff27 100644
+index 766c650b3c..777526e063 100644
 --- a/lib/Driver/ToolChains/Gnu.cpp
 +++ b/lib/Driver/ToolChains/Gnu.cpp
-@@ -2070,6 +2070,7 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+@@ -2190,6 +2190,9 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+       {"gcc-cross/" + CandidateTriple.str(), "../..",
+        TargetTriple.getOS() != llvm::Triple::Solaris},
  
-     // Debian puts cross-compilers in gcc-cross.
-     {"gcc-cross/" + CandidateTriple.str(), "../..", true},
-+    {"/" + CandidateTriple.str(), "..", true},
- 
-     // The Freescale PPC SDK has the gcc libraries in
-     // <sysroot>/usr/lib/<triple>/x.y.z so have a look there as well. Only do
++      // OE cross-compilers path structures
++      {"/" + CandidateTriple.str(), "..", true},
++
+       // The Freescale PPC SDK has the gcc libraries in
+       // <sysroot>/usr/lib/<triple>/x.y.z so have a look there as well. Only do
+       // this on Freescale triples, though, since some systems put a *lot* of
 -- 
-2.17.0
+2.18.0
 

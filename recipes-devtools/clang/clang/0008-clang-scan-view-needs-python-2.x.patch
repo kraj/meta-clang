@@ -1,4 +1,4 @@
-From 38ea94d7476866d1ba337414e6834c5432140de8 Mon Sep 17 00:00:00 2001
+From 846e59787ec12b6cd817640151d1f23d3b78d6b5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 15 May 2018 10:28:43 -0700
 Subject: [PATCH 8/8] clang: scan-view needs python 2.x
@@ -23,5 +23,5 @@ index 1b6e8ba90d..7c5867d1be 100755
  """The clang static analyzer results viewer.
  """
 -- 
-2.17.0
+2.18.0
 
