@@ -83,7 +83,7 @@ FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
                 ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt"
 FILES_${PN}-staticdev += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES_${PN}-dev += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms"
+FILES_${PN}-dev += "${datadir} ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms"
 INSANE_SKIP_${PN} = "dev-so"
 
 #PROVIDES_append_class-target = "\
