@@ -19,11 +19,12 @@ do_install() {
         install -d  ${D}${bindir}
         ln -sf ../clang ${D}${bindir}/${TARGET_PREFIX}clang
         ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
+        ln -sf ../llvm-profdata ${D}${bindir}/${TARGET_PREFIX}llvm-profdata
 }
 
 sysroot_stage_all () {
         sysroot_stage_dir ${D}${bindir} ${SYSROOT_DESTDIR}${bindir}
 }
 
-SSTATE_SCAN_FILES += "*-clang *-clang++"
+SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata"
 PACKAGES = ""
