@@ -1,4 +1,4 @@
-From 397a9e7dc35a7b360bb8466996ae7755574dc04c Mon Sep 17 00:00:00 2001
+From 479c943c3b87887d2b93c711220894e94d49979d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 22 May 2017 17:36:16 -0700
 Subject: [PATCH 2/2] lldb: Add -lxml2 to linker cmdline of xml is found
@@ -19,24 +19,22 @@ Fixes
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- source/Host/CMakeLists.txt | 4 ++++
- 1 file changed, 4 insertions(+)
+ source/Host/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/source/Host/CMakeLists.txt b/source/Host/CMakeLists.txt
-index 2b6f0e48a..1a910a9af 100644
+index 5a92447ed..22ce6eee4 100644
 --- a/source/Host/CMakeLists.txt
 +++ b/source/Host/CMakeLists.txt
-@@ -175,6 +175,10 @@ if (NOT LLDB_DISABLE_LIBEDIT)
-   list(APPEND EXTRA_LIBS edit)
- endif()
- 
-+if (LIBXML2_FOUND)
-+ list(APPEND EXTRA_LIBS xml2)
-+endif ()
-+
- add_lldb_library(lldbHost
-   ${HOST_SOURCES}
-   
+@@ -149,7 +149,7 @@ if (APPLE)
+   list(APPEND EXTRA_LIBS xml2)
+ else ()
+   if (LIBXML2_FOUND)
+-    list(APPEND EXTRA_LIBS ${LIBXML2_LIBRARIES})
++    list(APPEND EXTRA_LIBS xml2)
+   endif()
+ endif ()
+ if (HAVE_LIBDL)
 -- 
-2.16.1
+2.18.0
 

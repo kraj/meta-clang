@@ -1,7 +1,7 @@
-From 2f8ea767afdaa440c6368040630e1b3ea6a0977a Mon Sep 17 00:00:00 2001
+From c65c0af4a5721e3c0dfcc56c15ef3310a54e0008 Mon Sep 17 00:00:00 2001
 From: Martin Kelly <mkelly@xevo.com>
 Date: Fri, 19 May 2017 00:22:57 -0700
-Subject: [PATCH 2/2] llvm: allow env override of exe path
+Subject: [PATCH 2/3] llvm: allow env override of exe path
 
 When using a native llvm-config from inside a sysroot, we need llvm-config to
 return the libraries, include directories, etc. from inside the sysroot rather
@@ -15,12 +15,12 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+)
 
 diff --git a/tools/llvm-config/llvm-config.cpp b/tools/llvm-config/llvm-config.cpp
-index 08b096afb05..d8d7742744e 100644
+index 892adc3b9dd..38f190ecbd1 100644
 --- a/tools/llvm-config/llvm-config.cpp
 +++ b/tools/llvm-config/llvm-config.cpp
-@@ -225,6 +225,13 @@ Typical components:\n\
+@@ -226,6 +226,13 @@ Typical components:\n\
  
- /// \brief Compute the path to the main executable.
+ /// Compute the path to the main executable.
  std::string GetExecutablePath(const char *Argv0) {
 +  // Hack for Yocto: we need to override the root path when we are using
 +  // llvm-config from within a target sysroot.
@@ -33,5 +33,5 @@ index 08b096afb05..d8d7742744e 100644
    // allow taking the address of ::main however.
    void *P = (void *)(intptr_t)GetExecutablePath;
 -- 
-2.16.1
+2.18.0
 

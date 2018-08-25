@@ -1,7 +1,7 @@
-From d02f7f858c22fc1dcbc1ea3a96a597bcc4aa4d77 Mon Sep 17 00:00:00 2001
+From 48fa180df65f7ee63a85dd69fd2c1382609c5e95 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 10 May 2016 02:00:11 -0700
-Subject: [PATCH 3/7] clang: musl/ppc does not support 128-bit long double
+Subject: [PATCH 3/8] clang: musl/ppc does not support 128-bit long double
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/lib/Basic/Targets/PPC.h b/lib/Basic/Targets/PPC.h
-index 04bef258e3..0ae210698a 100644
+index 439c73a0e3..8da698ee21 100644
 --- a/lib/Basic/Targets/PPC.h
 +++ b/lib/Basic/Targets/PPC.h
-@@ -272,7 +272,8 @@ public:
+@@ -328,7 +328,8 @@ public:
        break;
      }
  
@@ -23,5 +23,5 @@ index 04bef258e3..0ae210698a 100644
        LongDoubleFormat = &llvm::APFloat::IEEEdouble();
      }
 -- 
-2.17.0
+2.18.0
 
