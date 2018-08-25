@@ -143,12 +143,14 @@ BBCLASSEXTEND = "native nativesdk"
 FILES_${PN} += "\
   ${libdir}/BugpointPasses.so \
   ${libdir}/LLVMHello.so \
+  ${libdir}/TestPlugin.so \
   ${datadir}/scan-* \
   ${datadir}/opt-viewer/ \
 "
 
 FILES_${PN}-libllvm += "\
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}.so \
+  ${libdir}/libLLVM-${MAJOR_VER}.so \
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}svn.so \
 "
 

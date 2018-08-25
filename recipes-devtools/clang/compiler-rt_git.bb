@@ -12,7 +12,7 @@ TOOLCHAIN = "clang"
 
 PV .= "+git${SRCPV}"
 
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=bf24bca27049b52e9738451aa55771d4; \
+LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=92bfbe70fc44c6e5efc6403a31180ed7; \
 "
 SRC_URI =  "\
     ${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \

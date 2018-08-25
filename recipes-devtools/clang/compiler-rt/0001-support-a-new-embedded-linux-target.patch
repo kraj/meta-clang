@@ -1,13 +1,13 @@
-From 1a82e4a75ef6bf24597e886446ca06aa063a0c7f Mon Sep 17 00:00:00 2001
+From 0bff81915ecc52416e20b7226dddf6d7f3df29c9 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 19 Apr 2015 15:16:23 -0700
 Subject: [PATCH 1/5] support a new embedded linux target
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/builtins/int_util.c                         |   3 +-
- make/platform/clang_linux_embedded.mk           | 286 ++++++++++++++++++++++++
- make/platform/clang_linux_embedded_test_input.c |   0
+ lib/builtins/int_util.c                       |   3 +-
+ make/platform/clang_linux_embedded.mk         | 286 ++++++++++++++++++
+ .../clang_linux_embedded_test_input.c         |   0
  3 files changed, 287 insertions(+), 2 deletions(-)
  create mode 100644 make/platform/clang_linux_embedded.mk
  create mode 100644 make/platform/clang_linux_embedded_test_input.c
@@ -322,5 +322,5 @@ diff --git a/make/platform/clang_linux_embedded_test_input.c b/make/platform/cla
 new file mode 100644
 index 000000000..e69de29bb
 -- 
-2.16.1
+2.18.0
 

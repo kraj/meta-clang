@@ -1,0 +1,65 @@
+From cb1b6f021d2ce82d7d0084758b7efaa3917640f5 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sun, 26 Aug 2018 22:43:19 -0700
+Subject: [PATCH 3/3] llvm: Disable calls to *_finite and other glibc-only
+ functions on Musl.
+
+glibc's finite lib calls are generated when possible.
+However, they are not supported on Musl/linux. This change also
+disables other functions not available on Musl.
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ lib/Analysis/TargetLibraryInfo.cpp | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/lib/Analysis/TargetLibraryInfo.cpp b/lib/Analysis/TargetLibraryInfo.cpp
+index 102135fbf31..5bc4d2b47f5 100644
+--- a/lib/Analysis/TargetLibraryInfo.cpp
++++ b/lib/Analysis/TargetLibraryInfo.cpp
+@@ -415,27 +415,28 @@ static void initialize(TargetLibraryInfoImpl &TLI, const Triple &T,
+ 
+   // The following functions are available on Linux,
+   // but Android uses bionic instead of glibc.
+-  if (!T.isOSLinux() || T.isAndroid()) {
++  if (!T.isOSLinux() || T.isAndroid() || T.isMusl()) {
+     TLI.setUnavailable(LibFunc_dunder_strdup);
+     TLI.setUnavailable(LibFunc_dunder_strtok_r);
+     TLI.setUnavailable(LibFunc_dunder_isoc99_scanf);
+     TLI.setUnavailable(LibFunc_dunder_isoc99_sscanf);
+     TLI.setUnavailable(LibFunc_under_IO_getc);
+     TLI.setUnavailable(LibFunc_under_IO_putc);
+-    // But, Android has memalign.
+-    if (!T.isAndroid())
++    // But, Android/Musl has memalign.
++    if (!T.isAndroid() || !T.isMusl() )
+       TLI.setUnavailable(LibFunc_memalign);
+-    TLI.setUnavailable(LibFunc_fopen64);
+-    TLI.setUnavailable(LibFunc_fseeko64);
+-    TLI.setUnavailable(LibFunc_fstat64);
+-    TLI.setUnavailable(LibFunc_fstatvfs64);
+-    TLI.setUnavailable(LibFunc_ftello64);
+-    TLI.setUnavailable(LibFunc_lstat64);
+-    TLI.setUnavailable(LibFunc_open64);
+-    TLI.setUnavailable(LibFunc_stat64);
+-    TLI.setUnavailable(LibFunc_statvfs64);
+-    TLI.setUnavailable(LibFunc_tmpfile64);
+-
++    if (!T.isMusl()) {
++      TLI.setUnavailable(LibFunc_fopen64);
++      TLI.setUnavailable(LibFunc_fseeko64);
++      TLI.setUnavailable(LibFunc_fstat64);
++      TLI.setUnavailable(LibFunc_fstatvfs64);
++      TLI.setUnavailable(LibFunc_ftello64);
++      TLI.setUnavailable(LibFunc_lstat64);
++      TLI.setUnavailable(LibFunc_open64);
++      TLI.setUnavailable(LibFunc_stat64);
++      TLI.setUnavailable(LibFunc_statvfs64);
++      TLI.setUnavailable(LibFunc_tmpfile64);
++    }
+     // Relaxed math functions are included in math-finite.h on Linux (GLIBC).
+     TLI.setUnavailable(LibFunc_acos_finite);
+     TLI.setUnavailable(LibFunc_acosf_finite);
+-- 
+2.18.0
+

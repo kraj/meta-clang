@@ -23,6 +23,8 @@ PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_
 PROVIDES = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 
 LIC_FILES_CHKSUM = "file://projects/libcxx/LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \
+                    file://projects/libcxxabi/LICENSE.TXT;md5=3600117b7c18121ab04c53e4615dc36e \
+                    file://projects/libunwind/LICENSE.TXT;md5=7ea986af7f70eaea5a297dd2744c79a5 \
 "
 SRC_URI = "\
     ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
