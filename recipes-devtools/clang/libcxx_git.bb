@@ -17,10 +17,11 @@ BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 
 PACKAGECONFIG ??= "unwind"
+PACKAGECONFIG_powerpc = ""
 PACKAGECONFIG_mipsarch = ""
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
 
-PROVIDES = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
+PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 
 LIC_FILES_CHKSUM = "file://projects/libcxx/LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \
                     file://projects/libcxxabi/LICENSE.TXT;md5=3600117b7c18121ab04c53e4615dc36e \
