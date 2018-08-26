@@ -65,17 +65,18 @@ do_install() {
 
 
 do_install_append () {
-	install -d ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux
 	if [ -d ${D}${libdir}/linux ]; then
 		for f in `find ${D}${libdir}/linux -maxdepth 1 -type f`
 		do
-			mv $f ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux
+			install -D -m 0644 $f ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/`basename $f`
+			rm $f
 		done
 		rmdir ${D}${libdir}/linux
 	fi
 	for f in `find ${D}${exec_prefix} -maxdepth 1 -name '*.txt' -type f`
 	do
-		mv $f ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
+		install -D -m 0644  $f ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/`basename $f`
+		rm $f
 	done
 }
 
