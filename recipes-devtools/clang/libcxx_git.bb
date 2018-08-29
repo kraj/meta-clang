@@ -19,6 +19,7 @@ TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_powerpc = ""
 PACKAGECONFIG_mipsarch = ""
+PACKAGECONFIG_riscv64 = ""
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
 
 PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
