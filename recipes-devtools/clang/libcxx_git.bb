@@ -13,7 +13,7 @@ inherit cmake pythonnative
 PV .= "+git${SRCPV}"
 
 DEPENDS += "ninja-native"
-BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
+BASEDEPENDS_remove_toolchain-clang = "libcxx"
 TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 
 PACKAGECONFIG ??= "unwind"
@@ -56,6 +56,8 @@ EXTRA_OECMAKE += "\
                   ${S} \
 "
 
+EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
+EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
 do_compile() {
