@@ -6,7 +6,8 @@ HOMEPAGE = "http://lld.llvm.org/"
 LICENSE = "MIT | NCSA"
 SECTION = "devel"
 
-DEPENDS += "clang-native libcxx libxml2 ninja-native"
+DEPENDS += "clang-native libxml2 ninja-native"
+DEPENDS_append_class-target = " libcxx"
 
 require clang.inc
 require common.inc
@@ -38,7 +39,7 @@ EXTRA_OECMAKE = "\
     -G Ninja \
     ${S} \
 "
-CXXFLAGS_append_toolchain-clang = " -stdlib=libc++"
+CXXFLAGS_append_class-target_toolchain-clang = " -stdlib=libc++"
 
 do_compile() {
 	ninja ${PARALLEL_MAKE} lld
@@ -47,4 +48,5 @@ do_compile() {
 do_install() {
 	DESTDIR=${D} ninja ${PARALLEL_MAKE} tools/lld/install
 }
+
 BBCLASSEXTEND = "native nativesdk"
