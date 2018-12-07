@@ -21,7 +21,7 @@ CLANGPATCHES = "\
     file://0007-clang-Fix-ldso-for-musl-on-x86-and-x32-architectures.patch;patchdir=tools/clang \
     file://0008-clang-scan-view-needs-python-2.x.patch;patchdir=tools/clang \
 "
-#CLANGPATCHES += "${@'file://0007-clang-Enable-SSP-and-PIE-by-default.patch;patchdir=tools/clang' if '${GCCPIE}' else ''}"
+CLANGPATCHES += "${@'file://0009-clang-Enable-SSP-and-PIE-by-default.patch;patchdir=tools/clang' if '${GCCPIE}' else ''}"
 
 # libcxxabi patches
 LIBCXXABIPATCHES ="\
