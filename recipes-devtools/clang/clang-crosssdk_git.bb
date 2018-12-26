@@ -11,7 +11,7 @@ PN = "clang-crosssdk-${TARGET_ARCH}"
 
 require clang.inc
 inherit crosssdk
-DEPENDS += "clang-native nativesdk-clang-glue virtual/${TARGET_PREFIX}binutils-crosssdk virtual/nativesdk-${TARGET_PREFIX}libc-for-gcc"
+DEPENDS += "clang-native nativesdk-clang-glue virtual/${TARGET_PREFIX}binutils-crosssdk virtual/nativesdk-libc"
 
 S = "${WORKDIR}"
 
