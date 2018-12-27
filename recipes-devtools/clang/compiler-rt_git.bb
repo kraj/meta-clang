@@ -7,33 +7,21 @@ LICENSE = "MIT | NCSA"
 SECTION = "base"
 
 require clang.inc
+require common-source.inc
 
-TOOLCHAIN = "clang"
+inherit cmake pkgconfig pythonnative
 
-PV .= "+git${SRCPV}"
 
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=92bfbe70fc44c6e5efc6403a31180ed7; \
+LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=92bfbe70fc44c6e5efc6403a31180ed7; \
 "
-SRC_URI =  "\
-    ${LLVM_GIT}/compiler-rt.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=compiler-rt \
-    file://0001-support-a-new-embedded-linux-target.patch \
-    file://0002-Simplify-cross-compilation.-Don-t-use-native-compile.patch \
-    file://0003-Disable-tsan-on-OE-glibc.patch \
-    file://0004-cmake-mips-Do-not-specify-target-with-OE.patch \
-"
-
-SRCREV_FORMAT = "compiler-rt"
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 TUNE_CCARGS_remove = "-no-integrated-as"
+LDFLAGS_append = " -fuse-ld=lld"
 
 DEPENDS += "ninja-native"
-
-S = "${WORKDIR}/git"
-
-inherit cmake pkgconfig pythonnative
 
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
@@ -43,7 +31,7 @@ HF[vardepvalue] = "${HF}"
 EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=ON \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_XRAY=OFF \
-                  -G Ninja \
+                  -G Ninja ${S}/compiler-rt \
 "
 
 EXTRA_OECMAKE_append_class-nativesdk = "\
@@ -101,3 +89,5 @@ BBCLASSEXTEND = "native nativesdk"
 
 ALLOW_EMPTY_${PN} = "1"
 ALLOW_EMPTY_${PN}-dev = "1"
+
+TOOLCHAIN = "clang"

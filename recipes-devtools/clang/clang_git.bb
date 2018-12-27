@@ -3,29 +3,12 @@
 
 DESCRIPTION = "LLVM based C/C++ compiler"
 HOMEPAGE = "http://clang.llvm.org/"
-LICENSE = "NCSA"
 SECTION = "devel"
 
 require clang.inc
-require common.inc
-
-PV .= "+git${SRCPV}"
-
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
-                    file://tools/clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
-                   "
-SRC_URI = "\
-    ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
-    ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
-    ${LLVMPATCHES} \
-    ${CLANGPATCHES} \
-   "
-
-SRCREV_FORMAT = "llvm_clang"
+require common-source.inc
 
 INHIBIT_DEFAULT_DEPS = "1"
-
-S = "${WORKDIR}/git"
 
 inherit cmake cmake-native
 
@@ -80,7 +63,8 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DCMAKE_SYSTEM_NAME=Linux \
                   -DCMAKE_BUILD_TYPE=Release \
                   -DBUILD_SHARED_LIBS=OFF \
-                  -G Ninja \
+                  -DLLVM_ENABLE_PROJECTS='clang;lld' \
+                  -G Ninja ${S}/llvm \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
@@ -90,6 +74,7 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_TOOLCHAIN_FILE=${WORKDIR}/toolchain-native.cmake' \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
+                  -DLLVM_ENABLE_RUNTIMES='compiler-rt;libcxx;libcxxabi;libunwind' \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "

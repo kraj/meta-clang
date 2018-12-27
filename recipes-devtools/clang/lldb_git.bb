@@ -8,34 +8,15 @@ SECTION = "devel"
 
 DEPENDS += "clang-native zlib libxml2 ninja-native"
 
-FILESPATH =. "${FILE_DIRNAME}/clang:"
 require clang.inc
-require common.inc
+require common-source.inc
 
 inherit cmake pkgconfig
-PV .= "+git${SRCPV}"
 
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=${LLVMMD5SUM}; \
-                    file://tools/clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
-                    file://tools/lldb/LICENSE.TXT;md5=${LLDBMD5SUM}; \
-                   "
-
-SRC_URI = "\
-    ${LLVM_GIT}/llvm.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};name=llvm \
-    ${LLVM_GIT}/clang.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/clang;name=clang \
-    ${LLVM_GIT}/lldb.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH};destsuffix=git/tools/lldb;name=lldb \
-    ${LLVMPATCHES} \
-    ${CLANGPATCHES} \
-   "
-
-# lldb patches
-SRC_URI += "\
-    file://0001-Include-limits.h-for-PATH_MAX-definition.patch;patchdir=tools/lldb \
-    file://0002-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch;patchdir=tools/lldb \
-   "
-SRCREV_FORMAT = "llvm_clang_lldb"
-
-S = "${WORKDIR}/git"
+LIC_FILES_CHKSUM = "file://llvm/LICENSE.TXT;md5=${LLVMMD5SUM}; \
+                    file://clang/LICENSE.TXT;md5=${CLANGMD5SUM}; \
+                    file://lldb/LICENSE.TXT;md5=${LLDBMD5SUM}; \
+"
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
@@ -52,10 +33,15 @@ EXTRA_OECMAKE="\
     -DLLVM_ENABLE_TERMINFO=0 \
     -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
     -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
+    -DLLVM_HOST_TRIPLE=${TARGET_SYS} \
+    -DLLDB_TEST_USE_CUSTOM_C_COMPILER=ON \
+    -DLLDB_TEST_USE_CUSTOM_CXX_COMPILER=ON \
+    -DLLDB_TEST_C_COMPILER='${CC}' \
+    -DLLDB_TEST_CXX_COMPILER='${CXX}' \
     -DCMAKE_BUILD_TYPE=Release \
-    -G Ninja \
-    ${S} \
-    "
+    -DLLVM_ENABLE_PROJECTS='clang;lldb' \
+    -G Ninja ${S}/llvm \
+"
 
 EXTRA_OEMAKE = "VERBOSE=1"
 

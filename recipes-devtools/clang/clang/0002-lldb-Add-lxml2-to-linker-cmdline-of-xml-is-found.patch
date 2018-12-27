@@ -1,4 +1,4 @@
-From 479c943c3b87887d2b93c711220894e94d49979d Mon Sep 17 00:00:00 2001
+From fa140ec90e72da40d49301e674c84854fdac804b Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 22 May 2017 17:36:16 -0700
 Subject: [PATCH 2/2] lldb: Add -lxml2 to linker cmdline of xml is found
@@ -36,5 +36,5 @@ index 5a92447ed..22ce6eee4 100644
  endif ()
  if (HAVE_LIBDL)
 -- 
-2.18.0
+2.20.1
 

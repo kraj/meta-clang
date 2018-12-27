@@ -10,6 +10,7 @@ SECTION = "devel"
 PN = "clang-cross-canadian-${TRANSLATED_TARGET_ARCH}"
 
 require clang.inc
+require common-source.inc
 inherit cross-canadian
 
 DEPENDS += "nativesdk-clang binutils-cross-canadian-${TRANSLATED_TARGET_ARCH} virtual/${HOST_PREFIX}binutils-crosssdk virtual/nativesdk-libc"
@@ -17,8 +18,6 @@ DEPENDS += "nativesdk-clang binutils-cross-canadian-${TRANSLATED_TARGET_ARCH} vi
 # e.g. we switch between different machines with different tunes.
 EXTRA_OECONF_PATHS[vardepsexclude] = "TUNE_PKGARCH"
 TARGET_ARCH[vardepsexclude] = "TUNE_ARCH"
-
-S = "${WORKDIR}"
 
 do_install() {
         install -d  ${D}${bindir}

@@ -1,7 +1,7 @@
-From d1b12ce65b563ed5eb0fdd6460d592d829fabc75 Mon Sep 17 00:00:00 2001
+From ff8d7137ed4d62e9db6d31581822a2ce06d5cbc6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 18 May 2017 23:12:34 -0700
-Subject: [PATCH 1/2] Include limits.h for PATH_MAX definition
+Subject: [PATCH 1/2] lldb: Include limits.h for PATH_MAX definition
 
 Helps compiling on musl targets
 
@@ -24,5 +24,5 @@ index b6952f7e3..2cedf5d90 100644
  using namespace lldb_private;
  
 -- 
-2.18.0
+2.20.1
 
