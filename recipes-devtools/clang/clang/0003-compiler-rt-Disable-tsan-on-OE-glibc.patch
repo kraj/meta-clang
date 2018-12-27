@@ -1,7 +1,7 @@
-From c90304ffca9c886443e5736ae312e32415651dfe Mon Sep 17 00:00:00 2001
+From c7d41a6e4dd61733530d2f44c377b91e13004b71 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
-Subject: [PATCH 3/5] Disable tsan on OE/glibc
+Subject: [PATCH 3/4] compiler-rt: Disable tsan on OE/glibc
 
 It does not build see
 http://lists.llvm.org/pipermail/llvm-dev/2016-July/102235.html
@@ -38,5 +38,5 @@ index 4e2c80390..990315f11 100644
    list(APPEND SUPPORTED_TOOLS ubsan)
  endif()
 -- 
-2.18.0
+2.20.1
 

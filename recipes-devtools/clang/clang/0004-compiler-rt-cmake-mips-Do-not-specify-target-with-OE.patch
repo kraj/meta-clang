@@ -1,7 +1,7 @@
-From 4c3f384a73a545183b0210f20ab84e7a5075b209 Mon Sep 17 00:00:00 2001
+From b29deaeb42a8f56bb5dd72b5a8c3e2c755a6bb9e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 11 Feb 2017 17:54:33 +0000
-Subject: [PATCH 4/5] cmake/mips: Do not specify --target with OE
+Subject: [PATCH 4/4] compiler-rt: cmake/mips: Do not specify --target with OE
 
 OE already specifies cross compiler correctly, adding this additional
 --target confuses the clang driver and it resorts to invoke host assembler
@@ -40,5 +40,5 @@ index 91fe2494b..789b80628 100644
        if(WIN32)
          test_target_arch(arm "" "" "")
 -- 
-2.18.0
+2.20.1
 

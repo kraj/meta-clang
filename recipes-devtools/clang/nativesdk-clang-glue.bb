@@ -8,10 +8,9 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/NCSA;md5=1b5fdec70ee13ad8a91667
 SECTION = "devel"
 
 require clang.inc
+require common-source.inc
 inherit nativesdk
 DEPENDS += "nativesdk-clang"
-
-S = "${WORKDIR}"
 
 do_install() {
     install -d ${D}${prefix_nativesdk}

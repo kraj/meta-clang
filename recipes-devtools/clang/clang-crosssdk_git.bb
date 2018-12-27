@@ -10,10 +10,9 @@ SECTION = "devel"
 PN = "clang-crosssdk-${TARGET_ARCH}"
 
 require clang.inc
+require common-source.inc
 inherit crosssdk
 DEPENDS += "clang-native nativesdk-clang-glue virtual/${TARGET_PREFIX}binutils-crosssdk virtual/nativesdk-libc"
-
-S = "${WORKDIR}"
 
 do_install() {
         install -d  ${D}${bindir}
