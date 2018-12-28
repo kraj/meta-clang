@@ -20,6 +20,7 @@ BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
 TUNE_CCARGS_remove = "-no-integrated-as"
 DEPENDS += "ninja-native"
+DEPENDS_append_class-nativesdk = "clang-native"
 
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
