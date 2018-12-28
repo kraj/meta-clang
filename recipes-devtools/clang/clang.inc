@@ -18,7 +18,4 @@ CLANGMD5SUM = "444af0e124949f07f791f12c928e5994"
 LLDMD5SUM = "f4941ace8ddb3d6cf177fff94966319a"
 LLDBMD5SUM = "b6320ed0b0d00ae661dd94f277bbf024"
 
-# risc-v comes with clang-8+
-COMPATIBLE_HOST_riscv64 = "(null)"
-
 require common.inc

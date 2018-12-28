@@ -24,6 +24,7 @@ def get_clang_arch(bb, d, arch_var):
     elif re.match('aarch64_be$', a):                   return 'AArch64'
     elif re.match('mips(isa|)(32|64|)(r6|)(el|)$', a): return 'Mips'
     elif re.match('p(pc|owerpc)(|64)', a):             return 'PowerPC'
+    elif re.match('riscv(32|64)$', a):                 return 'RISCV'
     else:
         bb.error("cannot map '%s' to a supported llvm architecture" % a)
     return ""
