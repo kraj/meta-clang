@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://llvm/LICENSE.TXT;md5=${LLVMMD5SUM} \
 "
 LICENSE = "NCSA"
 
-BASEURI ??= "${LLVM_GIT}/llvm-project-20170507;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
+BASEURI ??= "${LLVM_GIT}/llvm-project;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
 SRC_URI = "\
     ${BASEURI} \
     ${LLVMPATCHES} \
