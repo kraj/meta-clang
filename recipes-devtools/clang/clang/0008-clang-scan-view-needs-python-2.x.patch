@@ -1,7 +1,7 @@
-From 846e59787ec12b6cd817640151d1f23d3b78d6b5 Mon Sep 17 00:00:00 2001
+From f86a9b4d0b8ee8818a0a86561c33c2dbb1c12535 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 15 May 2018 10:28:43 -0700
-Subject: [PATCH 8/8] clang: scan-view needs python 2.x
+Subject: [PATCH 08/15] clang: scan-view needs python 2.x
 
 Some distributions e.g. archlinux have switched to pointing
 python to python3, therefore its better to be specific about
@@ -9,19 +9,19 @@ python version needed.
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- tools/scan-view/bin/scan-view | 2 +-
+ clang/tools/scan-view/bin/scan-view | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/scan-view/bin/scan-view b/tools/scan-view/bin/scan-view
-index 1b6e8ba90d..7c5867d1be 100755
---- a/tools/scan-view/bin/scan-view
-+++ b/tools/scan-view/bin/scan-view
+diff --git a/clang/tools/scan-view/bin/scan-view b/clang/tools/scan-view/bin/scan-view
+index 6165432e7af..04ad518a60c 100755
+--- a/clang/tools/scan-view/bin/scan-view
++++ b/clang/tools/scan-view/bin/scan-view
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python2
  
- """The clang static analyzer results viewer.
- """
+ from __future__ import print_function
+ 
 -- 
-2.18.0
+2.20.1
 

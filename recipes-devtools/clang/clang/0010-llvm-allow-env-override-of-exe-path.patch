@@ -1,7 +1,7 @@
-From c65c0af4a5721e3c0dfcc56c15ef3310a54e0008 Mon Sep 17 00:00:00 2001
+From 2af0752ca682d14984aac80e1b84a79b9fa69fb9 Mon Sep 17 00:00:00 2001
 From: Martin Kelly <mkelly@xevo.com>
 Date: Fri, 19 May 2017 00:22:57 -0700
-Subject: [PATCH 2/3] llvm: allow env override of exe path
+Subject: [PATCH 10/15] llvm: allow env override of exe path
 
 When using a native llvm-config from inside a sysroot, we need llvm-config to
 return the libraries, include directories, etc. from inside the sysroot rather
@@ -11,13 +11,13 @@ llvm-config from a target sysroot.
 Signed-off-by: Martin Kelly <mkelly@xevo.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- tools/llvm-config/llvm-config.cpp | 7 +++++++
+ llvm/tools/llvm-config/llvm-config.cpp | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/tools/llvm-config/llvm-config.cpp b/tools/llvm-config/llvm-config.cpp
-index 892adc3b9dd..38f190ecbd1 100644
---- a/tools/llvm-config/llvm-config.cpp
-+++ b/tools/llvm-config/llvm-config.cpp
+diff --git a/llvm/tools/llvm-config/llvm-config.cpp b/llvm/tools/llvm-config/llvm-config.cpp
+index bec89fef98c..f9a2862a55d 100644
+--- a/llvm/tools/llvm-config/llvm-config.cpp
++++ b/llvm/tools/llvm-config/llvm-config.cpp
 @@ -226,6 +226,13 @@ Typical components:\n\
  
  /// Compute the path to the main executable.
@@ -33,5 +33,5 @@ index 892adc3b9dd..38f190ecbd1 100644
    // allow taking the address of ::main however.
    void *P = (void *)(intptr_t)GetExecutablePath;
 -- 
-2.18.0
+2.20.1
 

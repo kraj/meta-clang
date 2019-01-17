@@ -1,7 +1,7 @@
-From e02d9f3e1c724a4161709952a3ef59f81432fc06 Mon Sep 17 00:00:00 2001
+From 0327863d99125908e209e46e2687e9fb77ff25a7 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
-Subject: [PATCH 5/8] clang: Look inside the target sysroot for compiler
+Subject: [PATCH 05/15] clang: Look inside the target sysroot for compiler
  runtime
 
 In OE compiler-rt and libc++ are built and staged into target
@@ -12,22 +12,22 @@ Specific to cross compiling the way yocto/OE works
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/ToolChain.cpp | 6 +++++-
+ clang/lib/Driver/ToolChain.cpp | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/lib/Driver/ToolChain.cpp b/lib/Driver/ToolChain.cpp
-index cf3db34688..dae3178380 100644
---- a/lib/Driver/ToolChain.cpp
-+++ b/lib/Driver/ToolChain.cpp
+diff --git a/clang/lib/Driver/ToolChain.cpp b/clang/lib/Driver/ToolChain.cpp
+index 88a627eab6d..d56b5264b4d 100644
+--- a/clang/lib/Driver/ToolChain.cpp
++++ b/clang/lib/Driver/ToolChain.cpp
 @@ -13,6 +13,7 @@
  #include "ToolChains/Clang.h"
  #include "clang/Basic/ObjCRuntime.h"
  #include "clang/Basic/Sanitizers.h"
 +#include "clang/Basic/Version.h"
- #include "clang/Basic/VirtualFileSystem.h"
  #include "clang/Config/config.h"
  #include "clang/Driver/Action.h"
-@@ -343,7 +344,10 @@ StringRef ToolChain::getOSLibName() const {
+ #include "clang/Driver/Driver.h"
+@@ -353,7 +354,10 @@ StringRef ToolChain::getOSLibName() const {
  }
  
  std::string ToolChain::getCompilerRTPath() const {
@@ -40,5 +40,5 @@ index cf3db34688..dae3178380 100644
      llvm::sys::path::append(Path, "lib");
    } else {
 -- 
-2.18.0
+2.20.1
 

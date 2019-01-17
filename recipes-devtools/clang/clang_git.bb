@@ -14,6 +14,12 @@ inherit cmake cmake-native
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
+def get_clang_experimental_arch(bb, d, arch_var):
+    import re
+    a = d.getVar(arch_var, True)
+    if re.match('riscv(32|64)$', a):                 return 'RISCV'
+    return ""
+
 def get_clang_arch(bb, d, arch_var):
     import re
     a = d.getVar(arch_var, True)
@@ -24,9 +30,8 @@ def get_clang_arch(bb, d, arch_var):
     elif re.match('aarch64_be$', a):                   return 'AArch64'
     elif re.match('mips(isa|)(32|64|)(r6|)(el|)$', a): return 'Mips'
     elif re.match('p(pc|owerpc)(|64)', a):             return 'PowerPC'
-    elif re.match('riscv(32|64)$', a):                 return 'RISCV'
     else:
-        bb.error("cannot map '%s' to a supported llvm architecture" % a)
+        bb.note("'%s' is not a primary llvm architecture" % a)
     return ""
 
 def get_clang_host_arch(bb, d):
@@ -34,6 +39,9 @@ def get_clang_host_arch(bb, d):
 
 def get_clang_target_arch(bb, d):
     return get_clang_arch(bb, d, 'TARGET_ARCH')
+
+def get_clang_experimental_target_arch(bb, d):
+    return get_clang_experimental_arch(bb, d, 'TARGET_ARCH')
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs"
 PACKAGECONFIG_class-native = ""
@@ -50,7 +58,11 @@ LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;BPF;Mips;PowerPC;X86"
 LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
 LLVM_TARGETS_TO_BUILD_TARGET ?= ""
-LLVM_TARGETS_TO_BUILD_TARGET_append ?= ";${@get_clang_target_arch(bb, d)}"
+LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
+
+LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= "RISCV"
+LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_arch(bb, d)}"
+
 EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_ENABLE_EXPENSIVE_CHECKS=OFF \
                   -DLLVM_ENABLE_PIC=ON \
@@ -70,11 +82,13 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
 
 EXTRA_OECMAKE_append_class-native = "\
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
+                  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_TOOLCHAIN_FILE=${WORKDIR}/toolchain-native.cmake' \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
+                  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
@@ -86,7 +100,12 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
-
+EXTRA_OECMAKE_append_class-target_riscv64 = "\
+                  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
+"
+EXTRA_OECMAKE_append_class-target_riscv32 = "\
+                  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
+"
 DEPENDS = "zlib libffi libxml2 ninja-native"
 DEPENDS_append_class-nativesdk = " clang-native virtual/${TARGET_PREFIX}binutils-crosssdk virtual/${TARGET_PREFIX}gcc-crosssdk virtual/${TARGET_PREFIX}g++-crosssdk"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains('TOOLCHAIN', 'gcc', 'virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}g++', '', d)}"
