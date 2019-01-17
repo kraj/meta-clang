@@ -23,9 +23,9 @@ PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_
 
 PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 
-LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=7b3a0e1b99822669d630011defe9bfd9; \
-                    file://libcxxabi/LICENSE.TXT;md5=3600117b7c18121ab04c53e4615dc36e \
-                    file://libunwind/LICENSE.TXT;md5=7ea986af7f70eaea5a297dd2744c79a5 \
+LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=3de3deb8323d5cf3360104190e804a75 \
+                    file://libcxxabi/LICENSE.TXT;md5=9dad5a191d1fc03b31525706040c4ed1 \
+                    file://libunwind/LICENSE.TXT;md5=af2bc0b29ead3c8f201c5486f3c9d59b \
 "
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
