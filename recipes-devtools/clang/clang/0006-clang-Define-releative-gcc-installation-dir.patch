@@ -1,7 +1,7 @@
-From e6232d22df73b80ced3784fd85166ebe24e6c31b Mon Sep 17 00:00:00 2001
+From 15fab22ab9478935b30d55de1d871553991bc3ad Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 21 May 2017 15:38:25 -0700
-Subject: [PATCH 6/8] clang: Define / releative gcc installation dir
+Subject: [PATCH 06/15] clang: Define / releative gcc installation dir
 
 This is required for OE gcc installation to work.
 Without this its not able to find the paths for libgcc
@@ -10,14 +10,14 @@ installation in OE
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/ToolChains/Gnu.cpp | 3 +++
+ clang/lib/Driver/ToolChains/Gnu.cpp | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/lib/Driver/ToolChains/Gnu.cpp b/lib/Driver/ToolChains/Gnu.cpp
-index 766c650b3c..777526e063 100644
---- a/lib/Driver/ToolChains/Gnu.cpp
-+++ b/lib/Driver/ToolChains/Gnu.cpp
-@@ -2190,6 +2190,9 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
+index c841399193e..468ee821a57 100644
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -2280,6 +2280,9 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
        {"gcc-cross/" + CandidateTriple.str(), "../..",
         TargetTriple.getOS() != llvm::Triple::Solaris},
  
@@ -28,5 +28,5 @@ index 766c650b3c..777526e063 100644
        // <sysroot>/usr/lib/<triple>/x.y.z so have a look there as well. Only do
        // this on Freescale triples, though, since some systems put a *lot* of
 -- 
-2.18.0
+2.20.1
 

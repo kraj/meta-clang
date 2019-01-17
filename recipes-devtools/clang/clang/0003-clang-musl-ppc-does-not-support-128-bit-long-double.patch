@@ -1,27 +1,27 @@
-From 48fa180df65f7ee63a85dd69fd2c1382609c5e95 Mon Sep 17 00:00:00 2001
+From 0f183864a6e89461143e082d4b7e5df4cd0f4480 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 10 May 2016 02:00:11 -0700
-Subject: [PATCH 3/8] clang: musl/ppc does not support 128-bit long double
+Subject: [PATCH 03/15] clang: musl/ppc does not support 128-bit long double
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Basic/Targets/PPC.h | 3 ++-
+ clang/lib/Basic/Targets/PPC.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/lib/Basic/Targets/PPC.h b/lib/Basic/Targets/PPC.h
-index 439c73a0e3..8da698ee21 100644
---- a/lib/Basic/Targets/PPC.h
-+++ b/lib/Basic/Targets/PPC.h
-@@ -328,7 +328,8 @@ public:
+diff --git a/clang/lib/Basic/Targets/PPC.h b/clang/lib/Basic/Targets/PPC.h
+index 058970a0e09..ba5b941bc08 100644
+--- a/clang/lib/Basic/Targets/PPC.h
++++ b/clang/lib/Basic/Targets/PPC.h
+@@ -331,7 +331,8 @@ public:
        break;
      }
  
--    if (getTriple().getOS() == llvm::Triple::FreeBSD) {
-+    if (getTriple().getOS() == llvm::Triple::FreeBSD
+-    if (getTriple().isOSFreeBSD()) {
++    if (getTriple().isOSFreeBSD()
 +        || getTriple().isMusl()) {
        LongDoubleWidth = LongDoubleAlign = 64;
        LongDoubleFormat = &llvm::APFloat::IEEEdouble();
      }
 -- 
-2.18.0
+2.20.1
 

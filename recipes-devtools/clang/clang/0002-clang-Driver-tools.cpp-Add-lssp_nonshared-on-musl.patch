@@ -1,7 +1,7 @@
-From fc628b03a5ac41a446fd2dfea0ecbe03331e54d8 Mon Sep 17 00:00:00 2001
+From 14a9ed6fa67f7e988d85408554f88a8d72c6a607 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
-Subject: [PATCH 2/8] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
+Subject: [PATCH 02/15] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
 
 musl driver will need to add ssp_nonshared for stack_check_local
 on the linker cmdline when using stack protector commands on
@@ -9,14 +9,14 @@ compiler cmdline
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/ToolChains/Gnu.cpp | 6 ++++++
+ clang/lib/Driver/ToolChains/Gnu.cpp | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/lib/Driver/ToolChains/Gnu.cpp b/lib/Driver/ToolChains/Gnu.cpp
-index 3755673250..766c650b3c 100644
---- a/lib/Driver/ToolChains/Gnu.cpp
-+++ b/lib/Driver/ToolChains/Gnu.cpp
-@@ -503,6 +503,12 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
+index 2ad45097dce..c841399193e 100644
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -525,6 +525,12 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
        if (IsIAMCU)
          CmdArgs.push_back("-lgloss");
  
@@ -30,5 +30,5 @@ index 3755673250..766c650b3c 100644
          CmdArgs.push_back("--end-group");
        else
 -- 
-2.18.0
+2.20.1
 

@@ -1,7 +1,7 @@
-From 4764d8f8b613631de2e3c9a3614427d07c599017 Mon Sep 17 00:00:00 2001
+From 792786fb04bf505cdcd39a22744111cfd57a2ac5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 09:02:13 -0700
-Subject: [PATCH 4/8] clang: Prepend trailing '/' to sysroot
+Subject: [PATCH 04/15] clang: Prepend trailing '/' to sysroot
 
 This is needed to handle a case where clang
 isntall and target sysroot are perilously same
@@ -20,16 +20,16 @@ installation and not sysroot
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- lib/Driver/ToolChains/Linux.cpp | 2 +-
+ clang/lib/Driver/ToolChains/Linux.cpp | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/Driver/ToolChains/Linux.cpp b/lib/Driver/ToolChains/Linux.cpp
-index e662b6b262..5bca972cc2 100644
---- a/lib/Driver/ToolChains/Linux.cpp
-+++ b/lib/Driver/ToolChains/Linux.cpp
-@@ -211,7 +211,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
-   GCCInstallation.init(Triple, Args);
+diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
+index 33e2fcec299..4dfaf052f86 100644
+--- a/clang/lib/Driver/ToolChains/Linux.cpp
++++ b/clang/lib/Driver/ToolChains/Linux.cpp
+@@ -219,7 +219,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
    Multilibs = GCCInstallation.getMultilibs();
+   SelectedMultilib = GCCInstallation.getMultilib();
    llvm::Triple::ArchType Arch = Triple.getArch();
 -  std::string SysRoot = computeSysRoot();
 +  std::string SysRoot = computeSysRoot() + "/";
@@ -37,5 +37,5 @@ index e662b6b262..5bca972cc2 100644
    // Cross-compiling binutils and GCC installations (vanilla and openSUSE at
    // least) put various tools in a triple-prefixed directory off of the parent
 -- 
-2.18.0
+2.20.1
 
