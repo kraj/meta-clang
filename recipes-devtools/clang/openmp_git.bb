@@ -16,7 +16,7 @@ RPROVIDES_${PN}-dev += "libgomp-dev"
 
 TOOLCHAIN = "clang"
 
-LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=5dcbca021bcb2fbc22186bc7a8a159e6"
+LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=b1dcbf2c86cbf9bdc0b7cea88a543010"
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
