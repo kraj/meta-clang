@@ -32,7 +32,8 @@ THUMB_TUNE_CCARGS = ""
 
 EXTRA_OECMAKE += "\
                   -DLIBCXX_CXX_ABI=libcxxabi \
-                  -DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
+                  -DLIBCXX_USE_COMPILER_RT=YES \
+                  -DLIBCXXABI_USE_COMPILER_RT=YES \
                   -DCXX_SUPPORTS_CXX11=ON \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
