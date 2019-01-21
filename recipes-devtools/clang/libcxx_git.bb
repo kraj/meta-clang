@@ -13,7 +13,8 @@ inherit cmake pythonnative
 
 DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang = "libcxx"
-TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
+CXX_remove_toolchain-clang = "-stdlib=libc++"
+TARGET_CXXFLAGS_remove_toolchain-clang = "-stdlib=libc++"
 
 PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_powerpc = ""

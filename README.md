@@ -45,14 +45,16 @@ Note that by default libstdc++ will remain the default C++ standard library, how
 libc++ to be the default one then set
 
 ```python
-TARGET_CXXFLAGS_append_toolchain-clang ?= " -stdlib=libc++ "
+CXX_append_toolchain-clang = " -stdlib=libc++ "
+TARGET_CXXFLAGS_append_toolchain-clang = " -stdlib=libc++ "
 ```
 
 in local.conf.
 You can select libc++ per package too by writing bbappends for them containing
 
 ```python
-TARGET_CXXFLAGS_append_toolchain-clang = " -stdlib=libc++ "
+CXX_append_toolchain-clang_pn-<recipe> = " -stdlib=libc++ "
+TARGET_CXXFLAGS_append_toolchain-clang_pn-<recipe> = " -stdlib=libc++ "
 ```
 
 # Building
@@ -82,7 +84,7 @@ and OE will start using gcc to cross compile that recipe.
 And if a component does not build with libc++, you can add it to conf/nonclangable.inc e.g.
 
 ```shell
-TARGET_CXXFLAGS_remove_pn-<recipe>_toolchain-clang = " -stdlib=libc++ "
+CXX_remove_pn-<recipe>_toolchain-clang = " -stdlib=libc++ "
 ```
 
 # Dependencies
