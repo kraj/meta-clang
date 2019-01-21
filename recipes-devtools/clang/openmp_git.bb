@@ -18,9 +18,6 @@ TOOLCHAIN = "clang"
 
 LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=b1dcbf2c86cbf9bdc0b7cea88a543010"
 
-BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
-BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
-
 inherit cmake pkgconfig perlnative
 
 EXTRA_OECMAKE = "-G Ninja ${S}/openmp"
