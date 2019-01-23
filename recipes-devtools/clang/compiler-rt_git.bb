@@ -51,6 +51,12 @@ do_compile() {
 
 do_install() {
 	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-compiler-rt
+
+	if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
+		mkdir -p ${D}${nonarch_libdir}
+		mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
+		rmdir --ignore-fail-on-non-empty ${D}${libdir}
+	fi
 }
 
 
@@ -71,19 +77,18 @@ do_install_append () {
         rm -rf ${D}${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o
 }
 
-sysroot_stage_all_append_class-target() {
-        sysroot_stage_dir ${D}${exec_prefix}/lib ${SYSROOT_DESTDIR}${exec_prefix}/lib
-}
-
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
-                ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
-                ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
-FILES_${PN}-staticdev += "${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES_${PN}-dev += "${datadir} ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
-                    ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
+FILES_${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
+                ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
+                ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
+FILES_${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
+FILES_${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.asan-preinit*.a \
                    "
 INSANE_SKIP_${PN} = "dev-so libdir"
+INSANE_SKIP_${PN}-dbg = "libdir"
 
 #PROVIDES_append_class-target = "\
 #        virtual/${TARGET_PREFIX}compilerlibs \
@@ -102,3 +107,4 @@ ALLOW_EMPTY_${PN} = "1"
 ALLOW_EMPTY_${PN}-dev = "1"
 
 TOOLCHAIN_forcevariable = "clang"
+SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
