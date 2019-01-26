@@ -24,6 +24,7 @@ SRC_URI = "\
     file://0013-compiler-rt-support-a-new-embedded-linux-target.patch \
     file://0014-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch \
     file://0015-compiler-rt-Disable-tsan-on-OE-glibc.patch \
+    file://0016-clang-Append-libunwind-to-compiler-rt-for-linking.patch \
 "
 
 # Fallback to no-PIE if not set
