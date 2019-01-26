@@ -15,6 +15,7 @@ DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang = "libcxx"
 CXX_remove_toolchain-clang = "-stdlib=libc++"
 TARGET_CXXFLAGS_remove_toolchain-clang = "-stdlib=libc++"
+TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt"
 
 PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_powerpc = ""
