@@ -57,12 +57,25 @@ CXX_append_toolchain-clang_pn-<recipe> = " -stdlib=libc++ "
 TARGET_CXXFLAGS_append_toolchain-clang_pn-<recipe> = " -stdlib=libc++ "
 ```
 
+# Default Compiler Runtime ( Compiler-rt + libcxx )
+
+By default, clang build from meta-clang uses gcc runtime ( libgcc + libstdc++ ) out of box
+However, it is possible to switch to using Clang runtime as default, In order to do that
+following settings are needed in site configurations e.g. in local.conf
+
+```python
+TOOLCHAIN ?= "clang"
+CXX_append_toolchain-clang = " -stdlib=libc++ "
+TARGET_CXXFLAGS_append_toolchain-clang = " -stdlib=libc++ "
+TUNE_CCARGS_append_toolchain-clang = " --rtlib=compiler-rt"
+```
+
 # Building
 
 Below we build for qemuarm machine as an example
 
 ```shell
-$ MACHINE=qemux86 bitbake core-image-minimal
+$ MACHINE=qemux86 bitbake core-image-base
 ```
 # Running
 
