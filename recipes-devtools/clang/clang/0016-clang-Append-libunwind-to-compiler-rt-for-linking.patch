@@ -1,4 +1,4 @@
-From 4b5386fe67b03923b7ce25c066e6f6220a32eb44 Mon Sep 17 00:00:00 2001
+From ee4557fd25d6d752eeb25d28b197ad8364c554d5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 25 Jan 2019 14:39:04 -0800
 Subject: [PATCH] clang: Append libunwind to compiler-rt for linking
@@ -8,16 +8,21 @@ too, and they are missing in compiler-rt but provided by llvm libunwind
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- clang/lib/Driver/ToolChains/CommonArgs.cpp | 4 ++++
- 1 file changed, 4 insertions(+)
+ clang/lib/Driver/ToolChains/CommonArgs.cpp | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
+index d7e316befa6..d2dd45eeb9a 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-@@ -1191,6 +1191,7 @@ void tools::AddRunTimeLibs(const ToolCha
+@@ -1191,6 +1191,7 @@ void tools::AddRunTimeLibs(const ToolChain &TC, const Driver &D,
    switch (RLT) {
    case ToolChain::RLT_CompilerRT:
      CmdArgs.push_back(TC.getCompilerRTArgString(Args, "builtins"));
-+    CmdArgs.push_back(Args.MakeArgString(D.SysRoot + "/usr/lib" "/libunwind.a"));
++    CmdArgs.push_back(Args.MakeArgString("-l:libunwind.a"));
      break;
    case ToolChain::RLT_Libgcc:
      // Make sure libgcc is not used under MSVC environment by default
+-- 
+2.20.1
+
