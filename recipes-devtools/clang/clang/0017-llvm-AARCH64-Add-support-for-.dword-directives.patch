@@ -1,0 +1,57 @@
+From 2c85adc50b677e9094932828aa7a51affde892fb Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 31 Jan 2019 10:53:22 -0800
+Subject: [PATCH] llvm: [AARCH64] Add support for .dword directives
+
+This directives is supported in GNU assembler, Add support via addAliasForDirective.
+Add a testcase to check for data directives
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ .../AArch64/AsmParser/AArch64AsmParser.cpp       |  3 ++-
+ llvm/test/MC/AArch64/data-directives-invalid.s   | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+ create mode 100644 llvm/test/MC/AArch64/data-directives-invalid.s
+
+diff --git a/llvm/lib/Target/AArch64/AsmParser/AArch64AsmParser.cpp b/llvm/lib/Target/AArch64/AsmParser/AArch64AsmParser.cpp
+index 6cc9b67e4d2..c43b9827cbd 100644
+--- a/llvm/lib/Target/AArch64/AsmParser/AArch64AsmParser.cpp
++++ b/llvm/lib/Target/AArch64/AsmParser/AArch64AsmParser.cpp
+@@ -244,10 +244,11 @@ public:
+ 
+     // Alias .hword/.word/xword to the target-independent .2byte/.4byte/.8byte
+     // directives as they have the same form and semantics:
+-    ///  ::= (.hword | .word | .xword ) [ expression (, expression)* ]
++    ///  ::= (.hword | .word | .xword | .dword ) [ expression (, expression)* ]
+     Parser.addAliasForDirective(".hword", ".2byte");
+     Parser.addAliasForDirective(".word", ".4byte");
+     Parser.addAliasForDirective(".xword", ".8byte");
++    Parser.addAliasForDirective(".dword", ".8byte");
+ 
+     // Initialize the set of available features.
+     setAvailableFeatures(ComputeAvailableFeatures(getSTI().getFeatureBits()));
+diff --git a/llvm/test/MC/AArch64/data-directives-invalid.s b/llvm/test/MC/AArch64/data-directives-invalid.s
+new file mode 100644
+index 00000000000..7b59a2e60fa
+--- /dev/null
++++ b/llvm/test/MC/AArch64/data-directives-invalid.s
+@@ -0,0 +1,16 @@
++# RUN: not llvm-mc -triple aarch64 < %s 2>&1 | FileCheck %s
++
++# CHECK: [[@LINE+1]]:8: error: out of range literal value in '.hword' directive
++.hword 0xffffa
++# CHECK: [[@LINE+1]]:8: error: out of range literal value in '.2byte' directive
++.2byte 0xffffa
++# CHECK: [[@LINE+1]]:7: error: out of range literal value in '.word' directive
++.word 0xffffffffa
++# CHECK: [[@LINE+1]]:8: error: out of range literal value in '.4byte' directive
++.4byte 0xffffffffa
++# CHECK: [[@LINE+1]]:8: error: literal value out of range for directive in '.dword' directive
++.dword 0xffffffffffffffffa
++# CHECK: [[@LINE+1]]:8: error: literal value out of range for directive in '.xword' directive
++.xword 0xffffffffffffffffa
++# CHECK: [[@LINE+1]]:8: error: literal value out of range for directive in '.8byte' directive
++.8byte 0xffffffffffffffffa
+-- 
+2.20.1
+

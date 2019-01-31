@@ -25,6 +25,7 @@ SRC_URI = "\
     file://0014-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch \
     file://0015-compiler-rt-Disable-tsan-on-OE-glibc.patch \
     file://0016-clang-Append-libunwind-to-compiler-rt-for-linking.patch \
+    file://0017-llvm-AARCH64-Add-support-for-.dword-directives.patch \
 "
 
 # Fallback to no-PIE if not set
