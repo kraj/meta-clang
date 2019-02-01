@@ -23,6 +23,7 @@ do_install() {
         install -d  ${D}${bindir}
         ln -sf ../clang ${D}${bindir}/${TARGET_PREFIX}clang
         ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
+        ln -sf ../clang-tidy ${D}${bindir}/${TARGET_PREFIX}clang-tidy
         ln -sf ../llvm-profdata ${D}${bindir}/${TARGET_PREFIX}llvm-profdata
         cross_canadian_bindirlinks
 }
