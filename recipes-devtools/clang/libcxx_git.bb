@@ -21,9 +21,10 @@ PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_powerpc = ""
 PACKAGECONFIG_mipsarch = ""
 PACKAGECONFIG_riscv64 = ""
-PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
+PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHARED=OFF -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
 
-PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
+#PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
+LIBUNWIND = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', ';libunwind', '', d)}"
 
 LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=3de3deb8323d5cf3360104190e804a75 \
                     file://libcxxabi/LICENSE.TXT;md5=9dad5a191d1fc03b31525706040c4ed1 \
@@ -40,7 +41,7 @@ EXTRA_OECMAKE += "\
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
-                  -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi;libunwind' \
+                  -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi${LIBUNWIND}' \
                   -G Ninja \
                   ${S}/llvm \
 "
@@ -50,25 +51,20 @@ EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
 do_compile() {
-
-	ninja -v ${PARALLEL_MAKE} cxxabi
-	ninja -v ${PARALLEL_MAKE} cxx
-	if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
-		ninja -v ${PARALLEL_MAKE} unwind
-	fi
-
+    if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
+        ninja -v ${PARALLEL_MAKE} unwind
+    fi
+    ninja -v ${PARALLEL_MAKE} cxxabi
+    ninja -v ${PARALLEL_MAKE} cxx
 }
 
 do_install() {
-	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxxabi
-	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx
-	if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
-		DESTDIR=${D} ninja ${PARALLEL_MAKE} install-unwind
-	fi
+    if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
+        DESTDIR=${D} ninja ${PARALLEL_MAKE} install-unwind
+        rm -rf ${D}${libdir}/libunwind.so
+    fi
+    DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx install-cxxabi
 }
-
-PACKAGES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
-FILES_libunwind += "${libdir}/libunwind.so.*"
 
 ALLOW_EMPTY_${PN} = "1"
 
