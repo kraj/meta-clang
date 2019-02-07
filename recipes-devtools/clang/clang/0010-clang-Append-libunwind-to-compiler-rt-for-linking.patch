@@ -1,7 +1,7 @@
-From 89c9b5e2bec26bad047a60bd08722ff138cb7cb3 Mon Sep 17 00:00:00 2001
+From 3ba6f05d35c8b0c405bf62cdd93eecc5a5094165 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 25 Jan 2019 14:39:04 -0800
-Subject: [PATCH] clang: Append libunwind to compiler-rt for linking
+Subject: [PATCH 10/18] clang: Append libunwind to compiler-rt for linking
 
 Some packages which use libgcc tend to use low level unwind functions
 too, and they are missing in compiler-rt but provided by llvm libunwind
@@ -12,7 +12,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-index d7e316befa6..72226dd09ce 100644
+index d7e316befa6..5f6b24e33eb 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
 @@ -1191,6 +1191,12 @@ void tools::AddRunTimeLibs(const ToolChain &TC, const Driver &D,
@@ -20,7 +20,7 @@ index d7e316befa6..72226dd09ce 100644
    case ToolChain::RLT_CompilerRT:
      CmdArgs.push_back(TC.getCompilerRTArgString(Args, "builtins"));
 +    CmdArgs.push_back("--as-needed");
-+    CmdArgs.push_back("-lunwind");
++    CmdArgs.push_back("-l:libunwind.a");
 +    CmdArgs.push_back("-lpthread");
 +    CmdArgs.push_back("-ldl");
 +    CmdArgs.push_back("--no-as-needed");

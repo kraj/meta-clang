@@ -1,7 +1,7 @@
-From 15fab22ab9478935b30d55de1d871553991bc3ad Mon Sep 17 00:00:00 2001
+From b8dbd4166e7ce4d88ca5e6b6da1a07b408a1230d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 21 May 2017 15:38:25 -0700
-Subject: [PATCH 06/15] clang: Define / releative gcc installation dir
+Subject: [PATCH 07/18] clang: Define / releative gcc installation dir
 
 This is required for OE gcc installation to work.
 Without this its not able to find the paths for libgcc

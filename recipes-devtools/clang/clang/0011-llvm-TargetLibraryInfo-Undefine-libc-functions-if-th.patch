@@ -1,7 +1,7 @@
-From da9fe6d6a6160b7eaeef22dff38bbb3f17f26822 Mon Sep 17 00:00:00 2001
+From 4c6422fe53445384c1d9289000cc4c3c7f16e378 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 00:33:20 +0000
-Subject: [PATCH 09/15] llvm: TargetLibraryInfo: Undefine libc functions if
+Subject: [PATCH 11/18] llvm: TargetLibraryInfo: Undefine libc functions if
  they are macros
 
 musl defines some functions as macros and not inline functions

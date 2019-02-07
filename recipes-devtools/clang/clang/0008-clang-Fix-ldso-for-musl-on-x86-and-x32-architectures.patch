@@ -1,7 +1,7 @@
-From e2f49f7535aeb72592f8386cddb611f7bcdf2f32 Mon Sep 17 00:00:00 2001
+From f7908f063e790b2930d969a382a8aabb83e7e2a2 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 16 Aug 2017 15:16:15 -0700
-Subject: [PATCH 07/15] clang: Fix ldso for musl on x86 and x32 architectures
+Subject: [PATCH 08/18] clang: Fix ldso for musl on x86 and x32 architectures
 
 x32 linker is called ld-musl-x32.so.1 and x86 linker
 is called ld-musl-i386.so.1, Currently, linker for
@@ -14,7 +14,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 8 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 4dfaf052f86..5dc7b506d6f 100644
+index 7d5a85ed744..4dfef25aa63 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -516,6 +516,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {

@@ -1,7 +1,7 @@
-From f86a9b4d0b8ee8818a0a86561c33c2dbb1c12535 Mon Sep 17 00:00:00 2001
+From c09c33bec431aa61f36e0ab94bd14c273c5262db Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 15 May 2018 10:28:43 -0700
-Subject: [PATCH 08/15] clang: scan-view needs python 2.x
+Subject: [PATCH 09/18] clang: scan-view needs python 2.x
 
 Some distributions e.g. archlinux have switched to pointing
 python to python3, therefore its better to be specific about

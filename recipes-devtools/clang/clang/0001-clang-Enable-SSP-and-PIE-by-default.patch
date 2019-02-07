@@ -1,7 +1,7 @@
-From 76718d7d905029a2304c1ad275cd528b404dc7d4 Mon Sep 17 00:00:00 2001
+From 400745857bc7bbcc31df9cab36d1fa9816c3c07b Mon Sep 17 00:00:00 2001
 From: Evangelos Foutras <evangelos@foutrelis.com>
 Date: Thu, 20 Sep 2018 06:20:28 +0300
-Subject: [PATCH] clang: Enable SSP and PIE by default
+Subject: [PATCH 01/18] clang: Enable SSP and PIE by default
 
 This is a minimal set of changes needed to make clang use SSP and PIE by
 default on Arch Linux. Tests that were easy to adjust have been changed
@@ -22,10 +22,10 @@ of a compile-time option (https://bugs.llvm.org/show_bug.cgi?id=13410)
  2 files changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 5dc7b506d6f..4dfef25aa63 100644
+index 65ab9b2daf5..5b757b8028c 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -976,8 +976,18 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
+@@ -968,8 +968,18 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
  }
  
  bool Linux::isPIEDefault() const {
