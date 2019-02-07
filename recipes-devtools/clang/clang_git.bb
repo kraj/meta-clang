@@ -43,12 +43,13 @@ def get_clang_target_arch(bb, d):
 def get_clang_experimental_target_arch(bb, d):
     return get_clang_experimental_arch(bb, d, 'TARGET_ARCH')
 
-PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs"
-PACKAGECONFIG_class-native = ""
-PACKAGECONFIG_class-nativesdk = "compiler-rt libcplusplus"
+PACKAGECONFIG ??= "compiler-rt libcplusplus lto shared-libs"
+PACKAGECONFIG_class-native = "lto"
+PACKAGECONFIG_class-nativesdk = "compiler-rt libcplusplus lto"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
+PACKAGECONFIG[lto] = "-DLLVM_ENABLE_LTO=Thin -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR},,binutils,"
 PACKAGECONFIG[shared-libs] = "-DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_LINK_LLVM_DYLIB=ON,,,"
 
 #
@@ -97,6 +98,9 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD_TARGET}' \
+                  -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
+                  -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
+                  -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                   -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
 "
@@ -167,3 +171,6 @@ INSANE_SKIP_${PN}-dev += "dev-elf"
 
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
 SSTATE_SCAN_FILES_remove = "*-config"
+
+TOOLCHAIN = "clang"
+
