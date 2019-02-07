@@ -1,7 +1,7 @@
-From a010673fd33c7311763620cf62159993255bb559 Mon Sep 17 00:00:00 2001
+From bdd021f901d8bc4ed9f09fa53902674e1517662c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:11:45 -0700
-Subject: [PATCH 14/15] compiler-rt: Simplify cross-compilation. Don't use
+Subject: [PATCH 17/18] compiler-rt: Simplify cross-compilation. Don't use
  native-compiled llvm-config.
 
     Note: AddLLVM.cmake does not expose the LLVM source directory.

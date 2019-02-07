@@ -1,7 +1,7 @@
-From 792786fb04bf505cdcd39a22744111cfd57a2ac5 Mon Sep 17 00:00:00 2001
+From dae39fcc475883d6367929d5d4bd39bd82cebb22 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 09:02:13 -0700
-Subject: [PATCH 04/15] clang: Prepend trailing '/' to sysroot
+Subject: [PATCH 05/18] clang: Prepend trailing '/' to sysroot
 
 This is needed to handle a case where clang
 isntall and target sysroot are perilously same
@@ -24,7 +24,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 33e2fcec299..4dfaf052f86 100644
+index 552d329e7b8..7d5a85ed744 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -219,7 +219,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)

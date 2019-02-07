@@ -1,7 +1,7 @@
-From 0327863d99125908e209e46e2687e9fb77ff25a7 Mon Sep 17 00:00:00 2001
+From 258f04d89f8d7cca4fdd1f4d2fba068b090854b3 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
-Subject: [PATCH 05/15] clang: Look inside the target sysroot for compiler
+Subject: [PATCH 06/18] clang: Look inside the target sysroot for compiler
  runtime
 
 In OE compiler-rt and libc++ are built and staged into target

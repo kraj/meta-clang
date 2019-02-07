@@ -1,7 +1,7 @@
-From 2af0752ca682d14984aac80e1b84a79b9fa69fb9 Mon Sep 17 00:00:00 2001
+From 765b7c57c6102d1b1c7fad2e8cd1be78a4a32960 Mon Sep 17 00:00:00 2001
 From: Martin Kelly <mkelly@xevo.com>
 Date: Fri, 19 May 2017 00:22:57 -0700
-Subject: [PATCH 10/15] llvm: allow env override of exe path
+Subject: [PATCH 12/18] llvm: allow env override of exe path
 
 When using a native llvm-config from inside a sysroot, we need llvm-config to
 return the libraries, include directories, etc. from inside the sysroot rather
