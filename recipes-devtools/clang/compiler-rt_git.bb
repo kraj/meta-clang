@@ -28,10 +28,11 @@ THUMB_TUNE_CCARGS = ""
 
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
-EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=ON \
+EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_XRAY=OFF \
-                  -G Ninja ${S}/compiler-rt \
+                  -DLLVM_ENABLE_PROJECTS='compiler-rt' \
+                  -G Ninja ${S}/llvm \
 "
 
 EXTRA_OECMAKE_append_class-nativesdk = "\
@@ -43,11 +44,11 @@ EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER
 EXTRA_OECMAKE_append_mipsarch = "-DCOMPILER_RT_BUILD_SANITIZERS=OFF -DCOMPILER_RT_BUILD_XRAY=OFF "
 
 do_compile() {
-	ninja ${PARALLEL_MAKE}
+	ninja ${PARALLEL_MAKE} compiler-rt
 }
 
 do_install() {
-	DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-compiler-rt
 }
 
 
@@ -69,7 +70,8 @@ do_install_append () {
 
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
-                ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt"
+                ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
+                ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
 FILES_${PN}-staticdev += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
 FILES_${PN}-dev += "${datadir} ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms"
 INSANE_SKIP_${PN} = "dev-so"
