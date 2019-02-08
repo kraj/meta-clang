@@ -44,10 +44,10 @@ def get_clang_experimental_target_arch(bb, d):
     return get_clang_experimental_arch(bb, d, 'TARGET_ARCH')
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)}"
-PACKAGECONFIG_class-native = "thin-lto ${@bb.utils.filter('DISTRO_FEATURES', 'full-lto', d)}"
+PACKAGECONFIG_class-native = ""
 PACKAGECONFIG_class-nativesdk = "compiler-rt libcplusplus thin-lto ${@bb.utils.filter('DISTRO_FEATURES', 'full-lto', d)}"
 
-PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,compiler-rt"
+PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
 PACKAGECONFIG[thin-lto] = "-DLLVM_ENABLE_LTO=Thin -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR},,binutils,"
 PACKAGECONFIG[full-lto] = "-DLLVM_ENABLE_LTO=Full -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR},,binutils,"
@@ -83,6 +83,10 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
+                  -DCLANG_ENABLE_BOOTSTRAP=On \
+                  -DCLANG_BOOTSTRAP_PASSTHROUGH='${PASSTHROUGH}' \
+                  -DBOOTSTRAP_LLVM_ENABLE_LTO=Thin \
+                  -DBOOTSTRAP_LLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
 "
@@ -115,14 +119,29 @@ DEPENDS = "zlib libffi libxml2 ninja-native"
 DEPENDS_append_class-nativesdk = " clang-native virtual/${TARGET_PREFIX}binutils-crosssdk virtual/${TARGET_PREFIX}gcc-crosssdk virtual/${TARGET_PREFIX}g++-crosssdk"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains('TOOLCHAIN', 'gcc', 'virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}g++', '', d)}"
 
+BOOTSTRAPSTAGE ?= ""
+BOOTSTRAPSTAGE_class-native = "stage2"
+INSTALLTARGET ?= "install"
+INSTALLTARGET_class-native = "stage2-install"
+PASSTRHOUGH ?= ""
+PASSTHROUGH_class-native = "\
+CLANG_DEFAULT_RTLIB;CLANG_DEFAULT_CXX_STDLIB;LLVM_ENABLE_LTO;LLVM_BUILD_LLVM_DYLIB;\
+LLVM_BINUTILS_INCDIR;LLVM_LINK_LLVM_DYLIB;\
+LLVM_ENABLE_ASSERTIONS;LLVM_ENABLE_EXPENSIVE_CHECKS;LLVM_ENABLE_PIC;\
+LLVM_BINDINGS_LIST;LLVM_ENABLE_FFI;FFI_INCLUDE_DIR;LLVM_OPTIMIZED_TABLEGEN;\
+LLVM_ENABLE_RTTI;LLVM_ENABLE_EH;LLVM_BUILD_EXTERNAL_COMPILER_RT;CMAKE_SYSTEM_NAME;\
+CMAKE_BUILD_TYPE;BUILD_SHARED_LIBS;LLVM_ENABLE_PROJECTS;\
+LLVM_TARGETS_TO_BUILD;LLVM_EXPERIMENTAL_TARGETS_TO_BUILD;\
+"
+
 RRECOMMENDS_${PN} = "binutils"
 
 do_compile() {
-	ninja ${PARALLEL_MAKE}
+	ninja ${PARALLEL_MAKE} ${BOOTSTRAPSTAGE}
 }
 
 do_install() {
-        DESTDIR=${D} ninja ${PARALLEL_MAKE} install
+        DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALLTARGET}
 }
 
 do_install_append_class-native () {
@@ -174,4 +193,3 @@ INSANE_SKIP_${PN}-dev += "dev-elf"
 SSTATE_SCAN_FILES_remove = "*-config"
 
 TOOLCHAIN = "clang"
-
