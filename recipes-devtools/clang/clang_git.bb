@@ -10,6 +10,18 @@ require common-source.inc
 
 INHIBIT_DEFAULT_DEPS = "1"
 
+OECMAKE_NATIVE_C_COMPILER_class-nativesdk = "clang -static-libgcc"
+OECMAKE_NATIVE_CXX_COMPILER_class-nativesdk = "clang++ -static-libgcc"
+OECMAKE_NATIVE_AR_class-nativesdk = "llvm-ar"
+OECMAKE_NATIVE_RANLIB_class-nativesdk = "llvm-ranlib"
+OECMAKE_NATIVE_NM_class-nativesdk = "llvm-nm"
+TOOLCHAIN_OPTIONS_append_class-nativesdk = " -static-libgcc"
+
+CC_class-nativesdk  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+CXX_class-nativesdk = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+CPP_class-nativesdk = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
+CCLD_class-nativesdk = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+
 inherit cmake cmake-native
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
@@ -45,7 +57,7 @@ def get_clang_experimental_target_arch(bb, d):
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)}"
 PACKAGECONFIG_class-native = ""
-PACKAGECONFIG_class-nativesdk = "thin-lto ${@bb.utils.filter('DISTRO_FEATURES', 'full-lto', d)}"
+PACKAGECONFIG_class-nativesdk = "thin-lto"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
@@ -79,6 +91,7 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DCMAKE_BUILD_TYPE=Release \
                   -DBUILD_SHARED_LIBS=OFF \
                   -DLLVM_ENABLE_PROJECTS='clang;lld' \
+                  -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -G Ninja ${S}/llvm \
 "
 
@@ -87,12 +100,12 @@ EXTRA_OECMAKE_append_class-native = "\
                   -DCLANG_BOOTSTRAP_PASSTHROUGH='${PASSTHROUGH}' \
                   -DBOOTSTRAP_LLVM_ENABLE_LTO=Thin \
                   -DBOOTSTRAP_LLVM_ENABLE_LLD=ON \
-                  -DBOOTSTRAP_LLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
+                  -DLLVM_ENABLE_LLD=ON \
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_TOOLCHAIN_FILE=${WORKDIR}/toolchain-native.cmake' \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
@@ -116,9 +129,9 @@ EXTRA_OECMAKE_append_class-target_riscv64 = "\
 EXTRA_OECMAKE_append_class-target_riscv32 = "\
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
 "
-DEPENDS = "zlib libffi libxml2 ninja-native"
-DEPENDS_append_class-nativesdk = " clang-native virtual/${TARGET_PREFIX}binutils-crosssdk virtual/${TARGET_PREFIX}gcc-crosssdk virtual/${TARGET_PREFIX}g++-crosssdk"
-DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} ${@bb.utils.contains('TOOLCHAIN', 'gcc', 'virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}g++', '', d)}"
+DEPENDS = "binutils zlib libffi libxml2 ninja-native"
+DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk"
+DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH}"
 
 BOOTSTRAPSTAGE ?= ""
 BOOTSTRAPSTAGE_class-native = "stage2"
@@ -126,12 +139,11 @@ INSTALLTARGET ?= "install"
 INSTALLTARGET_class-native = "stage2-install"
 PASSTRHOUGH ?= ""
 PASSTHROUGH_class-native = "\
-CLANG_DEFAULT_RTLIB;CLANG_DEFAULT_CXX_STDLIB;LLVM_ENABLE_LTO;LLVM_BUILD_LLVM_DYLIB;\
-LLVM_BINUTILS_INCDIR;LLVM_LINK_LLVM_DYLIB;\
+CLANG_DEFAULT_RTLIB;CLANG_DEFAULT_CXX_STDLIB;LLVM_BUILD_LLVM_DYLIB;LLVM_LINK_LLVM_DYLIB;\
 LLVM_ENABLE_ASSERTIONS;LLVM_ENABLE_EXPENSIVE_CHECKS;LLVM_ENABLE_PIC;\
 LLVM_BINDINGS_LIST;LLVM_ENABLE_FFI;FFI_INCLUDE_DIR;LLVM_OPTIMIZED_TABLEGEN;\
 LLVM_ENABLE_RTTI;LLVM_ENABLE_EH;LLVM_BUILD_EXTERNAL_COMPILER_RT;CMAKE_SYSTEM_NAME;\
-CMAKE_BUILD_TYPE;BUILD_SHARED_LIBS;LLVM_ENABLE_PROJECTS;\
+CMAKE_BUILD_TYPE;BUILD_SHARED_LIBS;LLVM_ENABLE_PROJECTS;LLVM_BINUTILS_INCDIR;\
 LLVM_TARGETS_TO_BUILD;LLVM_EXPERIMENTAL_TARGETS_TO_BUILD;\
 "
 
@@ -172,6 +184,7 @@ FILES_${PN} += "\
   ${libdir}/BugpointPasses.so \
   ${libdir}/LLVMHello.so \
   ${libdir}/TestPlugin.so \
+  ${libdir}/LLVMgold.so \
   ${datadir}/scan-* \
   ${datadir}/opt-viewer/ \
 "

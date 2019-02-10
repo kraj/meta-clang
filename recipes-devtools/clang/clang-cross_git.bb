@@ -24,6 +24,10 @@ do_install() {
 	do
 		ln -sf ../$tool ${D}${bindir}/${TARGET_PREFIX}$tool
 	done
+        if [ -e ${D}${bindir}/lld ]; then
+            ln -sf ../lld ${D}${bindir}/${TARGET_PREFIX}lld
+            ln -sf ../ld.lld ${D}${bindir}/${TARGET_PREFIX}ld.lld
+        fi
 }
 
 SYSROOT_PREPROCESS_FUNCS += "clangcross_sysroot_preprocess"
@@ -32,5 +36,5 @@ clangcross_sysroot_preprocess () {
         sysroot_stage_dir ${D}${bindir} ${SYSROOT_DESTDIR}${bindir}
 }
 SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata *-llvm-ar \
-                      *-llvm-ranlib *-llvm-nm"
+                      *-llvm-ranlib *-llvm-nm *-lld *-ld.lld"
 PACKAGES = ""

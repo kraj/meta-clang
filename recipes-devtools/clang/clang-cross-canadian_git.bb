@@ -25,7 +25,11 @@ do_install() {
         ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
         ln -sf ../clang-tidy ${D}${bindir}/${TARGET_PREFIX}clang-tidy
         ln -sf ../llvm-profdata ${D}${bindir}/${TARGET_PREFIX}llvm-profdata
+        if [ -e ${D}${bindir}/lld ]; then
+            ln -sf ../lld ${D}${bindir}/${TARGET_PREFIX}lld
+            ln -sf ../ld.lld ${D}${bindir}/${TARGET_PREFIX}ld.lld
+        fi
         cross_canadian_bindirlinks
 }
 
-SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata"
+SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata *-clang-tidy *-lld *-ld.lld"
