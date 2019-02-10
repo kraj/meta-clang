@@ -7,8 +7,6 @@ LICENSE = "NCSA"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/NCSA;md5=1b5fdec70ee13ad8a91667f16c1959d7"
 SECTION = "devel"
 
-require clang.inc
-require common-source.inc
 inherit nativesdk
 DEPENDS += "nativesdk-clang"
 
@@ -25,3 +23,9 @@ sysroot_stage_all () {
 
 FILES_${PN} += "${prefix_nativesdk}"
 FILES_${PN}-dbg = ""
+
+deltask do_configure
+deltask do_compile
+deltask do_patch
+deltask do_fetch
+deltask do_unpack
