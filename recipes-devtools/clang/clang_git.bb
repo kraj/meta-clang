@@ -45,7 +45,7 @@ def get_clang_experimental_target_arch(bb, d):
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)}"
 PACKAGECONFIG_class-native = ""
-PACKAGECONFIG_class-nativesdk = "compiler-rt libcplusplus thin-lto ${@bb.utils.filter('DISTRO_FEATURES', 'full-lto', d)}"
+PACKAGECONFIG_class-nativesdk = "thin-lto ${@bb.utils.filter('DISTRO_FEATURES', 'full-lto', d)}"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
