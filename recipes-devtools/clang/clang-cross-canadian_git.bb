@@ -20,11 +20,14 @@ EXTRA_OECONF_PATHS[vardepsexclude] = "TUNE_PKGARCH"
 TARGET_ARCH[vardepsexclude] = "TUNE_ARCH"
 
 do_install() {
-        install -d  ${D}${bindir}
-        ln -sf ../clang ${D}${bindir}/${TARGET_PREFIX}clang
-        ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
-        ln -sf ../llvm-profdata ${D}${bindir}/${TARGET_PREFIX}llvm-profdata
+        install -d ${D}${bindir}
+	for tool in clang clang++ llvm-profdata llvm-ar llvm-ranlib llvm-nm
+	do
+		ln -sf ../$tool ${D}${bindir}/${TARGET_PREFIX}$tool
+	done
+}
+SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata *-llvm-ar \
+                      *-llvm-ranlib *-llvm-nm"
+do_install_append() {
         cross_canadian_bindirlinks
 }
-
-SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata"

@@ -16,10 +16,7 @@ DEPENDS += "clang-native binutils-cross-${TARGET_ARCH}"
 
 do_install() {
         install -d ${D}${bindir}
-        ln -sf ../clang ${D}${bindir}/${TARGET_PREFIX}clang
-        ln -sf ../clang++ ${D}${bindir}/${TARGET_PREFIX}clang++
-        ln -sf ../llvm-profdata ${D}${bindir}/${TARGET_PREFIX}llvm-profdata
-	for tool in llvm-ar llvm-ranlib llvm-nm
+	for tool in clang clang++ llvm-profdata llvm-ar llvm-ranlib llvm-nm
 	do
 		ln -sf ../$tool ${D}${bindir}/${TARGET_PREFIX}$tool
 	done
