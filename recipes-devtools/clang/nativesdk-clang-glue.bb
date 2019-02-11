@@ -15,13 +15,15 @@ do_install() {
     cd ${D}${prefix_nativesdk}
     ln -s ..${libdir} .
     ln -s ..${includedir} .
+    cd ..
+    ln -s .${base_libdir} .
 }
 
 sysroot_stage_all () {
 	sysroot_stage_dir ${D} ${SYSROOT_DESTDIR}
 }
 
-FILES_${PN} += "${prefix_nativesdk}"
+FILES_${PN} += "${prefix_nativesdk} ${base_libdir_nativesdk}"
 FILES_${PN}-dbg = ""
 
 deltask do_configure
