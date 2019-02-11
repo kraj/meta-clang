@@ -15,11 +15,16 @@ TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
 
 TUNE_CCARGS_append_toolchain-clang = " -Wno-error=unused-command-line-argument -Qunused-arguments"
 
-TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
-TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
+LDFLAGS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
+LDFLAGS_append_toolchain-clang_class-nativesdk_x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
+LDFLAGS_append_toolchain-clang_class-nativesdk_aarch64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-aarch64.so.1"
+
+LDFLAGS_toolchain-clang_class-nativesdk = "${BUILDSDK_LDFLAGS} \
+                                           -Wl,-rpath-link,${STAGING_LIBDIR}/.. \
+                                           -Wl,-rpath,${libdir}/.. "
 
 # Enable lld globally"
-TOOLCHAIN_OPTIONS_append_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
+LDFLAGS_append_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
 
 # choose between 'gcc' 'clang' an empty '' can be used as well
 TOOLCHAIN ??= "gcc"
