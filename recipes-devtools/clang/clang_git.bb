@@ -10,17 +10,10 @@ require common-source.inc
 
 INHIBIT_DEFAULT_DEPS = "1"
 
-OECMAKE_NATIVE_C_COMPILER_class-nativesdk = "clang -static-libgcc"
-OECMAKE_NATIVE_CXX_COMPILER_class-nativesdk = "clang++ -static-libgcc"
-OECMAKE_NATIVE_AR_class-nativesdk = "llvm-ar"
-OECMAKE_NATIVE_RANLIB_class-nativesdk = "llvm-ranlib"
-OECMAKE_NATIVE_NM_class-nativesdk = "llvm-nm"
-TOOLCHAIN_OPTIONS_append_class-nativesdk = " -static-libgcc"
-
-CC_class-nativesdk  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-CXX_class-nativesdk = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-CPP_class-nativesdk = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
-CCLD_class-nativesdk = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+BUILD_AR_class-nativesdk = "llvm-ar"
+BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
+BUILD_NM_class-nativesdk = "llvm-nm"
+LDFLAGS_append_class-nativesdk = " -fuse-ld=gold"
 
 inherit cmake cmake-native
 
@@ -64,6 +57,9 @@ PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
 PACKAGECONFIG[thin-lto] = "-DLLVM_ENABLE_LTO=Thin -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR},,binutils,"
 PACKAGECONFIG[full-lto] = "-DLLVM_ENABLE_LTO=Full -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR},,binutils,"
 PACKAGECONFIG[shared-libs] = "-DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_LINK_LLVM_DYLIB=ON,,,"
+PACKAGECONFIG[terminfo] = "-DLLVM_ENABLE_TERMINFO=ON,-DLLVM_ENABLE_TERMINFO=OFF,ncurses,"
+PACKAGECONFIG[pfm] = "-DLLVM_ENABLE_LIBPFM=ON,-DLLVM_ENABLE_LIBPFM=OFF,libpfm,"
+PACKAGECONFIG[libedit] = "-DLLVM_ENABLE_LIBEDIT=ON,-DLLVM_ENABLE_LIBEDIT=OFF,libedit,"
 
 #
 # Default to build all OE-Core supported target arches (user overridable).
@@ -105,8 +101,10 @@ EXTRA_OECMAKE_append_class-native = "\
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
-                  -DLLVM_ENABLE_LLD=ON \
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DCMAKE_TOOLCHAIN_FILE=${WORKDIR}/toolchain-native.cmake' \
+                  -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
+                  -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
+                  -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
@@ -207,3 +205,5 @@ INSANE_SKIP_${PN}-dev += "dev-elf"
 SSTATE_SCAN_FILES_remove = "*-config"
 
 TOOLCHAIN = "clang"
+TOOLCHAIN_class-native = "gcc"
+TOOLCHAIN_class-nativesdk = "clang"
