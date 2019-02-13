@@ -1,27 +1,28 @@
-From 419cb3ac8f7f23c3f7aa620a93974b366509c2b7 Mon Sep 17 00:00:00 2001
+From 5a58280d449830a216da015b4a67cbe49b1fd516 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 10 May 2016 02:00:11 -0700
 Subject: [PATCH 04/18] clang: musl/ppc does not support 128-bit long double
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- clang/lib/Basic/Targets/PPC.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ clang/lib/Basic/Targets/PPC.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/clang/lib/Basic/Targets/PPC.h b/clang/lib/Basic/Targets/PPC.h
-index 058970a0e09..ba5b941bc08 100644
+index cbe7a9a2fa8..8df609a9b04 100644
 --- a/clang/lib/Basic/Targets/PPC.h
 +++ b/clang/lib/Basic/Targets/PPC.h
-@@ -331,7 +331,8 @@ public:
+@@ -342,6 +342,10 @@ public:
        break;
      }
  
--    if (getTriple().isOSFreeBSD()) {
-+    if (getTriple().isOSFreeBSD()
-+        || getTriple().isMusl()) {
-       LongDoubleWidth = LongDoubleAlign = 64;
-       LongDoubleFormat = &llvm::APFloat::IEEEdouble();
-     }
++    if (getTriple().isMusl()) {
++      LongDoubleWidth = LongDoubleAlign = 64;
++      LongDoubleFormat = &llvm::APFloat::IEEEdouble();
++    }
+     // PPC32 supports atomics up to 4 bytes.
+     MaxAtomicPromoteWidth = MaxAtomicInlineWidth = 32;
+   }
 -- 
 2.20.1
 

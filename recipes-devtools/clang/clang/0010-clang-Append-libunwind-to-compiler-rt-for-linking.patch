@@ -1,4 +1,4 @@
-From 3ba6f05d35c8b0c405bf62cdd93eecc5a5094165 Mon Sep 17 00:00:00 2001
+From 6c98b7b1df55972f26da3ceceaf87b050e3f05b9 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 25 Jan 2019 14:39:04 -0800
 Subject: [PATCH 10/18] clang: Append libunwind to compiler-rt for linking

@@ -1,4 +1,4 @@
-From f7908f063e790b2930d969a382a8aabb83e7e2a2 Mon Sep 17 00:00:00 2001
+From 977b058e4921ff7908bbf972ea61d4ca34ea8b11 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 16 Aug 2017 15:16:15 -0700
 Subject: [PATCH 08/18] clang: Fix ldso for musl on x86 and x32 architectures
