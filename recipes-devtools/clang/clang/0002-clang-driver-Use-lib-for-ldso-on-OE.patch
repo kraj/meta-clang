@@ -1,4 +1,4 @@
-From 089b7e146cfc86fafe7c21e74238d638ae997df9 Mon Sep 17 00:00:00 2001
+From b2205f063ec2644d0777b277d77426f0e55509fa Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:52:36 -0700
 Subject: [PATCH 02/18] clang: driver: Use /lib for ldso on OE

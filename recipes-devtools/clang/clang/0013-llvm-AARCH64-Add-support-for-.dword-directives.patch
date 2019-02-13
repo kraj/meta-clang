@@ -1,4 +1,4 @@
-From f55e2d5f21917bca619db7aabffd9488748c8165 Mon Sep 17 00:00:00 2001
+From 55786ec791b0aa77e3fbd1f647780a4d4a3db8f6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 31 Jan 2019 10:53:22 -0800
 Subject: [PATCH 13/18] llvm: [AARCH64] Add support for .dword directives
