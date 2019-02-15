@@ -24,6 +24,10 @@ DEPENDS_append_class-nativesdk = " clang-native"
 
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
+
+OECMAKE_TARGET_COMPILE = "compiler-rt"
+OECMAKE_TARGET_INSTALL = "install-compiler-rt install-compiler-rt-headers"
+OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_XRAY=OFF \
@@ -32,7 +36,6 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
-                  -G Ninja ${S}/llvm \
 "
 
 EXTRA_OECMAKE_append_class-nativesdk = "\
@@ -45,36 +48,12 @@ CXXFLAGS_append_libc-musl = " -D_LIBCPP_HAS_MUSL_LIBC=ON "
 EXTRA_OECMAKE_append_mipsarch = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF "
 EXTRA_OECMAKE_append_powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
-do_compile() {
-	ninja ${PARALLEL_MAKE} compiler-rt
-}
-
-do_install() {
-	DESTDIR=${D} ninja ${PARALLEL_MAKE} install-compiler-rt
-
-	if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
-		mkdir -p ${D}${nonarch_libdir}
-		mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
-		rmdir --ignore-fail-on-non-empty ${D}${libdir}
-	fi
-}
-
-
 do_install_append () {
-	if [ -d ${D}${exec_prefix}/lib/linux ]; then
-		for f in `find ${D}${exec_prefix}/lib/linux -maxdepth 1 -type f`
-		do
-			install -D -m 0644 $f ${D}${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/`basename $f`
-			rm $f
-		done
-		rmdir ${D}${exec_prefix}/lib/linux
-	fi
-	for f in `find ${D}${exec_prefix} -maxdepth 1 -name '*.txt' -type f`
-	do
-		install -D -m 0644  $f ${D}${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/`basename $f`
-		rm $f
-	done
-        rm -rf ${D}${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o
+    if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
+        mkdir -p ${D}${nonarch_libdir}
+        mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
+        rmdir --ignore-fail-on-non-empty ${D}${libdir}
+    fi
 }
 
 FILES_SOLIBSDEV = ""

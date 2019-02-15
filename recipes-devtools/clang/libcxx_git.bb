@@ -34,6 +34,9 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
 
 LLVM_LIBDIR_SUFFIX_powerpc64 = "64"
 
+OECMAKE_TARGET_COMPILE = "cxxabi cxx"
+OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi"
+OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "\
                   -DCMAKE_CROSSCOMPILING=ON \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
@@ -54,8 +57,6 @@ EXTRA_OECMAKE += "\
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi;libunwind' \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
-                  -G Ninja \
-                  ${S}/llvm \
 "
 
 EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
@@ -65,21 +66,6 @@ EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
 CXXFLAGS_append_armv5 = " -mfpu=vfp2"
-
-do_compile() {
-    if [ -n "${@bb.utils.filter('PACKAGECONFIG', 'unwind', d)}" ]; then
-        ninja -v ${PARALLEL_MAKE} unwind
-    fi
-    ninja -v ${PARALLEL_MAKE} cxxabi
-    ninja -v ${PARALLEL_MAKE} cxx
-}
-
-do_install() {
-    #DESTDIR=${D} ninja ${PARALLEL_MAKE} install-unwind
-    #install -d ${D}${includedir}
-    #install -m 644 ${S}/libunwind/include/*.h ${D}${includedir}
-    DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx install-cxxabi
-}
 
 ALLOW_EMPTY_${PN} = "1"
 
