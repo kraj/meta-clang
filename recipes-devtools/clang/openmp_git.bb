@@ -8,8 +8,6 @@ SECTION = "libs"
 require clang.inc
 require common-source.inc
 
-DEPENDS += "ninja-native"
-
 RPROVIDES_${PN} += "libgomp"
 RPROVIDES_${PN}-dev += "libgomp-dev"
 
@@ -19,7 +17,7 @@ LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=d75288d1ce0450b28b8d58a284c09c
 
 inherit cmake pkgconfig perlnative
 
-EXTRA_OECMAKE = "-G Ninja ${S}/openmp"
+OECMAKE_SOURCEPATH = "${S}/openmp"
 
 PACKAGECONFIG ?= "ompt-tools"
 PACKAGECONFIG_remove_arm = "ompt-tools"
@@ -27,14 +25,6 @@ PACKAGECONFIG_remove_mipsarch = "ompt-tools"
 PACKAGECONFIG_remove_powerpc = "ompt-tools"
 
 PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_TOOLS=OFF,"
-
-do_compile() {
-	ninja ${PARALLEL_MAKE}
-}
-
-do_install() {
-	DESTDIR=${D} ninja ${PARALLEL_MAKE} install
-}
 
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
