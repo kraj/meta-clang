@@ -26,6 +26,8 @@ SRC_URI = "\
     file://0016-compiler-rt-support-a-new-embedded-linux-target.patch \
     file://0017-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch \
     file://0018-compiler-rt-Disable-tsan-on-OE-glibc.patch \
+    file://0019-llvm-Enhance-path-prefix-mapping.patch \
+    file://0020-clang-Initial-implementation-of-fmacro-prefix-map-an.patch \
 "
 
 # Fallback to no-PIE if not set
