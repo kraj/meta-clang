@@ -45,16 +45,16 @@ Note that by default libstdc++ will remain the default C++ standard library, how
 libc++ to be the default one then set
 
 ```python
-CXX_append_toolchain-clang = " -stdlib=libc++ "
-TARGET_CXXFLAGS_append_toolchain-clang = " -stdlib=libc++ "
+TUNE_CCARGS_append_toolchain-clang = " --stdlib=libc++"
+TARGET_CXXFLAGS_append_toolchain-clang = " --stdlib=libc++"
 ```
 
 in local.conf.
 You can select libc++ per package too by writing bbappends for them containing
 
 ```python
-CXX_append_toolchain-clang_pn-<recipe> = " -stdlib=libc++ "
-TARGET_CXXFLAGS_append_toolchain-clang_pn-<recipe> = " -stdlib=libc++ "
+TUNE_CCARGS_append_toolchain-clang_pn-<recipe> = " --stdlib=libc++"
+TARGET_CXXFLAGS_append_toolchain-clang_pn-<recipe> = " --stdlib=libc++"
 ```
 
 # Default Compiler Runtime ( Compiler-rt + libcxx )
@@ -65,9 +65,8 @@ following settings are needed in site configurations e.g. in local.conf
 
 ```python
 TOOLCHAIN ?= "clang"
-CXX_append_toolchain-clang = " -stdlib=libc++ "
-TARGET_CXXFLAGS_append_toolchain-clang = " -stdlib=libc++ "
-TUNE_CCARGS_append_toolchain-clang = " --rtlib=compiler-rt"
+TARGET_CXXFLAGS_append_toolchain-clang = " --stdlib=libc++"
+TUNE_CCARGS_append_toolchain-clang = " --rtlib=compiler-rt --stdlib=libc++"
 ```
 
 # Building
