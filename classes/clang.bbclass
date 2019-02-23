@@ -5,6 +5,12 @@ CPP_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_O
 CCLD_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 CLANG_TIDY_EXE_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang-tidy ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 
+COMPILER_RT ??= "--rtlib=compiler-rt"
+LIBCPLUSPLUS ??= "--stdlib=libc++"
+
+TARGET_CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
+TUNE_CCARGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
+
 THUMB_TUNE_CCARGS_remove_toolchain-clang = "-mthumb-interwork"
 TUNE_CCARGS_remove_toolchain-clang = "-meb"
 TUNE_CCARGS_remove_toolchain-clang = "-mel"
