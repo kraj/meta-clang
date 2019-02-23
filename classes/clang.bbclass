@@ -47,7 +47,7 @@ def clang_dep_prepend(d):
             return " clang-cross-${TARGET_ARCH} compiler-rt libcxx"
     return ""
 
-BASEDEPENDS_remove_toolchain-clang_class-target = "virtual/${TARGET_PREFIX}gcc"
+BASEDEPENDS_remove_toolchain-clang_class-target = "virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}compilerlibs"
 BASEDEPENDS_append_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
 
 PREFERRED_PROVIDER_libunwind = "libunwind"
