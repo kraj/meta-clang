@@ -41,20 +41,18 @@ TOOLCHAIN = "clang"
 
 # Default C++ Standard Library Switch
 
-Note that by default libstdc++ will remain the default C++ standard library, however if you wish
-libc++ to be the default one then set
+Note that by default clang libc++ is default C++ standard library, however if you wish
+GNU libstdc++ to be the default one then set
 
 ```python
-TUNE_CCARGS_append_toolchain-clang = " --stdlib=libc++"
-TARGET_CXXFLAGS_append_toolchain-clang = " --stdlib=libc++"
+LIBCPLUSPLUS = ""
 ```
 
 in local.conf.
-You can select libc++ per package too by writing bbappends for them containing
+You can select libstdc++ per package too by writing bbappends for them containing
 
 ```python
-TUNE_CCARGS_append_toolchain-clang_pn-<recipe> = " --stdlib=libc++"
-TARGET_CXXFLAGS_append_toolchain-clang_pn-<recipe> = " --stdlib=libc++"
+LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = ""
 ```
 
 # Default Compiler Runtime ( Compiler-rt + libcxx )
