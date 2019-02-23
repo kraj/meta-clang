@@ -13,9 +13,9 @@ inherit cmake pythonnative
 
 DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang = "libcxx"
-CXX_remove_toolchain-clang = "-stdlib=libc++"
-TARGET_CXXFLAGS_remove_toolchain-clang = "-stdlib=libc++"
-TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt"
+DEPENDS_append_toolchain-clang = " virtual/${TARGET_PREFIX}compilerlibs"
+TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
+TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --stdlib=libc++"
 
 PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_powerpc = ""
@@ -71,8 +71,9 @@ do_install() {
 
 ALLOW_EMPTY_${PN} = "1"
 
+#PROVIDES = "virtual/${TARGET_PREFIX}compilerlibs"
+
 RDEPENDS_${PN}-dev += "${PN}-staticdev"
 
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN = "clang"
-
