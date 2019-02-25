@@ -4,6 +4,9 @@ CXX_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN
 CPP_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
 CCLD_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 CLANG_TIDY_EXE_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang-tidy ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+RANLIB_toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
+AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
+NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
 COMPILER_RT ??= "--rtlib=compiler-rt"
 LIBCPLUSPLUS ??= "--stdlib=libc++"
