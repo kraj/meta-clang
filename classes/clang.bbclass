@@ -11,6 +11,9 @@ NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 COMPILER_RT ??= "--rtlib=compiler-rt"
 LIBCPLUSPLUS ??= "--stdlib=libc++"
 
+COMPILER_RT_toolchain-gcc = ""
+LIBCPLUSPLUS_toolchain-gcc = ""
+
 TARGET_CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
 TUNE_CCARGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
 
