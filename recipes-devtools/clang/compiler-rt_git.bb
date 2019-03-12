@@ -96,4 +96,4 @@ BBCLASSEXTEND = "native nativesdk"
 ALLOW_EMPTY_${PN} = "1"
 ALLOW_EMPTY_${PN}-dev = "1"
 
-TOOLCHAIN = "clang"
+TOOLCHAIN_forcevariable = "clang"

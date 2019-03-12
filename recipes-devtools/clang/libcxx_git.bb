@@ -32,6 +32,7 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=3de3deb8323d5cf3360104190e804a
 "
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
+EXTRA_OECMAKE_append_armv5 = " -D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF"
 
 EXTRA_OECMAKE += "\
                   -DLIBCXX_CXX_ABI=libcxxabi \
@@ -76,4 +77,4 @@ ALLOW_EMPTY_${PN} = "1"
 RDEPENDS_${PN}-dev += "${PN}-staticdev"
 
 BBCLASSEXTEND = "native nativesdk"
-TOOLCHAIN = "clang"
+TOOLCHAIN_forcevariable = "clang"
