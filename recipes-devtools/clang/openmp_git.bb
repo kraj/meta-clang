@@ -35,3 +35,6 @@ do_install() {
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
 INSANE_SKIP_${PN} = "dev-so"
+
+COMPATIBLE_HOST_riscv64 = "null"
+COMPATIBLE_HOST_riscv32 = "null"
