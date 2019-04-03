@@ -52,7 +52,7 @@ PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs ${@bb.utils.filter('DIST
 PACKAGECONFIG_class-native = ""
 PACKAGECONFIG_class-nativesdk = "thin-lto"
 
-PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx"
+PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
 PACKAGECONFIG[thin-lto] = "-DLLVM_ENABLE_LTO=Thin -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR},,binutils,"
 PACKAGECONFIG[full-lto] = "-DLLVM_ENABLE_LTO=Full -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR},,binutils,"
@@ -146,6 +146,7 @@ LLVM_TARGETS_TO_BUILD;LLVM_EXPERIMENTAL_TARGETS_TO_BUILD;\
 "
 
 RRECOMMENDS_${PN} = "binutils"
+RRECOMMENDS_${PN}_append_class-target = " libcxx-dev"
 
 do_compile() {
 	ninja ${PARALLEL_MAKE} ${BOOTSTRAPSTAGE}
