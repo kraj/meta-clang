@@ -73,6 +73,9 @@ LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= "RISCV"
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_arch(bb, d)}"
 
+HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
+HF[vardepvalue] = "${HF}"
+
 EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_ENABLE_EXPENSIVE_CHECKS=OFF \
                   -DLLVM_ENABLE_PIC=ON \
@@ -120,7 +123,7 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                   -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
-                  -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS} \
+                  -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS}${HF} \
 "
 EXTRA_OECMAKE_append_class-target_riscv64 = "\
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
