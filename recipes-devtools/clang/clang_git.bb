@@ -89,6 +89,7 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_ENABLE_PROJECTS='clang;lld' \
                   -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -G Ninja ${S}/llvm \
+                  -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
