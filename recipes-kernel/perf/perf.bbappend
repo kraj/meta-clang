@@ -1,1 +1,1 @@
-DEPENDS_append_toolchain-clang_class-target = " clang-cross-${TARGET_ARCH}"
+DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH}"
