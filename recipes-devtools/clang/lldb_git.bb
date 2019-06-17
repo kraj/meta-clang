@@ -45,6 +45,8 @@ EXTRA_OECMAKE="\
 
 EXTRA_OEMAKE = "VERBOSE=1"
 
+CXXFLAGS_append_toolchain-gcc = " -Wno-error=format-security"
+
 do_compile() {
        ninja ${PARALLEL_MAKE} lldb
 }
