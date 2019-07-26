@@ -179,7 +179,7 @@ do_install_append_class-nativesdk () {
 
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
-PACKAGES =+ "${PN}-libllvm"
+PACKAGES =+ "${PN}-libllvm libclang"
 
 BBCLASSEXTEND = "native nativesdk"
 
@@ -196,6 +196,10 @@ FILES_${PN}-libllvm += "\
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}.so \
   ${libdir}/libLLVM-${MAJOR_VER}.so \
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}svn.so \
+"
+
+FILES_libclang = "\
+  ${libdir}/libclang.so.${MAJOR_VER} \
 "
 
 FILES_${PN}-dev += "\
