@@ -3,8 +3,7 @@
 
 DESCRIPTION = "Clang/LLVM based C/C++ compiler (cross-canadian for ${TARGET_ARCH} target)"
 HOMEPAGE = "http://clang.llvm.org/"
-LICENSE = "NCSA"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/NCSA;md5=1b5fdec70ee13ad8a91667f16c1959d7"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0-with-LLVM-exception;md5=0bcd48c3bdfef0c9d9fd17726e4b7dab"
 SECTION = "devel"
 
 PN = "clang-cross-canadian-${TRANSLATED_TARGET_ARCH}"

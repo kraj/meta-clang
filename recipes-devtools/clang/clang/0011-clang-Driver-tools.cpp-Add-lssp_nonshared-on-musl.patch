@@ -1,7 +1,7 @@
-From 74e2a7f0f28e64f496fc33c38428c81dfc15b783 Mon Sep 17 00:00:00 2001
+From 314859edd5f1a221d4a2c6b787e5bddd9b1c4606 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
-Subject: [PATCH 03/18] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
+Subject: [PATCH 11/20] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
 
 musl driver will need to add ssp_nonshared for stack_check_local
 on the linker cmdline when using stack protector commands on
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 2ad45097dce..c841399193e 100644
+index 33cdd3585c2..8b14b8ea9cb 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -525,6 +525,12 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
+@@ -579,6 +579,12 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,
        if (IsIAMCU)
          CmdArgs.push_back("-lgloss");
  
@@ -26,9 +26,9 @@ index 2ad45097dce..c841399193e 100644
 +          Args.hasArg(options::OPT_fstack_protector_all))) {
 +        CmdArgs.push_back("-lssp_nonshared");
 +      }
-       if (Args.hasArg(options::OPT_static))
+       if (IsStatic || IsStaticPIE)
          CmdArgs.push_back("--end-group");
        else
 -- 
-2.20.1
+2.22.0
 

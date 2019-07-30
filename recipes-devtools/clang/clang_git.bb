@@ -160,6 +160,7 @@ do_compile() {
 
 do_install() {
         DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALLTARGET}
+        rm -rf ${D}${libdir}/python3*/site-packages/six.py
 }
 
 do_install_append_class-native () {

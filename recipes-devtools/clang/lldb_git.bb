@@ -3,7 +3,6 @@
 
 DESCRIPTION = "Next generation, high-performance debugger"
 HOMEPAGE = "http://lldb.llvm.org/"
-LICENSE = "MIT | NCSA"
 SECTION = "devel"
 
 DEPENDS += "clang-native zlib libxml2 ninja-native"

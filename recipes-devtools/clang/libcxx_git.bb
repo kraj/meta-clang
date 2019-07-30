@@ -3,7 +3,6 @@
 
 DESCRIPTION = "libc++ is a new implementation of the C++ standard library, targeting C++11"
 HOMEPAGE = "http://libcxx.llvm.org/"
-LICENSE = "MIT | NCSA"
 SECTION = "base"
 
 require clang.inc
@@ -25,9 +24,9 @@ PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHA
 #PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 LIBUNWIND = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', ';libunwind', '', d)}"
 
-LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=3de3deb8323d5cf3360104190e804a75 \
-                    file://libcxxabi/LICENSE.TXT;md5=9dad5a191d1fc03b31525706040c4ed1 \
-                    file://libunwind/LICENSE.TXT;md5=af2bc0b29ead3c8f201c5486f3c9d59b \
+LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
+                    file://libcxxabi/LICENSE.TXT;md5=7b9334635b542c56868400a46b272b1e \
+                    file://libunwind/LICENSE.TXT;md5=f66970035d12f196030658b11725e1a1 \
 "
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"

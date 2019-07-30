@@ -1,7 +1,7 @@
-From 29a090d31273e78646cc34a392fa292e63e8e4e4 Mon Sep 17 00:00:00 2001
+From a4a34addc4d6942bb68a3c298fb07d0e4794e295 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 Feb 2019 10:02:52 -0800
-Subject: [PATCH 2/2] clang: Initial implementation of -fmacro-prefix-map and
+Subject: [PATCH 18/20] clang: Initial implementation of -fmacro-prefix-map and
  -ffile-prefix-map
 
 Upstream-Status: Submitted [https://reviews.llvm.org/D49466]
@@ -16,21 +16,21 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  clang/lib/Driver/ToolChains/FreeBSD.cpp       | 14 +++++++
  clang/lib/Driver/ToolChains/Gnu.cpp           | 12 ++++++
  clang/lib/Frontend/CompilerInvocation.cpp     |  3 ++
- clang/lib/Lex/PPMacroExpansion.cpp            | 14 ++++++-
+ clang/lib/Lex/PPMacroExpansion.cpp            | 13 ++++++-
  clang/test/CodeGen/debug-prefix-map.c         |  2 +
  clang/test/Driver/debug-prefix-map.S          |  1 +
  clang/test/Driver/debug-prefix-map.c          | 37 ++++++++++++++-----
  clang/test/Preprocessor/file_test.c           | 22 +++++++++++
  clang/test/Preprocessor/file_test.h           |  2 +
- 15 files changed, 133 insertions(+), 18 deletions(-)
+ 15 files changed, 132 insertions(+), 18 deletions(-)
  create mode 100644 clang/test/Preprocessor/file_test.c
  create mode 100644 clang/test/Preprocessor/file_test.h
 
 diff --git a/clang/include/clang/Basic/DiagnosticDriverKinds.td b/clang/include/clang/Basic/DiagnosticDriverKinds.td
-index 189e0565a83..46972e7c288 100644
+index eab453ee20e..adee339938e 100644
 --- a/clang/include/clang/Basic/DiagnosticDriverKinds.td
 +++ b/clang/include/clang/Basic/DiagnosticDriverKinds.td
-@@ -114,8 +114,8 @@ def err_drv_missing_arg_mtp : Error<
+@@ -143,8 +143,8 @@ def err_drv_missing_arg_mtp : Error<
    "missing argument to '%0'">;
  def err_drv_invalid_libcxx_deployment : Error<
    "invalid deployment target for -stdlib=libc++ (requires %0 or later)">;
@@ -42,10 +42,10 @@ index 189e0565a83..46972e7c288 100644
    "malformed sanitizer blacklist: '%0'">;
  def err_drv_duplicate_config : Error<
 diff --git a/clang/include/clang/Driver/Options.td b/clang/include/clang/Driver/Options.td
-index a6a6e3b5b53..b9734ea8e4d 100644
+index 4ea8bfff097..cf73c9ca465 100644
 --- a/clang/include/clang/Driver/Options.td
 +++ b/clang/include/clang/Driver/Options.td
-@@ -1838,10 +1838,16 @@ def fsplit_dwarf_inlining: Flag <["-"], "fsplit-dwarf-inlining">, Group<f_Group>
+@@ -1866,10 +1866,16 @@ def fsplit_dwarf_inlining: Flag <["-"], "fsplit-dwarf-inlining">, Group<f_Group>
    Flags<[CC1Option]>, HelpText<"Provide minimal debug info in the object/executable to facilitate online symbolication/stack traces in the absence of .dwo/.dwp files when using Split DWARF">;
  def fno_split_dwarf_inlining: Flag<["-"], "fno-split-dwarf-inlining">, Group<f_Group>,
    Flags<[CC1Option]>;
@@ -77,10 +77,10 @@ index 1480548c7fb..712b423e679 100644
    PreprocessorOptions() : PrecompiledPreambleBytes(0, false) {}
  
 diff --git a/clang/lib/CodeGen/CGDebugInfo.cpp b/clang/lib/CodeGen/CGDebugInfo.cpp
-index ce48f8bb132..c5d41667487 100644
+index f6ee7ee26d4..8a190558533 100644
 --- a/clang/lib/CodeGen/CGDebugInfo.cpp
 +++ b/clang/lib/CodeGen/CGDebugInfo.cpp
-@@ -470,10 +470,13 @@ CGDebugInfo::createFile(StringRef FileName,
+@@ -475,10 +475,13 @@ CGDebugInfo::createFile(StringRef FileName,
  }
  
  std::string CGDebugInfo::remapDIPath(StringRef Path) const {
@@ -98,10 +98,10 @@ index ce48f8bb132..c5d41667487 100644
  
  unsigned CGDebugInfo::getLineNumber(SourceLocation Loc) {
 diff --git a/clang/lib/CodeGen/CGDebugInfo.h b/clang/lib/CodeGen/CGDebugInfo.h
-index 67331b65d3b..c88665d269c 100644
+index 7edbea86633..7077d0f043c 100644
 --- a/clang/lib/CodeGen/CGDebugInfo.h
 +++ b/clang/lib/CodeGen/CGDebugInfo.h
-@@ -82,7 +82,7 @@ class CGDebugInfo {
+@@ -83,7 +83,7 @@ class CGDebugInfo {
    /// Cache of previously constructed Types.
    llvm::DenseMap<const void *, llvm::TrackingMDRef> TypeCache;
  
@@ -111,10 +111,10 @@ index 67331b65d3b..c88665d269c 100644
    /// Cache that maps VLA types to size expressions for that type,
    /// represented by instantiated Metadata nodes.
 diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
-index fc95003e41b..974bc19403c 100644
+index cb861f27aed..1c788d97c16 100644
 --- a/clang/lib/Driver/ToolChains/Clang.cpp
 +++ b/clang/lib/Driver/ToolChains/Clang.cpp
-@@ -613,16 +613,30 @@ static void addDebugCompDirArg(const ArgList &Args, ArgStringList &CmdArgs) {
+@@ -612,16 +612,30 @@ static void addDebugCompDirArg(const ArgList &Args, ArgStringList &CmdArgs,
  
  /// Add a CC1 and CC1AS option to specify the debug file path prefix map.
  static void addDebugPrefixMapArg(const Driver &D, const ArgList &Args, ArgStringList &CmdArgs) {
@@ -145,9 +145,9 @@ index fc95003e41b..974bc19403c 100644
 +}
 +
  /// Vectorize at all optimization levels greater than 1 except for -Oz.
- /// For -Oz the loop vectorizer is disable, while the slp vectorizer is enabled.
- static bool shouldEnableVectorizerAtOLevel(const ArgList &Args, bool isSlpVec) {
-@@ -1261,6 +1275,8 @@ void Clang::AddPreprocessingOptions(Compilation &C, const JobAction &JA,
+ /// For -Oz the loop vectorizer is disabled, while the slp vectorizer is
+ /// enabled.
+@@ -1306,6 +1320,8 @@ void Clang::AddPreprocessingOptions(Compilation &C, const JobAction &JA,
      // For IAMCU add special include arguments.
      getToolChain().AddIAMCUIncludeArgs(Args, CmdArgs);
    }
@@ -157,7 +157,7 @@ index fc95003e41b..974bc19403c 100644
  
  // FIXME: Move to target hook.
 diff --git a/clang/lib/Driver/ToolChains/FreeBSD.cpp b/clang/lib/Driver/ToolChains/FreeBSD.cpp
-index 55586df9e2f..63d5ebe6984 100644
+index 3a0bab8d07f..6eea9f04620 100644
 --- a/clang/lib/Driver/ToolChains/FreeBSD.cpp
 +++ b/clang/lib/Driver/ToolChains/FreeBSD.cpp
 @@ -12,6 +12,7 @@
@@ -196,10 +196,10 @@ index 55586df9e2f..63d5ebe6984 100644
  
    CmdArgs.push_back("-o");
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index e3d836a0b2c..02a1169772b 100644
+index 20517a369f7..ebb315d9c15 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -804,6 +804,18 @@ void tools::gnutools::Assembler::ConstructJob(Compilation &C,
+@@ -874,6 +874,18 @@ void tools::gnutools::Assembler::ConstructJob(Compilation &C,
    }
    }
  
@@ -219,10 +219,10 @@ index e3d836a0b2c..02a1169772b 100644
    Args.AddAllArgValues(CmdArgs, options::OPT_Wa_COMMA, options::OPT_Xassembler);
  
 diff --git a/clang/lib/Frontend/CompilerInvocation.cpp b/clang/lib/Frontend/CompilerInvocation.cpp
-index bda8427b1a1..0f396d1cc7c 100644
+index bc54e38a1a6..ff68adb865d 100644
 --- a/clang/lib/Frontend/CompilerInvocation.cpp
 +++ b/clang/lib/Frontend/CompilerInvocation.cpp
-@@ -3084,6 +3084,9 @@ static void ParsePreprocessorArgs(PreprocessorOptions &Opts, ArgList &Args,
+@@ -3180,6 +3180,9 @@ static void ParsePreprocessorArgs(PreprocessorOptions &Opts, ArgList &Args,
    for (const auto *A : Args.filtered(OPT_error_on_deserialized_pch_decl))
      Opts.DeserializedPCHDeclsToErrorOn.insert(A->getValue());
  
@@ -233,7 +233,7 @@ index bda8427b1a1..0f396d1cc7c 100644
      StringRef Value(A->getValue());
      size_t Comma = Value.find(',');
 diff --git a/clang/lib/Lex/PPMacroExpansion.cpp b/clang/lib/Lex/PPMacroExpansion.cpp
-index 2e9c686b2a0..9e72596145f 100644
+index 687b9a9d3b7..9fffe35d924 100644
 --- a/clang/lib/Lex/PPMacroExpansion.cpp
 +++ b/clang/lib/Lex/PPMacroExpansion.cpp
 @@ -28,6 +28,7 @@
@@ -244,15 +244,7 @@ index 2e9c686b2a0..9e72596145f 100644
  #include "clang/Lex/Token.h"
  #include "llvm/ADT/ArrayRef.h"
  #include "llvm/ADT/DenseMap.h"
-@@ -43,6 +44,7 @@
- #include "llvm/Support/Casting.h"
- #include "llvm/Support/ErrorHandling.h"
- #include "llvm/Support/Format.h"
-+#include "llvm/Support/Path.h"
- #include "llvm/Support/raw_ostream.h"
- #include <algorithm>
- #include <cassert>
-@@ -1455,6 +1457,15 @@ static bool isTargetEnvironment(const TargetInfo &TI,
+@@ -1436,6 +1437,15 @@ static bool isTargetEnvironment(const TargetInfo &TI,
    return TI.getTriple().getEnvironment() == Env.getEnvironment();
  }
  
@@ -268,14 +260,18 @@ index 2e9c686b2a0..9e72596145f 100644
  /// ExpandBuiltinMacro - If an identifier token is read that is to be expanded
  /// as a builtin macro, handle it and return the next token as 'Tok'.
  void Preprocessor::ExpandBuiltinMacro(Token &Tok) {
-@@ -1518,10 +1529,11 @@ void Preprocessor::ExpandBuiltinMacro(Token &Tok) {
+@@ -1502,7 +1512,7 @@ void Preprocessor::ExpandBuiltinMacro(Token &Tok) {
      }
  
      // Escape this filename.  Turn '\' -> '\\' '"' -> '\"'
 -    SmallString<128> FN;
 +    SmallString<256> FN;
      if (PLoc.isValid()) {
-       FN += PLoc.getFilename();
+       // __FILE_NAME__ is a Clang-specific extension that expands to the
+       // the last part of __FILE__.
+@@ -1518,6 +1528,7 @@ void Preprocessor::ExpandBuiltinMacro(Token &Tok) {
+         FN += PLoc.getFilename();
+       }
        Lexer::Stringify(FN);
 +      remapMacroPath(FN, PPOpts->MacroPrefixMap);
        OS << '"' << FN << '"';
@@ -383,5 +379,5 @@ index 00000000000..c289e5c8362
 +filename: __FILE__
 +basefile: __BASE_FILE__
 -- 
-2.20.1
+2.22.0
 

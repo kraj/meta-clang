@@ -1,0 +1,52 @@
+From db66a7c23a2462e618b12e06f1920d30a49f5dce Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 12 Aug 2019 08:59:28 -0700
+Subject: [PATCH 20/20] clang: default to lp64d ABI and rv64gc ISA
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/Arch/RISCV.cpp | 9 ++++++++-
+ clang/lib/Driver/ToolChains/Clang.cpp      | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/clang/lib/Driver/ToolChains/Arch/RISCV.cpp b/clang/lib/Driver/ToolChains/Arch/RISCV.cpp
+index b6768de4d29..9671ea270ef 100644
+--- a/clang/lib/Driver/ToolChains/Arch/RISCV.cpp
++++ b/clang/lib/Driver/ToolChains/Arch/RISCV.cpp
+@@ -350,6 +350,13 @@ void riscv::getRISCVTargetFeatures(const Driver &D, const ArgList &Args,
+ 
+     // Handle all other types of extensions.
+     getExtensionFeatures(D, Args, Features, MArch, OtherExts);
++  } else {
++    // Default to imafdc aka gc
++    Features.push_back("+m");
++    Features.push_back("+a");
++    Features.push_back("+f");
++    Features.push_back("+d");
++    Features.push_back("+c");
+   }
+ 
+   // -mrelax is default, unless -mno-relax is specified.
+@@ -375,5 +382,5 @@ StringRef riscv::getRISCVABI(const ArgList &Args, const llvm::Triple &Triple) {
+   if (Arg *A = Args.getLastArg(options::OPT_mabi_EQ))
+     return A->getValue();
+ 
+-  return Triple.getArch() == llvm::Triple::riscv32 ? "ilp32" : "lp64";
++  return Triple.getArch() == llvm::Triple::riscv32 ? "ilp32" : "lp64d";
+ }
+diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
+index 1c788d97c16..50839de1bf9 100644
+--- a/clang/lib/Driver/ToolChains/Clang.cpp
++++ b/clang/lib/Driver/ToolChains/Clang.cpp
+@@ -1867,7 +1867,7 @@ void Clang::AddRISCVTargetArgs(const ArgList &Args,
+   else if (Triple.getArch() == llvm::Triple::riscv32)
+     ABIName = "ilp32";
+   else if (Triple.getArch() == llvm::Triple::riscv64)
+-    ABIName = "lp64";
++    ABIName = "lp64d";
+   else
+     llvm_unreachable("Unexpected triple!");
+ 
+-- 
+2.22.0
+

@@ -3,7 +3,6 @@
 
 DESCRIPTION = "LLVM based C/C++ compiler Runtime"
 HOMEPAGE = "http://compiler-rt.llvm.org/"
-LICENSE = "MIT | NCSA"
 SECTION = "base"
 
 require clang.inc
@@ -12,8 +11,7 @@ require common-source.inc
 inherit cmake pkgconfig pythonnative
 
 
-LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=f981c4637a4cd67915ac527b3ead3a59; \
-"
+LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee54e877a"
 
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt libcxx"
 DEPENDS_append_toolchain-clang_class-target = " virtual/${TARGET_PREFIX}compilerlibs"
@@ -70,6 +68,7 @@ do_install_append () {
 		install -D -m 0644  $f ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/`basename $f`
 		rm $f
 	done
+        rm -rf ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o
 }
 
 FILES_SOLIBSDEV = ""
@@ -77,7 +76,9 @@ FILES_${PN} += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux
                 ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
                 ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
 FILES_${PN}-staticdev += "${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES_${PN}-dev += "${datadir} ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms"
+FILES_${PN}-dev += "${datadir} ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
+                    ${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
+                   "
 INSANE_SKIP_${PN} = "dev-so"
 
 #PROVIDES_append_class-target = "\
