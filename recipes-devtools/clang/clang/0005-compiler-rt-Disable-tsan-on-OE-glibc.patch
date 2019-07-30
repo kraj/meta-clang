@@ -1,7 +1,7 @@
-From 80820b9db8217eeaee5675795380d9b3b1b9c410 Mon Sep 17 00:00:00 2001
+From 28443a32a50da7631e24e9892f3ab420d1fb4a01 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
-Subject: [PATCH 18/18] compiler-rt: Disable tsan on OE/glibc
+Subject: [PATCH 05/20] compiler-rt: Disable tsan on OE/glibc
 
 It does not build see
 http://lists.llvm.org/pipermail/llvm-dev/2016-July/102235.html
@@ -9,14 +9,14 @@ http://lists.llvm.org/pipermail/llvm-dev/2016-July/102235.html
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  compiler-rt/cmake/config-ix.cmake                | 2 +-
- compiler-rt/test/sanitizer_common/CMakeLists.txt | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ compiler-rt/test/sanitizer_common/CMakeLists.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/compiler-rt/cmake/config-ix.cmake b/compiler-rt/cmake/config-ix.cmake
-index 5b943387717..151b6069e16 100644
+index 3cc4c22304e..9da891b62e9 100644
 --- a/compiler-rt/cmake/config-ix.cmake
 +++ b/compiler-rt/cmake/config-ix.cmake
-@@ -594,7 +594,7 @@ else()
+@@ -619,7 +619,7 @@ else()
  endif()
  
  if (COMPILER_RT_HAS_SANITIZER_COMMON AND TSAN_SUPPORTED_ARCH AND
@@ -26,17 +26,18 @@ index 5b943387717..151b6069e16 100644
  else()
    set(COMPILER_RT_HAS_TSAN FALSE)
 diff --git a/compiler-rt/test/sanitizer_common/CMakeLists.txt b/compiler-rt/test/sanitizer_common/CMakeLists.txt
-index 23292e54820..cae7e010885 100644
+index 48fccf05855..b4a7f0adf14 100644
 --- a/compiler-rt/test/sanitizer_common/CMakeLists.txt
 +++ b/compiler-rt/test/sanitizer_common/CMakeLists.txt
-@@ -8,7 +8,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Darwin|Linux|FreeBSD|NetBSD|SunOS")
-   list(APPEND SUPPORTED_TOOLS asan)
- endif()
- if(CMAKE_SYSTEM_NAME MATCHES "NetBSD" OR (CMAKE_SYSTEM_NAME MATCHES "Linux" AND NOT ANDROID))
--  list(APPEND SUPPORTED_TOOLS tsan)
-   list(APPEND SUPPORTED_TOOLS msan)
-   list(APPEND SUPPORTED_TOOLS ubsan)
- endif()
+@@ -6,7 +6,7 @@ set(SANITIZER_COMMON_TESTSUITES)
+ # FIXME(dliew): We should switch to COMPILER_RT_SANITIZERS_TO_BUILD instead of
+ # the hard coded `SUPPORTED_TOOLS_INIT` list once we know that the other
+ # sanitizers work.
+-set(SUPPORTED_TOOLS_INIT asan lsan msan tsan ubsan)
++set(SUPPORTED_TOOLS_INIT asan lsan msan ubsan)
+ set(SUPPORTED_TOOLS)
+   foreach(SANITIZER_TOOL ${SUPPORTED_TOOLS_INIT})
+     string(TOUPPER ${SANITIZER_TOOL} SANITIZER_TOOL_UPPER)
 -- 
-2.20.1
+2.22.0
 

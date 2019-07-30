@@ -1,0 +1,39 @@
+From 7d855716ab05ec3d7b693cf302713efad5c118fa Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 31 Jul 2019 22:51:39 -0700
+Subject: [PATCH 19/20] clang: Add -lpthread and -ldl along with -lunwind for
+ static linking
+
+When doing static liking with --unwindlib=libunwind -static we encounter
+undefined symbols
+libunwind/src/RWMutex.hpp:68: undefined reference to `pthread_rwlock_wrlock'
+
+and
+
+libunwind/src/AddressSpace.hpp:597: undefined reference to `dladdr'
+
+therefore we need to link in libpthread and libdl to fill these symbols
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/CommonArgs.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
+index 99691cb43dc..92b3bfbd77f 100644
+--- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
++++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
+@@ -1185,6 +1185,10 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
+   }
+   case ToolChain::UNW_CompilerRT:
+     CmdArgs.push_back("-lunwind");
++    if (Args.hasArg(options::OPT_static)) {
++      CmdArgs.push_back("-lpthread");
++      CmdArgs.push_back("-ldl");
++    }
+     break;
+   }
+ 
+-- 
+2.22.0
+

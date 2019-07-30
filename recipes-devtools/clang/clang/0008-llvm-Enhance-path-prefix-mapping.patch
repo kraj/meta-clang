@@ -1,7 +1,7 @@
-From 07594e15b8e9740012c3bcac00f935faf77f1c99 Mon Sep 17 00:00:00 2001
+From 262518322d0397ba7fd3876a8710dd453e7d4c59 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 Feb 2019 11:32:09 -0800
-Subject: [PATCH 1/2] llvm: Enhance path prefix mapping
+Subject: [PATCH 08/20] llvm: Enhance path prefix mapping
 
 Upstream-Status: Submitted [https://reviews.llvm.org/D56769]
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
@@ -56,10 +56,10 @@ index 5c0bee58f18..20332c09852 100644
  /// Append to path.
  ///
 diff --git a/llvm/lib/Support/Path.cpp b/llvm/lib/Support/Path.cpp
-index 8f580c66d24..e368fe0e17b 100644
+index c49260125db..89a1c193d14 100644
 --- a/llvm/lib/Support/Path.cpp
 +++ b/llvm/lib/Support/Path.cpp
-@@ -520,27 +520,53 @@ void replace_extension(SmallVectorImpl<char> &path, const Twine &extension,
+@@ -496,27 +496,53 @@ void replace_extension(SmallVectorImpl<char> &path, const Twine &extension,
    path.append(ext.begin(), ext.end());
  }
  
@@ -123,10 +123,10 @@ index 8f580c66d24..e368fe0e17b 100644
  
  void native(const Twine &path, SmallVectorImpl<char> &result, Style style) {
 diff --git a/llvm/unittests/Support/Path.cpp b/llvm/unittests/Support/Path.cpp
-index 7ce6d2d52db..eaf8557ca8d 100644
+index ccd72d7f176..13af998d8f8 100644
 --- a/llvm/unittests/Support/Path.cpp
 +++ b/llvm/unittests/Support/Path.cpp
-@@ -1207,7 +1207,9 @@ TEST(Support, RemoveDots) {
+@@ -1219,7 +1219,9 @@ TEST(Support, RemoveDots) {
  TEST(Support, ReplacePathPrefix) {
    SmallString<64> Path1("/foo");
    SmallString<64> Path2("/old/foo");
@@ -136,7 +136,7 @@ index 7ce6d2d52db..eaf8557ca8d 100644
    SmallString<64> NewPrefix("/new");
    SmallString<64> NewPrefix2("/longernew");
    SmallString<64> EmptyPrefix("");
-@@ -1227,6 +1229,33 @@ TEST(Support, ReplacePathPrefix) {
+@@ -1239,6 +1241,33 @@ TEST(Support, ReplacePathPrefix) {
    Path = Path2;
    path::replace_path_prefix(Path, OldPrefix, EmptyPrefix);
    EXPECT_EQ(Path, "/foo");
@@ -171,5 +171,5 @@ index 7ce6d2d52db..eaf8557ca8d 100644
  
  TEST_F(FileSystemTest, OpenFileForRead) {
 -- 
-2.20.1
+2.22.0
 

@@ -1,7 +1,7 @@
-From 74775fbe6fcee36cbc74703f824a95ef883392e2 Mon Sep 17 00:00:00 2001
+From 112e33992bbe21dceb1d14978585bd9d083648ec Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 27 Aug 2017 10:37:49 -0700
-Subject: [PATCH 15/18] libcxxabi: Find libunwind headers when
+Subject: [PATCH 02/20] libcxxabi: Find libunwind headers when
  LIBCXXABI_LIBUNWIND_INCLUDES is set
 
 Currently, when LIBCXXABI_LIBUNWIND_INCLUDES is set via CMake arguments
@@ -17,10 +17,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/libcxxabi/CMakeLists.txt b/libcxxabi/CMakeLists.txt
-index 92c7dc5dc55..d67bb43aba3 100644
+index ce69fff1370..47e09e34fc2 100644
 --- a/libcxxabi/CMakeLists.txt
 +++ b/libcxxabi/CMakeLists.txt
-@@ -434,15 +434,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${LIBCXXABI_C_FLAGS}")
+@@ -455,14 +455,9 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${LIBCXXABI_C_FLAGS}")
  # Setup Source Code
  #===============================================================================
  
@@ -31,13 +31,12 @@ index 92c7dc5dc55..d67bb43aba3 100644
 -
  include_directories(include)
  if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
-   find_path(
--    LIBCXXABI_LIBUNWIND_INCLUDES_INTERNAL
-+    LIBCXXABI_LIBUNWIND_INCLUDES
-     libunwind.h
+-  find_path(LIBCXXABI_LIBUNWIND_INCLUDES_INTERNAL libunwind.h
++  find_path(LIBCXXABI_LIBUNWIND_INCLUDES libunwind.h
      PATHS ${LIBCXXABI_LIBUNWIND_INCLUDES}
            ${LIBCXXABI_LIBUNWIND_PATH}/include
-@@ -454,15 +449,21 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
+           ${CMAKE_BINARY_DIR}/${LIBCXXABI_LIBUNWIND_INCLUDES}
+@@ -473,15 +468,21 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
      NO_CMAKE_FIND_ROOT_PATH
    )
  
@@ -64,5 +63,5 @@ index 92c7dc5dc55..d67bb43aba3 100644
  # soname, etc...
  add_subdirectory(src)
 -- 
-2.20.1
+2.22.0
 

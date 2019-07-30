@@ -1,7 +1,7 @@
-From 977b058e4921ff7908bbf972ea61d4ca34ea8b11 Mon Sep 17 00:00:00 2001
+From bb1af5985b7b6e02281be669c28eb897a58c7c2f Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 16 Aug 2017 15:16:15 -0700
-Subject: [PATCH 08/18] clang: Fix ldso for musl on x86 and x32 architectures
+Subject: [PATCH 16/20] clang: Fix ldso for musl on x86 and x32 architectures
 
 x32 linker is called ld-musl-x32.so.1 and x86 linker
 is called ld-musl-i386.so.1, Currently, linker for
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 8 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 7d5a85ed744..4dfef25aa63 100644
+index 9bf66207ac9..fc7d6c17484 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -516,6 +516,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -519,6 +519,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
    if (Triple.isMusl()) {
      std::string ArchName;
      bool IsArm = false;
@@ -25,7 +25,7 @@ index 7d5a85ed744..4dfef25aa63 100644
  
      switch (Arch) {
      case llvm::Triple::arm:
-@@ -528,6 +529,13 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -531,6 +532,13 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
        ArchName = "armeb";
        IsArm = true;
        break;
@@ -40,5 +40,5 @@ index 7d5a85ed744..4dfef25aa63 100644
        ArchName = Triple.getArchName().str();
      }
 -- 
-2.20.1
+2.22.0
 

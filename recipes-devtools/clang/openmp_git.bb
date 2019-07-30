@@ -3,8 +3,7 @@
 
 DESCRIPTION = "LLVM based C/C++ compiler Runtime"
 HOMEPAGE = "http://openmp.llvm.org/"
-LICENSE = "MIT | NCSA"
-SECTION = "base"
+SECTION = "libs"
 
 require clang.inc
 require common-source.inc
@@ -16,7 +15,7 @@ RPROVIDES_${PN}-dev += "libgomp-dev"
 
 TOOLCHAIN = "clang"
 
-LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=b1dcbf2c86cbf9bdc0b7cea88a543010"
+LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=d75288d1ce0450b28b8d58a284c09c79"
 
 inherit cmake pkgconfig perlnative
 

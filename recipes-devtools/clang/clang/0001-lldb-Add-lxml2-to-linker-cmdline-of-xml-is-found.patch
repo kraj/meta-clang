@@ -1,7 +1,7 @@
-From 6f7cf16d8a891d7e1cdc143dc21623175373c33b Mon Sep 17 00:00:00 2001
+From 79ec5a3eca699011c6f95de36ce027dbfdad0aff Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 22 May 2017 17:36:16 -0700
-Subject: [PATCH 14/18] lldb: Add -lxml2 to linker cmdline of xml is found
+Subject: [PATCH 01/20] lldb: Add -lxml2 to linker cmdline of xml is found
 
 When cross compiling for systems where static libs
 for libxml are not available cmake's detection mechanism
@@ -23,7 +23,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/lldb/source/Host/CMakeLists.txt b/lldb/source/Host/CMakeLists.txt
-index 333f109a9a2..a5237c4b779 100644
+index 4bb8d363b57..3b58c36c641 100644
 --- a/lldb/source/Host/CMakeLists.txt
 +++ b/lldb/source/Host/CMakeLists.txt
 @@ -148,7 +148,7 @@ if (APPLE)
@@ -36,5 +36,5 @@ index 333f109a9a2..a5237c4b779 100644
  endif ()
  if (HAVE_LIBDL)
 -- 
-2.20.1
+2.22.0
 
