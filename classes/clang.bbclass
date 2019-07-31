@@ -8,7 +8,7 @@ RANLIB_toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
 AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
-COMPILER_RT ??= "--rtlib=compiler-rt"
+COMPILER_RT ??= "--rtlib=compiler-rt --unwindlib=libunwind"
 LIBCPLUSPLUS ??= "--stdlib=libc++"
 
 COMPILER_RT_toolchain-gcc = ""

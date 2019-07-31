@@ -14,12 +14,12 @@ DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang = "libcxx"
 DEPENDS_append_toolchain-clang = " virtual/${TARGET_PREFIX}compilerlibs"
 TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
-TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --stdlib=libc++"
+TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
 
 PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_powerpc = ""
 PACKAGECONFIG_riscv64 = ""
-PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHARED=OFF -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
+PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHARED=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
 
 #PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 LIBUNWIND = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', ';libunwind', '', d)}"
@@ -63,7 +63,6 @@ do_compile() {
 do_install() {
     if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
         DESTDIR=${D} ninja ${PARALLEL_MAKE} install-unwind
-        rm -rf ${D}${libdir}/libunwind.so
     fi
     DESTDIR=${D} ninja ${PARALLEL_MAKE} install-cxx install-cxxabi
 }
