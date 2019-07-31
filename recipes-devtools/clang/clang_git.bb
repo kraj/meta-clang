@@ -24,7 +24,6 @@ OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 def get_clang_experimental_arch(bb, d, arch_var):
     import re
     a = d.getVar(arch_var, True)
-    if re.match('riscv(32|64)$', a):                 return 'RISCV'
     return ""
 
 def get_clang_arch(bb, d, arch_var):
@@ -36,6 +35,7 @@ def get_clang_arch(bb, d, arch_var):
     elif re.match('aarch64$', a):                      return 'AArch64'
     elif re.match('aarch64_be$', a):                   return 'AArch64'
     elif re.match('mips(isa|)(32|64|)(r6|)(el|)$', a): return 'Mips'
+    elif re.match('riscv(32|64)(eb|)$', a):            return 'RISCV'
     elif re.match('p(pc|owerpc)(|64)', a):             return 'PowerPC'
     else:
         bb.note("'%s' is not a primary llvm architecture" % a)
@@ -61,18 +61,16 @@ PACKAGECONFIG[full-lto] = "-DLLVM_ENABLE_LTO=Full -DLLVM_BINUTILS_INCDIR=${STAGI
 PACKAGECONFIG[shared-libs] = "-DLLVM_BUILD_LLVM_DYLIB=ON -DLLVM_LINK_LLVM_DYLIB=ON,,,"
 PACKAGECONFIG[terminfo] = "-DLLVM_ENABLE_TERMINFO=ON,-DLLVM_ENABLE_TERMINFO=OFF,ncurses,"
 PACKAGECONFIG[pfm] = "-DLLVM_ENABLE_LIBPFM=ON,-DLLVM_ENABLE_LIBPFM=OFF,libpfm,"
-PACKAGECONFIG[libedit] = "-DLLVM_ENABLE_LIBEDIT=ON,-DLLVM_ENABLE_LIBEDIT=OFF,libedit,"
-
 #
 # Default to build all OE-Core supported target arches (user overridable).
 #
-LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;BPF;Mips;PowerPC;X86"
+LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86"
 LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
 LLVM_TARGETS_TO_BUILD_TARGET ?= ""
 LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
 
-LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= "RISCV"
+LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_arch(bb, d)}"
 
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
@@ -91,7 +89,7 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DCMAKE_SYSTEM_NAME=Linux \
                   -DCMAKE_BUILD_TYPE=Release \
                   -DBUILD_SHARED_LIBS=OFF \
-                  -DLLVM_ENABLE_PROJECTS='clang;lld' \
+                  -DLLVM_ENABLE_PROJECTS='clang;lld;lldb' \
                   -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -G Ninja ${S}/llvm \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
@@ -115,11 +113,13 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
+                  -DLLDB_TABLEGEN=${STAGING_BINDIR_NATIVE}/lldb-tblgen \
 "
 EXTRA_OECMAKE_append_class-target = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
+                  -DLLDB_TABLEGEN=${STAGING_BINDIR_NATIVE}/lldb-tblgen \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD_TARGET}' \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
@@ -127,13 +127,8 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS}${HF} \
 "
-EXTRA_OECMAKE_append_class-target_riscv64 = "\
-                  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
-"
-EXTRA_OECMAKE_append_class-target_riscv32 = "\
-                  -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
-"
-DEPENDS = "binutils zlib libffi libxml2 ninja-native"
+
+DEPENDS = "binutils zlib libffi libxml2 libedit ninja-native swig-native"
 DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH}"
 
@@ -165,6 +160,7 @@ do_install() {
 
 do_install_append_class-native () {
 	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+	install -Dm 0755 ${B}/tools/clang/stage2-bins/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 		echo "stripped $f"
@@ -173,6 +169,7 @@ do_install_append_class-native () {
 
 do_install_append_class-nativesdk () {
 	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+	install -Dm 0755 ${B}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 	done
@@ -182,15 +179,17 @@ do_install_append_class-nativesdk () {
 
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
-PACKAGES =+ "${PN}-libllvm libclang"
+PACKAGES =+ "${PN}-libllvm libclang python-lldb"
 
 BBCLASSEXTEND = "native nativesdk"
+
+FILES_python-lldb = "${libdir}/python3*/site-packages/lldb/*"
 
 FILES_${PN} += "\
   ${libdir}/BugpointPasses.so \
   ${libdir}/LLVMHello.so \
-  ${libdir}/TestPlugin.so \
   ${libdir}/LLVMgold.so \
+  ${libdir}/*Plugin.so \
   ${datadir}/scan-* \
   ${datadir}/opt-viewer/ \
 "
@@ -212,6 +211,7 @@ FILES_${PN}-dev += "\
 
 INSANE_SKIP_${PN} += "already-stripped"
 INSANE_SKIP_${PN}-dev += "dev-elf"
+INSANE_SKIP_python-lldb += "dev-so dev-deps"
 
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
 SSTATE_SCAN_FILES_remove = "*-config"
