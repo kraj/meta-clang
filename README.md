@@ -55,16 +55,16 @@ You can select libstdc++ per package too by writing bbappends for them containin
 LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = ""
 ```
 
-# Default Compiler Runtime ( Compiler-rt + libcxx )
+# Default Compiler Runtime ( Compiler-rt + libc++ )
 
-By default, clang build from meta-clang uses gcc runtime ( libgcc + libstdc++ ) out of box
-However, it is possible to switch to using Clang runtime as default, In order to do that
+By default, clang build from meta-clang uses clang runtime ( compiler-rt + libc++ + libunwind ) out of box
+However, it is possible to switch to using gcc runtime as default, In order to do that
 following settings are needed in site configurations e.g. in local.conf
 
 ```python
 TOOLCHAIN ?= "clang"
-TARGET_CXXFLAGS_append_toolchain-clang = " --stdlib=libc++"
-TUNE_CCARGS_append_toolchain-clang = " --rtlib=compiler-rt --stdlib=libc++"
+TARGET_CXXFLAGS_remoce_toolchain-clang = " --stdlib=libc++"
+TUNE_CCARGS_remove_toolchain-clang = " --rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
 ```
 
 # Building
