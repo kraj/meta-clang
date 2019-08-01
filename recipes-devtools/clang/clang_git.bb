@@ -10,6 +10,8 @@ require common-source.inc
 
 INHIBIT_DEFAULT_DEPS = "1"
 
+BUILD_CC_class-nativesdk = "clang"
+BUILD_CXX_class-nativesdk = "clang++"
 BUILD_AR_class-nativesdk = "llvm-ar"
 BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
 BUILD_NM_class-nativesdk = "llvm-nm"
