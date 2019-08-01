@@ -19,6 +19,7 @@ TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --unwindlib=libunwind 
 PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_powerpc = ""
 PACKAGECONFIG_riscv64 = ""
+PACKAGECONFIG_riscv32 = ""
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHARED=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
 
 #PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
@@ -37,6 +38,7 @@ EXTRA_OECMAKE += "\
                   -DLIBCXX_USE_COMPILER_RT=YES \
                   -DLIBCXXABI_USE_COMPILER_RT=YES \
                   -DCXX_SUPPORTS_CXX11=ON \
+                  -DLIBCXX_INSTALL_EXPERIMENTAL_LIBRARY=ON \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
@@ -51,7 +53,16 @@ EXTRA_OECMAKE += "\
 EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
 EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
-
+EXTRA_OECMAKE_append_riscv64 = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
+                                 -DLIBCXX_ENABLE_EXCEPTIONS=ON \
+                                 -DLIBOMP_LIBFLAGS='-latomic' \
+                                 -DCMAKE_SHARED_LINKER_FLAGS='-lgcc_s -latomic' \
+                                 "
+EXTRA_OECMAKE_append_riscv32 = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
+                                 -DLIBCXX_ENABLE_EXCEPTIONS=ON \
+                                 -DLIBOMP_LIBFLAGS='-latomic' \
+                                 -DCMAKE_SHARED_LINKER_FLAGS='-lgcc_s -latomic' \
+                                 "
 do_compile() {
     if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
         ninja -v ${PARALLEL_MAKE} unwind
@@ -70,8 +81,11 @@ do_install() {
 ALLOW_EMPTY_${PN} = "1"
 
 #PROVIDES = "virtual/${TARGET_PREFIX}compilerlibs"
-
-RDEPENDS_${PN}-dev += "${PN}-staticdev"
+RPROVIDES_${PN} += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
+RPROVIDES_${PN}-dev += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-dev', '', d)}"
+RPROVIDES_${PN}-doc += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-doc', '', d)}"
+RPROVIDES_${PN}-staticdev += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-staticdev', '', d)}"
+RPROVIDES_${PN}-locale += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-locale', '', d)}"
 
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN_forcevariable = "clang"

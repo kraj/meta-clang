@@ -8,7 +8,12 @@ RANLIB_toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
 AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
-COMPILER_RT ??= "--rtlib=compiler-rt --unwindlib=libunwind"
+COMPILER_RT ??= "--rtlib=compiler-rt ${UNWINDLIB}"
+
+UNWINDLIB ??= "--unwindlib=libunwind"
+UNWINDLIB_riscv64 = "--unwindlib=libgcc"
+UNWINDLIB_riscv32 = "--unwindlib=libgcc"
+
 LIBCPLUSPLUS ??= "--stdlib=libc++"
 
 COMPILER_RT_toolchain-gcc = ""
@@ -62,5 +67,8 @@ def clang_dep_prepend(d):
 BASEDEPENDS_remove_toolchain-clang_class-target = "virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}compilerlibs"
 BASEDEPENDS_append_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
 
-PREFERRED_PROVIDER_libunwind = "libunwind"
+PREFERRED_PROVIDER_libunwind_toolchain-clang = "libcxx"
+PREFERRED_PROVIDER_libunwind ?= "libunwind"
 PREFERRED_PROVIDER_libunwind_mipsarch = "libunwind"
+PREFERRED_PROVIDER_libunwind_riscv32 = "libunwind"
+PREFERRED_PROVIDER_libunwind_riscv64 = "libunwind"
