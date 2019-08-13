@@ -4,3 +4,4 @@ SRC_URI_append_toolchain-clang = "\
     "
 
 TOOLCHAIN_x86 = "gcc"
+TOOLCHAIN_riscv64 = "gcc"
