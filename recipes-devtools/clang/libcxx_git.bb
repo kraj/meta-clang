@@ -80,7 +80,7 @@ do_install() {
 
 ALLOW_EMPTY_${PN} = "1"
 
-#PROVIDES = "virtual/${TARGET_PREFIX}compilerlibs"
+PROVIDES = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 RPROVIDES_${PN} += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 RPROVIDES_${PN}-dev += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-dev', '', d)}"
 RPROVIDES_${PN}-doc += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-doc', '', d)}"
