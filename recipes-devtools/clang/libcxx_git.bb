@@ -22,7 +22,7 @@ PACKAGECONFIG_riscv64 = ""
 PACKAGECONFIG_riscv32 = ""
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHARED=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
 
-#PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
+PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 LIBUNWIND = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', ';libunwind', '', d)}"
 
 LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
@@ -80,12 +80,13 @@ do_install() {
 
 ALLOW_EMPTY_${PN} = "1"
 
-PROVIDES = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 RPROVIDES_${PN} += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
+RPROVIDES_${PN}-dbg += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-dbg', '', d)}"
 RPROVIDES_${PN}-dev += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-dev', '', d)}"
 RPROVIDES_${PN}-doc += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-doc', '', d)}"
 RPROVIDES_${PN}-staticdev += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-staticdev', '', d)}"
 RPROVIDES_${PN}-locale += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-locale', '', d)}"
+RPROVIDES_${PN}-src += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-src', '', d)}"
 
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN_forcevariable = "clang"
