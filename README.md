@@ -1,3 +1,5 @@
+[![Build Status](https://drone.yoedistro.org/api/badges/kraj/meta-clang/status.svg)](https://drone.yoedistro.org/kraj/meta-clang)
+
 # meta-clang (a C language family frontend and LLVM compiler backend)
 
 This layer provides [clang/llvm](http://clang.llvm.org/) as alternative to your system
