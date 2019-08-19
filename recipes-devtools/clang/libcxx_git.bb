@@ -17,6 +17,7 @@ TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
 TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
 
 PACKAGECONFIG ??= "unwind"
+PACKAGECONFIG_toolchain-gcc = ""
 PACKAGECONFIG_powerpc = ""
 PACKAGECONFIG_riscv64 = ""
 PACKAGECONFIG_riscv32 = ""
@@ -89,4 +90,3 @@ RPROVIDES_${PN}-locale += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libu
 RPROVIDES_${PN}-src += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-src', '', d)}"
 
 BBCLASSEXTEND = "native nativesdk"
-TOOLCHAIN_forcevariable = "clang"

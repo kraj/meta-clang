@@ -13,6 +13,7 @@ COMPILER_RT ??= "--rtlib=compiler-rt ${UNWINDLIB}"
 UNWINDLIB ??= "--unwindlib=libunwind"
 UNWINDLIB_riscv64 = "--unwindlib=libgcc"
 UNWINDLIB_riscv32 = "--unwindlib=libgcc"
+UNWINDLIB_powerpc = "--unwindlib=libgcc"
 
 LIBCPLUSPLUS ??= "--stdlib=libc++"
 
@@ -69,6 +70,6 @@ BASEDEPENDS_append_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
 
 PREFERRED_PROVIDER_libunwind_toolchain-clang = "libcxx"
 PREFERRED_PROVIDER_libunwind ?= "libunwind"
-PREFERRED_PROVIDER_libunwind_mipsarch = "libunwind"
+PREFERRED_PROVIDER_libunwind_powerpc = "libunwind"
 PREFERRED_PROVIDER_libunwind_riscv32 = "libunwind"
 PREFERRED_PROVIDER_libunwind_riscv64 = "libunwind"
