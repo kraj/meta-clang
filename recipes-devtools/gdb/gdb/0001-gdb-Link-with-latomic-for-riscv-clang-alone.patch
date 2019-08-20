@@ -1,0 +1,26 @@
+From 23ad5c62e3586a0ea734c191cbcbe71261747758 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 19 Aug 2019 21:47:49 -0700
+Subject: [PATCH] gdb: Link with -latomic for riscv/clang alone
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ gdb/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gdb/Makefile.in b/gdb/Makefile.in
+index 762b32b..6e2a271 100644
+--- a/gdb/Makefile.in
++++ b/gdb/Makefile.in
+@@ -1889,7 +1889,7 @@ gdb$(EXEEXT): gdb.o $(LIBGDB_OBS) $(CDEPS) $(TDEPLIBS)
+ 	$(SILENCE) rm -f gdb$(EXEEXT)
+ 	$(ECHO_CXXLD) $(CC_LD) $(INTERNAL_LDFLAGS) $(WIN32LDAPP) \
+ 		-o gdb$(EXEEXT) gdb.o $(LIBGDB_OBS) \
+-		$(TDEPLIBS) $(TUI_LIBRARY) $(CLIBS) $(LOADLIBES)
++		$(TDEPLIBS) $(TUI_LIBRARY) $(CLIBS) -latomic $(LOADLIBES)
+ ifneq ($(CODESIGN_CERT),)
+ 	$(ECHO_SIGN) $(CODESIGN) -s $(CODESIGN_CERT) gdb$(EXEEXT)
+ endif
+-- 
+2.23.0
+
