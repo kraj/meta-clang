@@ -16,6 +16,8 @@ DEPENDS_append_toolchain-clang = " virtual/${TARGET_PREFIX}compilerlibs"
 TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
 TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
 
+LDFLAGS_append_toolchain-gcc = " -lgcc"
+
 PACKAGECONFIG ??= "unwind"
 PACKAGECONFIG_toolchain-gcc = ""
 PACKAGECONFIG_powerpc = ""
