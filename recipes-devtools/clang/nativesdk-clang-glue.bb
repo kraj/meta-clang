@@ -4,7 +4,7 @@
 DESCRIPTION = "SDK Cross compiler wrappers for LLVM based C/C++ compiler"
 HOMEPAGE = "http://clang.llvm.org/"
 LICENSE = "Apache-2.0-with-LLVM-exception"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/'Apache-2.0 WITH LLVM-exception';md5=0bcd48c3bdfef0c9d9fd17726e4b7dab"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0-with-LLVM-exception;md5=0bcd48c3bdfef0c9d9fd17726e4b7dab"
 SECTION = "devel"
 
 inherit nativesdk
