@@ -92,3 +92,5 @@ RPROVIDES_${PN}-locale += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libu
 RPROVIDES_${PN}-src += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-src', '', d)}"
 
 BBCLASSEXTEND = "native nativesdk"
+TOOLCHAIN = "clang"
+
