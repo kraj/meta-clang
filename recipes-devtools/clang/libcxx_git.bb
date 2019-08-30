@@ -66,6 +66,11 @@ EXTRA_OECMAKE_append_riscv32 = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
                                  -DLIBOMP_LIBFLAGS='-latomic' \
                                  -DCMAKE_SHARED_LINKER_FLAGS='-lgcc_s -latomic' \
                                  "
+EXTRA_OECMAKE_append_powerpc = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
+                                 -DLIBCXX_ENABLE_EXCEPTIONS=ON \
+                                 -DLIBOMP_LIBFLAGS='-latomic' \
+                                 -DCMAKE_SHARED_LINKER_FLAGS='-lgcc_s -latomic' \
+                                 "
 do_compile() {
     if ${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'true', 'false', d)}; then
         ninja -v ${PARALLEL_MAKE} unwind
