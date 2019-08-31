@@ -9,6 +9,7 @@ AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
 COMPILER_RT ??= "--rtlib=compiler-rt ${UNWINDLIB}"
+COMPILER_RT_powerpc = "--rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= "--unwindlib=libunwind"
 UNWINDLIB_riscv64 = "--unwindlib=libgcc"
