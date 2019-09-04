@@ -1,7 +1,7 @@
-From 28443a32a50da7631e24e9892f3ab420d1fb4a01 Mon Sep 17 00:00:00 2001
+From e290face40ffc3076d438e7808604974b04658bb Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
-Subject: [PATCH 05/20] compiler-rt: Disable tsan on OE/glibc
+Subject: [PATCH] compiler-rt: Disable tsan on OE/glibc
 
 It does not build see
 http://lists.llvm.org/pipermail/llvm-dev/2016-July/102235.html
@@ -38,6 +38,3 @@ index 48fccf05855..b4a7f0adf14 100644
  set(SUPPORTED_TOOLS)
    foreach(SANITIZER_TOOL ${SUPPORTED_TOOLS_INIT})
      string(TOUPPER ${SANITIZER_TOOL} SANITIZER_TOOL_UPPER)
--- 
-2.22.0
-

@@ -1,7 +1,7 @@
-From a4a34addc4d6942bb68a3c298fb07d0e4794e295 Mon Sep 17 00:00:00 2001
+From 6c8fcbbcce2003de4c7df649c01fbe0479405cf0 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 Feb 2019 10:02:52 -0800
-Subject: [PATCH 18/20] clang: Initial implementation of -fmacro-prefix-map and
+Subject: [PATCH] clang: Initial implementation of -fmacro-prefix-map and
  -ffile-prefix-map
 
 Upstream-Status: Submitted [https://reviews.llvm.org/D49466]
@@ -111,10 +111,10 @@ index 7edbea86633..7077d0f043c 100644
    /// Cache that maps VLA types to size expressions for that type,
    /// represented by instantiated Metadata nodes.
 diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
-index cb861f27aed..1c788d97c16 100644
+index 2508178423b..38970814432 100644
 --- a/clang/lib/Driver/ToolChains/Clang.cpp
 +++ b/clang/lib/Driver/ToolChains/Clang.cpp
-@@ -612,16 +612,30 @@ static void addDebugCompDirArg(const ArgList &Args, ArgStringList &CmdArgs,
+@@ -617,16 +617,30 @@ static void addDebugCompDirArg(const ArgList &Args, ArgStringList &CmdArgs,
  
  /// Add a CC1 and CC1AS option to specify the debug file path prefix map.
  static void addDebugPrefixMapArg(const Driver &D, const ArgList &Args, ArgStringList &CmdArgs) {
@@ -147,7 +147,7 @@ index cb861f27aed..1c788d97c16 100644
  /// Vectorize at all optimization levels greater than 1 except for -Oz.
  /// For -Oz the loop vectorizer is disabled, while the slp vectorizer is
  /// enabled.
-@@ -1306,6 +1320,8 @@ void Clang::AddPreprocessingOptions(Compilation &C, const JobAction &JA,
+@@ -1311,6 +1325,8 @@ void Clang::AddPreprocessingOptions(Compilation &C, const JobAction &JA,
      // For IAMCU add special include arguments.
      getToolChain().AddIAMCUIncludeArgs(Args, CmdArgs);
    }
@@ -378,6 +378,3 @@ index 00000000000..c289e5c8362
 @@ -0,0 +1,2 @@
 +filename: __FILE__
 +basefile: __BASE_FILE__
--- 
-2.22.0
-

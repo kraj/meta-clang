@@ -8,7 +8,7 @@ MAJOR_VER = "9"
 MINOR_VER = "0"
 PATCH_VER = "0"
 
-SRCREV ?= "1cf7a88045ced9f19f5e6dc0add51723d39eef7f"
+SRCREV ?= "fa0bc006900f17df3c11a40a3eb69e6330433b0e"
 
 PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 BRANCH = "release/${MAJOR_VER}.x"

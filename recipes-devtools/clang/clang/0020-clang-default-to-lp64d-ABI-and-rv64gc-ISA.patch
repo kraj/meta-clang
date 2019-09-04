@@ -1,7 +1,7 @@
-From db66a7c23a2462e618b12e06f1920d30a49f5dce Mon Sep 17 00:00:00 2001
+From 84e077c32b919c358b6c94cffe425acfdaddfa6a Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 12 Aug 2019 08:59:28 -0700
-Subject: [PATCH 20/20] clang: default to lp64d ABI and rv64gc ISA
+Subject: [PATCH] clang: default to lp64d ABI and rv64gc ISA
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -35,10 +35,10 @@ index b6768de4d29..9671ea270ef 100644
 +  return Triple.getArch() == llvm::Triple::riscv32 ? "ilp32" : "lp64d";
  }
 diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
-index 1c788d97c16..50839de1bf9 100644
+index 38970814432..29db0ea218a 100644
 --- a/clang/lib/Driver/ToolChains/Clang.cpp
 +++ b/clang/lib/Driver/ToolChains/Clang.cpp
-@@ -1867,7 +1867,7 @@ void Clang::AddRISCVTargetArgs(const ArgList &Args,
+@@ -1872,7 +1872,7 @@ void Clang::AddRISCVTargetArgs(const ArgList &Args,
    else if (Triple.getArch() == llvm::Triple::riscv32)
      ABIName = "ilp32";
    else if (Triple.getArch() == llvm::Triple::riscv64)
@@ -47,6 +47,3 @@ index 1c788d97c16..50839de1bf9 100644
    else
      llvm_unreachable("Unexpected triple!");
  
--- 
-2.22.0
-
