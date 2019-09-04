@@ -1,7 +1,7 @@
-From 79ec5a3eca699011c6f95de36ce027dbfdad0aff Mon Sep 17 00:00:00 2001
+From b0c9e7f42b975ee028726972a3c1298dda1a9e5d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 22 May 2017 17:36:16 -0700
-Subject: [PATCH 01/20] lldb: Add -lxml2 to linker cmdline of xml is found
+Subject: [PATCH] lldb: Add -lxml2 to linker cmdline of xml is found
 
 When cross compiling for systems where static libs
 for libxml are not available cmake's detection mechanism
@@ -35,6 +35,3 @@ index 4bb8d363b57..3b58c36c641 100644
    endif()
  endif ()
  if (HAVE_LIBDL)
--- 
-2.22.0
-

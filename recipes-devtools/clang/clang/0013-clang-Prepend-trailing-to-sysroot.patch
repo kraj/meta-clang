@@ -1,7 +1,7 @@
-From c37bf49c9734a1ebc9a286225aa2ceae06427c06 Mon Sep 17 00:00:00 2001
+From 1e461b2dccddf36ec436fd8535441248bde41603 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 09:02:13 -0700
-Subject: [PATCH 13/20] clang: Prepend trailing '/' to sysroot
+Subject: [PATCH] clang: Prepend trailing '/' to sysroot
 
 This is needed to handle a case where clang
 isntall and target sysroot are perilously same
@@ -36,6 +36,3 @@ index dbe5ed7d89e..9bf66207ac9 100644
  
    // Cross-compiling binutils and GCC installations (vanilla and openSUSE at
    // least) put various tools in a triple-prefixed directory off of the parent
--- 
-2.22.0
-

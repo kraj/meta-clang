@@ -1,7 +1,7 @@
-From bb1af5985b7b6e02281be669c28eb897a58c7c2f Mon Sep 17 00:00:00 2001
+From f569a8c2b723d0a1e70e8e45e275636789eeb6e1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 16 Aug 2017 15:16:15 -0700
-Subject: [PATCH 16/20] clang: Fix ldso for musl on x86 and x32 architectures
+Subject: [PATCH] clang: Fix ldso for musl on x86 and x32 architectures
 
 x32 linker is called ld-musl-x32.so.1 and x86 linker
 is called ld-musl-i386.so.1, Currently, linker for
@@ -39,6 +39,3 @@ index 9bf66207ac9..fc7d6c17484 100644
      default:
        ArchName = Triple.getArchName().str();
      }
--- 
-2.22.0
-

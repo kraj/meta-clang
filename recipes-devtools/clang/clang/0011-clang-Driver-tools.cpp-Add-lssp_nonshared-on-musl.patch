@@ -1,7 +1,7 @@
-From 314859edd5f1a221d4a2c6b787e5bddd9b1c4606 Mon Sep 17 00:00:00 2001
+From e233d35f2ec7c5c4a6a957e9c29cd2663dd297df Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
-Subject: [PATCH 11/20] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
+Subject: [PATCH] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
 
 musl driver will need to add ssp_nonshared for stack_check_local
 on the linker cmdline when using stack protector commands on
@@ -29,6 +29,3 @@ index 33cdd3585c2..8b14b8ea9cb 100644
        if (IsStatic || IsStaticPIE)
          CmdArgs.push_back("--end-group");
        else
--- 
-2.22.0
-

@@ -1,7 +1,7 @@
-From 07f5fef22be3800e37c5f635781805fcd60ae00a Mon Sep 17 00:00:00 2001
+From 9ed63a91328af8723094198e6d0280794f5f55ab Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 21:52:36 -0700
-Subject: [PATCH 10/20] clang: driver: Use /lib for ldso on OE
+Subject: [PATCH] clang: driver: Use /lib for ldso on OE
 
 OE does not follow the default base_libdir
 that clang has, therefore adjust it for OE
@@ -58,6 +58,3 @@ index 3e68d50dac2..dbe5ed7d89e 100644
      Loader = X32 ? "ld-linux-x32.so.2" : "ld-linux-x86-64.so.2";
      break;
    }
--- 
-2.22.0
-

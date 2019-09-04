@@ -1,7 +1,7 @@
-From fb1eda44238f4f20f7b0f75cd00d1f715b96693b Mon Sep 17 00:00:00 2001
+From 5be8337e8c28fc45c4b33ffcabe6d46a9f018cf5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 21 May 2017 15:38:25 -0700
-Subject: [PATCH 15/20] clang: Define / releative gcc installation dir
+Subject: [PATCH] clang: Define / releative gcc installation dir
 
 This is required for OE gcc installation to work.
 Without this its not able to find the paths for libgcc
@@ -27,6 +27,3 @@ index 8b14b8ea9cb..20517a369f7 100644
        // The Freescale PPC SDK has the gcc libraries in
        // <sysroot>/usr/lib/<triple>/x.y.z so have a look there as well. Only do
        // this on Freescale triples, though, since some systems put a *lot* of
--- 
-2.22.0
-

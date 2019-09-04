@@ -1,7 +1,7 @@
-From 262518322d0397ba7fd3876a8710dd453e7d4c59 Mon Sep 17 00:00:00 2001
+From 1bff6786db082e020179cc14d2aa993244351ac0 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 Feb 2019 11:32:09 -0800
-Subject: [PATCH 08/20] llvm: Enhance path prefix mapping
+Subject: [PATCH] llvm: Enhance path prefix mapping
 
 Upstream-Status: Submitted [https://reviews.llvm.org/D56769]
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
@@ -170,6 +170,3 @@ index ccd72d7f176..13af998d8f8 100644
  }
  
  TEST_F(FileSystemTest, OpenFileForRead) {
--- 
-2.22.0
-

@@ -1,7 +1,7 @@
-From ed78a6b28aa36afbfc7825dcbbacea46d4ea528d Mon Sep 17 00:00:00 2001
+From b3018df63c758b97774f03873a9e5fed2d6a3db7 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 10 May 2016 02:00:11 -0700
-Subject: [PATCH 12/20] clang: musl/ppc does not support 128-bit long double
+Subject: [PATCH] clang: musl/ppc does not support 128-bit long double
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -23,6 +23,3 @@ index 6e5df097921..107cef297e2 100644
      // PPC32 supports atomics up to 4 bytes.
      MaxAtomicPromoteWidth = MaxAtomicInlineWidth = 32;
    }
--- 
-2.22.0
-
