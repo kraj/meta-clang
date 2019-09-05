@@ -183,11 +183,11 @@ do_install_append_class-nativesdk () {
 
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
-PACKAGES =+ "${PN}-libllvm libclang python-lldb"
+PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang"
 
 BBCLASSEXTEND = "native nativesdk"
 
-FILES_python-lldb = "${libdir}/python3*/site-packages/lldb/*"
+FILES_${PN}-lldb-python = "${libdir}/python3*/site-packages/lldb/*"
 
 FILES_${PN} += "\
   ${libdir}/BugpointPasses.so \
@@ -215,7 +215,7 @@ FILES_${PN}-dev += "\
 
 INSANE_SKIP_${PN} += "already-stripped"
 INSANE_SKIP_${PN}-dev += "dev-elf"
-INSANE_SKIP_python-lldb += "dev-so dev-deps"
+INSANE_SKIP_${PN}-lldb-python += "dev-so dev-deps"
 
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
 SSTATE_SCAN_FILES_remove = "*-config"
