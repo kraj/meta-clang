@@ -13,17 +13,16 @@ inherit cmake pythonnative
 DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang = "libcxx"
 DEPENDS_append_toolchain-clang = " virtual/${TARGET_PREFIX}compilerlibs"
+
 TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
-TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
+TUNE_CCARGS_remove_toolchain-clang = "--unwindlib=libunwind --stdlib=libc++"
 
-LDFLAGS_append_toolchain-gcc = " -lgcc"
-
-PACKAGECONFIG ??= "unwind"
-PACKAGECONFIG_toolchain-gcc = ""
+PACKAGECONFIG ??= "${@bb.utils.contains('PREFERRED_PROVIDER_libunwind', 'libcxx', 'unwind', '', d)}"
 PACKAGECONFIG_powerpc = ""
 PACKAGECONFIG_riscv64 = ""
 PACKAGECONFIG_riscv32 = ""
-PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHARED=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF,"
+
+PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBUNWIND_ENABLE_SHARED=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=OFF -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include, -DLIBCXXABI_USE_LLVM_UNWINDER=OFF -DCMAKE_SHARED_LINKER_FLAGS='-lgcc_s',"
 
 PROVIDES += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind', '', d)}"
 LIBUNWIND = "${@bb.utils.contains('PACKAGECONFIG', 'unwind', ';libunwind', '', d)}"
@@ -34,14 +33,15 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
 "
 THUMB_TUNE_CCARGS = ""
 #TUNE_CCARGS += "-nostdlib"
-EXTRA_OECMAKE_append_armv5 = " -D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF"
 
 EXTRA_OECMAKE += "\
+                  -DCMAKE_CROSSCOMPILING=ON \
                   -DLIBCXX_CXX_ABI=libcxxabi \
-                  -DLIBCXX_USE_COMPILER_RT=YES \
-                  -DLIBCXXABI_USE_COMPILER_RT=YES \
-                  -DCXX_SUPPORTS_CXX11=ON \
+                  -DLIBCXX_USE_COMPILER_RT=ON \
+                  -DLIBCXXABI_USE_COMPILER_RT=ON \
                   -DLIBCXX_INSTALL_EXPERIMENTAL_LIBRARY=ON \
+                  -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON \
+                  -DLIBCXX_STATICALLY_LINK_ABI_IN_SHARED_LIBRARY=OFF \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
@@ -61,6 +61,11 @@ EXTRA_OECMAKE_append_riscv64 = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
                                  -DLIBOMP_LIBFLAGS='-latomic' \
                                  -DCMAKE_SHARED_LINKER_FLAGS='-lgcc_s -latomic' \
                                  "
+
+EXTRA_OECMAKE_append_armv5 = " -D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF"
+
+EXTRA_OECMAKE_append_arm = " -DCMAKE_REQUIRED_FLAGS='-fno-exceptions'"
+
 EXTRA_OECMAKE_append_riscv32 = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
                                  -DLIBCXX_ENABLE_EXCEPTIONS=ON \
                                  -DLIBOMP_LIBFLAGS='-latomic' \
