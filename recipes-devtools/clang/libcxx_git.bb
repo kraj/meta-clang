@@ -96,6 +96,8 @@ RPROVIDES_${PN}-staticdev += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'l
 RPROVIDES_${PN}-locale += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-locale', '', d)}"
 RPROVIDES_${PN}-src += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', 'libunwind-src', '', d)}"
 
+PACKAGES_DYNAMIC += "${@bb.utils.contains('PACKAGECONFIG', 'unwind', '^libunwind-locale-.*', '', d)}"
+
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN = "clang"
 
