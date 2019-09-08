@@ -29,6 +29,7 @@ SRC_URI = "\
     file://0019-clang-Add-lpthread-and-ldl-along-with-lunwind-for-st.patch \
     file://0020-clang-default-to-lp64d-ABI-and-rv64gc-ISA.patch \
     file://0021-lldb-Do-not-look-for-interpreter.patch \
+    file://0022-Driver-Prioritize-SYSROOT-usr-include-over-RESOURCE_.patch \
 "
 
 # Fallback to no-PIE if not set
