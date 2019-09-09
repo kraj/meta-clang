@@ -94,8 +94,8 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -G Ninja ${S}/llvm \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
 		  -DPYTHON_EXECUTABLE=${PYTHON} \
-                  -DPYTHON_LIBRARY=${PYTHON_LIBRARY} \
-                  -DPYTHON_INCLUDE_DIR=${PYTHON_INCLUDE_DIR} \
+                  -DPYTHON_LIBRARY='${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so' \
+                  -DPYTHON_INCLUDE_DIR='${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI}' \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
