@@ -167,8 +167,8 @@ do_install() {
 }
 
 do_install_append_class-native () {
-	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
-	install -Dm 0755 ${B}/tools/clang/stage2-bins/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
+	install -Dm 0755 ${B}/tools/clang/stage2-bins/NATIVE/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+	install -Dm 0755 ${B}/tools/clang/stage2-bins/NATIVE/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 		echo "stripped $f"
