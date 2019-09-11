@@ -1,4 +1,4 @@
-From c7580fdb4be69a872291ccf22334091cace749fc Mon Sep 17 00:00:00 2001
+From d941b59087d34cb93053b638c066bf080122e7bb Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 16 Jan 2019 22:39:24 -0800
 Subject: [PATCH] Turn ptr_to_globals and bb_errno to be non const
@@ -107,9 +107,25 @@ r14 is 0x0 and writing to this ofcourse ends up in segfault
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- include/libbb.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ coreutils/test.c | 2 +-
+ include/libbb.h  | 4 ++--
+ libbb/lineedit.c | 2 +-
+ shell/ash.c      | 5 ++---
+ 4 files changed, 6 insertions(+), 7 deletions(-)
 
+diff --git a/coreutils/test.c b/coreutils/test.c
+index 868ffbecb..d11fccf5b 100644
+--- a/coreutils/test.c
++++ b/coreutils/test.c
+@@ -401,7 +401,7 @@ struct test_statics {
+ };
+ 
+ /* See test_ptr_hack.c */
+-extern struct test_statics *const test_ptr_to_statics;
++extern struct test_statics *test_ptr_to_statics;
+ 
+ #define S (*test_ptr_to_statics)
+ #define args            (S.args         )
 diff --git a/include/libbb.h b/include/libbb.h
 index 111d1b790..a52265e77 100644
 --- a/include/libbb.h
@@ -132,6 +148,36 @@ index 111d1b790..a52265e77 100644
  /* At least gcc 3.4.6 on mipsel system needs optimization barrier */
  #define barrier() __asm__ __volatile__("":::"memory")
  #define SET_PTR_TO_GLOBALS(x) do { \
+diff --git a/libbb/lineedit.c b/libbb/lineedit.c
+index fbabc6c12..026c42c4c 100644
+--- a/libbb/lineedit.c
++++ b/libbb/lineedit.c
+@@ -181,7 +181,7 @@ struct lineedit_statics {
+ };
+ 
+ /* See lineedit_ptr_hack.c */
+-extern struct lineedit_statics *const lineedit_ptr_to_statics;
++extern struct lineedit_statics * lineedit_ptr_to_statics;
+ 
+ #define S (*lineedit_ptr_to_statics)
+ #define state            (S.state           )
+diff --git a/shell/ash.c b/shell/ash.c
+index c5588ea66..6f07f7d6d 100644
+--- a/shell/ash.c
++++ b/shell/ash.c
+@@ -297,10 +297,9 @@ typedef long arith_t;
+  * set "-DBB_GLOBAL_CONST=''" in CONFIG_EXTRA_CFLAGS to disable
+  * this optimization.
+  */
+-#ifndef BB_GLOBAL_CONST
+-# define BB_GLOBAL_CONST const
+-#endif
+ 
++#undef BB_GLOBAL_CONST
++#define BB_GLOBAL_CONST
+ 
+ /* ============ Hash table sizes. Configurable. */
+ 
 -- 
-2.22.0
+2.23.0
 
