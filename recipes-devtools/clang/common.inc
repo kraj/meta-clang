@@ -28,7 +28,6 @@ SRC_URI = "\
     file://0018-clang-Initial-implementation-of-fmacro-prefix-map-an.patch \
     file://0019-clang-Add-lpthread-and-ldl-along-with-lunwind-for-st.patch \
     file://0020-clang-default-to-lp64d-ABI-and-rv64gc-ISA.patch \
-    file://0021-lldb-Do-not-look-for-interpreter.patch \
     file://0022-Driver-Prioritize-SYSROOT-usr-include-over-RESOURCE_.patch \
     file://0023-RISCV-Add-support-for-floating-point-registers-in-in.patch \
 "
