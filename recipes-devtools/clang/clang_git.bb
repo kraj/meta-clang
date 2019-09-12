@@ -17,7 +17,7 @@ BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
 BUILD_NM_class-nativesdk = "llvm-nm"
 LDFLAGS_append_class-nativesdk = " -fuse-ld=gold"
 
-inherit cmake cmake-native python3native
+inherit cmake cmake-native python3-dir
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
@@ -93,9 +93,6 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -G Ninja ${S}/llvm \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
-		  -DPYTHON_EXECUTABLE=${PYTHON} \
-                  -DPYTHON_LIBRARY='${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so' \
-                  -DPYTHON_INCLUDE_DIR='${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI}' \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
@@ -117,6 +114,8 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
                   -DLLDB_TABLEGEN=${STAGING_BINDIR_NATIVE}/lldb-tblgen \
+                  -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
+                  -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
 "
 EXTRA_OECMAKE_append_class-target = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
@@ -129,11 +128,13 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                   -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS}${HF} \
+                  -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
+                  -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
 "
 
 DEPENDS = "binutils zlib libffi libxml2 libedit ninja-native swig-native"
-DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk"
-DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH}"
+DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
+DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
 
 BOOTSTRAPSTAGE ?= ""
 BOOTSTRAPSTAGE_class-native = "stage2"
@@ -162,7 +163,7 @@ do_compile() {
 
 do_install() {
         DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALLTARGET}
-        rm -rf ${D}${libdir}/python3*/site-packages/six.py
+        rm -rf ${D}${libdir}/python*/site-packages/six.py
 }
 
 do_install_append_class-native () {
@@ -190,7 +191,7 @@ PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang"
 
 BBCLASSEXTEND = "native nativesdk"
 
-FILES_${PN}-lldb-python = "${libdir}/python3*/site-packages/lldb/*"
+FILES_${PN}-lldb-python = "${libdir}/python*/site-packages/lldb/*"
 
 FILES_${PN} += "\
   ${libdir}/BugpointPasses.so \
