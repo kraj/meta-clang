@@ -17,7 +17,7 @@ BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
 BUILD_NM_class-nativesdk = "llvm-nm"
 LDFLAGS_append_class-nativesdk = " -fuse-ld=gold"
 
-inherit cmake cmake-native python3-dir
+inherit cmake cmake-native python3-dir python3native
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
@@ -102,6 +102,7 @@ EXTRA_OECMAKE_append_class-native = "\
                   -DBOOTSTRAP_LLVM_ENABLE_LLD=ON \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
+                  -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
 EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
