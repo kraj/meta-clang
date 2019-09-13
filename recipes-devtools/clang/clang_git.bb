@@ -139,6 +139,8 @@ DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
 
 BOOTSTRAPSTAGE ?= ""
 BOOTSTRAPSTAGE_class-native = "stage2"
+BINPATHPREFIX ?= ""
+BINPATHPREFIX_class-native = "/tools/clang/stage2-bins/NATIVE"
 INSTALLTARGET ?= "install"
 INSTALLTARGET_class-native = "stage2-install"
 PASSTHROUGH ?= ""
@@ -168,8 +170,8 @@ do_install() {
 }
 
 do_install_append_class-native () {
-	install -Dm 0755 ${B}/tools/clang/stage2-bins/NATIVE/bin/clang-tblgen ${D}${bindir}/clang-tblgen
-	install -Dm 0755 ${B}/tools/clang/stage2-bins/NATIVE/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
+	install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+	install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 		echo "stripped $f"
@@ -177,8 +179,8 @@ do_install_append_class-native () {
 }
 
 do_install_append_class-nativesdk () {
-	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
-	install -Dm 0755 ${B}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
+	install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
+	install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 	done
