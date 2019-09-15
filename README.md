@@ -65,7 +65,7 @@ following settings are needed in site configurations e.g. in local.conf
 
 ```python
 TOOLCHAIN ?= "clang"
-TARGET_CXXFLAGS_remoce_toolchain-clang = " --stdlib=libc++"
+TARGET_CXXFLAGS_remove_toolchain-clang = " --stdlib=libc++"
 TUNE_CCARGS_remove_toolchain-clang = " --rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
 ```
 
@@ -74,12 +74,12 @@ TUNE_CCARGS_remove_toolchain-clang = " --rtlib=compiler-rt --unwindlib=libunwind
 Below we build for qemuarm machine as an example
 
 ```shell
-$ MACHINE=qemux86 bitbake core-image-base
+$ MACHINE=qemuarm bitbake core-image-full-cmdline
 ```
 # Running
 
 ```shell
-$ runqemu qemux86
+$ runqemu nographic
 ```
 
 # Limitations
@@ -111,17 +111,11 @@ branch: master
 revision: HEAD
 ```
 
-Send pull requests to openembedded-devel@lists.openembedded.org with '[meta-clang]' in the subject'
+# Contributing
 
-When sending single patches, please use something like:
-
-'git send-email -M -1 --to openembedded-devel@lists.openembedded.org --subject-prefix=meta-clang][PATCH'
+Send github pull requests
 
 You are encouraged to fork the mirror on [github](https://github.com/kraj/meta-clang/)
-to share your patches, this is preferred for patch sets consisting of more than
-one patch. Other services like gitorious, repo.or.cz or self hosted setups are
-of course accepted as well, 'git fetch <remote>' works the same on all of them.
-We recommend github because it is free, easy to use, has been proven to be reliable
-and has a really good web GUI.
+to share changes Following commit message guidelines are recommended [OE patch guidelines](https://www.openembedded.org/wiki/Commit_Patch_Message_Guidelines)
 
 Layer Maintainer: [Khem Raj](<mailto:raj.khem@gmail.com>)
