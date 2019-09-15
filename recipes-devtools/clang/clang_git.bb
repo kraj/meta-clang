@@ -17,7 +17,7 @@ BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
 BUILD_NM_class-nativesdk = "llvm-nm"
 LDFLAGS_append_class-nativesdk = " -fuse-ld=gold"
 
-inherit cmake cmake-native python3-dir python3native
+inherit cmake cmake-native pkgconfig python3native
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
@@ -50,7 +50,9 @@ def get_clang_target_arch(bb, d):
 def get_clang_experimental_target_arch(bb, d):
     return get_clang_experimental_arch(bb, d, 'TARGET_ARCH')
 
-PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)}"
+PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs \
+                   ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)} \
+                   "
 PACKAGECONFIG_class-native = ""
 PACKAGECONFIG_class-nativesdk = "thin-lto"
 
@@ -106,8 +108,9 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DBUILD_SHARED_LIBS=OFF \
                   -DLLVM_ENABLE_PROJECTS='clang;lld;lldb' \
                   -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
-                  -G Ninja ${S}/llvm \
+                  -DLLVM_ENABLE_LIBEDIT=ON \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
+                  -G Ninja ${S}/llvm \
 "
 
 EXTRA_OECMAKE_append_class-native = "\
@@ -144,7 +147,7 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
 "
 
-DEPENDS = "binutils zlib libffi libxml2 libedit ninja-native swig-native"
+DEPENDS = "binutils zlib libffi libedit libedit-native libxml2 libxml2-native ninja-native swig-native"
 DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
 
