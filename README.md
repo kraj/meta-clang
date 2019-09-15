@@ -51,7 +51,7 @@ LIBCPLUSPLUS = ""
 in `local.conf`.
 You can select libstdc++ per package too by writing bbappends for them containing
 
-```python
+```shell
 LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = ""
 ```
 
@@ -59,7 +59,7 @@ LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = ""
 
 By default, clang build from meta-clang uses clang runtime ( compiler-rt + libc++ + libunwind ) out of box
 However, it is possible to switch to using gcc runtime as default, In order to do that
-following settings are needed in site configurations e.g. in local.conf
+following settings are needed in site configurations e.g. in `local.conf`
 
 ```shell
 TOOLCHAIN ?= "clang"
@@ -91,7 +91,7 @@ TOOLCHAIN_pn-<recipe> = "gcc"
 
 and OE will start using gcc to cross compile that recipe.
 
-And if a component does not build with libc++, you can add it to conf/nonclangable.inc e.g.
+And if a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
 
 ```shell
 CXX_remove_pn-<recipe>_toolchain-clang = " -stdlib=libc++ "
