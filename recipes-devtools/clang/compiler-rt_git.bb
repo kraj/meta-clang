@@ -72,6 +72,10 @@ do_install_append () {
         rm -rf ${D}${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o
 }
 
+sysroot_stage_all_append_class-target() {
+        sysroot_stage_dir ${D}${exec_prefix}/lib ${SYSROOT_DESTDIR}${exec_prefix}/lib
+}
+
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
                 ${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
@@ -80,7 +84,7 @@ FILES_${PN}-staticdev += "${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${P
 FILES_${PN}-dev += "${datadir} ${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
                     ${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
                    "
-INSANE_SKIP_${PN} = "dev-so"
+INSANE_SKIP_${PN} = "dev-so libdir"
 
 #PROVIDES_append_class-target = "\
 #        virtual/${TARGET_PREFIX}compilerlibs \
