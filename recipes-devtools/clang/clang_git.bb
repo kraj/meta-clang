@@ -146,6 +146,7 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS}${HF} \
                   -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
                   -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
+                  -DLLVM_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
 "
 
 DEPENDS = "binutils zlib libffi libedit libedit-native libxml2 libxml2-native ninja-native swig-native"
