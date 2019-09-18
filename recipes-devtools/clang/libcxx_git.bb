@@ -44,11 +44,12 @@ EXTRA_OECMAKE += "\
                   -DLIBCXX_STATICALLY_LINK_ABI_IN_SHARED_LIBRARY=OFF \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
-                  -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
+                  -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/${baselib} \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi${LIBUNWIND}' \
+                  -DLLVM_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
                   -G Ninja \
                   ${S}/llvm \
 "
