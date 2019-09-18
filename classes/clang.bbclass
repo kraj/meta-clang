@@ -9,6 +9,7 @@ AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
 COMPILER_RT ??= "--rtlib=compiler-rt ${UNWINDLIB}"
+COMPILER_RT_toolchain-gcc = ""
 COMPILER_RT_powerpc = "--rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= "--unwindlib=libunwind"
@@ -17,8 +18,6 @@ UNWINDLIB_riscv32 = "--unwindlib=libgcc"
 UNWINDLIB_powerpc = "--unwindlib=libgcc"
 
 LIBCPLUSPLUS ??= "--stdlib=libc++"
-
-COMPILER_RT_toolchain-gcc = ""
 LIBCPLUSPLUS_toolchain-gcc = ""
 
 TARGET_CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
@@ -64,11 +63,19 @@ OVERRIDES[vardepsexclude] += "TOOLCHAIN"
 def clang_dep_prepend(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
-            return " clang-cross-${TARGET_ARCH} compiler-rt libcxx"
+            ret = " clang-cross-${TARGET_ARCH} virtual/libc "
+            if (d.getVar('COMPILER_RT').find('--rtlib=compiler-rt') != -1):
+                ret += " compiler-rt "
+            else:
+                ret += " libgcc "
+            if (d.getVar('LIBCPLUSPLUS').find('--stdlib=libc++') != -1):
+                ret += " libcxx "
+            else:
+                ret += " virtual/${TARGET_PREFIX}compilerlibs "
+            return ret
     return ""
 
-BASEDEPENDS_remove_toolchain-clang_class-target = "virtual/${TARGET_PREFIX}gcc virtual/${TARGET_PREFIX}compilerlibs"
-BASEDEPENDS_append_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
+BASE_DEFAULT_DEPS_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
 
 PREFERRED_PROVIDER_libunwind_toolchain-clang = "libcxx"
 PREFERRED_PROVIDER_libunwind ?= "libunwind"
