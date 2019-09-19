@@ -10,6 +10,8 @@ require common-source.inc
 
 inherit cmake pythonnative
 
+PROVIDES += "libunwind"
+
 DEPENDS += "ninja-native"
 BASEDEPENDS_remove_toolchain-clang = "libcxx"
 DEPENDS_append_toolchain-clang = " virtual/${TARGET_PREFIX}compilerlibs"
