@@ -77,7 +77,7 @@ def clang_dep_prepend(d):
 
 BASE_DEFAULT_DEPS_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
 
-PREFERRED_PROVIDER_libunwind_toolchain-clang = "libcxx"
+PREFERRED_PROVIDER_libunwind_toolchain-clang = "llvm-libunwind"
 PREFERRED_PROVIDER_libunwind ?= "libunwind"
 PREFERRED_PROVIDER_libunwind_powerpc = "libunwind"
 PREFERRED_PROVIDER_libunwind_riscv32 = "libunwind"
