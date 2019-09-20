@@ -11,16 +11,14 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  clang/lib/Driver/ToolChains/CommonArgs.cpp | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-index d7e316befa6..5f6b24e33eb 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-@@ -1191,6 +1191,12 @@ void tools::AddRunTimeLibs(const ToolChain &TC, const Driver &D,
+@@ -1191,6 +1191,12 @@ void tools::AddRunTimeLibs(const ToolCha
    switch (RLT) {
    case ToolChain::RLT_CompilerRT:
      CmdArgs.push_back(TC.getCompilerRTArgString(Args, "builtins"));
 +    CmdArgs.push_back("--as-needed");
-+    CmdArgs.push_back("-l:libunwind.a");
++    CmdArgs.push_back("-lgcc_eh");
 +    CmdArgs.push_back("-lpthread");
 +    CmdArgs.push_back("-ldl");
 +    CmdArgs.push_back("--no-as-needed");
@@ -28,6 +26,3 @@ index d7e316befa6..5f6b24e33eb 100644
      break;
    case ToolChain::RLT_Libgcc:
      // Make sure libgcc is not used under MSVC environment by default
--- 
-2.20.1
-
