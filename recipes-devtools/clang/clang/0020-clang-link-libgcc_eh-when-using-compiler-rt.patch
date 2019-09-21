@@ -1,0 +1,24 @@
+From 98e1067695596c4c4a91f4c58e2a6f6aaeb56a0c Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 21 Sep 2019 08:57:36 -0700
+Subject: [PATCH] clang: link libgcc_eh when using compiler-rt
+
+we still need libgcc unwinder
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/CommonArgs.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
+index 1e093b25b90..4b81ae2b50a 100644
+--- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
++++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
+@@ -1162,6 +1162,7 @@ void tools::AddRunTimeLibs(const ToolChain &TC, const Driver &D,
+   switch (RLT) {
+   case ToolChain::RLT_CompilerRT:
+     CmdArgs.push_back(TC.getCompilerRTArgString(Args, "builtins"));
++    CmdArgs.push_back("-lgcc_eh");
+     break;
+   case ToolChain::RLT_Libgcc:
+     // Make sure libgcc is not used under MSVC environment by default

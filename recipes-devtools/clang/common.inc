@@ -36,6 +36,7 @@ CLANGPATCHES = "\
     file://0006-clang-Define-releative-gcc-installation-dir.patch;patchdir=clang \
     file://0007-clang-Fix-ldso-for-musl-on-x86-and-x32-architectures.patch;patchdir=clang \
     file://0008-clang-scan-view-needs-python-2.x.patch;patchdir=clang \
+    file://0020-clang-link-libgcc_eh-when-using-compiler-rt.patch \
 "
 CLANGPATCHES += "${@'file://0009-clang-Enable-SSP-and-PIE-by-default.patch;patchdir=clang' if '${GCCPIE}' else ''}"
 
