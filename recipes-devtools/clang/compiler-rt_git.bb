@@ -18,7 +18,7 @@ LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=92bfbe70fc44c6e5efc6403a3
 BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt"
 BASEDEPENDS_remove_toolchain-clang_class-target = "libcxx"
 TARGET_CXXFLAGS_remove_toolchain-clang = " -stdlib=libc++ "
-TUNE_CCARGS_remove = "-no-integrated-as"
+TUNE_CCARGS_remove = "-no-integrated-as --rtlib=compiler-rt"
 DEPENDS += "ninja-native"
 DEPENDS_append_class-nativesdk = " clang-native"
 
