@@ -3,6 +3,9 @@ CC_toolchain-clang  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_O
 CXX_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 CPP_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
 CCLD_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+RANLIB_toolchain-clang = "${HOST_PREFIX}ranlib"
+AR_toolchain-clang = "${HOST_PREFIX}ar"
+NM_toolchain-clang = "${HOST_PREFIX}nm"
 
 THUMB_TUNE_CCARGS_remove_toolchain-clang = "-mthumb-interwork"
 TUNE_CCARGS_remove_toolchain-clang = "-meb"
@@ -12,7 +15,7 @@ TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "big
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
 
-TUNE_CCARGS_append_toolchain-clang = " -Wno-error=unused-command-line-argument -Qunused-arguments"
+TUNE_CCARGS_append_toolchain-clang = " --rtlib=compiler-rt -Wno-error=unused-command-line-argument -Qunused-arguments"
 
 TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
 TOOLCHAIN_OPTIONS_append_toolchain-clang_class-nativesdk_x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
@@ -25,6 +28,9 @@ TOOLCHAIN_class-nativesdk = "gcc"
 TOOLCHAIN_class-cross-canadian = "gcc"
 TOOLCHAIN_class-crosssdk = "gcc"
 TOOLCHAIN_class-cross = "gcc"
+
+# -fmacro-prefix-map does not exist in clang 7.x
+DEBUG_PREFIX_MAP = ""
 
 OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN"
