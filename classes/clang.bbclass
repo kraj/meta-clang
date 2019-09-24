@@ -30,7 +30,7 @@ TOOLCHAIN_class-crosssdk = "gcc"
 TOOLCHAIN_class-cross = "gcc"
 
 # -fmacro-prefix-map does not exist in clang 7.x
-DEBUG_PREFIX_MAP = ""
+DEBUG_PREFIX_MAP_toolchain-clang = " "
 
 OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN"
