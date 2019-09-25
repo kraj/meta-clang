@@ -67,6 +67,16 @@ TARGET_CXXFLAGS_remove_toolchain-clang = " --stdlib=libc++"
 TUNE_CCARGS_remove_toolchain-clang = " --rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
 ```
 
+# Removing clang from generated SDK toolchain
+
+clang based cross compiler is automatically included into the generated SDK using `bitbake meta-toolchain` or
+`bitbake -cpopulate_sdk <image>` in circumstanced where clang is not expected to be part of SDK, then reset `CLANGSDK`
+variable in `local.conf`
+
+```shell
+CLANGSDK = ""
+```
+
 # Building
 
 Below we build for qemuarm machine as an example
