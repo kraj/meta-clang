@@ -1,6 +1,1 @@
-RRECOMMENDS_${PN} += "\
-    libcxx-dev \
-    libcxx-staticdev \
-    compiler-rt-dev \
-    compiler-rt-staticdev \
-"
+RRECOMMENDS_${PN} += "${@'libcxx-dev libcxx-staticdev compiler-rt-dev compiler-rt-staticdev' if '${CLANGSDK}' else ''}"
