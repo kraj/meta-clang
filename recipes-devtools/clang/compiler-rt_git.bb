@@ -13,11 +13,10 @@ inherit cmake pkgconfig pythonnative
 
 LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee54e877a"
 
-BASEDEPENDS_remove_toolchain-clang_class-target = "compiler-rt libcxx"
-DEPENDS_append_toolchain-clang_class-target = " virtual/${TARGET_PREFIX}compilerlibs"
-TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
-TUNE_CCARGS_remove_toolchain-clang = "--rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
+LIBCPLUSPLUS = ""
+COMPILER_RT = ""
 TUNE_CCARGS_remove = "-no-integrated-as"
+
 DEPENDS += "ninja-native"
 DEPENDS_append_class-nativesdk = " clang-native"
 

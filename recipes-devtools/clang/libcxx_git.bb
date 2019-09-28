@@ -10,17 +10,9 @@ require common-source.inc
 
 inherit cmake pythonnative
 
-DEPENDS += "ninja-native llvm-libunwind"
+DEPENDS += "ninja-native"
 
-DEPENDS_remove_powerpc = "llvm-libunwind"
-DEPENDS_remove_riscv32 = "llvm-libunwind"
-DEPENDS_remove_riscv64 = "llvm-libunwind"
-
-BASEDEPENDS_remove_toolchain-clang = "libcxx"
-DEPENDS_append_toolchain-clang = " virtual/${TARGET_PREFIX}compilerlibs"
-
-TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
-TUNE_CCARGS_remove_toolchain-clang = "--stdlib=libc++"
+LIBCPLUSPLUS = ""
 
 LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
                     file://libcxxabi/LICENSE.TXT;md5=7b9334635b542c56868400a46b272b1e \

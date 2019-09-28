@@ -68,6 +68,8 @@ def clang_dep_prepend(d):
                 ret += " compiler-rt "
             else:
                 ret += " libgcc "
+            if (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
+                ret += " llvm-libunwind "
             if (d.getVar('LIBCPLUSPLUS').find('--stdlib=libc++') != -1):
                 ret += " libcxx "
             else:
@@ -76,9 +78,3 @@ def clang_dep_prepend(d):
     return ""
 
 BASE_DEFAULT_DEPS_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
-
-PREFERRED_PROVIDER_libunwind_toolchain-clang = "llvm-libunwind"
-PREFERRED_PROVIDER_libunwind ?= "libunwind"
-PREFERRED_PROVIDER_libunwind_powerpc = "libunwind"
-PREFERRED_PROVIDER_libunwind_riscv32 = "libunwind"
-PREFERRED_PROVIDER_libunwind_riscv64 = "libunwind"

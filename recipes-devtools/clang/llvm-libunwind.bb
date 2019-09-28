@@ -13,11 +13,9 @@ inherit cmake pythonnative
 PROVIDES += "libunwind"
 
 DEPENDS += "ninja-native"
-BASEDEPENDS_remove_toolchain-clang = "libcxx"
-DEPENDS_append_toolchain-clang = " virtual/${TARGET_PREFIX}compilerlibs"
 
-TARGET_CXXFLAGS_remove_toolchain-clang = "--stdlib=libc++"
-TUNE_CCARGS_remove_toolchain-clang = "--unwindlib=libunwind --stdlib=libc++"
+LIBCPLUSPLUS = ""
+UNWINDLIB = ""
 
 COMPATIBLE_HOST_powerpc = "null"
 COMPATIBLE_HOST_riscv32 = "null"
