@@ -77,4 +77,12 @@ def clang_dep_prepend(d):
             return ret
     return ""
 
+def clang_remove_deps(d):
+    ret = ""
+    if (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
+        ret += "libunwind"
+    return ret
+
 BASE_DEFAULT_DEPS_toolchain-clang_class-target = "${@clang_dep_prepend(d)}"
+DEPENDS_remove_toolchain-clang_class-target = "${@clang_remove_deps(d)}"
+
