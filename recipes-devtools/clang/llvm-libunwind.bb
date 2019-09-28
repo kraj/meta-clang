@@ -10,8 +10,6 @@ require common-source.inc
 
 inherit cmake pythonnative
 
-PROVIDES += "libunwind"
-
 DEPENDS += "ninja-native"
 
 LIBCPLUSPLUS = ""
