@@ -11,9 +11,10 @@ require common-source.inc
 inherit cmake pythonnative
 
 DEPENDS += "ninja-native"
-
+DEPENDS += "ninja-native compiler-rt clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 LIBCPLUSPLUS = ""
 UNWINDLIB = ""
+INHIBIT_DEFAULT_DEPS = "1"
 
 COMPATIBLE_HOST_powerpc = "null"
 COMPATIBLE_HOST_riscv32 = "null"
@@ -32,6 +33,7 @@ EXTRA_OECMAKE += "\
                   -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=OFF \
                   -DLIBCXXABI_LIBUNWIND_INCLUDES=${S}/projects/libunwind/include \
                   -DLIBUNWIND_ENABLE_THREADS=OFF \
+                  -DLIBUNWIND_WEAK_PTHREAD_LIB=ON \
                   -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON \
                   -DLLVM_ENABLE_LIBCXX=ON \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \

@@ -17,7 +17,9 @@ LIBCPLUSPLUS = ""
 COMPILER_RT = ""
 TUNE_CCARGS_remove = "-no-integrated-as"
 
-DEPENDS += "ninja-native"
+INHIBIT_DEFAULT_DEPS = "1"
+
+DEPENDS += "ninja-native clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 DEPENDS_append_class-nativesdk = " clang-native"
 
 THUMB_TUNE_CCARGS = ""

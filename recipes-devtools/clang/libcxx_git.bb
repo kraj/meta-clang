@@ -11,8 +11,11 @@ require common-source.inc
 inherit cmake pythonnative
 
 DEPENDS += "ninja-native"
+DEPENDS += "ninja-native compiler-rt clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs llvm-libunwind"
 
 LIBCPLUSPLUS = ""
+
+INHIBIT_DEFAULT_DEPS = "1"
 
 LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
                     file://libcxxabi/LICENSE.TXT;md5=7b9334635b542c56868400a46b272b1e \
