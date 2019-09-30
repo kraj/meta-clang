@@ -52,6 +52,7 @@ def get_clang_experimental_target_arch(bb, d):
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs lldb-wchar \
                    ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)} \
+                   rtti eh \
                    "
 PACKAGECONFIG_class-native = ""
 PACKAGECONFIG_class-nativesdk = "thin-lto"
@@ -65,6 +66,8 @@ PACKAGECONFIG[terminfo] = "-DLLVM_ENABLE_TERMINFO=ON,-DLLVM_ENABLE_TERMINFO=OFF,
 PACKAGECONFIG[pfm] = "-DLLVM_ENABLE_LIBPFM=ON,-DLLVM_ENABLE_LIBPFM=OFF,libpfm,"
 PACKAGECONFIG[lldb-wchar] = "-DLLDB_EDITLINE_USE_WCHAR=1,-DLLDB_EDITLINE_USE_WCHAR=0,"
 PACKAGECONFIG[bootstrap] = "-DCLANG_ENABLE_BOOTSTRAP=On -DCLANG_BOOTSTRAP_PASSTHROUGH='${PASSTHROUGH}' -DBOOTSTRAP_LLVM_ENABLE_LTO=Thin -DBOOTSTRAP_LLVM_ENABLE_LLD=ON,,,"
+PACKAGECONFIG[eh] = "-DLLVM_ENABLE_EH=ON,-DLLVM_ENABLE_EH=OFF,,"
+PACKAGECONFIG[rtti] = "-DLLVM_ENABLE_RTTI=ON,-DLLVM_ENABLE_RTTI=OFF,,"
 
 BUILDTARGET = "${@bb.utils.contains('PACKAGECONFIG', 'bootstrap', 'stage2', '', d)}"
 BINPATHPREFIX = "${@bb.utils.contains('PACKAGECONFIG', 'bootstrap', '/tools/clang/stage2-bins/NATIVE', '', d)}"
@@ -101,8 +104,6 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_ENABLE_FFI=ON \
                   -DFFI_INCLUDE_DIR=$(pkg-config --variable=includedir libffi) \
                   -DLLVM_OPTIMIZED_TABLEGEN=ON \
-                  -DLLVM_ENABLE_RTTI=ON \
-                  -DLLVM_ENABLE_EH=ON \
                   -DLLVM_BUILD_EXTERNAL_COMPILER_RT=ON \
                   -DCMAKE_SYSTEM_NAME=Linux \
                   -DCMAKE_BUILD_TYPE=Release \
