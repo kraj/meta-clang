@@ -10,8 +10,18 @@ require common-source.inc
 
 inherit cmake pythonnative
 
+PACKAGECONFIG ??= "unwind exceptions"
+PACKAGECONFIG_powerpc = ""
+PACKAGECONFIG_riscv32 = ""
+PACKAGECONFIG_riscv64 = ""
+PACKAGECONFIG_append_armv5 = " no-atomics"
+
+PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,llvm-libunwind"
+PACKAGECONFIG[exceptions] = "-DLIBCXXABI_ENABLE_EXCEPTIONS=ON -DDLIBCXX_ENABLE_EXCEPTIONS=ON,-DLIBCXXABI_ENABLE_EXCEPTIONS=OFF -DLIBCXX_ENABLE_EXCEPTIONS=OFF -DCMAKE_REQUIRED_FLAGS='-fno-exceptions',"
+PACKAGECONFIG[no-atomics] = "-D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF -DCMAKE_SHARED_LINKER_FLAGS='-latomic',,"
+
 DEPENDS += "ninja-native"
-DEPENDS += "ninja-native compiler-rt clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs llvm-libunwind"
+DEPENDS_append_class-target = " compiler-rt clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 
 LIBCPLUSPLUS = ""
 
@@ -30,12 +40,10 @@ EXTRA_OECMAKE += "\
                   -DLIBCXXABI_ENABLE_SHARED=ON \
                   -DLIBCXXABI_USE_COMPILER_RT=ON \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
-                  -DLIBCXXABI_USE_LLVM_UNWINDER=ON \
                   -DLIBCXX_CXX_ABI=libcxxabi \
                   -DLIBCXX_USE_COMPILER_RT=ON \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/${baselib} \
-                  -DCMAKE_SHARED_LINKER_FLAGS='${LDFLAGS} ${SHAREDFLAGS}' \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
@@ -44,36 +52,15 @@ EXTRA_OECMAKE += "\
                   -G Ninja \
                   ${S}/llvm \
 "
-SHAREDFLAGS ?= "-lunwind"
-SHAREDFLAGS_riscv32 = "-lgcc_s -latomic"
-SHAREDFLAGS_riscv64 = "-lgcc_s -latomic"
-SHAREDFLAGS_powerpc = "-lgcc_s -latomic"
-SHAREDFLAGS_append_arm = " -latomic"
-SHAREDFLAGS_append_armeb = " -latomic"
 
 EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
+
 EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
+
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
-EXTRA_OECMAKE_append_riscv64 = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
-                                 -DLIBCXX_ENABLE_EXCEPTIONS=ON \
-                                 -DLIBOMP_LIBFLAGS='-latomic' \
-                                 -DLIBCXX_HAS_GCC_S_LIB=ON \
-                                 "
 
-EXTRA_OECMAKE_append_armv5 = " -D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF"
+CXXFLAGS_append_armv5 = " -mfpu=vfp2"
 
-EXTRA_OECMAKE_append_arm = " -DCMAKE_REQUIRED_FLAGS='-fno-exceptions'"
-
-EXTRA_OECMAKE_append_riscv32 = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
-                                 -DLIBCXX_ENABLE_EXCEPTIONS=ON \
-                                 -DLIBOMP_LIBFLAGS='-latomic' \
-                                 -DLIBCXX_HAS_GCC_S_LIB=ON \
-                                 "
-EXTRA_OECMAKE_append_powerpc = " -DLIBCXXABI_ENABLE_EXCEPTIONS=ON \
-                                 -DLIBCXX_ENABLE_EXCEPTIONS=ON \
-                                 -DLIBOMP_LIBFLAGS='-latomic' \
-                                 -DLIBCXX_HAS_GCC_S_LIB=ON \
-                                 "
 do_compile() {
     ninja -v ${PARALLEL_MAKE} cxxabi
     ninja -v ${PARALLEL_MAKE} cxx
