@@ -23,7 +23,6 @@ LIBCPLUSPLUS_toolchain-gcc = ""
 TARGET_CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
 TUNE_CCARGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
 
-THUMB_TUNE_CCARGS_remove_toolchain-clang = "-mthumb-interwork"
 TUNE_CCARGS_remove_toolchain-clang = "-meb"
 TUNE_CCARGS_remove_toolchain-clang = "-mel"
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"

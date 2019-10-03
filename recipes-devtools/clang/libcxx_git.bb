@@ -30,8 +30,6 @@ INHIBIT_DEFAULT_DEPS = "1"
 LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
                     file://libcxxabi/LICENSE.TXT;md5=7b9334635b542c56868400a46b272b1e \
 "
-THUMB_TUNE_CCARGS = ""
-#TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "\
                   -DCMAKE_CROSSCOMPILING=ON \
