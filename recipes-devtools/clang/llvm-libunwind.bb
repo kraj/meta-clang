@@ -16,7 +16,6 @@ LIBCPLUSPLUS = ""
 UNWINDLIB = ""
 INHIBIT_DEFAULT_DEPS = "1"
 
-COMPATIBLE_HOST_powerpc = "null"
 COMPATIBLE_HOST_riscv32 = "null"
 COMPATIBLE_HOST_riscv64 = "null"
 
