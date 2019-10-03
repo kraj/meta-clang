@@ -22,9 +22,6 @@ INHIBIT_DEFAULT_DEPS = "1"
 DEPENDS += "ninja-native clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 DEPENDS_append_class-nativesdk = " clang-native"
 
-THUMB_TUNE_CCARGS = ""
-#TUNE_CCARGS += "-nostdlib"
-
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
 EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \

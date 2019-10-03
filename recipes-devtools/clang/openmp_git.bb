@@ -21,8 +21,6 @@ inherit cmake pkgconfig perlnative
 
 EXTRA_OECMAKE = "-G Ninja ${S}/openmp"
 
-THUMB_TUNE_CCARGS = ""
-
 do_compile() {
 	ninja ${PARALLEL_MAKE}
 }

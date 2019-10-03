@@ -21,8 +21,6 @@ COMPATIBLE_HOST_riscv64 = "null"
 
 LIC_FILES_CHKSUM = "file://libunwind/LICENSE.TXT;md5=f66970035d12f196030658b11725e1a1 \
 "
-THUMB_TUNE_CCARGS = ""
-#TUNE_CCARGS += "-nostdlib"
 
 EXTRA_OECMAKE += "\
                   -DCMAKE_CROSSCOMPILING=ON \
