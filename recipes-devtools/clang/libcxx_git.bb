@@ -10,15 +10,15 @@ require common-source.inc
 
 inherit cmake pythonnative
 
-PACKAGECONFIG ??= "unwind exceptions"
-PACKAGECONFIG_powerpc = ""
-PACKAGECONFIG_riscv32 = ""
-PACKAGECONFIG_riscv64 = ""
+PACKAGECONFIG ??= "compiler-rt unwind exceptions"
+PACKAGECONFIG_riscv32 = "exceptions"
+PACKAGECONFIG_riscv64 = "exceptions"
 PACKAGECONFIG_append_armv5 = " no-atomics"
 
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,llvm-libunwind"
 PACKAGECONFIG[exceptions] = "-DLIBCXXABI_ENABLE_EXCEPTIONS=ON -DDLIBCXX_ENABLE_EXCEPTIONS=ON,-DLIBCXXABI_ENABLE_EXCEPTIONS=OFF -DLIBCXX_ENABLE_EXCEPTIONS=OFF -DCMAKE_REQUIRED_FLAGS='-fno-exceptions',"
 PACKAGECONFIG[no-atomics] = "-D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF -DCMAKE_SHARED_LINKER_FLAGS='-latomic',,"
+PACKAGECONFIG[compiler-rt] = "-DLIBCXXABI_USE_COMPILER_RT=ON -DLIBCXX_USE_COMPILER_RT=ON,-DLIBCXXABI_USE_COMPILER_RT=OFF -DLIBCXX_USE_COMPILER_RT=OFF,compiler-rt"
 
 DEPENDS += "ninja-native"
 DEPENDS_append_class-target = " compiler-rt clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
