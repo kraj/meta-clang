@@ -1,0 +1,28 @@
+From cc64b30dd9ca1d39a3807a412d2e6ce1038cc406 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 5 Oct 2019 14:47:37 -0700
+Subject: [PATCH] openmp: Recognise ARMv7ve machine arch
+
+-march in clang when set to armv7ve emits __ARM_ARCH_7VE__ internal
+define and not __ARM_ARCH_7A__, hence the condition fails and openmp can
+not be compiled, this makes sure that __ARM_ARCH_7VE__ is taken into
+consideration as KMP_ARCH_ARMV7 as well
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ openmp/runtime/src/kmp_platform.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/openmp/runtime/src/kmp_platform.h b/openmp/runtime/src/kmp_platform.h
+index e4f2e06b962..335b91f3575 100644
+--- a/openmp/runtime/src/kmp_platform.h
++++ b/openmp/runtime/src/kmp_platform.h
+@@ -139,7 +139,7 @@
+ #endif
+ 
+ #if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7R__) ||                     \
+-    defined(__ARM_ARCH_7A__)
++    defined(__ARM_ARCH_7A__) || defined(__ARM_ARCH_7VE__)
+ #define KMP_ARCH_ARMV7 1
+ #endif
+ 

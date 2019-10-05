@@ -1,4 +1,4 @@
-From 84e077c32b919c358b6c94cffe425acfdaddfa6a Mon Sep 17 00:00:00 2001
+From 084a896c2032cec87d6ef073ca1ee562cf3d3b95 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 12 Aug 2019 08:59:28 -0700
 Subject: [PATCH] clang: default to lp64d ABI and rv64gc ISA
@@ -35,10 +35,10 @@ index b6768de4d29..9671ea270ef 100644
 +  return Triple.getArch() == llvm::Triple::riscv32 ? "ilp32" : "lp64d";
  }
 diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
-index 38970814432..29db0ea218a 100644
+index 08165a60206..c6882f74e93 100644
 --- a/clang/lib/Driver/ToolChains/Clang.cpp
 +++ b/clang/lib/Driver/ToolChains/Clang.cpp
-@@ -1872,7 +1872,7 @@ void Clang::AddRISCVTargetArgs(const ArgList &Args,
+@@ -1878,7 +1878,7 @@ void Clang::AddRISCVTargetArgs(const ArgList &Args,
    else if (Triple.getArch() == llvm::Triple::riscv32)
      ABIName = "ilp32";
    else if (Triple.getArch() == llvm::Triple::riscv64)

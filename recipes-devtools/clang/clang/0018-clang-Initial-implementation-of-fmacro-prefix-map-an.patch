@@ -1,4 +1,4 @@
-From 6c8fcbbcce2003de4c7df649c01fbe0479405cf0 Mon Sep 17 00:00:00 2001
+From ba1d096576732493155834256698bfd3020790b3 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 Feb 2019 10:02:52 -0800
 Subject: [PATCH] clang: Initial implementation of -fmacro-prefix-map and
@@ -27,10 +27,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  create mode 100644 clang/test/Preprocessor/file_test.h
 
 diff --git a/clang/include/clang/Basic/DiagnosticDriverKinds.td b/clang/include/clang/Basic/DiagnosticDriverKinds.td
-index eab453ee20e..adee339938e 100644
+index 12f1a7f6c48..0f8e94dad66 100644
 --- a/clang/include/clang/Basic/DiagnosticDriverKinds.td
 +++ b/clang/include/clang/Basic/DiagnosticDriverKinds.td
-@@ -143,8 +143,8 @@ def err_drv_missing_arg_mtp : Error<
+@@ -141,8 +141,8 @@ def err_drv_missing_arg_mtp : Error<
    "missing argument to '%0'">;
  def err_drv_invalid_libcxx_deployment : Error<
    "invalid deployment target for -stdlib=libc++ (requires %0 or later)">;
@@ -111,10 +111,10 @@ index 7edbea86633..7077d0f043c 100644
    /// Cache that maps VLA types to size expressions for that type,
    /// represented by instantiated Metadata nodes.
 diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
-index 2508178423b..38970814432 100644
+index dd461a1976d..08165a60206 100644
 --- a/clang/lib/Driver/ToolChains/Clang.cpp
 +++ b/clang/lib/Driver/ToolChains/Clang.cpp
-@@ -617,16 +617,30 @@ static void addDebugCompDirArg(const ArgList &Args, ArgStringList &CmdArgs,
+@@ -618,16 +618,30 @@ static void addDebugCompDirArg(const ArgList &Args, ArgStringList &CmdArgs) {
  
  /// Add a CC1 and CC1AS option to specify the debug file path prefix map.
  static void addDebugPrefixMapArg(const Driver &D, const ArgList &Args, ArgStringList &CmdArgs) {
@@ -147,7 +147,7 @@ index 2508178423b..38970814432 100644
  /// Vectorize at all optimization levels greater than 1 except for -Oz.
  /// For -Oz the loop vectorizer is disabled, while the slp vectorizer is
  /// enabled.
-@@ -1311,6 +1325,8 @@ void Clang::AddPreprocessingOptions(Compilation &C, const JobAction &JA,
+@@ -1317,6 +1331,8 @@ void Clang::AddPreprocessingOptions(Compilation &C, const JobAction &JA,
      // For IAMCU add special include arguments.
      getToolChain().AddIAMCUIncludeArgs(Args, CmdArgs);
    }
