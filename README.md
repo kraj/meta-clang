@@ -63,8 +63,10 @@ following settings are needed in site configurations e.g. in `local.conf`
 
 ```shell
 TOOLCHAIN ?= "clang"
-TARGET_CXXFLAGS_remove_toolchain-clang = " --stdlib=libc++"
-TUNE_CCARGS_remove_toolchain-clang = " --rtlib=compiler-rt --unwindlib=libunwind --stdlib=libc++"
+LIBCPLUSPLUS = ""
+COMPILER_RT = ""
+UNWINDLIB = ""
+
 ```
 
 # Removing clang from generated SDK toolchain
