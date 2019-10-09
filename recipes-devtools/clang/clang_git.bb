@@ -52,7 +52,7 @@ def get_clang_experimental_target_arch(bb, d):
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs lldb-wchar \
                    ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)} \
-                   rtti eh \
+                   rtti eh libedit \
                    "
 PACKAGECONFIG_class-native = ""
 PACKAGECONFIG_class-nativesdk = "thin-lto"
@@ -68,6 +68,7 @@ PACKAGECONFIG[lldb-wchar] = "-DLLDB_EDITLINE_USE_WCHAR=1,-DLLDB_EDITLINE_USE_WCH
 PACKAGECONFIG[bootstrap] = "-DCLANG_ENABLE_BOOTSTRAP=On -DCLANG_BOOTSTRAP_PASSTHROUGH='${PASSTHROUGH}' -DBOOTSTRAP_LLVM_ENABLE_LTO=Thin -DBOOTSTRAP_LLVM_ENABLE_LLD=ON,,,"
 PACKAGECONFIG[eh] = "-DLLVM_ENABLE_EH=ON,-DLLVM_ENABLE_EH=OFF,,"
 PACKAGECONFIG[rtti] = "-DLLVM_ENABLE_RTTI=ON,-DLLVM_ENABLE_RTTI=OFF,,"
+PACKAGECONFIG[libedit] = "-DLLVM_ENABLE_LIBEDIT=ON -DLLDB_DISABLE_LIBEDIT=0,-DLLVM_ENABLE_LIBEDIT=OFF -DLLDB_DISABLE_LIBEDIT=1,libedit libedit-native"
 
 BUILDTARGET = "${@bb.utils.contains('PACKAGECONFIG', 'bootstrap', 'stage2', '', d)}"
 BINPATHPREFIX = "${@bb.utils.contains('PACKAGECONFIG', 'bootstrap', '/tools/clang/stage2-bins/NATIVE', '', d)}"
@@ -81,6 +82,7 @@ LLVM_ENABLE_RTTI;LLVM_ENABLE_EH;LLVM_BUILD_EXTERNAL_COMPILER_RT;CMAKE_SYSTEM_NAM
 CMAKE_BUILD_TYPE;BUILD_SHARED_LIBS;LLVM_ENABLE_PROJECTS;LLVM_BINUTILS_INCDIR;\
 LLVM_TARGETS_TO_BUILD;LLVM_EXPERIMENTAL_TARGETS_TO_BUILD;PYTHON_EXECUTABLE;\
 PYTHON_LIBRARY;PYTHON_INCLUDE_DIR;LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN;LLDB_EDITLINE_USE_WCHAR;\
+LLVM_ENABLE_LIBEDIT;LLDB_DISABLE_LIBEDIT; \
 "
 #
 # Default to build all OE-Core supported target arches (user overridable).
@@ -110,7 +112,6 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DBUILD_SHARED_LIBS=OFF \
                   -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;lld;lldb' \
                   -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
-                  -DLLVM_ENABLE_LIBEDIT=ON \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
                   -G Ninja ${S}/llvm \
 "
@@ -151,7 +152,7 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
 
-DEPENDS = "binutils zlib libffi libedit libedit-native libxml2 libxml2-native ninja-native swig-native"
+DEPENDS = "binutils zlib libffi libxml2 libxml2-native ninja-native swig-native"
 DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
 
