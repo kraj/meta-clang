@@ -12,7 +12,7 @@ COMPILER_RT ??= "--rtlib=compiler-rt ${UNWINDLIB}"
 COMPILER_RT_toolchain-gcc = ""
 COMPILER_RT_powerpc = "--rtlib=libgcc ${UNWINDLIB}"
 
-UNWINDLIB ??= "--unwindlib=libunwind"
+UNWINDLIB ??= "--unwindlib=libgcc"
 UNWINDLIB_riscv64 = "--unwindlib=libgcc"
 UNWINDLIB_riscv32 = "--unwindlib=libgcc"
 UNWINDLIB_powerpc = "--unwindlib=libgcc"
@@ -68,7 +68,7 @@ def clang_base_deps(d):
             else:
                 ret += " libgcc "
             if (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
-                ret += " llvm-libunwind "
+                ret += " libcxx "
             if (d.getVar('LIBCPLUSPLUS').find('--stdlib=libc++') != -1):
                 ret += " libcxx "
             else:
@@ -76,18 +76,5 @@ def clang_base_deps(d):
             return ret
     return ""
 
-def clang_remove_deps(d):
-    ret = ""
-    if (d.getVar('UNWINDLIB').find('--unwindlib=libunwind') != -1):
-        ret += "libunwind"
-    return ret
-
-def clang_add_deps(d):
-    ret = ""
-    if (d.getVar('UNWINDLIB').find('--unwindlib=libunwind') != -1):
-        ret += " llvm-libunwind "
-    return ret
 BASE_DEFAULT_DEPS_toolchain-clang_class-target = "${@clang_base_deps(d)}"
-DEPENDS_remove_class-target = "${@clang_remove_deps(d)}"
-BASE_DEFAULT_DEPS_append_class-target = "${@clang_add_deps(d)}"
 
