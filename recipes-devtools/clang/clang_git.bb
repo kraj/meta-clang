@@ -54,8 +54,8 @@ PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs lldb-wchar \
                    ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)} \
                    rtti eh \
                    "
-PACKAGECONFIG_class-native = ""
-PACKAGECONFIG_class-nativesdk = "thin-lto"
+PACKAGECONFIG_class-native = "rtti eh"
+PACKAGECONFIG_class-nativesdk = "rtti eh thin-lto"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
@@ -88,8 +88,8 @@ PYTHON_LIBRARY;PYTHON_INCLUDE_DIR;LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN;LLDB_EDIT
 LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86"
 LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
-LLVM_TARGETS_TO_BUILD_TARGET ?= ""
-LLVM_TARGETS_TO_BUILD_TARGET_append ?= "${@get_clang_target_arch(bb, d)}"
+LLVM_TARGETS_TO_BUILD_TARGET ?= "AMDGPU;${LLVM_TARGETS_TO_BUILD}"
+LLVM_TARGETS_TO_BUILD_TARGET_append ?= ";${@get_clang_target_arch(bb, d)}"
 
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_arch(bb, d)}"
@@ -177,6 +177,9 @@ do_install_append_class-native () {
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 		echo "stripped $f"
 	done
+        ln -sf clang-tblgen ${D}${bindir}/clang-tblgen${PV}
+        ln -sf llvm-tblgen ${D}${bindir}/llvm-tblgen${PV}
+        ln -sf llvm-config ${D}${bindir}/llvm-config${PV}
 }
 
 do_install_append_class-nativesdk () {
@@ -185,6 +188,9 @@ do_install_append_class-nativesdk () {
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
 		test -n "`file $f|grep -i ELF`" && ${STRIP} $f
 	done
+        ln -sf clang-tblgen ${D}${bindir}/clang-tblgen${PV}
+        ln -sf llvm-tblgen ${D}${bindir}/llvm-tblgen${PV}
+        ln -sf llvm-config ${D}${bindir}/llvm-config${PV}
 	rm -rf ${D}${datadir}/llvm/cmake
 	rm -rf ${D}${datadir}/llvm
 }
@@ -192,6 +198,9 @@ do_install_append_class-nativesdk () {
 PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang"
+
+PROVIDES += "llvm llvm${PV}"
+PROVIDES_append_class-native = " llvm-native"
 
 BBCLASSEXTEND = "native nativesdk"
 
