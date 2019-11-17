@@ -251,6 +251,5 @@ INSANE_SKIP_${PN}-lldb-python += "dev-so dev-deps"
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
 SSTATE_SCAN_FILES_remove = "*-config"
 
-TOOLCHAIN = "clang"
 TOOLCHAIN_class-native = "gcc"
 TOOLCHAIN_class-nativesdk = "clang"
