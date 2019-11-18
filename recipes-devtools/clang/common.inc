@@ -32,6 +32,7 @@ SRC_URI = "\
     file://0022-RISCV-Add-support-for-floating-point-registers-in-in.patch \
     file://0023-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
     file://0024-openmp-Recognise-ARMv7ve-machine-arch.patch \
+    file://0025-clangd-Always-link-with-libatomic.patch \
 "
 
 # Fallback to no-PIE if not set
