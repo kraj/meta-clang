@@ -8,17 +8,15 @@ RANLIB_toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
 AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
-COMPILER_RT ??= "--rtlib=compiler-rt ${UNWINDLIB}"
-COMPILER_RT_toolchain-gcc = ""
+COMPILER_RT ??= "${@bb.utils.contains("RUNTIME", "llvm", "-rtlib=compiler-rt ${UNWINDLIB}", "", d)}"
 COMPILER_RT_powerpc = "--rtlib=libgcc ${UNWINDLIB}"
 
-UNWINDLIB ??= "--unwindlib=libgcc"
+UNWINDLIB ??= "${@bb.utils.contains("RUNTIME", "llvm", "--unwindlib=libgcc", "", d)}"
 UNWINDLIB_riscv64 = "--unwindlib=libgcc"
 UNWINDLIB_riscv32 = "--unwindlib=libgcc"
 UNWINDLIB_powerpc = "--unwindlib=libgcc"
 
-LIBCPLUSPLUS ??= "--stdlib=libc++"
-LIBCPLUSPLUS_toolchain-gcc = ""
+LIBCPLUSPLUS ??= "${@bb.utils.contains("RUNTIME", "llvm", "--stdlib=libc++", "", d)}"
 
 TARGET_CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
 TUNE_CCARGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
@@ -46,6 +44,9 @@ LDFLAGS_append_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is
 
 # choose between 'gcc' 'clang' an empty '' can be used as well
 TOOLCHAIN ??= "gcc"
+# choose between 'gnu' 'llvm'
+RUNTIME ??= "gnu"
+RUNTIME_toolchain-gcc = "gnu"
 
 TOOLCHAIN_class-native = "gcc"
 TOOLCHAIN_class-nativesdk = "gcc"
@@ -54,7 +55,8 @@ TOOLCHAIN_class-crosssdk = "gcc"
 TOOLCHAIN_class-cross = "gcc"
 
 OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
-OVERRIDES[vardepsexclude] += "TOOLCHAIN"
+OVERRIDES =. "${@['', 'runtime-${RUNTIME}:']['${RUNTIME}' != '']}"
+OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
 
 #DEPENDS_append_toolchain-clang_class-target = " clang-cross-${TARGET_ARCH} "
 #DEPENDS_remove_toolchain-clang_allarch = "clang-cross-${TARGET_ARCH}"
