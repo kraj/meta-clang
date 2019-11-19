@@ -28,6 +28,7 @@ SRC_URI = "\
     file://0018-compiler-rt-Disable-tsan-on-OE-glibc.patch \
     file://0019-llvm-Enhance-path-prefix-mapping.patch \
     file://0020-clang-Initial-implementation-of-fmacro-prefix-map-an.patch \
+    file://0021-Check-for-atomic-double-intrinsics.patch \
 "
 
 # Fallback to no-PIE if not set
