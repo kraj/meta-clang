@@ -1,4 +1,4 @@
-From ba1d096576732493155834256698bfd3020790b3 Mon Sep 17 00:00:00 2001
+From 3a6bf36829e16fd7ab1c2eb6b93ed6caa8210cd1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 15 Feb 2019 10:02:52 -0800
 Subject: [PATCH] clang: Initial implementation of -fmacro-prefix-map and

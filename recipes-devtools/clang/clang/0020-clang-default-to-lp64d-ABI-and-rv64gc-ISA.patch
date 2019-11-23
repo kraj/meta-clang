@@ -1,4 +1,4 @@
-From 084a896c2032cec87d6ef073ca1ee562cf3d3b95 Mon Sep 17 00:00:00 2001
+From a11464585a13998f97e837a62b299bf66e2f90f0 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 12 Aug 2019 08:59:28 -0700
 Subject: [PATCH] clang: default to lp64d ABI and rv64gc ISA
