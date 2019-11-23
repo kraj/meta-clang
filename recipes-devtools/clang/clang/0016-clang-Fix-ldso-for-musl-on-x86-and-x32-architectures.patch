@@ -1,4 +1,4 @@
-From a105a76862d92ad15520671971e333222618d275 Mon Sep 17 00:00:00 2001
+From 9d30864a94bced63a95a1fc300dbfad37a3d6038 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 16 Aug 2017 15:16:15 -0700
 Subject: [PATCH] clang: Fix ldso for musl on x86 and x32 architectures
@@ -14,7 +14,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 8 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 9bf66207ac9..fc7d6c17484 100644
+index 33037dafb57..ff671fe27d2 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -519,6 +519,7 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {

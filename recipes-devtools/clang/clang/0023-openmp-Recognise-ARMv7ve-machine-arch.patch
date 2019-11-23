@@ -1,4 +1,4 @@
-From cc64b30dd9ca1d39a3807a412d2e6ce1038cc406 Mon Sep 17 00:00:00 2001
+From 68d9f584ed5e3b65af21548fb1a9f3547a14cd59 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 5 Oct 2019 14:47:37 -0700
 Subject: [PATCH] openmp: Recognise ARMv7ve machine arch

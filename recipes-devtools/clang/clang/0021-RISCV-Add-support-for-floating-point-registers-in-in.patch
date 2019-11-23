@@ -1,4 +1,4 @@
-From 3169f6e41fa8f3a25fabfa905cb902ae555bf21b Mon Sep 17 00:00:00 2001
+From 19de4c98078a98a0663e945d419fa2147a70fe9c Mon Sep 17 00:00:00 2001
 From: Simon Cook <simon.cook@embecosm.com>
 Date: Wed, 31 Jul 2019 09:12:00 +0000
 Subject: [PATCH] [RISCV] Add support for floating point registers in inlineasm
