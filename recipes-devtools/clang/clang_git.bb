@@ -87,10 +87,10 @@ LLVM_ENABLE_LIBEDIT;LLDB_DISABLE_LIBEDIT; \
 #
 # Default to build all OE-Core supported target arches (user overridable).
 #
-LLVM_TARGETS_TO_BUILD ?= "AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86"
+LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86"
 LLVM_TARGETS_TO_BUILD_append = ";${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
-LLVM_TARGETS_TO_BUILD_TARGET ?= "AMDGPU;${LLVM_TARGETS_TO_BUILD}"
+LLVM_TARGETS_TO_BUILD_TARGET ?= "${LLVM_TARGETS_TO_BUILD}"
 LLVM_TARGETS_TO_BUILD_TARGET_append ?= ";${@get_clang_target_arch(bb, d)}"
 
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
