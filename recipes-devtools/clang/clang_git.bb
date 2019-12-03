@@ -172,6 +172,19 @@ do_install() {
         rm -rf ${D}${libdir}/python*/site-packages/six.py
 }
 
+do_install_append_class-target () {
+    # Allow bin path to change based on YOCTO_ALTERNATE_EXE_PATH
+    sed -i 's;${_IMPORT_PREFIX}/bin;${_IMPORT_PREFIX_BIN};g' ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
+
+    # Insert function to populate Import Variables
+    sed -i "4i\
+if(DEFINED ENV{YOCTO_ALTERNATE_EXE_PATH})\n\
+  execute_process(COMMAND \"llvm-config\" \"--bindir\" OUTPUT_VARIABLE _IMPORT_PREFIX_BIN OUTPUT_STRIP_TRAILING_WHITESPACE)\n\
+else()\n\
+  set(_IMPORT_PREFIX_BINARY \"\${_IMPORT_PREFIX}/bin\")\n\
+endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
+}
+
 do_install_append_class-native () {
 	install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
 	install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
