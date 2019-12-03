@@ -163,6 +163,19 @@ do_install() {
         DESTDIR=${D} ninja ${PARALLEL_MAKE} ${INSTALLTARGET}
 }
 
+do_install_append_class-target () {
+    # Allow bin path to change based on YOCTO_ALTERNATE_EXE_PATH
+    sed -i 's;${_IMPORT_PREFIX}/bin;${_IMPORT_PREFIX_BIN};g' ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
+
+    # Insert function to populate Import Variables
+    sed -i "4i\
+if(DEFINED ENV{YOCTO_ALTERNATE_EXE_PATH})\n\
+  execute_process(COMMAND \"llvm-config\" \"--bindir\" OUTPUT_VARIABLE _IMPORT_PREFIX_BIN OUTPUT_STRIP_TRAILING_WHITESPACE)\n\
+else()\n\
+  set(_IMPORT_PREFIX_BINARY \"\${_IMPORT_PREFIX}/bin\")\n\
+endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
+}
+
 do_install_append_class-native () {
 	install -Dm 0755 ${B}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
 	for f in `find ${D}${bindir} -executable -type f -not -type l`; do
