@@ -1,0 +1,44 @@
+From fa44b5037ceac5d201b5ab0395ec9c5b928f79bf Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 4 Dec 2019 11:50:09 -0800
+Subject: [PATCH] llvm: Let llvm-ar name contain 'lib'
+
+In cross-compile cases canonical names are created using symlinks but
+they fail to execute because the name confuses 'lib' instead of toolname
+
+In multilib(lib32) case, the arm-pokymllib32-linux-gnueabi-llvm-ar (${TARGET_PREFIX}llvm-ar) gives:
+qc: no such file or directory
+
+Which is because when the llvm-ar symbol link's name contains "lib", it would be considered as llvm-lib:
+
+Signed-off-by: Michael Davis <michael.davis@essvote.com>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ llvm/tools/llvm-ar/llvm-ar.cpp | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/llvm/tools/llvm-ar/llvm-ar.cpp b/llvm/tools/llvm-ar/llvm-ar.cpp
+index 91746d0fab3..daef39ede79 100644
+--- a/llvm/tools/llvm-ar/llvm-ar.cpp
++++ b/llvm/tools/llvm-ar/llvm-ar.cpp
+@@ -1125,16 +1125,16 @@ int main(int argc, char **argv) {
+   llvm::InitializeAllAsmParsers();
+ 
+   Stem = sys::path::stem(ToolName);
+-  if (Stem.contains_lower("dlltool"))
++  if (Stem.endswith("dlltool") || Stem.contains("dlltool-"))
+     return dlltoolDriverMain(makeArrayRef(argv, argc));
+ 
+-  if (Stem.contains_lower("ranlib"))
++  if (Stem.endswith("ranlib") || Stem.contains("ranlib-"))
+     return ranlib_main(argc, argv);
+ 
+-  if (Stem.contains_lower("lib"))
++  if (Stem.endswith("lib") || Stem.contains("lib-"))
+     return libDriverMain(makeArrayRef(argv, argc));
+ 
+-  if (Stem.contains_lower("ar"))
++  if (Stem.endswith("ar") || Stem.contains("ar-"))
+     return ar_main(argc, argv);
+   fail("Not ranlib, ar, lib or dlltool!");
+ }
