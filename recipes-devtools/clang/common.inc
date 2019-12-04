@@ -32,6 +32,7 @@ SRC_URI = "\
     file://0022-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
     file://0023-openmp-Recognise-ARMv7ve-machine-arch.patch \
     file://0024-Check-for-atomic-double-intrinsics.patch \
+    file://0025-llvm-Let-llvm-ar-name-contain-lib.patch \
 "
 
 # Fallback to no-PIE if not set
