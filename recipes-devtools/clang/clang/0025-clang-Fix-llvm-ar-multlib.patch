@@ -1,0 +1,24 @@
+--- git.org/llvm/tools/llvm-ar/llvm-ar.cpp      2019-12-04 11:15:22.530534025 -0600
++++ git/llvm/tools/llvm-ar/llvm-ar.cpp  2019-12-04 11:17:24.622642713 -0600
+@@ -1125,16 +1125,16 @@
+   llvm::InitializeAllAsmParsers();
+
+   Stem = sys::path::stem(ToolName);
+-  if (Stem.contains_lower("dlltool"))
++  if (Stem.endswith_lower("dlltool"))
+     return dlltoolDriverMain(makeArrayRef(argv, argc));
+
+-  if (Stem.contains_lower("ranlib"))
++  if (Stem.endswith_lower("ranlib"))
+     return ranlib_main(argc, argv);
+
+-  if (Stem.contains_lower("lib"))
++  if (Stem.endswith_lower("lib"))
+     return libDriverMain(makeArrayRef(argv, argc));
+
+-  if (Stem.contains_lower("ar"))
++  if (Stem.endswith_lower("ar"))
+     return ar_main(argc, argv);
+   fail("Not ranlib, ar, lib or dlltool!");
+ }
+
