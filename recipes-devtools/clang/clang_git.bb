@@ -134,6 +134,7 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DLLDB_TABLEGEN=${STAGING_BINDIR_NATIVE}/lldb-tblgen \
                   -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
                   -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
+                  -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
 EXTRA_OECMAKE_append_class-target = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
