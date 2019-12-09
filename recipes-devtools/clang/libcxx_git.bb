@@ -40,11 +40,12 @@ EXTRA_OECMAKE += "\
                   -DCXX_SUPPORTS_CXX11=ON \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
-                  -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib \
+                  -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/${base_libdir} \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                   -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi${LIBUNWIND}' \
+                  -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
                   -G Ninja \
                   ${S}/llvm \
 "
