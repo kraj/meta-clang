@@ -51,7 +51,7 @@ EXTRA_OECMAKE += "\
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi;libunwind' \
-                  -DLLVM_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
+                  -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
                   -G Ninja \
                   ${S}/llvm \
 "
