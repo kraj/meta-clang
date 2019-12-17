@@ -172,7 +172,7 @@ do_install_append_class-target () {
 if(DEFINED ENV{YOCTO_ALTERNATE_EXE_PATH})\n\
   execute_process(COMMAND \"llvm-config\" \"--bindir\" OUTPUT_VARIABLE _IMPORT_PREFIX_BIN OUTPUT_STRIP_TRAILING_WHITESPACE)\n\
 else()\n\
-  set(_IMPORT_PREFIX_BINARY \"\${_IMPORT_PREFIX}/bin\")\n\
+  set(_IMPORT_PREFIX_BIN \"\${_IMPORT_PREFIX}/bin\")\n\
 endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
 }
 
