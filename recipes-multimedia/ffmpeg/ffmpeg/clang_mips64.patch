@@ -1,0 +1,28 @@
+Disable fpu using code when using clang/mips64 combo
+it works around clang's inline asm error
+
+error: couldn't allocate output register for constraint 'r'
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+
+--- a/libavcodec/mips/aacdec_mips.c
++++ b/libavcodec/mips/aacdec_mips.c
+@@ -282,7 +282,7 @@ static void apply_ltp_mips(AACContext *a
+     }
+ }
+ 
+-#if HAVE_MIPSFPU
++#if HAVE_MIPSFPU && !defined(__clang__)
+ static av_always_inline void fmul_and_reverse(float *dst, const float *src0, const float *src1, int count)
+ {
+     /* Multiply 'count' floats in src0 by src1 and store the results in dst in reverse */
+@@ -435,7 +435,7 @@ void ff_aacdec_init_mips(AACContext *c)
+ #if HAVE_INLINE_ASM
+     c->imdct_and_windowing         = imdct_and_windowing_mips;
+     c->apply_ltp                   = apply_ltp_mips;
+-#if HAVE_MIPSFPU
++#if HAVE_MIPSFPU && !defined(__clang__)
+     c->update_ltp                  = update_ltp_mips;
+ #endif /* HAVE_MIPSFPU */
+ #endif /* HAVE_INLINE_ASM */
