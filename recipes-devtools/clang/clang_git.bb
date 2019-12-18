@@ -113,6 +113,7 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;lld;lldb' \
                   -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
+                  -DLLVM_USE_SPLIT_DWARF=ON \
                   -G Ninja ${S}/llvm \
 "
 
@@ -209,8 +210,6 @@ do_install_append_class-nativesdk () {
 	rm -rf ${D}${datadir}/llvm/cmake
 	rm -rf ${D}${datadir}/llvm
 }
-
-PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang"
 
