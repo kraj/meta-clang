@@ -1,0 +1,40 @@
+From 91c980d4cf88b0c12fe5971fe16c7b97b5a942af Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 17 Dec 2019 14:57:55 -0800
+Subject: [PATCH] Disable fpu using code when using clang/mips64 combo
+
+it works around clang's inline asm error
+
+error: couldn't allocate output register for constraint 'r'
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ gst-libs/ext/libav/libavcodec/mips/aacdec_mips.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gst-libs/ext/libav/libavcodec/mips/aacdec_mips.c b/gst-libs/ext/libav/libavcodec/mips/aacdec_mips.c
+index 253cdeb..df4f25d 100644
+--- a/gst-libs/ext/libav/libavcodec/mips/aacdec_mips.c
++++ b/gst-libs/ext/libav/libavcodec/mips/aacdec_mips.c
+@@ -282,7 +282,7 @@ static void apply_ltp_mips(AACContext *ac, SingleChannelElement *sce)
+     }
+ }
+ 
+-#if HAVE_MIPSFPU
++#if HAVE_MIPSFPU && !defined(__clang__)
+ static av_always_inline void fmul_and_reverse(float *dst, const float *src0, const float *src1, int count)
+ {
+     /* Multiply 'count' floats in src0 by src1 and store the results in dst in reverse */
+@@ -435,7 +435,7 @@ void ff_aacdec_init_mips(AACContext *c)
+ #if HAVE_INLINE_ASM
+     c->imdct_and_windowing         = imdct_and_windowing_mips;
+     c->apply_ltp                   = apply_ltp_mips;
+-#if HAVE_MIPSFPU
++#if HAVE_MIPSFPU && !defined(__clang__)
+     c->update_ltp                  = update_ltp_mips;
+ #endif /* HAVE_MIPSFPU */
+ #endif /* HAVE_INLINE_ASM */
+-- 
+2.24.1
+
