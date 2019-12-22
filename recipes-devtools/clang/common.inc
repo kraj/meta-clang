@@ -34,6 +34,7 @@ SRC_URI = "\
     file://0024-Check-for-atomic-double-intrinsics.patch \
     file://0025-llvm-Let-llvm-ar-name-contain-lib.patch \
     file://0026-libclang-Use-CMAKE_DL_LIBS-for-deducing-libdl.patch \
+    file://0027-Fix-sanitizer-common-build-with-glibc-2.31.patch \
 "
 
 # Fallback to no-PIE if not set
