@@ -11,7 +11,7 @@ clone:
 
 trigger:
   branch:
-    - zeus
+    - master
   event:
     - push
     - pull_request
