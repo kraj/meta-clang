@@ -55,7 +55,7 @@ PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs lldb-wchar \
                    rtti eh libedit \
                    "
 PACKAGECONFIG_class-native = "rtti eh libedit"
-PACKAGECONFIG_class-nativesdk = "rtti eh libedit thin-lto"
+PACKAGECONFIG_class-nativesdk = "rtti eh libedit ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)}"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
@@ -68,6 +68,7 @@ PACKAGECONFIG[lldb-wchar] = "-DLLDB_EDITLINE_USE_WCHAR=1,-DLLDB_EDITLINE_USE_WCH
 PACKAGECONFIG[bootstrap] = "-DCLANG_ENABLE_BOOTSTRAP=On -DCLANG_BOOTSTRAP_PASSTHROUGH='${PASSTHROUGH}' -DBOOTSTRAP_LLVM_ENABLE_LTO=Thin -DBOOTSTRAP_LLVM_ENABLE_LLD=ON,,,"
 PACKAGECONFIG[eh] = "-DLLVM_ENABLE_EH=ON,-DLLVM_ENABLE_EH=OFF,,"
 PACKAGECONFIG[rtti] = "-DLLVM_ENABLE_RTTI=ON,-DLLVM_ENABLE_RTTI=OFF,,"
+PACKAGECONFIG[split-dwarf] = "-DLLVM_USE_SPLIT_DWARF=ON,-DLLVM_USE_SPLIT_DWARF=OFF,,"
 PACKAGECONFIG[libedit] = "-DLLVM_ENABLE_LIBEDIT=ON -DLLDB_DISABLE_LIBEDIT=0,-DLLVM_ENABLE_LIBEDIT=OFF -DLLDB_DISABLE_LIBEDIT=1,libedit libedit-native"
 
 BUILDTARGET = "${@bb.utils.contains('PACKAGECONFIG', 'bootstrap', 'stage2', '', d)}"
@@ -181,7 +182,7 @@ do_install_append_class-target () {
 if(DEFINED ENV{YOCTO_ALTERNATE_EXE_PATH})\n\
   execute_process(COMMAND \"llvm-config\" \"--bindir\" OUTPUT_VARIABLE _IMPORT_PREFIX_BIN OUTPUT_STRIP_TRAILING_WHITESPACE)\n\
 else()\n\
-  set(_IMPORT_PREFIX_BINARY \"\${_IMPORT_PREFIX}/bin\")\n\
+  set(_IMPORT_PREFIX_BIN \"\${_IMPORT_PREFIX}/bin\")\n\
 endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
 }
 
@@ -209,8 +210,6 @@ do_install_append_class-nativesdk () {
 	rm -rf ${D}${datadir}/llvm/cmake
 	rm -rf ${D}${datadir}/llvm
 }
-
-PACKAGE_DEBUG_SPLIT_STYLE_class-nativesdk = "debug-without-src"
 
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang"
 

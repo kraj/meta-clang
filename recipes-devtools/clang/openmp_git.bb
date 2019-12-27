@@ -35,3 +35,4 @@ INSANE_SKIP_${PN} = "dev-so"
 
 COMPATIBLE_HOST_riscv64 = "null"
 COMPATIBLE_HOST_riscv32 = "null"
+COMPATIBLE_HOST_mips64 = "null"

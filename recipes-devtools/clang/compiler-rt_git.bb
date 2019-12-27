@@ -31,6 +31,7 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
+                  -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
                   -G Ninja ${S}/llvm \
 "
 
@@ -75,12 +76,12 @@ sysroot_stage_all_append_class-target() {
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
-                ${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
-                ${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
-FILES_${PN}-staticdev += "${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES_${PN}-dev += "${datadir} ${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
-                    ${exec_prefix}/lib/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
+FILES_${PN} += "${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
+                ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
+                ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
+FILES_${PN}-staticdev += "${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
+FILES_${PN}-dev += "${datadir} ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
+                    ${exec_prefix}/lib${LLVM_LIBDIR_SUFFIX}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
                    "
 INSANE_SKIP_${PN} = "dev-so libdir"
 

@@ -1,6 +1,6 @@
-From fa44b5037ceac5d201b5ab0395ec9c5b928f79bf Mon Sep 17 00:00:00 2001
-From: Khem Raj <raj.khem@gmail.com>
-Date: Wed, 4 Dec 2019 11:50:09 -0800
+From e709fa8c221d21bce717b22fa4076c94d51f011e Mon Sep 17 00:00:00 2001
+From: Fangrui Song <maskray@google.com>
+Date: Tue, 10 Dec 2019 15:56:05 -0800
 Subject: [PATCH] llvm: Let llvm-ar name contain 'lib'
 
 In cross-compile cases canonical names are created using symlinks but
@@ -11,34 +11,140 @@ qc: no such file or directory
 
 Which is because when the llvm-ar symbol link's name contains "lib", it would be considered as llvm-lib:
 
-Signed-off-by: Michael Davis <michael.davis@essvote.com>
+Signed-off-by: Fangrui Song <maskray@google.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- llvm/tools/llvm-ar/llvm-ar.cpp | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ llvm/test/tools/llvm-ar/tool-name.test      | 15 ++++++++++++++
+ llvm/test/tools/llvm-dlltool/tool-name.test | 13 ++++++++++++
+ llvm/test/tools/llvm-lib/tool-name.test     | 14 +++++++++++++
+ llvm/test/tools/llvm-ranlib/tool-name.test  | 13 ++++++++++++
+ llvm/tools/llvm-ar/llvm-ar.cpp              | 23 ++++++++++++++-------
+ 5 files changed, 71 insertions(+), 7 deletions(-)
+ create mode 100644 llvm/test/tools/llvm-ar/tool-name.test
+ create mode 100644 llvm/test/tools/llvm-dlltool/tool-name.test
+ create mode 100644 llvm/test/tools/llvm-lib/tool-name.test
+ create mode 100644 llvm/test/tools/llvm-ranlib/tool-name.test
 
+diff --git a/llvm/test/tools/llvm-ar/tool-name.test b/llvm/test/tools/llvm-ar/tool-name.test
+new file mode 100644
+index 00000000000..cb656d3b47f
+--- /dev/null
++++ b/llvm/test/tools/llvm-ar/tool-name.test
+@@ -0,0 +1,15 @@
++## Don't make symlinks on Windows.
++# UNSUPPORTED: system-windows
++
++# RUN: rm -rf %t
++# RUN: mkdir %t
++# RUN: ln -s llvm-ar %t/llvm-ar-9
++# RUN: ln -s llvm-ar %t/ar.exe
++# RUN: ln -s llvm-ar %t/arm-pokymllib32-linux-gnueabi-llvm-ar-9
++
++# RUN: llvm-ar h | FileCheck %s
++# RUN: %t/llvm-ar-9 h | FileCheck %s
++# RUN: %t/ar.exe h | FileCheck %s
++# RUN: %t/arm-pokymllib32-linux-gnueabi-llvm-ar-9 h | FileCheck %s
++
++# CHECK: USAGE: llvm-ar
+diff --git a/llvm/test/tools/llvm-dlltool/tool-name.test b/llvm/test/tools/llvm-dlltool/tool-name.test
+new file mode 100644
+index 00000000000..e9d8680322d
+--- /dev/null
++++ b/llvm/test/tools/llvm-dlltool/tool-name.test
+@@ -0,0 +1,13 @@
++## Don't make symlinks on Windows.
++# UNSUPPORTED: system-windows
++
++# RUN: rm -rf %t
++# RUN: mkdir %t
++# RUN: ln -s llvm-dlltool %t/dlltool.exe
++# RUN: ln -s llvm-dlltool %t/dlltool-10
++
++# RUN: not llvm-dlltool 2>&1 | FileCheck %s
++# RUN: not %t/dlltool.exe 2>&1 | FileCheck %s
++# RUN: not %t/dlltool-10 2>&1 | FileCheck %s
++
++# CHECK: USAGE: llvm-dlltool
+diff --git a/llvm/test/tools/llvm-lib/tool-name.test b/llvm/test/tools/llvm-lib/tool-name.test
+new file mode 100644
+index 00000000000..9c0f7b5de73
+--- /dev/null
++++ b/llvm/test/tools/llvm-lib/tool-name.test
+@@ -0,0 +1,14 @@
++## Don't make symlinks on Windows.
++# UNSUPPORTED: system-windows
++
++# RUN: rm -rf %t
++# RUN: mkdir %t
++## See D44808, MSBuild runs Lib.exe
++# RUN: ln -s llvm-lib %t/Lib.exe
++# RUN: ln -s llvm-lib %t/llvm-lib-10
++
++# RUN: llvm-lib '/?' | FileCheck %s
++# RUN: %t/Lib.exe '/?' | FileCheck %s
++# RUN: %t/llvm-lib-10 '/?' | FileCheck %s
++
++# CHECK: USAGE: llvm-lib
+diff --git a/llvm/test/tools/llvm-ranlib/tool-name.test b/llvm/test/tools/llvm-ranlib/tool-name.test
+new file mode 100644
+index 00000000000..bd2b4965331
+--- /dev/null
++++ b/llvm/test/tools/llvm-ranlib/tool-name.test
+@@ -0,0 +1,13 @@
++## Don't make symlinks on Windows.
++# UNSUPPORTED: system-windows
++
++# RUN: rm -rf %t
++# RUN: mkdir %t
++# RUN: ln -s llvm-ranlib %t/llvm-ranlib-9
++# RUN: ln -s llvm-ranlib %t/ranlib.exe
++
++# RUN: llvm-ranlib -h | FileCheck %s
++# RUN: %t/llvm-ranlib-9 -h | FileCheck %s
++# RUN: %t/ranlib.exe -h | FileCheck %s
++
++# CHECK: USAGE: llvm-ranlib
 diff --git a/llvm/tools/llvm-ar/llvm-ar.cpp b/llvm/tools/llvm-ar/llvm-ar.cpp
-index 91746d0fab3..daef39ede79 100644
+index 91746d0fab3..a7118371f1e 100644
 --- a/llvm/tools/llvm-ar/llvm-ar.cpp
 +++ b/llvm/tools/llvm-ar/llvm-ar.cpp
-@@ -1125,16 +1125,16 @@ int main(int argc, char **argv) {
+@@ -11,6 +11,7 @@
+ //
+ //===----------------------------------------------------------------------===//
+ 
++#include "llvm/ADT/StringExtras.h"
+ #include "llvm/ADT/StringSwitch.h"
+ #include "llvm/ADT/Triple.h"
+ #include "llvm/IR/LLVMContext.h"
+@@ -1125,16 +1126,24 @@ int main(int argc, char **argv) {
    llvm::InitializeAllAsmParsers();
  
    Stem = sys::path::stem(ToolName);
 -  if (Stem.contains_lower("dlltool"))
-+  if (Stem.endswith("dlltool") || Stem.contains("dlltool-"))
++  auto Is = [](StringRef Tool) {
++    // We need to recognize the following filenames.
++    //
++    // Lib.exe -> lib (see D44808, MSBuild runs Lib.exe)
++    // dlltool.exe -> dlltool
++    // arm-pokymllib32-linux-gnueabi-llvm-ar-10 -> ar
++    auto I = Stem.rfind_lower(Tool);
++    return I != StringRef::npos &&
++           (I + Tool.size() == Stem.size() || !isAlnum(Stem[I + Tool.size()]));
++  };
++
++  if (Is("dlltool"))
      return dlltoolDriverMain(makeArrayRef(argv, argc));
- 
+-
 -  if (Stem.contains_lower("ranlib"))
-+  if (Stem.endswith("ranlib") || Stem.contains("ranlib-"))
++  if (Is("ranlib"))
      return ranlib_main(argc, argv);
- 
+-
 -  if (Stem.contains_lower("lib"))
-+  if (Stem.endswith("lib") || Stem.contains("lib-"))
++  if (Is("lib"))
      return libDriverMain(makeArrayRef(argv, argc));
- 
+-
 -  if (Stem.contains_lower("ar"))
-+  if (Stem.endswith("ar") || Stem.contains("ar-"))
++  if (Is("ar"))
      return ar_main(argc, argv);
    fail("Not ranlib, ar, lib or dlltool!");
  }

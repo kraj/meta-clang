@@ -32,6 +32,8 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
                     file://libunwind/LICENSE.TXT;md5=f66970035d12f196030658b11725e1a1 \
 "
 
+LLVM_LIBDIR_SUFFIX_powerpc64 = "64"
+
 EXTRA_OECMAKE += "\
                   -DCMAKE_CROSSCOMPILING=ON \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
@@ -46,12 +48,12 @@ EXTRA_OECMAKE += "\
                   -DLIBCXX_CXX_ABI=libcxxabi \
                   -DLIBCXX_USE_COMPILER_RT=ON \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
-                  -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/${baselib} \
+                  -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib${LLVM_LIBDIR_SUFFIX} \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi;libunwind' \
-                  -DLLVM_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
+                  -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
                   -G Ninja \
                   ${S}/llvm \
 "
