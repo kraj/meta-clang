@@ -21,6 +21,13 @@ inherit cmake pkgconfig perlnative
 
 EXTRA_OECMAKE = "-G Ninja ${S}/openmp"
 
+PACKAGECONFIG ?= "ompt-tools"
+PACKAGECONFIG_remove_arm = "ompt-tools"
+PACKAGECONFIG_remove_mipsarch = "ompt-tools"
+PACKAGECONFIG_remove_powerpc = "ompt-tools"
+
+PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_TOOLS=OFF,"
+
 do_compile() {
 	ninja ${PARALLEL_MAKE}
 }
