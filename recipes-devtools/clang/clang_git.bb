@@ -229,10 +229,11 @@ FILES_${PN} += "\
   ${datadir}/opt-viewer/ \
 "
 
-FILES_${PN}-libllvm += "\
+FILES_${PN}-libllvm =+ "\
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}.so \
   ${libdir}/libLLVM-${MAJOR_VER}.so \
-  ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}svn.so \
+  ${libdir}/libLLVM-${MAJOR_VER}git.so \
+  ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}git.so \
 "
 
 FILES_libclang = "\
