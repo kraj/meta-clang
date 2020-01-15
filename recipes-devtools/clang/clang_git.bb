@@ -249,10 +249,18 @@ FILES_libclang = "\
 FILES_${PN}-dev += "\
   ${datadir}/llvm/cmake \
   ${libdir}/cmake \
+  ${nonarch_libdir}/${BPN}/*.la \
 "
 
+FILES_${PN}-staticdev += "${nonarch_libdir}/${BPN}/*.a"
+
+FILES_${PN}-staticdev_remove = "${libdir}/${BPN}/*.a"
+FILES_${PN}-dev_remove = "${libdir}/${BPN}/*.la"
+FILES_${PN}_remove = "${libdir}/${BPN}/*"
+
+
 INSANE_SKIP_${PN} += "already-stripped"
-INSANE_SKIP_${PN}-dev += "dev-elf"
+#INSANE_SKIP_${PN}-dev += "dev-elf"
 INSANE_SKIP_${PN}-lldb-python += "dev-so dev-deps"
 
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
