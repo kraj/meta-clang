@@ -1,4 +1,4 @@
-From a761afb9da0223ec9475288831f35c72c145a905 Mon Sep 17 00:00:00 2001
+From 751e7b29c02c935987cc9b4d5b17a9db576737f0 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 31 Jul 2019 22:51:39 -0700
 Subject: [PATCH] clang: Add -lpthread and -ldl along with -lunwind for static
@@ -16,20 +16,24 @@ therefore we need to link in libpthread and libdl to fill these symbols
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- clang/lib/Driver/ToolChains/CommonArgs.cpp | 4 ++++
- 1 file changed, 4 insertions(+)
+ clang/lib/Driver/ToolChains/CommonArgs.cpp | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-index 99691cb43dc..92b3bfbd77f 100644
+index 37ec7346857..c849b2242e9 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-@@ -1185,6 +1185,10 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
-   }
+@@ -1211,8 +1211,13 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
    case ToolChain::UNW_CompilerRT:
-     CmdArgs.push_back("-lunwind");
-+    if (Args.hasArg(options::OPT_static)) {
-+      CmdArgs.push_back("-lpthread");
-+      CmdArgs.push_back("-ldl");
+     if (LGT == LibGccType::StaticLibGcc)
+       CmdArgs.push_back("-l:libunwind.a");
+-    else
++    else {
+       CmdArgs.push_back("-l:libunwind.so");
++      if (Args.hasArg(options::OPT_static)) {
++        CmdArgs.push_back("-lpthread");
++        CmdArgs.push_back("-ldl");
++      }
 +    }
      break;
    }

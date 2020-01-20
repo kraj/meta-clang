@@ -1,4 +1,4 @@
-From dad564a1081f62fe1957175e2b060ca1778ff72b Mon Sep 17 00:00:00 2001
+From d3ab7b54689301d94d3fa8eacfe56c1395cf2c23 Mon Sep 17 00:00:00 2001
 From: Dan McGregor <dan.mcgregor@usask.ca>
 Date: Wed, 26 Apr 2017 20:29:41 -0600
 Subject: [PATCH] clang: driver: Check sysroot for ldso path
@@ -8,12 +8,13 @@ therefore adjust it for OE. Check for the default path, and if it isn't
 there, check /lib.
 
 Signed-off-by: Dan McGregor <dan.mcgregor@usask.ca>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  clang/lib/Driver/ToolChains/Linux.cpp | 16 ++++++++++++++++
  1 file changed, 16 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index ed907549929..6adf581a882 100644
+index bff1ab1009b..02e3d676567 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -596,11 +596,19 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {

@@ -15,28 +15,22 @@ SRC_URI = "\
     file://0005-compiler-rt-Disable-tsan-on-OE-glibc.patch \
     file://0006-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
     file://0007-llvm-allow-env-override-of-exe-path.patch \
-    file://0008-llvm-Enhance-path-prefix-mapping.patch \
-    file://0009-clang-Enable-SSP-and-PIE-by-default.patch \
-    file://0010-clang-driver-Check-sysroot-for-ldso-path.patch \
-    file://0011-clang-Driver-tools.cpp-Add-lssp_nonshared-on-musl.patch \
-    file://0012-clang-musl-ppc-does-not-support-128-bit-long-double.patch \
-    file://0013-clang-Prepend-trailing-to-sysroot.patch \
-    file://0014-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch \
-    file://0015-clang-Define-releative-gcc-installation-dir.patch \
-    file://0016-clang-Fix-ldso-for-musl-on-x86-and-x32-architectures.patch \
-    file://0017-clang-scan-view-needs-python-2.x.patch \
-    file://0018-clang-Initial-implementation-of-fmacro-prefix-map-an.patch \
-    file://0019-clang-Add-lpthread-and-ldl-along-with-lunwind-for-st.patch \
-    file://0020-clang-default-to-lp64d-ABI-and-rv64gc-ISA.patch \
-    file://0021-RISCV-Add-support-for-floating-point-registers-in-in.patch \
-    file://0022-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
-    file://0023-openmp-Recognise-ARMv7ve-machine-arch.patch \
-    file://0024-Check-for-atomic-double-intrinsics.patch \
-    file://0025-llvm-Let-llvm-ar-name-contain-lib.patch \
-    file://0026-libclang-Use-CMAKE_DL_LIBS-for-deducing-libdl.patch \
-    file://0027-Fix-sanitizer-common-build-with-glibc-2.31.patch \
-    file://0028-Add-libgcc-to-link-step-for-libcxx.patch \
-    file://0029-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
+    file://0008-clang-driver-Check-sysroot-for-ldso-path.patch \
+    file://0009-clang-Driver-tools.cpp-Add-lssp_nonshared-on-musl.patch \
+    file://0010-clang-musl-ppc-does-not-support-128-bit-long-double.patch \
+    file://0011-clang-Prepend-trailing-to-sysroot.patch \
+    file://0012-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch \
+    file://0013-clang-Define-releative-gcc-installation-dir.patch \
+    file://0014-clang-Fix-ldso-for-musl-on-x86-and-x32-architectures.patch \
+    file://0015-clang-scan-view-needs-python-2.x.patch \
+    file://0016-clang-Add-lpthread-and-ldl-along-with-lunwind-for-st.patch \
+    file://0017-libclang-Use-CMAKE_DL_LIBS-for-deducing-libdl.patch \
+    file://0018-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
+    file://0019-Check-for-atomic-double-intrinsics.patch \
+    file://0020-clang-Enable-SSP-and-PIE-by-default.patch \
+    file://0021-llvm-Add-lz-to-linker-cmdline-if-enabled.patch \
+    file://0022-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
+    file://0023-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
 "
 
 # Fallback to no-PIE if not set
