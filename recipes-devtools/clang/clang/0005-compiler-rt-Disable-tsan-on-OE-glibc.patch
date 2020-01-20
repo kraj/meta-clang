@@ -1,4 +1,4 @@
-From c82435d462420d64e4fd249bd6673a12ef38d433 Mon Sep 17 00:00:00 2001
+From d9a483714b1ca13903024e4256b0b1beb5a1e2f6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
 Subject: [PATCH] compiler-rt: Disable tsan on OE/glibc
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/compiler-rt/cmake/config-ix.cmake b/compiler-rt/cmake/config-ix.cmake
-index 3cc4c22304e..9da891b62e9 100644
+index 3aad08e8896..a979d38c7a6 100644
 --- a/compiler-rt/cmake/config-ix.cmake
 +++ b/compiler-rt/cmake/config-ix.cmake
-@@ -619,7 +619,7 @@ else()
+@@ -653,7 +653,7 @@ else()
  endif()
  
  if (COMPILER_RT_HAS_SANITIZER_COMMON AND TSAN_SUPPORTED_ARCH AND
@@ -26,10 +26,10 @@ index 3cc4c22304e..9da891b62e9 100644
  else()
    set(COMPILER_RT_HAS_TSAN FALSE)
 diff --git a/compiler-rt/test/sanitizer_common/CMakeLists.txt b/compiler-rt/test/sanitizer_common/CMakeLists.txt
-index 48fccf05855..b4a7f0adf14 100644
+index fcd651ebe42..821de915be8 100644
 --- a/compiler-rt/test/sanitizer_common/CMakeLists.txt
 +++ b/compiler-rt/test/sanitizer_common/CMakeLists.txt
-@@ -6,7 +6,7 @@ set(SANITIZER_COMMON_TESTSUITES)
+@@ -11,7 +11,7 @@ set(SANITIZER_COMMON_TESTSUITES)
  # FIXME(dliew): We should switch to COMPILER_RT_SANITIZERS_TO_BUILD instead of
  # the hard coded `SUPPORTED_TOOLS_INIT` list once we know that the other
  # sanitizers work.

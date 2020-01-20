@@ -1,4 +1,4 @@
-From b79837a3b7aa677b44110de4e9e7576fa34a96e3 Mon Sep 17 00:00:00 2001
+From 8c28658ad591489e35690a245f82b519ae37929e Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
@@ -26,16 +26,16 @@ Upstream-Status: Innapropriate [oe-specific]
 
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 ---
- clang/cmake/modules/AddClang.cmake |  9 ---------
- llvm/cmake/modules/AddLLVM.cmake   | 20 --------------------
- llvm/cmake/modules/TableGen.cmake  |  8 --------
- 3 files changed, 37 deletions(-)
+ clang/cmake/modules/AddClang.cmake |  8 --------
+ llvm/cmake/modules/AddLLVM.cmake   | 18 ------------------
+ llvm/cmake/modules/TableGen.cmake  |  7 -------
+ 3 files changed, 33 deletions(-)
 
 diff --git a/clang/cmake/modules/AddClang.cmake b/clang/cmake/modules/AddClang.cmake
-index cbd618e18af..b864c2b2303 100644
+index 577cc11ab01..5c859d86069 100644
 --- a/clang/cmake/modules/AddClang.cmake
 +++ b/clang/cmake/modules/AddClang.cmake
-@@ -146,15 +146,7 @@ macro(add_clang_tool name)
+@@ -151,15 +151,8 @@ macro(add_clang_tool name)
    add_dependencies(${name} clang-resource-headers)
  
    if (CLANG_BUILD_TOOLS)
@@ -45,13 +45,13 @@ index cbd618e18af..b864c2b2303 100644
 -      set(export_to_clangtargets EXPORT ClangTargets)
 -      set_property(GLOBAL PROPERTY CLANG_HAS_EXPORTS True)
 -    endif()
--
+ 
      install(TARGETS ${name}
 -      ${export_to_clangtargets}
        RUNTIME DESTINATION bin
        COMPONENT ${name})
  
-@@ -163,7 +155,6 @@ macro(add_clang_tool name)
+@@ -168,7 +161,6 @@ macro(add_clang_tool name)
                                 DEPENDS ${name}
                                 COMPONENT ${name})
      endif()
@@ -60,10 +60,10 @@ index cbd618e18af..b864c2b2303 100644
  endmacro()
  
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 619e986b8aa..ab4b2234fa5 100644
+index fce36ba2125..554ad0b4ade 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
-@@ -898,15 +898,7 @@ macro(add_llvm_tool name)
+@@ -1033,15 +1033,8 @@ macro(add_llvm_tool name)
  
    if ( ${name} IN_LIST LLVM_TOOLCHAIN_TOOLS OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
      if( LLVM_BUILD_TOOLS )
@@ -73,13 +73,13 @@ index 619e986b8aa..ab4b2234fa5 100644
 -        set(export_to_llvmexports EXPORT LLVMExports)
 -        set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
 -      endif()
--
+ 
        install(TARGETS ${name}
 -              ${export_to_llvmexports}
                RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -917,9 +909,6 @@ macro(add_llvm_tool name)
+@@ -1052,9 +1045,6 @@ macro(add_llvm_tool name)
        endif()
      endif()
    endif()
@@ -89,7 +89,7 @@ index 619e986b8aa..ab4b2234fa5 100644
    set_target_properties(${name} PROPERTIES FOLDER "Tools")
  endmacro(add_llvm_tool name)
  
-@@ -946,15 +935,7 @@ macro(add_llvm_utility name)
+@@ -1092,15 +1082,8 @@ macro(add_llvm_utility name)
    set_target_properties(${name} PROPERTIES FOLDER "Utils")
    if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
      if (LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS)
@@ -99,13 +99,13 @@ index 619e986b8aa..ab4b2234fa5 100644
 -        set(export_to_llvmexports EXPORT LLVMExports)
 -        set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
 -      endif()
--
+ 
        install(TARGETS ${name}
 -              ${export_to_llvmexports}
                RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -963,7 +944,6 @@ macro(add_llvm_utility name)
+@@ -1109,7 +1092,6 @@ macro(add_llvm_utility name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
@@ -114,25 +114,27 @@ index 619e986b8aa..ab4b2234fa5 100644
        set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS_BUILDTREE_ONLY ${name})
      endif()
 diff --git a/llvm/cmake/modules/TableGen.cmake b/llvm/cmake/modules/TableGen.cmake
-index 36c026b5c0f..c588ce6e38b 100644
+index 9d2fcd9a793..acdb898149d 100644
 --- a/llvm/cmake/modules/TableGen.cmake
 +++ b/llvm/cmake/modules/TableGen.cmake
-@@ -148,15 +148,7 @@ macro(add_tablegen target project)
+@@ -161,14 +161,8 @@ macro(add_tablegen target project)
    endif()
  
-   if (${project} STREQUAL LLVM AND NOT LLVM_INSTALL_TOOLCHAIN_ONLY AND LLVM_BUILD_UTILS)
+   if ((${project} STREQUAL LLVM OR ${project} STREQUAL MLIR) AND NOT LLVM_INSTALL_TOOLCHAIN_ONLY AND LLVM_BUILD_UTILS)
 -    set(export_to_llvmexports)
 -    if(${target} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
 -        NOT LLVM_DISTRIBUTION_COMPONENTS)
 -      set(export_to_llvmexports EXPORT LLVMExports)
 -    endif()
--
+ 
      install(TARGETS ${target}
 -            ${export_to_llvmexports}
+             COMPONENT ${target}
              RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR})
+     if(NOT LLVM_ENABLE_IDE)
+@@ -177,5 +171,4 @@ macro(add_tablegen target project)
+                                COMPONENT ${target})
+     endif()
    endif()
 -  set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${target})
  endmacro()
--- 
-2.17.1
-

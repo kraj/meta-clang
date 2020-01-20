@@ -1,4 +1,4 @@
-From 376f2f44fbfb5d08742e478b193a9da667dab9bd Mon Sep 17 00:00:00 2001
+From b6594af3414070fae4d2fd66a1b92a31c5fd3234 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Nov 2019 17:00:29 -0800
 Subject: [PATCH] Check for atomic<double> intrinsics
@@ -15,7 +15,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/llvm/cmake/modules/CheckAtomic.cmake b/llvm/cmake/modules/CheckAtomic.cmake
-index 9a4cdf12a62..e70ce924df9 100644
+index 29f3bdd57f0..6460842cf63 100644
 --- a/llvm/cmake/modules/CheckAtomic.cmake
 +++ b/llvm/cmake/modules/CheckAtomic.cmake
 @@ -26,9 +26,10 @@ function(check_working_cxx_atomics64 varname)

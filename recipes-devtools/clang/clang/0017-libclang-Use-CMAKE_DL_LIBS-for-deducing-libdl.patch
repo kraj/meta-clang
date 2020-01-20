@@ -1,4 +1,4 @@
-From 9c37e644d96de108d931a6bcce1819a666ae91d8 Mon Sep 17 00:00:00 2001
+From 1f320fea9755b4616b12656ffa32191e8fe0aca3 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 11 Dec 2019 10:23:15 -0800
 Subject: [PATCH] libclang: Use CMAKE_DL_LIBS for deducing libdl
@@ -16,10 +16,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/clang/tools/libclang/CMakeLists.txt b/clang/tools/libclang/CMakeLists.txt
-index 613ead1a36b..9d5cd0ba9df 100644
+index bd0c945a5e1..723fa95f14b 100644
 --- a/clang/tools/libclang/CMakeLists.txt
 +++ b/clang/tools/libclang/CMakeLists.txt
-@@ -58,9 +58,8 @@ if (TARGET clangTidyPlugin)
+@@ -60,9 +60,8 @@ if (TARGET clangTidyPlugin)
    endif()
  endif ()
  

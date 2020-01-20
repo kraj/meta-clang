@@ -1,22 +1,23 @@
-From 5864ac955ccfc19fc5a09f68b5a5e9961be18694 Mon Sep 17 00:00:00 2001
+From af836c13a28a7537170a59343c96eb34d2b4e7fe Mon Sep 17 00:00:00 2001
 From: Anuj Mittal <anuj.mittal@intel.com>
-Date: Wed, 18 Sep 2019 12:56:58 +0800
+Date: Thu, 26 Dec 2019 12:56:16 -0800
 Subject: [PATCH] Pass PYTHON_EXECUTABLE when cross compiling for native build
 
 Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  llvm/cmake/modules/CrossCompile.cmake | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/llvm/cmake/modules/CrossCompile.cmake b/llvm/cmake/modules/CrossCompile.cmake
-index d6b416131fe..7fae1080df7 100644
+index 8a6e880c4e2..259211df18e 100644
 --- a/llvm/cmake/modules/CrossCompile.cmake
 +++ b/llvm/cmake/modules/CrossCompile.cmake
-@@ -62,6 +62,7 @@ function(llvm_create_cross_target_internal target_name toolchain buildtype)
-         -DLLVM_ENABLE_PROJECTS="${llvm_enable_projects_arg}"
+@@ -79,6 +79,7 @@ function(llvm_create_cross_target project_name target_name toolchain buildtype)
          -DLLVM_EXTERNAL_PROJECTS="${llvm_external_projects_arg}"
+         ${external_project_source_dirs}
          -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN="${LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN}"
-+        -DPYTHON_EXECUTABLE="${PYTHON_EXECUTABLE}"
++	-DPYTHON_EXECUTABLE="${PYTHON_EXECUTABLE}"
          ${build_type_flags} ${linker_flag} ${external_clang_dir}
-     WORKING_DIRECTORY ${LLVM_${target_name}_BUILD}
-     DEPENDS CREATE_LLVM_${target_name}
+         ${ARGN}
+     WORKING_DIRECTORY ${${project_name}_${target_name}_BUILD}
