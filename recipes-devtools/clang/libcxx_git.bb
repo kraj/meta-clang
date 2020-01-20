@@ -8,7 +8,7 @@ SECTION = "base"
 require clang.inc
 require common-source.inc
 
-inherit cmake pythonnative
+inherit cmake python3native
 
 PACKAGECONFIG ??= "compiler-rt unwind exceptions"
 PACKAGECONFIG_riscv32 = "exceptions"

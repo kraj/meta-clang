@@ -8,7 +8,7 @@ SECTION = "base"
 require clang.inc
 require common-source.inc
 
-inherit cmake pkgconfig pythonnative
+inherit cmake pkgconfig python3native
 
 
 LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee54e877a"
