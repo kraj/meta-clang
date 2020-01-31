@@ -36,6 +36,7 @@ SRC_URI = "\
     file://0026-libclang-Use-CMAKE_DL_LIBS-for-deducing-libdl.patch \
     file://0027-Fix-sanitizer-common-build-with-glibc-2.31.patch \
     file://0028-Add-libgcc-to-link-step-for-libcxx.patch \
+    file://0029-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
 "
 
 # Fallback to no-PIE if not set
