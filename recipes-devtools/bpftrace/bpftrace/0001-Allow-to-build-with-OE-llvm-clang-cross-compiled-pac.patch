@@ -1,0 +1,65 @@
+From cdfd9284c7e83b1bd18c94c0f39c020f31759178 Mon Sep 17 00:00:00 2001
+From: Sumit Garg <sumit.garg@linaro.org>
+Date: Mon, 17 Feb 2020 09:45:38 +0000
+Subject: [PATCH] Allow to build with OE llvm & clang cross compiled packages
+
+The default llvm and clang cmake packages requires all libraries, headers
+and tools to be present but in case of cross compilation, OE only
+provides target specific libraries and headers and requires native llvm
+or clang tools.
+
+So instead of looking for a complete llvm & clang packages, look for
+libraries and headers which are installed in target sysroot-recipe path.
+
+Also, fix name for clang library lookup.
+
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+---
+ CMakeLists.txt         | 6 +++---
+ src/ast/CMakeLists.txt | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b766669..e4de1e3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,7 +14,7 @@ set(STATIC_LIBC OFF CACHE BOOL "Attempt to embed libc, only known to work with m
+ set(EMBED_LLVM OFF CACHE BOOL "Build LLVM static libs as an ExternalProject and link to these instead of system libs.")
+ set(EMBED_CLANG OFF CACHE BOOL "Build Clang static libs as an ExternalProject and link to these instead of system libs.")
+ set(EMBED_LIBCLANG_ONLY OFF CACHE BOOL "Build only libclang.a, and link to system libraries statically")
+-set(LLVM_VERSION "8" CACHE STRING "Embedded LLVM/Clang version to build and link against.")
++set(LLVM_VERSION "9" CACHE STRING "Embedded LLVM/Clang version to build and link against.")
+ set(BUILD_ASAN OFF CACHE BOOL "Build bpftrace with -fsanitize=address")
+
+ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+@@ -122,7 +122,7 @@ check_include_file("sys/sdt.h" HAVE_SYSTEMTAP_SYS_SDT_H)
+
+ if (EMBED_LLVM)
+   include(embed_llvm)
+-else()
++elseif(0)
+   # Some users have multiple versions of llvm installed and would like to specify
+   # a specific llvm version.
+   if(${LLVM_REQUESTED_VERSION})
+@@ -142,7 +142,7 @@ endif()
+
+ if(EMBED_CLANG)
+   include(embed_clang)
+-else()
++elseif(0)
+   find_package(Clang REQUIRED)
+   include_directories(SYSTEM ${CLANG_INCLUDE_DIRS})
+ endif()
+diff --git a/src/ast/CMakeLists.txt b/src/ast/CMakeLists.txt
+index f280f47..f8b9dff 100644
+--- a/src/ast/CMakeLists.txt
++++ b/src/ast/CMakeLists.txt
+@@ -57,5 +57,5 @@ else()
+     llvm_expand_dependencies(llvm_libs ${_llvm_libs})
+     target_link_libraries(ast ${llvm_libs})
+   endif()
+-  target_link_libraries(ast libclang)
++  target_link_libraries(ast clang)
+ endif()
+--
+2.17.1
