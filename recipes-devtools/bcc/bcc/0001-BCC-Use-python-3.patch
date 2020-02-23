@@ -1,0 +1,1662 @@
+From 7491be67e0795f00566d46e5f055a955ea0aac8e Mon Sep 17 00:00:00 2001
+From: Leo Yan <leo.yan@linaro.org>
+Date: Sat, 22 Feb 2020 16:22:33 +0000
+Subject: [PATCH] BCC: Use python 3
+
+Signed-off-by: Leo Yan <leo.yan@linaro.org>
+---
+ examples/hello_world.py                                     | 2 +-
+ examples/networking/distributed_bridge/main.py              | 2 +-
+ examples/networking/distributed_bridge/tunnel.py            | 2 +-
+ examples/networking/distributed_bridge/tunnel_mesh.py       | 2 +-
+ examples/networking/dns_matching/dns_matching.py            | 2 +-
+ examples/networking/http_filter/http-parse-complete.py      | 2 +-
+ examples/networking/http_filter/http-parse-simple.py        | 2 +-
+ examples/networking/neighbor_sharing/tc_neighbor_sharing.py | 2 +-
+ examples/networking/simple_tc.py                            | 2 +-
+ examples/networking/tc_perf_event.py                        | 2 +-
+ examples/networking/tunnel_monitor/main.py                  | 2 +-
+ examples/networking/tunnel_monitor/monitor.py               | 2 +-
+ examples/networking/vlan_filter/data-plane-tracing.py       | 2 +-
+ examples/networking/vlan_learning/vlan_learning.py          | 2 +-
+ examples/networking/xdp/xdp_drop_count.py                   | 2 +-
+ examples/networking/xdp/xdp_macswap_count.py                | 2 +-
+ examples/networking/xdp/xdp_redirect_cpu.py                 | 2 +-
+ examples/networking/xdp/xdp_redirect_map.py                 | 2 +-
+ examples/tracing/bitehist.py                                | 2 +-
+ examples/tracing/dddos.py                                   | 2 +-
+ examples/tracing/disksnoop.py                               | 2 +-
+ examples/tracing/hello_fields.py                            | 2 +-
+ examples/tracing/hello_perf_output.py                       | 2 +-
+ examples/tracing/kvm_hypercall.py                           | 2 +-
+ examples/tracing/mallocstacks.py                            | 2 +-
+ examples/tracing/mysqld_query.py                            | 2 +-
+ examples/tracing/nodejs_http_server.py                      | 2 +-
+ examples/tracing/stack_buildid_example.py                   | 2 +-
+ examples/tracing/stacksnoop.py                              | 2 +-
+ examples/tracing/strlen_count.py                            | 2 +-
+ examples/tracing/strlen_hist.py                             | 2 +-
+ examples/tracing/strlen_snoop.py                            | 2 +-
+ examples/tracing/sync_timing.py                             | 2 +-
+ examples/tracing/task_switch.py                             | 2 +-
+ examples/tracing/tcpv4connect.py                            | 2 +-
+ examples/tracing/trace_fields.py                            | 2 +-
+ examples/tracing/trace_perf_output.py                       | 2 +-
+ examples/tracing/urandomread-explicit.py                    | 2 +-
+ examples/tracing/urandomread.py                             | 2 +-
+ examples/tracing/vfsreadlat.py                              | 2 +-
+ examples/usdt_sample/scripts/lat_avg.py                     | 2 +-
+ examples/usdt_sample/scripts/lat_dist.py                    | 2 +-
+ examples/usdt_sample/scripts/latency.py                     | 2 +-
+ tools/argdist.py                                            | 2 +-
+ tools/bashreadline.py                                       | 2 +-
+ tools/biolatency.py                                         | 2 +-
+ tools/biosnoop.py                                           | 2 +-
+ tools/biotop.py                                             | 2 +-
+ tools/bitesize.py                                           | 2 +-
+ tools/bpflist.py                                            | 2 +-
+ tools/btrfsdist.py                                          | 2 +-
+ tools/btrfsslower.py                                        | 2 +-
+ tools/cachestat.py                                          | 2 +-
+ tools/cachetop.py                                           | 2 +-
+ tools/capable.py                                            | 2 +-
+ tools/cpudist.py                                            | 2 +-
+ tools/cpuunclaimed.py                                       | 2 +-
+ tools/criticalstat.py                                       | 2 +-
+ tools/dbslower.py                                           | 2 +-
+ tools/dbstat.py                                             | 2 +-
+ tools/dcsnoop.py                                            | 2 +-
+ tools/dcstat.py                                             | 2 +-
+ tools/deadlock.py                                           | 2 +-
+ tools/drsnoop.py                                            | 2 +-
+ tools/execsnoop.py                                          | 2 +-
+ tools/exitsnoop.py                                          | 2 +-
+ tools/ext4dist.py                                           | 2 +-
+ tools/ext4slower.py                                         | 2 +-
+ tools/filelife.py                                           | 2 +-
+ tools/fileslower.py                                         | 2 +-
+ tools/filetop.py                                            | 2 +-
+ tools/funccount.py                                          | 2 +-
+ tools/funclatency.py                                        | 2 +-
+ tools/funcslower.py                                         | 2 +-
+ tools/gethostlatency.py                                     | 2 +-
+ tools/hardirqs.py                                           | 2 +-
+ tools/inject.py                                             | 2 +-
+ tools/killsnoop.py                                          | 2 +-
+ tools/klockstat.py                                          | 2 +-
+ tools/lib/ucalls.py                                         | 2 +-
+ tools/lib/uflow.py                                          | 2 +-
+ tools/lib/ugc.py                                            | 2 +-
+ tools/lib/uobjnew.py                                        | 2 +-
+ tools/lib/ustat.py                                          | 2 +-
+ tools/lib/uthreads.py                                       | 2 +-
+ tools/llcstat.py                                            | 2 +-
+ tools/mdflush.py                                            | 2 +-
+ tools/memleak.py                                            | 2 +-
+ tools/mountsnoop.py                                         | 2 +-
+ tools/mysqld_qslower.py                                     | 2 +-
+ tools/nfsdist.py                                            | 2 +-
+ tools/nfsslower.py                                          | 2 +-
+ tools/offcputime.py                                         | 2 +-
+ tools/offwaketime.py                                        | 2 +-
+ tools/old/bashreadline.py                                   | 2 +-
+ tools/old/biosnoop.py                                       | 2 +-
+ tools/old/filelife.py                                       | 2 +-
+ tools/old/gethostlatency.py                                 | 2 +-
+ tools/old/killsnoop.py                                      | 2 +-
+ tools/old/memleak.py                                        | 2 +-
+ tools/old/offcputime.py                                     | 2 +-
+ tools/old/offwaketime.py                                    | 2 +-
+ tools/old/oomkill.py                                        | 2 +-
+ tools/old/opensnoop.py                                      | 2 +-
+ tools/old/profile.py                                        | 2 +-
+ tools/old/softirqs.py                                       | 2 +-
+ tools/old/stackcount.py                                     | 2 +-
+ tools/old/stacksnoop.py                                     | 2 +-
+ tools/old/statsnoop.py                                      | 2 +-
+ tools/old/syncsnoop.py                                      | 2 +-
+ tools/old/tcpaccept.py                                      | 2 +-
+ tools/old/tcpconnect.py                                     | 2 +-
+ tools/old/wakeuptime.py                                     | 2 +-
+ tools/oomkill.py                                            | 2 +-
+ tools/opensnoop.py                                          | 2 +-
+ tools/pidpersec.py                                          | 2 +-
+ tools/profile.py                                            | 2 +-
+ tools/runqlat.py                                            | 2 +-
+ tools/runqlen.py                                            | 2 +-
+ tools/runqslower.py                                         | 2 +-
+ tools/shmsnoop.py                                           | 2 +-
+ tools/slabratetop.py                                        | 2 +-
+ tools/sofdsnoop.py                                          | 2 +-
+ tools/softirqs.py                                           | 2 +-
+ tools/solisten.py                                           | 2 +-
+ tools/sslsniff.py                                           | 2 +-
+ tools/stackcount.py                                         | 2 +-
+ tools/statsnoop.py                                          | 2 +-
+ tools/syncsnoop.py                                          | 2 +-
+ tools/syscount.py                                           | 2 +-
+ tools/tcpaccept.py                                          | 2 +-
+ tools/tcpconnect.py                                         | 2 +-
+ tools/tcpconnlat.py                                         | 2 +-
+ tools/tcpdrop.py                                            | 2 +-
+ tools/tcplife.py                                            | 2 +-
+ tools/tcpretrans.py                                         | 2 +-
+ tools/tcpstates.py                                          | 2 +-
+ tools/tcpsubnet.py                                          | 2 +-
+ tools/tcptop.py                                             | 2 +-
+ tools/tcptracer.py                                          | 2 +-
+ tools/tplist.py                                             | 2 +-
+ tools/trace.py                                              | 2 +-
+ tools/ttysnoop.py                                           | 2 +-
+ tools/vfscount.py                                           | 2 +-
+ tools/vfsstat.py                                            | 2 +-
+ tools/wakeuptime.py                                         | 2 +-
+ tools/xfsdist.py                                            | 2 +-
+ tools/xfsslower.py                                          | 2 +-
+ tools/zfsdist.py                                            | 2 +-
+ tools/zfsslower.py                                          | 2 +-
+ 150 files changed, 150 insertions(+), 150 deletions(-)
+
+diff --git a/examples/hello_world.py b/examples/hello_world.py
+index bb52f3e7..e36c09b0 100755
+--- a/examples/hello_world.py
++++ b/examples/hello_world.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/distributed_bridge/main.py b/examples/networking/distributed_bridge/main.py
+index c72360ea..5cda7dfd 100755
+--- a/examples/networking/distributed_bridge/main.py
++++ b/examples/networking/distributed_bridge/main.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/distributed_bridge/tunnel.py b/examples/networking/distributed_bridge/tunnel.py
+index 11b59f06..2f7905c9 100755
+--- a/examples/networking/distributed_bridge/tunnel.py
++++ b/examples/networking/distributed_bridge/tunnel.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/distributed_bridge/tunnel_mesh.py b/examples/networking/distributed_bridge/tunnel_mesh.py
+index 54ecfcd8..a83330bb 100644
+--- a/examples/networking/distributed_bridge/tunnel_mesh.py
++++ b/examples/networking/distributed_bridge/tunnel_mesh.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/dns_matching/dns_matching.py b/examples/networking/dns_matching/dns_matching.py
+index 943dca59..47d99453 100755
+--- a/examples/networking/dns_matching/dns_matching.py
++++ b/examples/networking/dns_matching/dns_matching.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ 
+ from __future__ import print_function
+ from bcc import BPF
+diff --git a/examples/networking/http_filter/http-parse-complete.py b/examples/networking/http_filter/http-parse-complete.py
+index f1e5e0a2..e364d9aa 100644
+--- a/examples/networking/http_filter/http-parse-complete.py
++++ b/examples/networking/http_filter/http-parse-complete.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ #Bertrone Matteo - Polytechnic of Turin
+ #November 2015
+diff --git a/examples/networking/http_filter/http-parse-simple.py b/examples/networking/http_filter/http-parse-simple.py
+index b702393d..78745ee2 100644
+--- a/examples/networking/http_filter/http-parse-simple.py
++++ b/examples/networking/http_filter/http-parse-simple.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ #Bertrone Matteo - Polytechnic of Turin
+ #November 2015
+diff --git a/examples/networking/neighbor_sharing/tc_neighbor_sharing.py b/examples/networking/neighbor_sharing/tc_neighbor_sharing.py
+index 8d13c43f..6c071791 100755
+--- a/examples/networking/neighbor_sharing/tc_neighbor_sharing.py
++++ b/examples/networking/neighbor_sharing/tc_neighbor_sharing.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/simple_tc.py b/examples/networking/simple_tc.py
+index 38180132..1d42fa95 100755
+--- a/examples/networking/simple_tc.py
++++ b/examples/networking/simple_tc.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/tc_perf_event.py b/examples/networking/tc_perf_event.py
+index 99f0e9eb..188acd19 100755
+--- a/examples/networking/tc_perf_event.py
++++ b/examples/networking/tc_perf_event.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # tc_perf_event.py  Output skb and meta data through perf event
+ #
+diff --git a/examples/networking/tunnel_monitor/main.py b/examples/networking/tunnel_monitor/main.py
+index 7d3acb8e..60978f69 100755
+--- a/examples/networking/tunnel_monitor/main.py
++++ b/examples/networking/tunnel_monitor/main.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/tunnel_monitor/monitor.py b/examples/networking/tunnel_monitor/monitor.py
+index fb3613ee..24792fcd 100644
+--- a/examples/networking/tunnel_monitor/monitor.py
++++ b/examples/networking/tunnel_monitor/monitor.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/vlan_filter/data-plane-tracing.py b/examples/networking/vlan_filter/data-plane-tracing.py
+index efaa7f10..37cd0aef 100755
+--- a/examples/networking/vlan_filter/data-plane-tracing.py
++++ b/examples/networking/vlan_filter/data-plane-tracing.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ from __future__ import print_function
+ from bcc import BPF
+ 
+diff --git a/examples/networking/vlan_learning/vlan_learning.py b/examples/networking/vlan_learning/vlan_learning.py
+index 7229176a..a814ec88 100755
+--- a/examples/networking/vlan_learning/vlan_learning.py
++++ b/examples/networking/vlan_learning/vlan_learning.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/networking/xdp/xdp_drop_count.py b/examples/networking/xdp/xdp_drop_count.py
+index f03273e9..5273e658 100755
+--- a/examples/networking/xdp/xdp_drop_count.py
++++ b/examples/networking/xdp/xdp_drop_count.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # xdp_drop_count.py Drop incoming packets on XDP layer and count for which
+ #                   protocol type
+diff --git a/examples/networking/xdp/xdp_macswap_count.py b/examples/networking/xdp/xdp_macswap_count.py
+index 0e2b21ca..dcd8cf83 100755
+--- a/examples/networking/xdp/xdp_macswap_count.py
++++ b/examples/networking/xdp/xdp_macswap_count.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # xdp_macswap_count.py Swap Source and Destination MAC addresses on
+ #                      incoming packets and transmit packets back on
+diff --git a/examples/networking/xdp/xdp_redirect_cpu.py b/examples/networking/xdp/xdp_redirect_cpu.py
+index 15b0d09b..18d643a6 100755
+--- a/examples/networking/xdp/xdp_redirect_cpu.py
++++ b/examples/networking/xdp/xdp_redirect_cpu.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # xdp_redirect_cpu.py Redirect the incoming packet to the specific CPU
+ #
+diff --git a/examples/networking/xdp/xdp_redirect_map.py b/examples/networking/xdp/xdp_redirect_map.py
+index 4a622723..d1d2a043 100755
+--- a/examples/networking/xdp/xdp_redirect_map.py
++++ b/examples/networking/xdp/xdp_redirect_map.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # xdp_redirect_map.py Redirect the incoming packet to another interface
+ #                     with the helper: bpf_redirect_map()
+diff --git a/examples/tracing/bitehist.py b/examples/tracing/bitehist.py
+index 4d7c7958..ea793f94 100755
+--- a/examples/tracing/bitehist.py
++++ b/examples/tracing/bitehist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # bitehist.py	Block I/O size histogram.
+ #		For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/examples/tracing/dddos.py b/examples/tracing/dddos.py
+index 5b544241..2b77725e 100755
+--- a/examples/tracing/dddos.py
++++ b/examples/tracing/dddos.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # dddos.py	DDOS dectection system.
+ #
+diff --git a/examples/tracing/disksnoop.py b/examples/tracing/disksnoop.py
+index 1101e6f2..433593f0 100755
+--- a/examples/tracing/disksnoop.py
++++ b/examples/tracing/disksnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # disksnoop.py	Trace block device I/O: basic version of iosnoop.
+ #		For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/examples/tracing/hello_fields.py b/examples/tracing/hello_fields.py
+index 9ed6da5d..a5940560 100755
+--- a/examples/tracing/hello_fields.py
++++ b/examples/tracing/hello_fields.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # This is a Hello World example that formats output as fields.
+ 
+diff --git a/examples/tracing/hello_perf_output.py b/examples/tracing/hello_perf_output.py
+index fdc74deb..ba1972c5 100755
+--- a/examples/tracing/hello_perf_output.py
++++ b/examples/tracing/hello_perf_output.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # This is a Hello World example that uses BPF_PERF_OUTPUT.
+ 
+diff --git a/examples/tracing/kvm_hypercall.py b/examples/tracing/kvm_hypercall.py
+index 5f1d3d7a..4573ed3c 100755
+--- a/examples/tracing/kvm_hypercall.py
++++ b/examples/tracing/kvm_hypercall.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # kvm_hypercall.py
+ #
+diff --git a/examples/tracing/mallocstacks.py b/examples/tracing/mallocstacks.py
+index 4b10e6c2..e89b09f6 100755
+--- a/examples/tracing/mallocstacks.py
++++ b/examples/tracing/mallocstacks.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # mallocstacks  Trace malloc() calls in a process and print the full
+ #               stack trace for all callsites.
+diff --git a/examples/tracing/mysqld_query.py b/examples/tracing/mysqld_query.py
+index ace07150..291b16b0 100755
+--- a/examples/tracing/mysqld_query.py
++++ b/examples/tracing/mysqld_query.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # mysqld_query    Trace MySQL server queries. Example of USDT tracing.
+ #                 For Linux, uses BCC, BPF. Embedded C.
+diff --git a/examples/tracing/nodejs_http_server.py b/examples/tracing/nodejs_http_server.py
+index a86ca956..b38b42f1 100755
+--- a/examples/tracing/nodejs_http_server.py
++++ b/examples/tracing/nodejs_http_server.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # nodejs_http_server    Basic example of node.js USDT tracing.
+ #                       For Linux, uses BCC, BPF. Embedded C.
+diff --git a/examples/tracing/stack_buildid_example.py b/examples/tracing/stack_buildid_example.py
+index 706d7507..6fae0851 100755
+--- a/examples/tracing/stack_buildid_example.py
++++ b/examples/tracing/stack_buildid_example.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # An example usage of stack_build_id
+ # Most of the code here is borrowed from tools/profile.py
+diff --git a/examples/tracing/stacksnoop.py b/examples/tracing/stacksnoop.py
+index 8a68e69b..d6b19789 100755
+--- a/examples/tracing/stacksnoop.py
++++ b/examples/tracing/stacksnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # stacksnoop    Trace a kernel function and print all kernel stack traces.
+ #               For Linux, uses BCC, eBPF, and currently x86_64 only. Inline C.
+diff --git a/examples/tracing/strlen_count.py b/examples/tracing/strlen_count.py
+index f1bb1b7e..df525305 100755
+--- a/examples/tracing/strlen_count.py
++++ b/examples/tracing/strlen_count.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # strlen_count  Trace strlen() and print a frequency count of strings.
+ #               For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/examples/tracing/strlen_hist.py b/examples/tracing/strlen_hist.py
+index dda1cb23..fce4df06 100755
+--- a/examples/tracing/strlen_hist.py
++++ b/examples/tracing/strlen_hist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ 
+ #
+ # strlen_hist.py   Histogram of system-wide strlen return values
+diff --git a/examples/tracing/strlen_snoop.py b/examples/tracing/strlen_snoop.py
+index c3c7199e..d4331b51 100755
+--- a/examples/tracing/strlen_snoop.py
++++ b/examples/tracing/strlen_snoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # strlen_snoop  Trace strlen() library function for a given PID.
+ #               For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/examples/tracing/sync_timing.py b/examples/tracing/sync_timing.py
+index 1d89ce55..8dd90c4f 100755
+--- a/examples/tracing/sync_timing.py
++++ b/examples/tracing/sync_timing.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # sync_timing.py    Trace time between syncs.
+ #                   For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/examples/tracing/task_switch.py b/examples/tracing/task_switch.py
+index 43a4f3f8..6db5ada7 100755
+--- a/examples/tracing/task_switch.py
++++ b/examples/tracing/task_switch.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/tracing/tcpv4connect.py b/examples/tracing/tcpv4connect.py
+index 26d93763..56e2a61c 100755
+--- a/examples/tracing/tcpv4connect.py
++++ b/examples/tracing/tcpv4connect.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # tcpv4connect	Trace TCP IPv4 connect()s.
+ #		For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/examples/tracing/trace_fields.py b/examples/tracing/trace_fields.py
+index 1c5beef2..a8b64686 100755
+--- a/examples/tracing/trace_fields.py
++++ b/examples/tracing/trace_fields.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/tracing/trace_perf_output.py b/examples/tracing/trace_perf_output.py
+index 635be129..5a58df53 100755
+--- a/examples/tracing/trace_perf_output.py
++++ b/examples/tracing/trace_perf_output.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # Copyright (c) PLUMgrid, Inc.
+ # Licensed under the Apache License, Version 2.0 (the "License")
+ 
+diff --git a/examples/tracing/urandomread-explicit.py b/examples/tracing/urandomread-explicit.py
+index 9291402b..91f8d5fe 100755
+--- a/examples/tracing/urandomread-explicit.py
++++ b/examples/tracing/urandomread-explicit.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # urandomread-explicit  Example of instrumenting a kernel tracepoint.
+ #                       For Linux, uses BCC, BPF. Embedded C.
+diff --git a/examples/tracing/urandomread.py b/examples/tracing/urandomread.py
+index 69bcf8d1..11424f0b 100755
+--- a/examples/tracing/urandomread.py
++++ b/examples/tracing/urandomread.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # urandomread  Example of instrumenting a kernel tracepoint.
+ #              For Linux, uses BCC, BPF. Embedded C.
+diff --git a/examples/tracing/vfsreadlat.py b/examples/tracing/vfsreadlat.py
+index b2c4156e..531e149a 100755
+--- a/examples/tracing/vfsreadlat.py
++++ b/examples/tracing/vfsreadlat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # vfsreadlat.py		VFS read latency distribution.
+ #			For Linux, uses BCC, eBPF. See .c file.
+diff --git a/examples/usdt_sample/scripts/lat_avg.py b/examples/usdt_sample/scripts/lat_avg.py
+index 7c72e211..b968444b 100755
+--- a/examples/usdt_sample/scripts/lat_avg.py
++++ b/examples/usdt_sample/scripts/lat_avg.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ import argparse
+ from time import sleep, strftime
+ from sys import argv
+diff --git a/examples/usdt_sample/scripts/lat_dist.py b/examples/usdt_sample/scripts/lat_dist.py
+index 782c960b..f9a36346 100755
+--- a/examples/usdt_sample/scripts/lat_dist.py
++++ b/examples/usdt_sample/scripts/lat_dist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ import argparse
+ from time import sleep, strftime
+ from sys import argv
+diff --git a/examples/usdt_sample/scripts/latency.py b/examples/usdt_sample/scripts/latency.py
+index 8a7ec08c..4e72e50c 100755
+--- a/examples/usdt_sample/scripts/latency.py
++++ b/examples/usdt_sample/scripts/latency.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ import argparse
+ from time import sleep
+ from sys import argv
+diff --git a/tools/argdist.py b/tools/argdist.py
+index 695b5b3c..b6574987 100755
+--- a/tools/argdist.py
++++ b/tools/argdist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # argdist   Trace a function and display a distribution of its
+ #           parameter values as a histogram or frequency count.
+diff --git a/tools/bashreadline.py b/tools/bashreadline.py
+index b7d98272..4a01e50d 100755
+--- a/tools/bashreadline.py
++++ b/tools/bashreadline.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # bashreadline  Print entered bash commands from all running shells.
+ #               For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/biolatency.py b/tools/biolatency.py
+index 86d99437..f9abfd8b 100755
+--- a/tools/biolatency.py
++++ b/tools/biolatency.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # biolatency    Summarize block device I/O latency as a histogram.
+diff --git a/tools/biosnoop.py b/tools/biosnoop.py
+index e6f708fa..87d507e6 100755
+--- a/tools/biosnoop.py
++++ b/tools/biosnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # biosnoop  Trace block device I/O and print details including issuing PID.
+diff --git a/tools/biotop.py b/tools/biotop.py
+index cad3759a..f13edf62 100755
+--- a/tools/biotop.py
++++ b/tools/biotop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # biotop  block device (disk) I/O by process.
+diff --git a/tools/bitesize.py b/tools/bitesize.py
+index f4cea7cd..569630af 100755
+--- a/tools/bitesize.py
++++ b/tools/bitesize.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # bitehist.py   Block I/O size histogram.
+ #               For Linux, uses BCC, eBPF. See .c file.
+diff --git a/tools/bpflist.py b/tools/bpflist.py
+index f73e945a..118fd00d 100755
+--- a/tools/bpflist.py
++++ b/tools/bpflist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # bpflist   Display processes currently using BPF programs and maps,
+ #           pinned BPF programs and maps, and enabled probes.
+diff --git a/tools/btrfsdist.py b/tools/btrfsdist.py
+index 4659ab46..92cb1cb0 100755
+--- a/tools/btrfsdist.py
++++ b/tools/btrfsdist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # btrfsdist  Summarize btrfs operation latency.
+diff --git a/tools/btrfsslower.py b/tools/btrfsslower.py
+index b30880a7..e34c0d64 100755
+--- a/tools/btrfsslower.py
++++ b/tools/btrfsslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # btrfsslower  Trace slow btrfs operations.
+diff --git a/tools/cachestat.py b/tools/cachestat.py
+index bb949493..a83e6615 100755
+--- a/tools/cachestat.py
++++ b/tools/cachestat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # cachestat     Count cache kernel function calls.
+ #               For Linux, uses BCC, eBPF. See .c file.
+diff --git a/tools/cachetop.py b/tools/cachetop.py
+index 59de3912..5e07ae81 100755
+--- a/tools/cachetop.py
++++ b/tools/cachetop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # cachetop      Count cache kernel function calls per processes
+diff --git a/tools/capable.py b/tools/capable.py
+index bb4a8435..bf8bc5a8 100755
+--- a/tools/capable.py
++++ b/tools/capable.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # capable   Trace security capabilitiy checks (cap_capable()).
+diff --git a/tools/cpudist.py b/tools/cpudist.py
+index 4e549ac4..663d2b87 100755
+--- a/tools/cpudist.py
++++ b/tools/cpudist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # cpudist   Summarize on- and off-CPU time per task as a histogram.
+diff --git a/tools/cpuunclaimed.py b/tools/cpuunclaimed.py
+index dc0f3252..aecab249 100755
+--- a/tools/cpuunclaimed.py
++++ b/tools/cpuunclaimed.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # cpuunclaimed   Sample CPU run queues and calculate unclaimed idle CPU.
+diff --git a/tools/criticalstat.py b/tools/criticalstat.py
+index 250cfc4d..9b45ef2b 100755
+--- a/tools/criticalstat.py
++++ b/tools/criticalstat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # criticalstat  Trace long critical sections (IRQs or preemption disabled)
+diff --git a/tools/dbslower.py b/tools/dbslower.py
+index 2f1b6a8b..17bd3842 100755
+--- a/tools/dbslower.py
++++ b/tools/dbslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # dbslower      Trace MySQL and PostgreSQL queries slower than a threshold.
+ #
+diff --git a/tools/dbstat.py b/tools/dbstat.py
+index a89b0971..f8c612fa 100755
+--- a/tools/dbstat.py
++++ b/tools/dbstat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # dbstat        Display a histogram of MySQL and PostgreSQL query latencies.
+ #
+diff --git a/tools/dcsnoop.py b/tools/dcsnoop.py
+index 331ee30e..3f902883 100755
+--- a/tools/dcsnoop.py
++++ b/tools/dcsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # dcsnoop   Trace directory entry cache (dcache) lookups.
+diff --git a/tools/dcstat.py b/tools/dcstat.py
+index 5ecddd1a..d2db8d41 100755
+--- a/tools/dcstat.py
++++ b/tools/dcstat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # dcstat   Directory entry cache (dcache) stats.
+diff --git a/tools/deadlock.py b/tools/deadlock.py
+index 17848720..e767759a 100755
+--- a/tools/deadlock.py
++++ b/tools/deadlock.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # deadlock  Detects potential deadlocks (lock order inversions)
+ #           on a running process. For Linux, uses BCC, eBPF.
+diff --git a/tools/drsnoop.py b/tools/drsnoop.py
+index c77f5206..c640b3d6 100755
+--- a/tools/drsnoop.py
++++ b/tools/drsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # drsnoop  Trace direct reclaim and print details including issuing PID.
+diff --git a/tools/execsnoop.py b/tools/execsnoop.py
+index e5a04903..ea3295fc 100755
+--- a/tools/execsnoop.py
++++ b/tools/execsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # execsnoop Trace new processes via exec() syscalls.
+diff --git a/tools/exitsnoop.py b/tools/exitsnoop.py
+index 13a1444c..5c37fc83 100755
+--- a/tools/exitsnoop.py
++++ b/tools/exitsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ from __future__ import print_function
+ 
+diff --git a/tools/ext4dist.py b/tools/ext4dist.py
+index 384a4c14..b1d70e10 100755
+--- a/tools/ext4dist.py
++++ b/tools/ext4dist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # ext4dist  Summarize ext4 operation latency.
+diff --git a/tools/ext4slower.py b/tools/ext4slower.py
+index 0524f22e..fa245ec6 100755
+--- a/tools/ext4slower.py
++++ b/tools/ext4slower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # ext4slower  Trace slow ext4 operations.
+diff --git a/tools/filelife.py b/tools/filelife.py
+index 2eb4244b..47ebb8f7 100755
+--- a/tools/filelife.py
++++ b/tools/filelife.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # filelife    Trace the lifespan of short-lived files.
+diff --git a/tools/fileslower.py b/tools/fileslower.py
+index 31e3adf9..2a564045 100755
+--- a/tools/fileslower.py
++++ b/tools/fileslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # fileslower  Trace slow synchronous file reads and writes.
+diff --git a/tools/filetop.py b/tools/filetop.py
+index 552367a9..632b4d78 100755
+--- a/tools/filetop.py
++++ b/tools/filetop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # filetop  file reads and writes by process.
+diff --git a/tools/funccount.py b/tools/funccount.py
+index 69dd01c8..8c98461a 100755
+--- a/tools/funccount.py
++++ b/tools/funccount.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # funccount Count functions, tracepoints, and USDT probes.
+diff --git a/tools/funclatency.py b/tools/funclatency.py
+index 3f08a7e0..0818eaf3 100755
+--- a/tools/funclatency.py
++++ b/tools/funclatency.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # funclatency   Time functions and print latency as a histogram.
+diff --git a/tools/funcslower.py b/tools/funcslower.py
+index bda6a844..f9d12c57 100755
+--- a/tools/funcslower.py
++++ b/tools/funcslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # funcslower  Trace slow kernel or user function calls.
+diff --git a/tools/gethostlatency.py b/tools/gethostlatency.py
+index f7506a86..b13b3645 100755
+--- a/tools/gethostlatency.py
++++ b/tools/gethostlatency.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # gethostlatency  Show latency for getaddrinfo/gethostbyname[2] calls.
+ #                 For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/hardirqs.py b/tools/hardirqs.py
+index 589a890d..02bddc79 100755
+--- a/tools/hardirqs.py
++++ b/tools/hardirqs.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # hardirqs  Summarize hard IRQ (interrupt) event time.
+diff --git a/tools/inject.py b/tools/inject.py
+index fa2d3887..948832c1 100755
+--- a/tools/inject.py
++++ b/tools/inject.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # This script generates a BPF program with structure inspired by trace.py. The
+ # generated program operates on PID-indexed stacks. Generally speaking,
+diff --git a/tools/killsnoop.py b/tools/killsnoop.py
+index 2fb1dcb5..8439a539 100755
+--- a/tools/killsnoop.py
++++ b/tools/killsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # killsnoop Trace signals issued by the kill() syscall.
+diff --git a/tools/klockstat.py b/tools/klockstat.py
+index 343d4362..db4715d0 100755
+--- a/tools/klockstat.py
++++ b/tools/klockstat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # klockstat traces lock events and display locks statistics.
+ #
+diff --git a/tools/lib/ucalls.py b/tools/lib/ucalls.py
+index 307df252..75b185d5 100755
+--- a/tools/lib/ucalls.py
++++ b/tools/lib/ucalls.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # ucalls  Summarize method calls in high-level languages and/or system calls.
+diff --git a/tools/lib/uflow.py b/tools/lib/uflow.py
+index 4779ba2c..7c64cdde 100755
+--- a/tools/lib/uflow.py
++++ b/tools/lib/uflow.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # uflow  Trace method execution flow in high-level languages.
+diff --git a/tools/lib/ugc.py b/tools/lib/ugc.py
+index 8841d5fa..4cbdbcc1 100755
+--- a/tools/lib/ugc.py
++++ b/tools/lib/ugc.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # ugc  Summarize garbage collection events in high-level languages.
+diff --git a/tools/lib/uobjnew.py b/tools/lib/uobjnew.py
+index b8eed0f7..acff495c 100755
+--- a/tools/lib/uobjnew.py
++++ b/tools/lib/uobjnew.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # uobjnew  Summarize object allocations in high-level languages.
+diff --git a/tools/lib/ustat.py b/tools/lib/ustat.py
+index 3f4287bf..854fd0c0 100755
+--- a/tools/lib/ustat.py
++++ b/tools/lib/ustat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # ustat  Activity stats from high-level languages, including exceptions,
+diff --git a/tools/lib/uthreads.py b/tools/lib/uthreads.py
+index 90d0a745..41e4bde4 100755
+--- a/tools/lib/uthreads.py
++++ b/tools/lib/uthreads.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # uthreads  Trace thread creation/destruction events in high-level languages.
+diff --git a/tools/llcstat.py b/tools/llcstat.py
+index 7b7bc47a..286a7f24 100755
+--- a/tools/llcstat.py
++++ b/tools/llcstat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # llcstat.py Summarize cache references and cache misses by PID.
+ #            Cache reference and cache miss are corresponding events defined in
+diff --git a/tools/mdflush.py b/tools/mdflush.py
+index f1c68aee..d15acf56 100755
+--- a/tools/mdflush.py
++++ b/tools/mdflush.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # mdflush  Trace md flush events.
+diff --git a/tools/memleak.py b/tools/memleak.py
+index 9fa6805c..4174c206 100755
+--- a/tools/memleak.py
++++ b/tools/memleak.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # memleak   Trace and display outstanding allocations to detect
+ #           memory leaks in user-mode processes and the kernel.
+diff --git a/tools/mountsnoop.py b/tools/mountsnoop.py
+index 17a2edb6..82748ca5 100755
+--- a/tools/mountsnoop.py
++++ b/tools/mountsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # mountsnoop Trace mount() and umount syscalls.
+ #            For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/mysqld_qslower.py b/tools/mysqld_qslower.py
+index d867d70f..cc2725bb 100755
+--- a/tools/mysqld_qslower.py
++++ b/tools/mysqld_qslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # mysqld_qslower    MySQL server queries slower than a threshold.
+ #                   For Linux, uses BCC, BPF. Embedded C.
+diff --git a/tools/nfsdist.py b/tools/nfsdist.py
+index ff78506f..27631ade 100755
+--- a/tools/nfsdist.py
++++ b/tools/nfsdist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # nfsdist   Summarize NFS operation latency
+diff --git a/tools/nfsslower.py b/tools/nfsslower.py
+index 36918ca0..bddfe6ab 100755
+--- a/tools/nfsslower.py
++++ b/tools/nfsslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # nfsslower     Trace slow NFS operations
+diff --git a/tools/offcputime.py b/tools/offcputime.py
+index ac3b7281..fbaa37a4 100755
+--- a/tools/offcputime.py
++++ b/tools/offcputime.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # offcputime    Summarize off-CPU time by stack trace
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/offwaketime.py b/tools/offwaketime.py
+index 4809a3b6..3d3ba8be 100755
+--- a/tools/offwaketime.py
++++ b/tools/offwaketime.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # offwaketime   Summarize blocked time by kernel off-CPU stack + waker stack
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/old/bashreadline.py b/tools/old/bashreadline.py
+index 571b6626..671188f8 100755
+--- a/tools/old/bashreadline.py
++++ b/tools/old/bashreadline.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # bashreadline  Print entered bash commands from all running shells.
+ #               For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/old/biosnoop.py b/tools/old/biosnoop.py
+index 37ee3f9c..7eddf518 100755
+--- a/tools/old/biosnoop.py
++++ b/tools/old/biosnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # biosnoop  Trace block device I/O and print details including issuing PID.
+diff --git a/tools/old/filelife.py b/tools/old/filelife.py
+index 075be087..733ff86b 100755
+--- a/tools/old/filelife.py
++++ b/tools/old/filelife.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # filelife    Trace the lifespan of short-lived files.
+diff --git a/tools/old/gethostlatency.py b/tools/old/gethostlatency.py
+index 7d32cb82..52ca436c 100755
+--- a/tools/old/gethostlatency.py
++++ b/tools/old/gethostlatency.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # gethostlatency  Show latency for getaddrinfo/gethostbyname[2] calls.
+ #                 For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/old/killsnoop.py b/tools/old/killsnoop.py
+index ddf9d5af..0b0b1d57 100755
+--- a/tools/old/killsnoop.py
++++ b/tools/old/killsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # killsnoop Trace signals issued by the kill() syscall.
+diff --git a/tools/old/memleak.py b/tools/old/memleak.py
+index eca685f8..91330d5e 100755
+--- a/tools/old/memleak.py
++++ b/tools/old/memleak.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # memleak   Trace and display outstanding allocations to detect
+ #           memory leaks in user-mode processes and the kernel.
+diff --git a/tools/old/offcputime.py b/tools/old/offcputime.py
+index c0042ffc..f9f0453d 100755
+--- a/tools/old/offcputime.py
++++ b/tools/old/offcputime.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # offcputime    Summarize off-CPU time by kernel stack trace
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/old/offwaketime.py b/tools/old/offwaketime.py
+index 42fa5ce2..56363f17 100755
+--- a/tools/old/offwaketime.py
++++ b/tools/old/offwaketime.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # offwaketime   Summarize blocked time by kernel off-CPU stack + waker stack
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/old/oomkill.py b/tools/old/oomkill.py
+index 0973cfba..eacacaca 100755
+--- a/tools/old/oomkill.py
++++ b/tools/old/oomkill.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # oomkill   Trace oom_kill_process(). For Linux, uses BCC, eBPF.
+ #
+diff --git a/tools/old/opensnoop.py b/tools/old/opensnoop.py
+index 5df3b417..2eabd50a 100755
+--- a/tools/old/opensnoop.py
++++ b/tools/old/opensnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # opensnoop Trace open() syscalls.
+diff --git a/tools/old/profile.py b/tools/old/profile.py
+index 7c768f43..84091007 100755
+--- a/tools/old/profile.py
++++ b/tools/old/profile.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # profile  Profile CPU usage by sampling stack traces at a timed interval.
+diff --git a/tools/old/softirqs.py b/tools/old/softirqs.py
+index 5708ba69..04c97e61 100755
+--- a/tools/old/softirqs.py
++++ b/tools/old/softirqs.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # softirqs  Summarize soft IRQ (interrupt) event time.
+diff --git a/tools/old/stackcount.py b/tools/old/stackcount.py
+index b60cc4c2..a1affce9 100755
+--- a/tools/old/stackcount.py
++++ b/tools/old/stackcount.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # stackcount    Count kernel function calls and their stack traces.
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/old/stacksnoop.py b/tools/old/stacksnoop.py
+index 9fcc12b0..de3debfd 100755
+--- a/tools/old/stacksnoop.py
++++ b/tools/old/stacksnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # stacksnoop    Trace a kernel function and print all kernel stack traces.
+ #               For Linux, uses BCC, eBPF, and currently x86_64 only. Inline C.
+diff --git a/tools/old/statsnoop.py b/tools/old/statsnoop.py
+index ad54ac78..9284110f 100755
+--- a/tools/old/statsnoop.py
++++ b/tools/old/statsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # statsnoop Trace stat() syscalls.
+diff --git a/tools/old/syncsnoop.py b/tools/old/syncsnoop.py
+index cae57ea8..27fbc87f 100755
+--- a/tools/old/syncsnoop.py
++++ b/tools/old/syncsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # syncsnoop Trace sync() syscall.
+diff --git a/tools/old/tcpaccept.py b/tools/old/tcpaccept.py
+index 8125eaa3..cb8f4e7c 100755
+--- a/tools/old/tcpaccept.py
++++ b/tools/old/tcpaccept.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpaccept Trace TCP accept()s.
+diff --git a/tools/old/tcpconnect.py b/tools/old/tcpconnect.py
+index 579a85f9..318eb20d 100755
+--- a/tools/old/tcpconnect.py
++++ b/tools/old/tcpconnect.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpconnect    Trace TCP connect()s.
+diff --git a/tools/old/wakeuptime.py b/tools/old/wakeuptime.py
+index a4cd521d..da5ae0af 100644
+--- a/tools/old/wakeuptime.py
++++ b/tools/old/wakeuptime.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # wakeuptime    Summarize sleep to wakeup time by waker kernel stack
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/oomkill.py b/tools/oomkill.py
+index 4f3b6ce7..c9fde155 100755
+--- a/tools/oomkill.py
++++ b/tools/oomkill.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # oomkill   Trace oom_kill_process(). For Linux, uses BCC, eBPF.
+ #
+diff --git a/tools/opensnoop.py b/tools/opensnoop.py
+index 60d11c63..a4a49d93 100755
+--- a/tools/opensnoop.py
++++ b/tools/opensnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # opensnoop Trace open() syscalls.
+diff --git a/tools/pidpersec.py b/tools/pidpersec.py
+index c4490043..38f41960 100755
+--- a/tools/pidpersec.py
++++ b/tools/pidpersec.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # pidpersec Count new processes (via fork).
+diff --git a/tools/profile.py b/tools/profile.py
+index dfbced6a..7ff9a93b 100755
+--- a/tools/profile.py
++++ b/tools/profile.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # profile  Profile CPU usage by sampling stack traces at a timed interval.
+diff --git a/tools/runqlat.py b/tools/runqlat.py
+index 9fd40642..52463f74 100755
+--- a/tools/runqlat.py
++++ b/tools/runqlat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # runqlat   Run queue (scheduler) latency as a histogram.
+diff --git a/tools/runqlen.py b/tools/runqlen.py
+index b56a5916..aec8a8af 100755
+--- a/tools/runqlen.py
++++ b/tools/runqlen.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # runqlen    Summarize scheduler run queue length as a histogram.
+diff --git a/tools/runqslower.py b/tools/runqslower.py
+index b6785330..8b24d6b0 100755
+--- a/tools/runqslower.py
++++ b/tools/runqslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # runqslower    Trace long process scheduling delays.
+diff --git a/tools/shmsnoop.py b/tools/shmsnoop.py
+index 11b4b6f6..5fb443fa 100755
+--- a/tools/shmsnoop.py
++++ b/tools/shmsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # shmsnoop Trace shm*() syscalls.
+diff --git a/tools/slabratetop.py b/tools/slabratetop.py
+index b947e44e..ec602162 100755
+--- a/tools/slabratetop.py
++++ b/tools/slabratetop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # slabratetop  Summarize kmem_cache_alloc() calls.
+diff --git a/tools/sofdsnoop.py b/tools/sofdsnoop.py
+index 6df7fcad..37e57900 100755
+--- a/tools/sofdsnoop.py
++++ b/tools/sofdsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # sofdsnoop traces file descriptors passed via socket
+diff --git a/tools/softirqs.py b/tools/softirqs.py
+index 1e2daf5f..97b00f26 100755
+--- a/tools/softirqs.py
++++ b/tools/softirqs.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # softirqs  Summarize soft IRQ (interrupt) event time.
+diff --git a/tools/solisten.py b/tools/solisten.py
+index fc066d84..31951e18 100755
+--- a/tools/solisten.py
++++ b/tools/solisten.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # solisten      Trace TCP listen events
+ #               For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/sslsniff.py b/tools/sslsniff.py
+index e48fbb47..5e01d7c1 100755
+--- a/tools/sslsniff.py
++++ b/tools/sslsniff.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # sslsniff  Captures data on read/recv or write/send functions of OpenSSL,
+ #           GnuTLS and NSS
+diff --git a/tools/stackcount.py b/tools/stackcount.py
+index a58f9e31..0d5b9be0 100755
+--- a/tools/stackcount.py
++++ b/tools/stackcount.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # stackcount    Count events and their stack traces.
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/statsnoop.py b/tools/statsnoop.py
+index 6cdff945..e1ba3e5a 100755
+--- a/tools/statsnoop.py
++++ b/tools/statsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # statsnoop Trace stat() syscalls.
+diff --git a/tools/syncsnoop.py b/tools/syncsnoop.py
+index e5fa78e3..162fbc2a 100755
+--- a/tools/syncsnoop.py
++++ b/tools/syncsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # syncsnoop Trace sync() syscall.
+diff --git a/tools/syscount.py b/tools/syscount.py
+index 7ba08dd3..94b7ad34 100755
+--- a/tools/syscount.py
++++ b/tools/syscount.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # syscount   Summarize syscall counts and latencies.
+ #
+diff --git a/tools/tcpaccept.py b/tools/tcpaccept.py
+index 914d5183..c9ef7678 100755
+--- a/tools/tcpaccept.py
++++ b/tools/tcpaccept.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpaccept Trace TCP accept()s.
+diff --git a/tools/tcpconnect.py b/tools/tcpconnect.py
+index eb12667e..7ba92394 100755
+--- a/tools/tcpconnect.py
++++ b/tools/tcpconnect.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpconnect    Trace TCP connect()s.
+diff --git a/tools/tcpconnlat.py b/tools/tcpconnlat.py
+index 8f686211..657a8cea 100755
+--- a/tools/tcpconnlat.py
++++ b/tools/tcpconnlat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpconnlat    Trace TCP active connection latency (connect).
+diff --git a/tools/tcpdrop.py b/tools/tcpdrop.py
+index 14515f75..2076aeb0 100755
+--- a/tools/tcpdrop.py
++++ b/tools/tcpdrop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpdrop   Trace TCP kernel-dropped packets/segments.
+diff --git a/tools/tcplife.py b/tools/tcplife.py
+index ed251553..c62c1fc5 100755
+--- a/tools/tcplife.py
++++ b/tools/tcplife.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcplife   Trace the lifespan of TCP sessions and summarize.
+diff --git a/tools/tcpretrans.py b/tools/tcpretrans.py
+index 1b2636ae..936028f6 100755
+--- a/tools/tcpretrans.py
++++ b/tools/tcpretrans.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpretrans    Trace or count TCP retransmits and TLPs.
+diff --git a/tools/tcpstates.py b/tools/tcpstates.py
+index 3c78b1c4..0d3e9a0f 100755
+--- a/tools/tcpstates.py
++++ b/tools/tcpstates.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # -*- coding: utf-8 -*-
+ # @lint-avoid-python-3-compatibility-imports
+ #
+diff --git a/tools/tcpsubnet.py b/tools/tcpsubnet.py
+index 5f2a8062..302f7200 100755
+--- a/tools/tcpsubnet.py
++++ b/tools/tcpsubnet.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcpsubnet   Summarize TCP bytes sent to different subnets.
+diff --git a/tools/tcptop.py b/tools/tcptop.py
+index 5f09bed4..0eb45c54 100755
+--- a/tools/tcptop.py
++++ b/tools/tcptop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # tcptop    Summarize TCP send/recv throughput by host.
+diff --git a/tools/tcptracer.py b/tools/tcptracer.py
+index e61fe9ba..544431c3 100755
+--- a/tools/tcptracer.py
++++ b/tools/tcptracer.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # tcpv4tracer   Trace TCP connections.
+ #               For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/tplist.py b/tools/tplist.py
+index 6ec2fbe1..e20eb0c3 100755
+--- a/tools/tplist.py
++++ b/tools/tplist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # tplist    Display kernel tracepoints or USDT probes and their formats.
+ #
+diff --git a/tools/trace.py b/tools/trace.py
+index 9afd6726..b370f8bd 100755
+--- a/tools/trace.py
++++ b/tools/trace.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # trace         Trace a function and print a trace message based on its
+ #               parameters, with an optional filter.
+diff --git a/tools/ttysnoop.py b/tools/ttysnoop.py
+index 058dc7e3..fa6280bf 100755
+--- a/tools/ttysnoop.py
++++ b/tools/ttysnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # ttysnoop   Watch live output from a tty or pts device.
+diff --git a/tools/vfscount.py b/tools/vfscount.py
+index 303d3fde..fa0fe9a0 100755
+--- a/tools/vfscount.py
++++ b/tools/vfscount.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # vfscount  Count VFS calls ("vfs_*").
+diff --git a/tools/vfsstat.py b/tools/vfsstat.py
+index 1764c601..7ff54070 100755
+--- a/tools/vfsstat.py
++++ b/tools/vfsstat.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # vfsstat   Count some VFS calls.
+diff --git a/tools/wakeuptime.py b/tools/wakeuptime.py
+index a22245a7..b31fa981 100755
+--- a/tools/wakeuptime.py
++++ b/tools/wakeuptime.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # wakeuptime    Summarize sleep to wakeup time by waker kernel stack
+ #               For Linux, uses BCC, eBPF.
+diff --git a/tools/xfsdist.py b/tools/xfsdist.py
+index f409f90d..fb8c43cb 100755
+--- a/tools/xfsdist.py
++++ b/tools/xfsdist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # xfsdist  Summarize XFS operation latency.
+diff --git a/tools/xfsslower.py b/tools/xfsslower.py
+index 9fa12566..2ad21f05 100755
+--- a/tools/xfsslower.py
++++ b/tools/xfsslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # xfsslower  Trace slow XFS operations.
+diff --git a/tools/zfsdist.py b/tools/zfsdist.py
+index 6b29b99b..e41d91a7 100755
+--- a/tools/zfsdist.py
++++ b/tools/zfsdist.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # zfsdist  Summarize ZFS operation latency.
+diff --git a/tools/zfsslower.py b/tools/zfsslower.py
+index 2f05b561..a88a3bef 100755
+--- a/tools/zfsslower.py
++++ b/tools/zfsslower.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # zfsslower  Trace slow ZFS operations.
+-- 
+2.17.1
+
