@@ -1,4 +1,4 @@
-From 93cf25ba663e68a6a6f4237fbe0ef8349b3f37ef Mon Sep 17 00:00:00 2001
+From cb13627f25a7af1b54a395eb59e5d7f7786e609d Mon Sep 17 00:00:00 2001
 From: Sumit Garg <sumit.garg@linaro.org>
 Date: Fri, 14 Feb 2020 07:40:11 +0000
 Subject: [PATCH] Allow to build with OE LLVM cross compiled package
@@ -16,7 +16,7 @@ Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
  1 file changed, 2 deletions(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 7bd0f3b2..6f1f12c0 100644
+index f1916b55..f16d84c3 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -39,8 +39,6 @@ endif()
@@ -26,7 +26,8 @@ index 7bd0f3b2..6f1f12c0 100644
 -find_package(LLVM REQUIRED CONFIG)
 -message(STATUS "Found LLVM: ${LLVM_INCLUDE_DIRS} ${LLVM_PACKAGE_VERSION}")
  find_package(LibElf REQUIRED)
-
- # clang is linked as a library, but the library path searching is
---
+ 
+ if(CLANG_DIR)
+-- 
 2.17.1
+
