@@ -20,7 +20,7 @@ SRC_URI = "git://github.com/iovisor/bcc \
            file://0001-Allow-to-build-with-OE-LLVM-cross-compiled-package.patch \
            file://0001-BCC-Use-python-3.patch \
            "
-SRCREV = "368a5b0714961953f3e3f61607fa16cb71449c1b"
+SRCREV = "942227484d3207f6a42103674001ef01fb5335a0"
 
 S = "${WORKDIR}/git"
 
@@ -36,3 +36,5 @@ EXTRA_OECMAKE = " \
 "
 
 FILES_${PN} += "${libdir}/python*/dist-packages"
+
+COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*)-linux"

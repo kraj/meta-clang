@@ -1,4 +1,4 @@
-From 7491be67e0795f00566d46e5f055a955ea0aac8e Mon Sep 17 00:00:00 2001
+From 73fa1159a97204c124b3ebd9024c68006f3dfc31 Mon Sep 17 00:00:00 2001
 From: Leo Yan <leo.yan@linaro.org>
 Date: Sat, 22 Feb 2020 16:22:33 +0000
 Subject: [PATCH] BCC: Use python 3
@@ -50,6 +50,7 @@ Signed-off-by: Leo Yan <leo.yan@linaro.org>
  examples/usdt_sample/scripts/latency.py                     | 2 +-
  tools/argdist.py                                            | 2 +-
  tools/bashreadline.py                                       | 2 +-
+ tools/bindsnoop.py                                          | 2 +-
  tools/biolatency.py                                         | 2 +-
  tools/biosnoop.py                                           | 2 +-
  tools/biotop.py                                             | 2 +-
@@ -60,6 +61,7 @@ Signed-off-by: Leo Yan <leo.yan@linaro.org>
  tools/cachestat.py                                          | 2 +-
  tools/cachetop.py                                           | 2 +-
  tools/capable.py                                            | 2 +-
+ tools/compactsnoop.py                                       | 2 +-
  tools/cpudist.py                                            | 2 +-
  tools/cpuunclaimed.py                                       | 2 +-
  tools/criticalstat.py                                       | 2 +-
@@ -101,6 +103,7 @@ Signed-off-by: Leo Yan <leo.yan@linaro.org>
  tools/offwaketime.py                                        | 2 +-
  tools/old/bashreadline.py                                   | 2 +-
  tools/old/biosnoop.py                                       | 2 +-
+ tools/old/compactsnoop.py                                   | 2 +-
  tools/old/filelife.py                                       | 2 +-
  tools/old/gethostlatency.py                                 | 2 +-
  tools/old/killsnoop.py                                      | 2 +-
@@ -155,7 +158,7 @@ Signed-off-by: Leo Yan <leo.yan@linaro.org>
  tools/xfsslower.py                                          | 2 +-
  tools/zfsdist.py                                            | 2 +-
  tools/zfsslower.py                                          | 2 +-
- 150 files changed, 150 insertions(+), 150 deletions(-)
+ 153 files changed, 153 insertions(+), 153 deletions(-)
 
 diff --git a/examples/hello_world.py b/examples/hello_world.py
 index bb52f3e7..e36c09b0 100755
@@ -208,7 +211,7 @@ index 943dca59..47d99453 100755
  from __future__ import print_function
  from bcc import BPF
 diff --git a/examples/networking/http_filter/http-parse-complete.py b/examples/networking/http_filter/http-parse-complete.py
-index f1e5e0a2..e364d9aa 100644
+index 0f995105..e6c68690 100644
 --- a/examples/networking/http_filter/http-parse-complete.py
 +++ b/examples/networking/http_filter/http-parse-complete.py
 @@ -1,4 +1,4 @@
@@ -348,7 +351,7 @@ index 4d7c7958..ea793f94 100755
  # bitehist.py	Block I/O size histogram.
  #		For Linux, uses BCC, eBPF. Embedded C.
 diff --git a/examples/tracing/dddos.py b/examples/tracing/dddos.py
-index 5b544241..2b77725e 100755
+index 09e9f6d8..30856260 100755
 --- a/examples/tracing/dddos.py
 +++ b/examples/tracing/dddos.py
 @@ -1,4 +1,4 @@
@@ -607,6 +610,16 @@ index b7d98272..4a01e50d 100755
  #
  # bashreadline  Print entered bash commands from all running shells.
  #               For Linux, uses BCC, eBPF. Embedded C.
+diff --git a/tools/bindsnoop.py b/tools/bindsnoop.py
+index 4d3133fc..41da267b 100755
+--- a/tools/bindsnoop.py
++++ b/tools/bindsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ #
+ # bindsnoop       Trace IPv4 and IPv6 binds()s.
+ #               For Linux, uses BCC, eBPF. Embedded C.
 diff --git a/tools/biolatency.py b/tools/biolatency.py
 index 86d99437..f9abfd8b 100755
 --- a/tools/biolatency.py
@@ -648,7 +661,7 @@ index f4cea7cd..569630af 100755
  # bitehist.py   Block I/O size histogram.
  #               For Linux, uses BCC, eBPF. See .c file.
 diff --git a/tools/bpflist.py b/tools/bpflist.py
-index f73e945a..118fd00d 100755
+index 2d9793e6..3d14248f 100755
 --- a/tools/bpflist.py
 +++ b/tools/bpflist.py
 @@ -1,4 +1,4 @@
@@ -688,7 +701,7 @@ index bb949493..a83e6615 100755
  # cachestat     Count cache kernel function calls.
  #               For Linux, uses BCC, eBPF. See .c file.
 diff --git a/tools/cachetop.py b/tools/cachetop.py
-index 59de3912..5e07ae81 100755
+index 00b11a8c..bc793794 100755
 --- a/tools/cachetop.py
 +++ b/tools/cachetop.py
 @@ -1,4 +1,4 @@
@@ -698,7 +711,7 @@ index 59de3912..5e07ae81 100755
  #
  # cachetop      Count cache kernel function calls per processes
 diff --git a/tools/capable.py b/tools/capable.py
-index bb4a8435..bf8bc5a8 100755
+index 69fef3de..324bdb1b 100755
 --- a/tools/capable.py
 +++ b/tools/capable.py
 @@ -1,4 +1,4 @@
@@ -707,6 +720,16 @@ index bb4a8435..bf8bc5a8 100755
  # @lint-avoid-python-3-compatibility-imports
  #
  # capable   Trace security capabilitiy checks (cap_capable()).
+diff --git a/tools/compactsnoop.py b/tools/compactsnoop.py
+index 7f9ce7ee..3a43e1f2 100755
+--- a/tools/compactsnoop.py
++++ b/tools/compactsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # compactsnoop  Trace compact zone and print details including issuing PID.
 diff --git a/tools/cpudist.py b/tools/cpudist.py
 index 4e549ac4..663d2b87 100755
 --- a/tools/cpudist.py
@@ -798,7 +821,7 @@ index c77f5206..c640b3d6 100755
  #
  # drsnoop  Trace direct reclaim and print details including issuing PID.
 diff --git a/tools/execsnoop.py b/tools/execsnoop.py
-index e5a04903..ea3295fc 100755
+index 57dfab29..fe35ea85 100755
 --- a/tools/execsnoop.py
 +++ b/tools/execsnoop.py
 @@ -1,4 +1,4 @@
@@ -858,7 +881,7 @@ index 31e3adf9..2a564045 100755
  #
  # fileslower  Trace slow synchronous file reads and writes.
 diff --git a/tools/filetop.py b/tools/filetop.py
-index 552367a9..632b4d78 100755
+index dbe7a7da..1bb703e7 100755
 --- a/tools/filetop.py
 +++ b/tools/filetop.py
 @@ -1,4 +1,4 @@
@@ -918,7 +941,7 @@ index 589a890d..02bddc79 100755
  #
  # hardirqs  Summarize hard IRQ (interrupt) event time.
 diff --git a/tools/inject.py b/tools/inject.py
-index fa2d3887..948832c1 100755
+index 9d6b85f8..c9ebec9f 100755
 --- a/tools/inject.py
 +++ b/tools/inject.py
 @@ -1,4 +1,4 @@
@@ -938,7 +961,7 @@ index 2fb1dcb5..8439a539 100755
  #
  # killsnoop Trace signals issued by the kill() syscall.
 diff --git a/tools/klockstat.py b/tools/klockstat.py
-index 343d4362..db4715d0 100755
+index e2047880..80278638 100755
 --- a/tools/klockstat.py
 +++ b/tools/klockstat.py
 @@ -1,4 +1,4 @@
@@ -1068,7 +1091,7 @@ index ff78506f..27631ade 100755
  #
  # nfsdist   Summarize NFS operation latency
 diff --git a/tools/nfsslower.py b/tools/nfsslower.py
-index 36918ca0..bddfe6ab 100755
+index 5e344b9b..de21ef60 100755
 --- a/tools/nfsslower.py
 +++ b/tools/nfsslower.py
 @@ -1,4 +1,4 @@
@@ -1078,7 +1101,7 @@ index 36918ca0..bddfe6ab 100755
  #
  # nfsslower     Trace slow NFS operations
 diff --git a/tools/offcputime.py b/tools/offcputime.py
-index ac3b7281..fbaa37a4 100755
+index 50ce1cc1..f28249ba 100755
 --- a/tools/offcputime.py
 +++ b/tools/offcputime.py
 @@ -1,4 +1,4 @@
@@ -1088,7 +1111,7 @@ index ac3b7281..fbaa37a4 100755
  # offcputime    Summarize off-CPU time by stack trace
  #               For Linux, uses BCC, eBPF.
 diff --git a/tools/offwaketime.py b/tools/offwaketime.py
-index 4809a3b6..3d3ba8be 100755
+index 665b6666..148233ff 100755
 --- a/tools/offwaketime.py
 +++ b/tools/offwaketime.py
 @@ -1,4 +1,4 @@
@@ -1117,6 +1140,16 @@ index 37ee3f9c..7eddf518 100755
  # @lint-avoid-python-3-compatibility-imports
  #
  # biosnoop  Trace block device I/O and print details including issuing PID.
+diff --git a/tools/old/compactsnoop.py b/tools/old/compactsnoop.py
+index c5440417..42cfc9c0 100755
+--- a/tools/old/compactsnoop.py
++++ b/tools/old/compactsnoop.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/python
++#!/usr/bin/python3
+ # @lint-avoid-python-3-compatibility-imports
+ #
+ # compactsnoop  Trace compact zone and print details including issuing PID.
 diff --git a/tools/old/filelife.py b/tools/old/filelife.py
 index 075be087..733ff86b 100755
 --- a/tools/old/filelife.py
@@ -1198,7 +1231,7 @@ index 5df3b417..2eabd50a 100755
  #
  # opensnoop Trace open() syscalls.
 diff --git a/tools/old/profile.py b/tools/old/profile.py
-index 7c768f43..84091007 100755
+index 0abcf576..95dfc110 100755
 --- a/tools/old/profile.py
 +++ b/tools/old/profile.py
 @@ -1,4 +1,4 @@
@@ -1298,7 +1331,7 @@ index 4f3b6ce7..c9fde155 100755
  # oomkill   Trace oom_kill_process(). For Linux, uses BCC, eBPF.
  #
 diff --git a/tools/opensnoop.py b/tools/opensnoop.py
-index 60d11c63..a4a49d93 100755
+index 6d1388b3..f087c895 100755
 --- a/tools/opensnoop.py
 +++ b/tools/opensnoop.py
 @@ -1,4 +1,4 @@
@@ -1318,7 +1351,7 @@ index c4490043..38f41960 100755
  #
  # pidpersec Count new processes (via fork).
 diff --git a/tools/profile.py b/tools/profile.py
-index dfbced6a..7ff9a93b 100755
+index 11f3e98d..c6922160 100755
 --- a/tools/profile.py
 +++ b/tools/profile.py
 @@ -1,4 +1,4 @@
@@ -1348,7 +1381,7 @@ index b56a5916..aec8a8af 100755
  #
  # runqlen    Summarize scheduler run queue length as a histogram.
 diff --git a/tools/runqslower.py b/tools/runqslower.py
-index b6785330..8b24d6b0 100755
+index 8f790602..89021466 100755
 --- a/tools/runqslower.py
 +++ b/tools/runqslower.py
 @@ -1,4 +1,4 @@
@@ -1418,7 +1451,7 @@ index e48fbb47..5e01d7c1 100755
  # sslsniff  Captures data on read/recv or write/send functions of OpenSSL,
  #           GnuTLS and NSS
 diff --git a/tools/stackcount.py b/tools/stackcount.py
-index a58f9e31..0d5b9be0 100755
+index 2afb91ff..15b028b8 100755
 --- a/tools/stackcount.py
 +++ b/tools/stackcount.py
 @@ -1,4 +1,4 @@
@@ -1458,7 +1491,7 @@ index 7ba08dd3..94b7ad34 100755
  # syscount   Summarize syscall counts and latencies.
  #
 diff --git a/tools/tcpaccept.py b/tools/tcpaccept.py
-index 914d5183..c9ef7678 100755
+index 7c104208..245e796e 100755
 --- a/tools/tcpaccept.py
 +++ b/tools/tcpaccept.py
 @@ -1,4 +1,4 @@
@@ -1478,7 +1511,7 @@ index eb12667e..7ba92394 100755
  #
  # tcpconnect    Trace TCP connect()s.
 diff --git a/tools/tcpconnlat.py b/tools/tcpconnlat.py
-index 8f686211..657a8cea 100755
+index be6bbbfa..0aad5ccc 100755
 --- a/tools/tcpconnlat.py
 +++ b/tools/tcpconnlat.py
 @@ -1,4 +1,4 @@
@@ -1498,7 +1531,7 @@ index 14515f75..2076aeb0 100755
  #
  # tcpdrop   Trace TCP kernel-dropped packets/segments.
 diff --git a/tools/tcplife.py b/tools/tcplife.py
-index ed251553..c62c1fc5 100755
+index d4e679dd..e7e9055a 100755
 --- a/tools/tcplife.py
 +++ b/tools/tcplife.py
 @@ -1,4 +1,4 @@
@@ -1518,7 +1551,7 @@ index 1b2636ae..936028f6 100755
  #
  # tcpretrans    Trace or count TCP retransmits and TLPs.
 diff --git a/tools/tcpstates.py b/tools/tcpstates.py
-index 3c78b1c4..0d3e9a0f 100755
+index b9a64387..e0aeefaf 100755
 --- a/tools/tcpstates.py
 +++ b/tools/tcpstates.py
 @@ -1,4 +1,4 @@
@@ -1538,7 +1571,7 @@ index 5f2a8062..302f7200 100755
  #
  # tcpsubnet   Summarize TCP bytes sent to different subnets.
 diff --git a/tools/tcptop.py b/tools/tcptop.py
-index 5f09bed4..0eb45c54 100755
+index 330d5bbb..e87172a6 100755
 --- a/tools/tcptop.py
 +++ b/tools/tcptop.py
 @@ -1,4 +1,4 @@
@@ -1568,7 +1601,7 @@ index 6ec2fbe1..e20eb0c3 100755
  # tplist    Display kernel tracepoints or USDT probes and their formats.
  #
 diff --git a/tools/trace.py b/tools/trace.py
-index 9afd6726..b370f8bd 100755
+index 8b2ca358..54badc01 100755
 --- a/tools/trace.py
 +++ b/tools/trace.py
 @@ -1,4 +1,4 @@
