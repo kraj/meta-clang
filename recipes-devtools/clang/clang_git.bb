@@ -164,9 +164,6 @@ DEPENDS = "binutils zlib libffi libxml2 libxml2-native ninja-native swig-native"
 DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
 
-COMPATIBLE_HOST_riscv64 = "null"
-COMPATIBLE_HOST_riscv32 = "null"
-
 RRECOMMENDS_${PN} = "binutils"
 RRECOMMENDS_${PN}_append_class-target = " libcxx-dev"
 
