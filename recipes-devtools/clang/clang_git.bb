@@ -35,7 +35,8 @@ def get_clang_arch(bb, d, arch_var):
     elif re.match('aarch64$', a):                      return 'AArch64'
     elif re.match('aarch64_be$', a):                   return 'AArch64'
     elif re.match('mips(isa|)(32|64|)(r6|)(el|)$', a): return 'Mips'
-    elif re.match('riscv(32|64)(eb|)$', a):            return 'RISCV'
+    elif re.match('riscv32$', a):                      return 'riscv32'
+    elif re.match('riscv64$', a):                      return 'riscv64'
     elif re.match('p(pc|owerpc)(|64)', a):             return 'PowerPC'
     else:
         bb.note("'%s' is not a primary llvm architecture" % a)
@@ -95,7 +96,6 @@ CMAKE_C_FLAGS_RELEASE;CMAKE_CXX_FLAGS_RELEASE;CMAKE_ASM_FLAGS_RELEASE;\
 # where only one target architecture is needed along with just one build arch (usually X86)
 #
 LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86"
-LLVM_TARGETS_TO_BUILD_append = ";AMDGPU;${@get_clang_host_arch(bb, d)};${@get_clang_target_arch(bb, d)}"
 
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_arch(bb, d)}"
