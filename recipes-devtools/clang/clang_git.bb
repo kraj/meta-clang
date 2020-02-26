@@ -103,6 +103,11 @@ LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_a
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
 
+LLVM_PROJECTS ?= "clang;clang-tools-extra;lld;lldb"
+# There is no LLDB support for RISCV
+LLVM_PROJECTS_riscv32 ?= "clang;clang-tools-extra;lld"
+LLVM_PROJECTS_riscv64 ?= "clang;clang-tools-extra;lld"
+
 #CMAKE_VERBOSE = "VERBOSE=1"
 
 EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
@@ -118,7 +123,7 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DCMAKE_CXX_FLAGS_RELEASE='${CXXFLAGS} -DNDEBUG -g0' \
                   -DCMAKE_C_FLAGS_RELEASE='${CFLAGS} -DNDEBUG -g0' \
                   -DBUILD_SHARED_LIBS=OFF \
-                  -DLLVM_ENABLE_PROJECTS='clang;clang-tools-extra;lld;lldb' \
+                  -DLLVM_ENABLE_PROJECTS='${LLVM_PROJECTS}' \
                   -DLLVM_BINUTILS_INCDIR=${STAGING_INCDIR} \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
                   -DLLVM_TARGETS_TO_BUILD='${LLVM_TARGETS_TO_BUILD}' \
