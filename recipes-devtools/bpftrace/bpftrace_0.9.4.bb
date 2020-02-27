@@ -34,3 +34,5 @@ EXTRA_OECMAKE = " \
 "
 
 FILES_${PN} += "${prefix}/man/*"
+
+COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*)-linux"
