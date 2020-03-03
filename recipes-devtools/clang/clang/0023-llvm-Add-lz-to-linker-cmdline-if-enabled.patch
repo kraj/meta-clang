@@ -1,4 +1,4 @@
-From d46267d3d548dbfae92f4958090af4567778c4bd Mon Sep 17 00:00:00 2001
+From a4751125c7303e060e21eca48b150fb7368330fc Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 4 Jan 2020 01:00:06 -0800
 Subject: [PATCH] llvm: Add -lz to linker cmdline if enabled
@@ -16,12 +16,12 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/llvm/lib/Support/CMakeLists.txt b/llvm/lib/Support/CMakeLists.txt
-index 26332d4f539..8b58516330b 100644
+index 5c656164e77..60316a59fbd 100644
 --- a/llvm/lib/Support/CMakeLists.txt
 +++ b/llvm/lib/Support/CMakeLists.txt
 @@ -1,5 +1,5 @@
  if(LLVM_ENABLE_ZLIB)
--  set(system_libs ${ZLIB_LIBRARY})
+-  set(imported_libs ZLIB::ZLIB)
 +  set(system_libs z)
  endif()
  

@@ -1,4 +1,4 @@
-From 751e7b29c02c935987cc9b4d5b17a9db576737f0 Mon Sep 17 00:00:00 2001
+From 262b287fca475f78c91afb41824adeb075c2195d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 31 Jul 2019 22:51:39 -0700
 Subject: [PATCH] clang: Add -lpthread and -ldl along with -lunwind for static
