@@ -17,7 +17,6 @@ DEPENDS += "bison-native \
 RDEPENDS_${PN} += "bash python3 python3-core"
 
 SRC_URI = "git://github.com/iovisor/bcc \
-           file://0001-Allow-to-build-with-OE-LLVM-cross-compiled-package.patch \
            "
 SRCREV = "942227484d3207f6a42103674001ef01fb5335a0"
 
