@@ -1,4 +1,4 @@
-From 47e9c3e1a066cd17828b819937b1296e6ebc6403 Mon Sep 17 00:00:00 2001
+From 4f92c75c8e3960fe65b63274d6e4b84e4642e02e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 22 May 2017 17:36:16 -0700
 Subject: [PATCH] lldb: Add -lxml2 to linker cmdline of xml is found

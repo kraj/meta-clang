@@ -28,9 +28,9 @@ SRC_URI = "\
     file://0018-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
     file://0019-Check-for-atomic-double-intrinsics.patch \
     file://0020-clang-Enable-SSP-and-PIE-by-default.patch \
-    file://0021-llvm-Add-lz-to-linker-cmdline-if-enabled.patch \
-    file://0022-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
-    file://0023-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
+    file://0021-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
+    file://0022-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
+    file://0023-llvm-Add-lz-to-linker-cmdline-if-enabled.patch \
 "
 
 # Fallback to no-PIE if not set
