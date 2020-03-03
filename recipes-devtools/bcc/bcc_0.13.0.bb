@@ -18,7 +18,6 @@ RDEPENDS_${PN} += "bash python3 python3-core"
 
 SRC_URI = "git://github.com/iovisor/bcc \
            file://0001-Allow-to-build-with-OE-LLVM-cross-compiled-package.patch \
-           file://0001-BCC-Use-python-3.patch \
            "
 SRCREV = "942227484d3207f6a42103674001ef01fb5335a0"
 
@@ -34,6 +33,11 @@ EXTRA_OECMAKE = " \
     -DLLVM_PACKAGE_VERSION=${LLVMVERSION} \
     -DPYTHON_CMD=python3 \
 "
+
+do_install_append() {
+        sed -e 's@#!/usr/bin/python@#!/usr/bin/env python3@g' \
+            -i $(find ${D}${datadir}/${PN} -type f)
+}
 
 FILES_${PN} += "${libdir}/python*/dist-packages"
 
