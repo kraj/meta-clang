@@ -1,0 +1,40 @@
+From cb3f032b55b32c50201862b26c76ea18ad37cb39 Mon Sep 17 00:00:00 2001
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
+Date: Thu, 30 Jan 2020 14:19:33 +0200
+Subject: [PATCH] python/CMakeLists.txt: Remove check for host
+ /etc/debian_version
+
+Fix the following error that occurs during do_install when using the native
+version of python3:
+usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
+   or: setup.py --help [cmd1 cmd2 ...]
+   or: setup.py --help-commands
+   or: setup.py cmd --help
+
+error: option --install-layout not recognized
+
+Upstream-status: Innapropriate [oe-specific]
+
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+---
+ src/python/CMakeLists.txt | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/src/python/CMakeLists.txt b/src/python/CMakeLists.txt
+index fa602397..797e0d14 100644
+--- a/src/python/CMakeLists.txt
++++ b/src/python/CMakeLists.txt
+@@ -5,10 +5,6 @@ if(NOT PYTHON_CMD)
+   set(PYTHON_CMD "python")
+ endif()
+ 
+-if(EXISTS "/etc/debian_version")
+-  set(PYTHON_FLAGS "${PYTHON_FLAGS} --install-layout deb")
+-endif()
+-
+ file(GLOB_RECURSE PYTHON_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+   ${CMAKE_CURRENT_SOURCE_DIR}/*.py)
+ file(GLOB_RECURSE PYTHON_INCLUDES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+-- 
+2.17.1
+
