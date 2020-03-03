@@ -6,12 +6,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=e3fc50a88d0a364313df4b21ef20c29e"
 inherit cmake python3native
 
 DEPENDS += "bison-native \
-            ninja-native \
-            elfutils-native \
             flex-native \
-            ${MLPREFIX}elfutils \
-            ${MLPREFIX}binutils \
-            ${MLPREFIX}flex \
+            elfutils \
             luajit \
             clang \
             "
