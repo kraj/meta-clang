@@ -38,11 +38,13 @@ steps:
       - cp conf/local.conf.sample conf/local.conf
       - echo SSTATE_DIR = \"$SSTATE_CACHE_DIR\" >> conf/local.conf
       - echo IMAGE_CLASSES += \"testimage testsdk\" >> conf/local.conf
-      - echo INHERIT += \"report-error rm_work\" >> conf/local.conf
+      - echo INHERIT += \"report-error rm_work blacklist\" >> conf/local.conf
       - echo TOOLCHAIN = \"clang\" >> conf/local.conf
       - echo IMAGE_INSTALL_append = \" clang \" >> conf/local.conf
+      - echo XZ_DEFAULTS = \"--threads=8\" >> conf/local.conf
+      - echo LICENSE_FLAGS_WHITELIST_append = \" commercial non-commercial\" >> conf/local.conf
       #- echo TESTIMAGE_AUTO_qemuall = \"1\" >> conf/local.conf
-      - /bin/bash -c ". ./qemux86-64-envsetup.sh && bitbake yoe-simple-image -cpopulate_sdk"
+      - /bin/bash -c ". ./qemux86-64-envsetup.sh && bitbake yoe-debug-image -cpopulate_sdk"
       - /bin/bash -c ". ./qemux86-64-envsetup.sh && ./sources/openembedded-core/scripts/sstate-cache-management.sh -d -y"
 ---
 kind: pipeline
