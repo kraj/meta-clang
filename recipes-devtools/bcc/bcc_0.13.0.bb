@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/iovisor/bcc"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=e3fc50a88d0a364313df4b21ef20c29e"
 
-inherit cmake python3native
+inherit cmake python3native manpages
 
 DEPENDS += "bison-native \
             flex-native \
@@ -22,11 +22,13 @@ SRCREV = "942227484d3207f6a42103674001ef01fb5335a0"
 
 S = "${WORKDIR}/git"
 
+PACKAGECONFIG ??= ""
+PACKAGECONFIG[manpages] = "-DENABLE_MAN=ON,-DENABLE_MAN=OFF,"
+
 EXTRA_OECMAKE = " \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DENABLE_LLVM_SHARED=ON \
     -DENABLE_CLANG_JIT=ON \
-    -DENABLE_MAN=OFF \
     -DLLVM_PACKAGE_VERSION=${LLVMVERSION} \
     -DPYTHON_CMD=${PYTHON} \
 "
@@ -37,5 +39,6 @@ do_install_append() {
 }
 
 FILES_${PN} += "${PYTHON_SITEPACKAGES_DIR}"
+FILES_${PN}-doc += "${datadir}/${PN}/man"
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*)-linux"
