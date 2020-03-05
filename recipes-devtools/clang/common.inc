@@ -30,7 +30,6 @@ SRC_URI = "\
     file://0020-clang-Enable-SSP-and-PIE-by-default.patch \
     file://0021-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
     file://0022-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
-    file://0023-llvm-Add-lz-to-linker-cmdline-if-enabled.patch \
 "
 
 # Fallback to no-PIE if not set
