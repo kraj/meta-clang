@@ -1,4 +1,4 @@
-From 0e03314bfe5353ecea2d05ed47afb60a188f446e Mon Sep 17 00:00:00 2001
+From beca914fa762f7a04275a5993ed4bd12b7e11a24 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 09:02:13 -0700
 Subject: [PATCH] clang: Prepend trailing '/' to sysroot
