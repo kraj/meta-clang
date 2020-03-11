@@ -21,7 +21,7 @@ RDEPENDS_${PN} += "bash python3"
 SRC_URI = "git://github.com/iovisor/bpftrace \
            file://0001-Allow-to-build-with-OE-llvm-clang-cross-compiled-pac.patch \
            "
-SRCREV = "85f9eea624c83443816e37654d0c1c93366a2e66"
+SRCREV = "b1200771b61fd77ed7c5b326e7960d24514dd961"
 
 S = "${WORKDIR}/git"
 
