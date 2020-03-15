@@ -30,6 +30,7 @@ EXTRA_OECMAKE = " \
     -DENABLE_CLANG_JIT=ON \
     -DLLVM_PACKAGE_VERSION=${LLVMVERSION} \
     -DPYTHON_CMD=${PYTHON} \
+    -DPYTHON_FLAGS=--install-lib=${PYTHON_SITEPACKAGES_DIR} \
 "
 
 do_install_append() {
