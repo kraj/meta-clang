@@ -5,8 +5,6 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
 DEPENDS += "bison-native \
             flex-native \
-            gtest-native \
-            git-native \
             elfutils \
             bcc \
             "
@@ -23,6 +21,7 @@ inherit cmake
 
 EXTRA_OECMAKE = " \
     -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_TESTING=OFF \
 "
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*)-linux"
