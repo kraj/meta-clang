@@ -14,7 +14,7 @@ DEPENDS += "bison-native \
 
 RDEPENDS_${PN} += "bash python3 python3-core"
 
-SRC_URI = "git://github.com/iovisor/bcc \
+SRC_URI = "gitsm://github.com/iovisor/bcc \
            file://0001-python-CMakeLists.txt-Remove-check-for-host-etc-debi.patch \
            "
 
