@@ -30,7 +30,7 @@ TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "big
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
 
-TUNE_CCARGS_append_toolchain-clang = " -Wno-error=unused-command-line-argument -Qunused-arguments"
+TUNE_CCARGS_append_toolchain-clang = " -Qunused-arguments"
 TUNE_CCARGS_append_toolchain-clang_libc-musl_powerpc64 = " -mlong-double-64"
 TUNE_CCARGS_append_toolchain-clang_libc-musl_powerpc64le = " -mlong-double-64"
 
