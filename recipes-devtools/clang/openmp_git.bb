@@ -17,6 +17,8 @@ LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=d75288d1ce0450b28b8d58a284c09c
 
 inherit cmake pkgconfig perlnative
 
+EXTRA_OECMAKE += "-DOPENMP_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')}"
+
 OECMAKE_SOURCEPATH = "${S}/openmp"
 
 PACKAGECONFIG ?= "ompt-tools"
@@ -33,3 +35,5 @@ INSANE_SKIP_${PN} = "dev-so"
 COMPATIBLE_HOST_riscv64 = "null"
 COMPATIBLE_HOST_riscv32 = "null"
 COMPATIBLE_HOST_mips64 = "null"
+
+RDEPENDS_${PN} = "libelf libffi"
