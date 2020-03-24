@@ -1,4 +1,4 @@
-From 5e586ee8949eb3367b43d30ab55cae16c280feb1 Mon Sep 17 00:00:00 2001
+From 0f969665b80310b90bcb304b2e60c4493687c5a6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 15 May 2018 10:28:43 -0700
 Subject: [PATCH] clang: scan-view needs python 2.x
