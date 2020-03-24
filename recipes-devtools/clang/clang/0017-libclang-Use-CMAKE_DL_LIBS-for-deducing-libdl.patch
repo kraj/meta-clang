@@ -1,4 +1,4 @@
-From 676710af12e0bcac27ab9bf0a11e0708ee39feb3 Mon Sep 17 00:00:00 2001
+From cfe4473e8447cd2c73a2f42c9c235ce1dfd08bec Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 11 Dec 2019 10:23:15 -0800
 Subject: [PATCH] libclang: Use CMAKE_DL_LIBS for deducing libdl
