@@ -1,0 +1,41 @@
+From ed3b5d8bb197f01556b42dfc2281693475fd830e Mon Sep 17 00:00:00 2001
+From: Jim Broadus <jbroadus@xevo.com>
+Date: Thu, 26 Mar 2020 16:05:53 -0700
+Subject: [PATCH] clang: Fix resource dir location for cross toolchains
+
+When clang looks for the resources directory, it does so based on the binary
+location and assumes that the containing directory is a sibling to lib. The
+Yocto cross.bbclass defines the default bindir as
+${exec_prefix}/bin/${CROSS_TARGET_SYS_DIR}. ex: /usr/bin/aarch64-poky-linux/.
+This causes clang to form a path that looks like /usr/bin/lib/clang/...
+
+As a fix for this, check the parent directory name. If that is "bin", then
+use that directory's parent.
+
+Signed-off-by: Jim Broadus <jbroadus@xevo.com>
+---
+ clang/lib/Driver/Driver.cpp | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/clang/lib/Driver/Driver.cpp b/clang/lib/Driver/Driver.cpp
+index fb8335a3695..819887944b5 100644
+--- a/clang/lib/Driver/Driver.cpp
++++ b/clang/lib/Driver/Driver.cpp
+@@ -110,7 +110,13 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
+     // With a static-library build of libclang, LibClangPath will contain the
+     // path of the embedding binary, which for LLVM binaries will be in bin/.
+     // ../lib gets us to lib/ in both cases.
+-    P = llvm::sys::path::parent_path(Dir);
++    Dir = llvm::sys::path::parent_path(Dir);
++
++    // OE cross toolchains are installed, by default, in a subdir of bin.
++    if (llvm::sys::path::filename(Dir) == "bin") {
++      Dir = llvm::sys::path::parent_path(Dir);
++    }
++    P = Dir;
+     llvm::sys::path::append(P, Twine("lib") + CLANG_LIBDIR_SUFFIX, "clang",
+                             CLANG_VERSION_STRING);
+   }
+-- 
+2.24.1
+
