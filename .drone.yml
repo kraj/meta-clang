@@ -40,6 +40,7 @@ steps:
       - echo IMAGE_CLASSES += \"testimage testsdk\" >> conf/local.conf
       - echo INHERIT += \"report-error rm_work blacklist\" >> conf/local.conf
       - echo TOOLCHAIN = \"clang\" >> conf/local.conf
+      - echo CLANGSDK = \"1\" >> conf/local.conf
       - echo IMAGE_INSTALL_append = \" clang \" >> conf/local.conf
       - echo XZ_DEFAULTS = \"--threads=8\" >> conf/local.conf
       - echo LICENSE_FLAGS_WHITELIST_append = \" commercial non-commercial\" >> conf/local.conf
