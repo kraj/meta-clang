@@ -31,6 +31,7 @@ SRC_URI = "\
     file://0021-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
     file://0022-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
     file://0023-clang-Fix-resource-dir-location-for-cross-toolchains.patch \
+    file://0024-fix-path-to-libffi.patch \
 "
 
 # Fallback to no-PIE if not set
