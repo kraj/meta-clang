@@ -43,6 +43,8 @@ TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
 TUNE_CCARGS_append_toolchain-clang = " -Qunused-arguments"
 TUNE_CCARGS_append_toolchain-clang_libc-musl_powerpc64 = " -mlong-double-64"
 TUNE_CCARGS_append_toolchain-clang_libc-musl_powerpc64le = " -mlong-double-64"
+# usrmerge workaround
+TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("DISTRO_FEATURES", "usrmerge", " --dyld-prefix=/usr", "", d)}"
 
 LDFLAGS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
 LDFLAGS_append_toolchain-clang_class-nativesdk_x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
