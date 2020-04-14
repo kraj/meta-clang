@@ -32,6 +32,7 @@ SRC_URI = "\
     file://0022-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
     file://0023-clang-Fix-resource-dir-location-for-cross-toolchains.patch \
     file://0024-fix-path-to-libffi.patch \
+    file://0025-clang-driver-Add-dyld-prefix-when-checking-sysroot-f.patch \
 "
 
 # Fallback to no-PIE if not set
