@@ -27,6 +27,13 @@ TUNE_CCARGS_remove_toolchain-clang = "-meb"
 TUNE_CCARGS_remove_toolchain-clang = "-mel"
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
 
+# Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
+TUNE_CCARGS_remove_toolchain-clang = "-mtune=cortex-a57.cortex-a53 -mtune=cortex-a72.cortex-a53 -mtune=cortex-a15.cortex-a7 -mtune=cortex-a17.cortex-a7 -mtune=cortex-a72.cortex-a35 -mtune=cortex-a73.cortex-a53 -mtune=cortex-a75.cortex-a55 -mtune=cortex-a76.cortex-a55"
+TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mtune=cortex-a53", "", d)}"
+TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mtune=cortex-a7", "", d)}"
+TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mtune=cortex-a35", "", d)}"
+TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortex-a55 cortexa76-cortex-a55", " -mtune=cortex-a55", "", d)}"
+
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
 
