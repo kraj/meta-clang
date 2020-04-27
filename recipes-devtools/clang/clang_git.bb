@@ -215,12 +215,14 @@ do_install_append_class-nativesdk () {
     rm -rf ${D}${datadir}/llvm
 }
 
-PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang"
+PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang lldb lldb-server liblldb"
 
 PROVIDES += "llvm llvm${PV}"
 PROVIDES_append_class-native = " llvm-native"
 
 BBCLASSEXTEND = "native nativesdk"
+
+RDEPENDS_lldb += "${PN}-lldb-python"
 
 FILES_${PN}-lldb-python = "${libdir}/python*/site-packages/lldb/*"
 
@@ -233,6 +235,19 @@ FILES_${PN} += "\
   ${nonarch_libdir}/${BPN}/*/include/ \
   ${datadir}/scan-* \
   ${datadir}/opt-viewer/ \
+"
+
+FILES_lldb = "\
+  ${bindir}/lldb \
+"
+
+FILES_lldb-server = "\
+  ${bindir}/lldb-server \
+"
+
+FILES_liblldb = "\
+  ${libdir}/liblldbIntelFeatures.so* \
+  ${libdir}/liblldb.so* \
 "
 
 FILES_${PN}-libllvm =+ "\
@@ -262,6 +277,7 @@ FILES_${PN}_remove = "${libdir}/${BPN}/*"
 INSANE_SKIP_${PN} += "already-stripped"
 #INSANE_SKIP_${PN}-dev += "dev-elf"
 INSANE_SKIP_${PN}-lldb-python += "dev-so dev-deps"
+INSANE_SKIP_liblldb = "dev-so"
 
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
 SSTATE_SCAN_FILES_remove = "*-config"
