@@ -10,7 +10,7 @@ DEPENDS += "bison-native \
             bcc \
             "
 
-RDEPENDS_${PN} += "bash python3"
+RDEPENDS_${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace \
            "
