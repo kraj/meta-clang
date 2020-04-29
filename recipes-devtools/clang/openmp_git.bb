@@ -8,9 +8,6 @@ SECTION = "libs"
 require clang.inc
 require common-source.inc
 
-RPROVIDES_${PN} += "libgomp"
-RPROVIDES_${PN}-dev += "libgomp-dev"
-
 TOOLCHAIN = "clang"
 
 LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=d75288d1ce0450b28b8d58a284c09c79"
@@ -27,6 +24,7 @@ PACKAGECONFIG_remove_mipsarch = "ompt-tools"
 PACKAGECONFIG_remove_powerpc = "ompt-tools"
 
 PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_TOOLS=OFF,"
+PACKAGECONFIG[aliases] = "-DLIBOMP_INSTALL_ALIASES=ON,-DLIBOMP_INSTALL_ALIASES=OFF,"
 
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
