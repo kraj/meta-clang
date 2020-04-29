@@ -37,3 +37,5 @@ COMPATIBLE_HOST_riscv32 = "null"
 COMPATIBLE_HOST_mips64 = "null"
 
 RDEPENDS_${PN} = "libelf libffi"
+
+BBCLASSEXTEND = "native nativesdk"
