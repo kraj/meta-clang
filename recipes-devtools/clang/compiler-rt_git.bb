@@ -90,3 +90,6 @@ ALLOW_EMPTY_${PN}-dev = "1"
 
 TOOLCHAIN_forcevariable = "clang"
 SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+
+# Can't be built with ccache
+CCACHE_DISABLE = "1"
