@@ -14,17 +14,21 @@ LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=d75288d1ce0450b28b8d58a284c09c
 
 inherit cmake pkgconfig perlnative
 
+DEPENDS += "elfutils libffi"
+
 EXTRA_OECMAKE += "-DOPENMP_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')}"
 
 OECMAKE_SOURCEPATH = "${S}/openmp"
 
-PACKAGECONFIG ?= "ompt-tools"
-PACKAGECONFIG_remove_arm = "ompt-tools"
-PACKAGECONFIG_remove_mipsarch = "ompt-tools"
-PACKAGECONFIG_remove_powerpc = "ompt-tools"
+PACKAGECONFIG ?= "ompt-tools offloading-plugin"
+
+PACKAGECONFIG_remove_arm = "ompt-tools offloading-plugin"
+PACKAGECONFIG_remove_mipsarch = "ompt-tools offloading-plugin"
+PACKAGECONFIG_remove_powerpc = "ompt-tools offloading-plugin"
 
 PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_TOOLS=OFF,"
 PACKAGECONFIG[aliases] = "-DLIBOMP_INSTALL_ALIASES=ON,-DLIBOMP_INSTALL_ALIASES=OFF,"
+PACKAGECONFIG[offloading-plugin] = ",,elfutils libffi,libelf libffi"
 
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
@@ -33,7 +37,5 @@ INSANE_SKIP_${PN} = "dev-so"
 COMPATIBLE_HOST_riscv64 = "null"
 COMPATIBLE_HOST_riscv32 = "null"
 COMPATIBLE_HOST_mips64 = "null"
-
-RDEPENDS_${PN} = "libelf libffi"
 
 BBCLASSEXTEND = "native nativesdk"
