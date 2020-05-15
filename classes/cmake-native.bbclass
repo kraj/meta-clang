@@ -1,6 +1,3 @@
-# We need to unset CCACHE otherwise cmake gets too confused
-CCACHE = ""
-
 # Native C/C++ compiler (without cpu arch/tune arguments)
 OECMAKE_NATIVE_C_COMPILER ?= "`echo ${BUILD_CC} | sed 's/^\([^ ]*\).*/\1/'`"
 OECMAKE_NATIVE_CXX_COMPILER ?= "`echo ${BUILD_CXX} | sed 's/^\([^ ]*\).*/\1/'`"
