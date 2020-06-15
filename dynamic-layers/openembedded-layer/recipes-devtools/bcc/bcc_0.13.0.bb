@@ -12,10 +12,11 @@ DEPENDS += "bison-native \
             clang \
             "
 
-RDEPENDS_${PN} += "bash python3 python3-core xz"
+RDEPENDS_${PN} += "bash python3 python3-core python3-setuptools xz"
 
 SRC_URI = "gitsm://github.com/iovisor/bcc \
            file://0001-python-CMakeLists.txt-Remove-check-for-host-etc-debi.patch \
+           file://0001-tools-opensnoop-snoop-do_sys_openat2-for-kernel-v5.6.patch \
            "
 
 SRCREV = "942227484d3207f6a42103674001ef01fb5335a0"

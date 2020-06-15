@@ -1,0 +1,51 @@
+From 935f7e47f54df1af30f4a1cdfd2f385863ab9dec Mon Sep 17 00:00:00 2001
+From: He Zhe <zhe.he@windriver.com>
+Date: Mon, 15 Jun 2020 07:05:24 +0000
+Subject: [PATCH] tools: opensnoop: snoop do_sys_openat2 for kernel v5.6 and
+ later
+
+Since kernel v5.6, fddb5d430ad9 ("open: introduce openat2(2) syscall"),
+do_sys_openat2 instead of do_sys_open has been used as entry function for open.
+
+Upstream-Status: Inappropriate, upstream context has changed and needs more
+                 tweak.
+
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+ tools/opensnoop.py | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/tools/opensnoop.py b/tools/opensnoop.py
+index 6d1388b3..3f7e48a3 100755
+--- a/tools/opensnoop.py
++++ b/tools/opensnoop.py
+@@ -21,6 +21,8 @@ from bcc.utils import printb
+ import argparse
+ from datetime import datetime, timedelta
+ import os
++import platform
++from pkg_resources import parse_version
+ 
+ # arguments
+ examples = """examples:
+@@ -195,8 +197,15 @@ if debug or args.ebpf:
+ 
+ # initialize BPF
+ b = BPF(text=bpf_text)
+-b.attach_kprobe(event="do_sys_open", fn_name="trace_entry")
+-b.attach_kretprobe(event="do_sys_open", fn_name="trace_return")
++
++# Since kernel v5.6, do_sys_openat2 instead of do_sys_open has been used as entry function for open
++if parse_version(platform.uname().release.split('-')[0]) > parse_version('5.6.0'):
++    entry = "do_sys_openat2"
++else:
++    entry = "do_sys_open"
++
++b.attach_kprobe(event=entry, fn_name="trace_entry")
++b.attach_kretprobe(event=entry, fn_name="trace_return")
+ 
+ initial_ts = 0
+ 
+-- 
+2.24.1
+
