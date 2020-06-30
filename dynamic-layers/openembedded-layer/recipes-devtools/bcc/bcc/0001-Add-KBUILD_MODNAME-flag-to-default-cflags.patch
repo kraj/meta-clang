@@ -1,0 +1,27 @@
+From 9e2415679e41adacc59dd7a426d505232f0b7129 Mon Sep 17 00:00:00 2001
+From: William Findlay <william@williamfindlay.com>
+Date: Wed, 17 Jun 2020 12:07:48 -0400
+Subject: [PATCH 1/2] Add KBUILD_MODNAME flag to default cflags
+
+Upstream-Status: Backported [https://github.com/iovisor/bcc/pull/2974/commits/badd85c58549d0e7f0d536490c41213141e180c5]
+
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+ src/cc/frontends/clang/kbuild_helper.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/cc/frontends/clang/kbuild_helper.cc b/src/cc/frontends/clang/kbuild_helper.cc
+index db5ca7f6..e3aade89 100644
+--- a/src/cc/frontends/clang/kbuild_helper.cc
++++ b/src/cc/frontends/clang/kbuild_helper.cc
+@@ -101,6 +101,7 @@ int KBuildHelper::get_flags(const char *uname_machine, vector<string> *cflags) {
+   cflags->push_back("-D__HAVE_BUILTIN_BSWAP16__");
+   cflags->push_back("-D__HAVE_BUILTIN_BSWAP32__");
+   cflags->push_back("-D__HAVE_BUILTIN_BSWAP64__");
++  cflags->push_back("-DKBUILD_MODNAME=\"bcc\"");
+ 
+   // If ARCH env variable is set, pass this along.
+   if (archenv)
+-- 
+2.26.2
+
