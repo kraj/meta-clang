@@ -11,7 +11,7 @@ clone:
 
 trigger:
   branch:
-    - master
+    - dunfell
   event:
     - push
     - pull_request
@@ -21,7 +21,7 @@ steps:
     commands:
       - git clone --recurse-submodules -j8 -b $DRONE_SOURCE_BRANCH git://github.com/YoeDistro/yoe-distro.git yoe
       - cd yoe
-      - git checkout master
+      - git checkout dunfell
       - git pull
       - git submodule update --recursive --init
       - rm -rf sources/meta-clang
@@ -61,7 +61,7 @@ clone:
 
 trigger:
   branch:
-    - master
+    - dunfell
   event:
     - push
     - pull_request
