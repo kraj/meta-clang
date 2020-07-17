@@ -1,7 +1,7 @@
-From dd6a749dee10f537fc7cb558ace319041a63e5f3 Mon Sep 17 00:00:00 2001
+From 9f3168a04fcf9b44c7850c5977e8f1dfa2c4a2ff Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Nov 2019 17:00:29 -0800
-Subject: [PATCH] Check for atomic<double> intrinsics
+Subject: [PATCH 18/24] Check for atomic<double> intrinsics
 
 On some architectures e.g. x86/32bit gcc decides to inline calls to
 double atomic variables but clang does not and defers it to libatomic
@@ -15,10 +15,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/llvm/cmake/modules/CheckAtomic.cmake b/llvm/cmake/modules/CheckAtomic.cmake
-index 29f3bdd57f0..6460842cf63 100644
+index d0b75f3bcc9..8ebe83b0d31 100644
 --- a/llvm/cmake/modules/CheckAtomic.cmake
 +++ b/llvm/cmake/modules/CheckAtomic.cmake
-@@ -26,9 +26,10 @@ function(check_working_cxx_atomics64 varname)
+@@ -30,9 +30,10 @@ function(check_working_cxx_atomics64 varname)
  #include <atomic>
  #include <cstdint>
  std::atomic<uint64_t> x (0);
@@ -30,3 +30,6 @@ index 29f3bdd57f0..6460842cf63 100644
  }
  " ${varname})
    set(CMAKE_REQUIRED_FLAGS ${OLD_CMAKE_REQUIRED_FLAGS})
+-- 
+2.27.0
+

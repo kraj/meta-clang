@@ -1,7 +1,8 @@
-From 6330360e13936fca5625e39ceed7441b45c3efd3 Mon Sep 17 00:00:00 2001
+From 70646ae410a97feb236b84bbb46fa8ff8e7da79a Mon Sep 17 00:00:00 2001
 From: Jeremy Puhlman <jpuhlman@mvista.com>
 Date: Thu, 16 Jan 2020 21:16:10 +0000
-Subject: [PATCH] libcxx: Add compiler runtime library to link step for libcxx
+Subject: [PATCH 20/24] libcxx: Add compiler runtime library to link step for
+ libcxx
 
 This corrects "undefined reference to __divti3"
 
@@ -14,24 +15,27 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/libcxx/src/CMakeLists.txt b/libcxx/src/CMakeLists.txt
-index 120505fe18d..b337fa2e403 100644
+index 2001c09761d..59ba5f7490c 100644
 --- a/libcxx/src/CMakeLists.txt
 +++ b/libcxx/src/CMakeLists.txt
-@@ -160,7 +160,7 @@ if (LIBCXX_ENABLE_SHARED)
-   if(COMMAND llvm_setup_rpath)
+@@ -164,7 +164,7 @@ if (LIBCXX_ENABLE_SHARED)
      llvm_setup_rpath(cxx_shared)
    endif()
--  target_link_libraries(cxx_shared PRIVATE ${LIBCXX_LIBRARIES})
-+  target_link_libraries(cxx_shared PRIVATE ${LIBCXX_LIBRARIES} "$$($$CC --print-libgcc-file-name)")
+   target_link_libraries(cxx_shared PUBLIC cxx-headers
+-                                   PRIVATE ${LIBCXX_LIBRARIES})
++                                   PRIVATE ${LIBCXX_LIBRARIES} "$$($$CC --print-libgcc-file-name)")
    set_target_properties(cxx_shared
      PROPERTIES
        COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
-@@ -238,7 +238,7 @@ endif()
- # Build the static library.
+@@ -246,7 +246,7 @@ endif()
  if (LIBCXX_ENABLE_STATIC)
    add_library(cxx_static STATIC ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
--  target_link_libraries(cxx_static PRIVATE ${LIBCXX_LIBRARIES})
-+  target_link_libraries(cxx_static PRIVATE ${LIBCXX_LIBRARIES} "$$($$CC --print-libgcc-file-name)")
+   target_link_libraries(cxx_static PUBLIC cxx-headers
+-                                   PRIVATE ${LIBCXX_LIBRARIES})
++                                   PRIVATE ${LIBCXX_LIBRARIES} "$$($$CC --print-libgcc-file-name)")
    set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
    set_target_properties(cxx_static
      PROPERTIES
+-- 
+2.27.0
+

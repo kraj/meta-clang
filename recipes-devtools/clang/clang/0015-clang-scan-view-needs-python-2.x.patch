@@ -1,7 +1,7 @@
-From 0f969665b80310b90bcb304b2e60c4493687c5a6 Mon Sep 17 00:00:00 2001
+From fa612803a3b55d763ad5498babd2f6bc81c6109b Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 15 May 2018 10:28:43 -0700
-Subject: [PATCH] clang: scan-view needs python 2.x
+Subject: [PATCH 15/24] clang: scan-view needs python 2.x
 
 Some distributions e.g. archlinux have switched to pointing
 python to python3, therefore its better to be specific about
@@ -22,3 +22,6 @@ index 6165432e7af..04ad518a60c 100755
  
  from __future__ import print_function
  
+-- 
+2.27.0
+

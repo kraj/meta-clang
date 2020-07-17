@@ -1,7 +1,8 @@
-From 805b4ce637faedee91bb92fdae273b01bd5aa363 Mon Sep 17 00:00:00 2001
+From 30b2a171ab5b3649ae34d1ccab4920435ef4167e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
-Subject: [PATCH] clang: Look inside the target sysroot for compiler runtime
+Subject: [PATCH 12/24] clang: Look inside the target sysroot for compiler
+ runtime
 
 In OE compiler-rt and libc++ are built and staged into target
 sysroot and not into resourcedir which is relative to clang
@@ -15,7 +16,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChain.cpp b/clang/lib/Driver/ToolChain.cpp
-index cab97b1a601..059a5e62c40 100644
+index b8c12fc9241..ee53fd4925f 100644
 --- a/clang/lib/Driver/ToolChain.cpp
 +++ b/clang/lib/Driver/ToolChain.cpp
 @@ -14,6 +14,7 @@
@@ -26,7 +27,7 @@ index cab97b1a601..059a5e62c40 100644
  #include "clang/Config/config.h"
  #include "clang/Driver/Action.h"
  #include "clang/Driver/Driver.h"
-@@ -379,7 +380,10 @@ StringRef ToolChain::getOSLibName() const {
+@@ -397,7 +398,10 @@ StringRef ToolChain::getOSLibName() const {
  }
  
  std::string ToolChain::getCompilerRTPath() const {
@@ -38,3 +39,6 @@ index cab97b1a601..059a5e62c40 100644
    if (Triple.isOSUnknown()) {
      llvm::sys::path::append(Path, "lib");
    } else {
+-- 
+2.27.0
+

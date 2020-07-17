@@ -24,15 +24,15 @@ SRC_URI = "\
     file://0014-clang-Fix-ldso-for-musl-on-x86-and-x32-architectures.patch \
     file://0015-clang-scan-view-needs-python-2.x.patch \
     file://0016-clang-Add-lpthread-and-ldl-along-with-lunwind-for-st.patch \
-    file://0017-libclang-Use-CMAKE_DL_LIBS-for-deducing-libdl.patch \
-    file://0018-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
-    file://0019-Check-for-atomic-double-intrinsics.patch \
-    file://0020-clang-Enable-SSP-and-PIE-by-default.patch \
-    file://0021-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
-    file://0022-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
-    file://0023-clang-Fix-resource-dir-location-for-cross-toolchains.patch \
-    file://0024-fix-path-to-libffi.patch \
-    file://0025-clang-driver-Add-dyld-prefix-when-checking-sysroot-f.patch \
+    file://0017-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
+    file://0018-Check-for-atomic-double-intrinsics.patch \
+    file://0019-clang-Enable-SSP-and-PIE-by-default.patch \
+    file://0020-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
+    file://0021-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch \
+    file://0022-clang-Fix-resource-dir-location-for-cross-toolchains.patch \
+    file://0023-fix-path-to-libffi.patch \
+    file://0024-clang-driver-Add-dyld-prefix-when-checking-sysroot-f.patch \
+    file://0025-libcxx-Define-__NR_futex-to-be-__NR_futex_time64-on-.patch \
 "
 
 # Fallback to no-PIE if not set
