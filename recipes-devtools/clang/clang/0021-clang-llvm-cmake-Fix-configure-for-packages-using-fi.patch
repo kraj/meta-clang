@@ -1,7 +1,7 @@
-From 9f5949b795a92f85c98277fd8d72954fb52df164 Mon Sep 17 00:00:00 2001
+From f48b53ec65d4138139339f4d1cdc12c4e1a1c042 Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
-Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
+Subject: [PATCH 21/24] clang,llvm: cmake: Fix configure for packages using
  find_package()
 
 Currently, when a package (i.e. bcc [https://github.com/iovisor/bcc.git])
@@ -32,10 +32,10 @@ Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
  3 files changed, 33 deletions(-)
 
 diff --git a/clang/cmake/modules/AddClang.cmake b/clang/cmake/modules/AddClang.cmake
-index 577cc11ab01..5c859d86069 100644
+index 704278a0e93..6ea99c90772 100644
 --- a/clang/cmake/modules/AddClang.cmake
 +++ b/clang/cmake/modules/AddClang.cmake
-@@ -151,15 +151,8 @@ macro(add_clang_tool name)
+@@ -161,15 +161,8 @@ macro(add_clang_tool name)
    add_dependencies(${name} clang-resource-headers)
  
    if (CLANG_BUILD_TOOLS)
@@ -51,7 +51,7 @@ index 577cc11ab01..5c859d86069 100644
        RUNTIME DESTINATION bin
        COMPONENT ${name})
  
-@@ -168,7 +161,6 @@ macro(add_clang_tool name)
+@@ -178,7 +171,6 @@ macro(add_clang_tool name)
                                 DEPENDS ${name}
                                 COMPONENT ${name})
      endif()
@@ -60,10 +60,10 @@ index 577cc11ab01..5c859d86069 100644
  endmacro()
  
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index fd69786544a..70580ccb129 100644
+index 333167bfb6b..f00fd98bdb2 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
-@@ -1045,15 +1045,8 @@ macro(add_llvm_tool name)
+@@ -1169,15 +1169,8 @@ macro(add_llvm_tool name)
  
    if ( ${name} IN_LIST LLVM_TOOLCHAIN_TOOLS OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
      if( LLVM_BUILD_TOOLS )
@@ -79,7 +79,7 @@ index fd69786544a..70580ccb129 100644
                RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1064,9 +1057,6 @@ macro(add_llvm_tool name)
+@@ -1188,9 +1181,6 @@ macro(add_llvm_tool name)
        endif()
      endif()
    endif()
@@ -89,7 +89,7 @@ index fd69786544a..70580ccb129 100644
    set_target_properties(${name} PROPERTIES FOLDER "Tools")
  endmacro(add_llvm_tool name)
  
-@@ -1104,15 +1094,8 @@ macro(add_llvm_utility name)
+@@ -1228,15 +1218,8 @@ macro(add_llvm_utility name)
    set_target_properties(${name} PROPERTIES FOLDER "Utils")
    if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
      if (LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS)
@@ -105,7 +105,7 @@ index fd69786544a..70580ccb129 100644
                RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1121,7 +1104,6 @@ macro(add_llvm_utility name)
+@@ -1245,7 +1228,6 @@ macro(add_llvm_utility name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
@@ -114,10 +114,10 @@ index fd69786544a..70580ccb129 100644
        set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS_BUILDTREE_ONLY ${name})
      endif()
 diff --git a/llvm/cmake/modules/TableGen.cmake b/llvm/cmake/modules/TableGen.cmake
-index 9d2fcd9a793..acdb898149d 100644
+index 73c1e96d3d9..7b1c33961c1 100644
 --- a/llvm/cmake/modules/TableGen.cmake
 +++ b/llvm/cmake/modules/TableGen.cmake
-@@ -161,14 +161,8 @@ macro(add_tablegen target project)
+@@ -183,14 +183,8 @@ macro(add_tablegen target project)
    endif()
  
    if ((${project} STREQUAL LLVM OR ${project} STREQUAL MLIR) AND NOT LLVM_INSTALL_TOOLCHAIN_ONLY AND LLVM_BUILD_UTILS)
@@ -132,9 +132,12 @@ index 9d2fcd9a793..acdb898149d 100644
              COMPONENT ${target}
              RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR})
      if(NOT LLVM_ENABLE_IDE)
-@@ -177,5 +171,4 @@ macro(add_tablegen target project)
+@@ -199,5 +193,4 @@ macro(add_tablegen target project)
                                 COMPONENT ${target})
      endif()
    endif()
 -  set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${target})
  endmacro()
+-- 
+2.27.0
+

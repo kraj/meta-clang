@@ -1,7 +1,7 @@
-From 7730422bbca50431386391ed341c5d5ed649d14e Mon Sep 17 00:00:00 2001
+From 556e35f02d3e92d149c25547ddc7c7cc8f4cdc84 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
-Subject: [PATCH] compiler-rt: Disable tsan on OE/glibc
+Subject: [PATCH 05/24] compiler-rt: Disable tsan on OE/glibc
 
 It does not build see
 http://lists.llvm.org/pipermail/llvm-dev/2016-July/102235.html
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/compiler-rt/cmake/config-ix.cmake b/compiler-rt/cmake/config-ix.cmake
-index 3aad08e8896..a979d38c7a6 100644
+index 2edc1dabd90..ec4b5e7ee93 100644
 --- a/compiler-rt/cmake/config-ix.cmake
 +++ b/compiler-rt/cmake/config-ix.cmake
-@@ -653,7 +653,7 @@ else()
+@@ -692,7 +692,7 @@ else()
  endif()
  
  if (COMPILER_RT_HAS_SANITIZER_COMMON AND TSAN_SUPPORTED_ARCH AND
@@ -38,3 +38,6 @@ index fcd651ebe42..821de915be8 100644
  set(SUPPORTED_TOOLS)
    foreach(SANITIZER_TOOL ${SUPPORTED_TOOLS_INIT})
      string(TOUPPER ${SANITIZER_TOOL} SANITIZER_TOOL_UPPER)
+-- 
+2.27.0
+

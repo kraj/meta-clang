@@ -1,8 +1,8 @@
-From a1fa38408f7524c8452709574b3d83b72ebcfa38 Mon Sep 17 00:00:00 2001
+From a1d6f91cac4f24890081be8f594eef7ef09919e3 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 31 Jul 2019 22:51:39 -0700
-Subject: [PATCH] clang: Add -lpthread and -ldl along with -lunwind for static
- linking
+Subject: [PATCH 16/24] clang: Add -lpthread and -ldl along with -lunwind for
+ static linking
 
 When doing static liking with --unwindlib=libunwind -static we encounter
 undefined symbols
@@ -20,15 +20,15 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-index 37ec7346857..c849b2242e9 100644
+index 1cac5a0822a..29fe4a33a14 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-@@ -1211,8 +1211,13 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
-   case ToolChain::UNW_CompilerRT:
-     if (LGT == LibGccType::StaticLibGcc)
-       CmdArgs.push_back("-l:libunwind.a");
--    else
-+    else {
+@@ -1275,8 +1275,13 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
+         // Let the linker choose between libunwind.dll.a and libunwind.a
+         // depending on what's available, and depending on the -static flag
+         CmdArgs.push_back("-lunwind");
+-    } else
++    } else {
        CmdArgs.push_back("-l:libunwind.so");
 +      if (Args.hasArg(options::OPT_static)) {
 +        CmdArgs.push_back("-lpthread");
@@ -38,3 +38,6 @@ index 37ec7346857..c849b2242e9 100644
      break;
    }
  
+-- 
+2.27.0
+
