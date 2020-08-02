@@ -24,7 +24,7 @@ DEPENDS += "ninja-native"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 
 LIBCPLUSPLUS = ""
-COMPILER_RT ?= "-rtlib=compiler-rt ${UNWINDLIB}"
+COMPILER_RT ?= "${@bb.utils.contains("PACKAGECONFIG", "compiler-rt", "-rtlib=compiler-rt", "", d)} ${UNWINDLIB}"
 UNWINDLIB ?= "${@bb.utils.contains("RUNTIME", "gnu", "--unwindlib=libgcc", "", d)}"
 
 INHIBIT_DEFAULT_DEPS = "1"
