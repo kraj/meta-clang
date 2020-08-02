@@ -11,8 +11,6 @@ require common-source.inc
 inherit cmake python3native
 
 PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind", "", d)}"
-PACKAGECONFIG_riscv32 = "exceptions"
-PACKAGECONFIG_riscv64 = "exceptions"
 PACKAGECONFIG_append_armv5 = " no-atomics"
 
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=ON -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_STATIC_LIBRARY=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"

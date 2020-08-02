@@ -1,0 +1,32 @@
+From b0332a97ab1abdddadbe34dc30ee2b8e7d5cb2f9 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sun, 2 Aug 2020 10:11:00 -0700
+Subject: [PATCH] libcxx: Define __NR_futex to be __NR_futex_time64 on riscv32
+
+RISCV glibc has decided to use 64bit time_t from get go unlike
+other 32bit architecture therefore aliasing __NR_futex to
+__NR_futex_time64 helps avoid the below errors on rv32
+
+Upstream-Status: Submittted [https://reviews.llvm.org/D85095]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ libcxx/src/atomic.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/libcxx/src/atomic.cpp b/libcxx/src/atomic.cpp
+index 65d4837bb4a7..e9969b8e570e 100644
+--- a/libcxx/src/atomic.cpp
++++ b/libcxx/src/atomic.cpp
+@@ -16,6 +16,9 @@
+ #include <iostream>
+ 
+ #ifdef __linux__
++#if !defined(__NR_futex) && defined(__riscv) && __riscv_xlen == 32
++# define __NR_futex __NR_futex_time64
++#endif
+ 
+ #include <unistd.h>
+ #include <linux/futex.h>
+-- 
+2.28.0
+
