@@ -10,7 +10,7 @@ require common-source.inc
 
 inherit cmake python3native
 
-PACKAGECONFIG ??= "compiler-rt unwind exceptions"
+PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind", "", d)}"
 PACKAGECONFIG_riscv32 = "exceptions"
 PACKAGECONFIG_riscv64 = "exceptions"
 PACKAGECONFIG_append_armv5 = " no-atomics"
@@ -18,12 +18,14 @@ PACKAGECONFIG_append_armv5 = " no-atomics"
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=ON -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_STATIC_LIBRARY=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"
 PACKAGECONFIG[exceptions] = "-DLIBCXXABI_ENABLE_EXCEPTIONS=ON -DDLIBCXX_ENABLE_EXCEPTIONS=ON,-DLIBCXXABI_ENABLE_EXCEPTIONS=OFF -DLIBCXX_ENABLE_EXCEPTIONS=OFF -DCMAKE_REQUIRED_FLAGS='-fno-exceptions',"
 PACKAGECONFIG[no-atomics] = "-D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF -DCMAKE_SHARED_LINKER_FLAGS='-latomic',,"
-PACKAGECONFIG[compiler-rt] = "-DLIBCXXABI_USE_COMPILER_RT=ON -DLIBCXX_USE_COMPILER_RT=ON,-DLIBCXXABI_USE_COMPILER_RT=OFF -DLIBCXX_USE_COMPILER_RT=OFF,compiler-rt"
+PACKAGECONFIG[compiler-rt] = ",,compiler-rt"
 
 DEPENDS += "ninja-native"
-DEPENDS_append_class-target = " compiler-rt clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
+DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 
 LIBCPLUSPLUS = ""
+COMPILER_RT ?= "-rtlib=compiler-rt ${UNWINDLIB}"
+UNWINDLIB ?= "${@bb.utils.contains("RUNTIME", "gnu", "--unwindlib=libgcc", "", d)}"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
@@ -40,16 +42,15 @@ OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "\
                   -DCMAKE_CROSSCOMPILING=ON \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
+                  -DLLVM_ENABLE_RTTI=ON \
                   -DLIBUNWIND_ENABLE_SHARED=OFF \
                   -DLIBUNWIND_ENABLE_THREADS=OFF \
                   -DLIBUNWIND_WEAK_PTHREAD_LIB=ON \
                   -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON \
                   -DLIBCXXABI_INCLUDE_TESTS=OFF \
                   -DLIBCXXABI_ENABLE_SHARED=ON \
-                  -DLIBCXXABI_USE_COMPILER_RT=ON \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI=libcxxabi \
-                  -DLIBCXX_USE_COMPILER_RT=ON \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib${LLVM_LIBDIR_SUFFIX} \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
