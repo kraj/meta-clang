@@ -19,9 +19,9 @@ trigger:
 steps:
   - name: build
     commands:
-      - git clone --recurse-submodules -j8 -b $DRONE_SOURCE_BRANCH git://github.com/YoeDistro/yoe-distro.git yoe
+      - git clone --recurse-submodules -j8 git://github.com/YoeDistro/yoe-distro.git yoe
       - cd yoe
-      - git checkout master
+      - git checkout -b test origin/master
       - git pull
       - git submodule update --recursive --init
       - rm -rf sources/meta-clang
