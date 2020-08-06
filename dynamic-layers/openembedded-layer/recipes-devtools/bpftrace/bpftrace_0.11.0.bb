@@ -13,14 +13,16 @@ DEPENDS += "bison-native \
 RDEPENDS_${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace \
+	   file://0001-bpftrace-Fix-compilation-with-LLVM-11.patch \
            "
-SRCREV = "b1200771b61fd77ed7c5b326e7960d24514dd961"
+SRCREV = "a9ba414ea8212e825cd48ac536aba66af76c0cfc"
 
 S = "${WORKDIR}/git"
 
 inherit cmake
 
 EXTRA_OECMAKE = " \
+    -DCMAKE_ENABLE_EXPORTS=1 \
     -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_TESTING=OFF \
 "
