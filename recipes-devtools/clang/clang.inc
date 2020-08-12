@@ -20,4 +20,7 @@ LLDBMD5SUM = "2e0d44968471fcde980034dbb826bea9"
 
 LLVM_LIBDIR_SUFFIX="${@d.getVar('baselib').replace('lib', '')}"
 
+# set the default pigz thread
+export PIGZ = "-p ${@oe.utils.cpu_count(at_least=2)}"
+
 require common.inc
