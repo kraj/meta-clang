@@ -3,7 +3,7 @@
 # meta-clang (a C language family frontend and LLVM compiler backend)
 
 This layer provides [clang/llvm](http://clang.llvm.org/) as alternative to your system
-C/C++ compiler for OpenEmbedded based distributions along with gcc
+C/C++ compiler for OpenEmbedded or Yocto Project based distributions along with gcc
 
 # Getting Started
 
@@ -11,6 +11,15 @@ C/C++ compiler for OpenEmbedded based distributions along with gcc
 git clone git://github.com/openembedded/openembedded-core.git
 cd openembedded-core
 git clone git://github.com/openembedded/bitbake.git
+git clone git://github.com/kraj/meta-clang.git
+
+$ . ./oe-init-build-env
+```
+If using poky ( Yocto project reference Distribution )
+
+```shell
+git clone https://git.yoctoproject.org/git/poky
+cd poky
 git clone git://github.com/kraj/meta-clang.git
 
 $ . ./oe-init-build-env
