@@ -1,0 +1,169 @@
+From 95c9229ea9f029a1b9e8dcbe86fc67f037c0dfa2 Mon Sep 17 00:00:00 2001
+From: Chen HaoNing <owenchen1997@yeah.net>
+Date: Wed, 1 Jul 2020 15:49:17 -0500
+Subject: [PATCH] Replace kprobe function "blk_account_io_completion" to
+ "blk_account_io_done" for kernel version >= 5.8.0
+
+The kernel function "blk_account_io_completion" is not available anymore as attach point of Kprobe as of kernel version 5.8.0. Therefore, after discussions, we decided to use function "blk_account_io_done" instead in every kprobe attachment to "blk_account_io_completion".
+
+Upstream-Status: Backport
+
+---
+ docs/reference_guide.md               | 4 ++--
+ docs/tutorial_bcc_python_developer.md | 6 +++---
+ examples/lua/kprobe-latency.lua       | 2 +-
+ examples/tracing/bitehist.py          | 2 +-
+ examples/tracing/disksnoop.py         | 2 +-
+ tools/biosnoop.lua                    | 2 +-
+ tools/biosnoop.py                     | 2 +-
+ tools/biotop.py                       | 2 +-
+ tools/old/biosnoop.py                 | 2 +-
+ 9 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/docs/reference_guide.md b/docs/reference_guide.md
+index 924fa203..9eaf27a5 100644
+--- a/docs/reference_guide.md
++++ b/docs/reference_guide.md
+@@ -1784,7 +1784,7 @@ Example:
+ b = BPF(text="""
+ BPF_HISTOGRAM(dist);
+ 
+-int kprobe__blk_account_io_completion(struct pt_regs *ctx, struct request *req)
++int kprobe__blk_account_io_done(struct pt_regs *ctx, struct request *req)
+ {
+ 	dist.increment(bpf_log2l(req->__data_len / 1024));
+ 	return 0;
+@@ -1835,7 +1835,7 @@ Example:
+ b = BPF(text="""
+ BPF_HISTOGRAM(dist);
+ 
+-int kprobe__blk_account_io_completion(struct pt_regs *ctx, struct request *req)
++int kprobe__blk_account_io_done(struct pt_regs *ctx, struct request *req)
+ {
+ 	dist.increment(req->__data_len / 1024);
+ 	return 0;
+diff --git a/docs/tutorial_bcc_python_developer.md b/docs/tutorial_bcc_python_developer.md
+index 0cb0e780..b3b8ed6b 100644
+--- a/docs/tutorial_bcc_python_developer.md
++++ b/docs/tutorial_bcc_python_developer.md
+@@ -220,7 +220,7 @@ void trace_completion(struct pt_regs *ctx, struct request *req) {
+ 
+ b.attach_kprobe(event="blk_start_request", fn_name="trace_start")
+ b.attach_kprobe(event="blk_mq_start_request", fn_name="trace_start")
+-b.attach_kprobe(event="blk_account_io_completion", fn_name="trace_completion")
++b.attach_kprobe(event="blk_account_io_done", fn_name="trace_completion")
+ [...]
+ ```
+ 
+@@ -351,7 +351,7 @@ b = BPF(text="""
+ 
+ BPF_HISTOGRAM(dist);
+ 
+-int kprobe__blk_account_io_completion(struct pt_regs *ctx, struct request *req)
++int kprobe__blk_account_io_done(struct pt_regs *ctx, struct request *req)
+ {
+ 	dist.increment(bpf_log2l(req->__data_len / 1024));
+ 	return 0;
+@@ -374,7 +374,7 @@ b["dist"].print_log2_hist("kbytes")
+ A recap from earlier lessons:
+ 
+ - ```kprobe__```: This prefix means the rest will be treated as a kernel function name that will be instrumented using kprobe.
+-- ```struct pt_regs *ctx, struct request *req```: Arguments to kprobe. The ```ctx``` is registers and BPF context, the ```req``` is the first argument to the instrumented function: ```blk_account_io_completion()```.
++- ```struct pt_regs *ctx, struct request *req```: Arguments to kprobe. The ```ctx``` is registers and BPF context, the ```req``` is the first argument to the instrumented function: ```blk_account_io_done()```.
+ - ```req->__data_len```: Dereferencing that member.
+ 
+ New things to learn:
+diff --git a/examples/lua/kprobe-latency.lua b/examples/lua/kprobe-latency.lua
+index 60ac2c1c..98464e5c 100644
+--- a/examples/lua/kprobe-latency.lua
++++ b/examples/lua/kprobe-latency.lua
+@@ -30,7 +30,7 @@ local lat_map = bpf.map('array', bins)
+ local trace_start = bpf.kprobe('myprobe:blk_start_request', function (ptregs)
+ 	map[ptregs.parm1] = time()
+ end, false, -1, 0)
+-local trace_end = bpf.kprobe('myprobe2:blk_account_io_completion', function (ptregs)
++local trace_end = bpf.kprobe('myprobe2:blk_account_io_done', function (ptregs)
+ 	-- The lines below are computing index
+ 	-- using log10(x)*10 = log2(x)*10/log2(10) = log2(x)*3
+ 	-- index = 29 ~ 1 usec
+diff --git a/examples/tracing/bitehist.py b/examples/tracing/bitehist.py
+index 4d7c7958..89ceb307 100755
+--- a/examples/tracing/bitehist.py
++++ b/examples/tracing/bitehist.py
+@@ -25,7 +25,7 @@ b = BPF(text="""
+ BPF_HISTOGRAM(dist);
+ BPF_HISTOGRAM(dist_linear);
+ 
+-int kprobe__blk_account_io_completion(struct pt_regs *ctx, struct request *req)
++int kprobe__blk_account_io_done(struct pt_regs *ctx, struct request *req)
+ {
+ 	dist.increment(bpf_log2l(req->__data_len / 1024));
+ 	dist_linear.increment(req->__data_len / 1024);
+diff --git a/examples/tracing/disksnoop.py b/examples/tracing/disksnoop.py
+index 1101e6f2..a35e1abd 100755
+--- a/examples/tracing/disksnoop.py
++++ b/examples/tracing/disksnoop.py
+@@ -46,7 +46,7 @@ void trace_completion(struct pt_regs *ctx, struct request *req) {
+ if BPF.get_kprobe_functions(b'blk_start_request'):
+         b.attach_kprobe(event="blk_start_request", fn_name="trace_start")
+ b.attach_kprobe(event="blk_mq_start_request", fn_name="trace_start")
+-b.attach_kprobe(event="blk_account_io_completion", fn_name="trace_completion")
++b.attach_kprobe(event="blk_account_io_done", fn_name="trace_completion")
+ 
+ # header
+ print("%-18s %-2s %-7s %8s" % ("TIME(s)", "T", "BYTES", "LAT(ms)"))
+diff --git a/tools/biosnoop.lua b/tools/biosnoop.lua
+index 8d9b6a19..3e0441e2 100755
+--- a/tools/biosnoop.lua
++++ b/tools/biosnoop.lua
+@@ -126,7 +126,7 @@ return function(BPF, utils)
+   bpf:attach_kprobe{event="blk_account_io_start", fn_name="trace_pid_start"}
+   bpf:attach_kprobe{event="blk_start_request", fn_name="trace_req_start"}
+   bpf:attach_kprobe{event="blk_mq_start_request", fn_name="trace_req_start"}
+-  bpf:attach_kprobe{event="blk_account_io_completion",
++  bpf:attach_kprobe{event="blk_account_io_done",
+       fn_name="trace_req_completion"}
+ 
+   print("%-14s %-14s %-6s %-7s %-2s %-9s %-7s %7s" % {"TIME(s)", "COMM", "PID",
+diff --git a/tools/biosnoop.py b/tools/biosnoop.py
+index ff9b842b..5bbc77cd 100755
+--- a/tools/biosnoop.py
++++ b/tools/biosnoop.py
+@@ -160,7 +160,7 @@ b.attach_kprobe(event="blk_account_io_start", fn_name="trace_pid_start")
+ if BPF.get_kprobe_functions(b'blk_start_request'):
+     b.attach_kprobe(event="blk_start_request", fn_name="trace_req_start")
+ b.attach_kprobe(event="blk_mq_start_request", fn_name="trace_req_start")
+-b.attach_kprobe(event="blk_account_io_completion",
++b.attach_kprobe(event="blk_account_io_done",
+     fn_name="trace_req_completion")
+ 
+ # header
+diff --git a/tools/biotop.py b/tools/biotop.py
+index cad3759a..d3a42ef7 100755
+--- a/tools/biotop.py
++++ b/tools/biotop.py
+@@ -178,7 +178,7 @@ b.attach_kprobe(event="blk_account_io_start", fn_name="trace_pid_start")
+ if BPF.get_kprobe_functions(b'blk_start_request'):
+     b.attach_kprobe(event="blk_start_request", fn_name="trace_req_start")
+ b.attach_kprobe(event="blk_mq_start_request", fn_name="trace_req_start")
+-b.attach_kprobe(event="blk_account_io_completion",
++b.attach_kprobe(event="blk_account_io_done",
+     fn_name="trace_req_completion")
+ 
+ print('Tracing... Output every %d secs. Hit Ctrl-C to end' % interval)
+diff --git a/tools/old/biosnoop.py b/tools/old/biosnoop.py
+index 37ee3f9c..847ab91b 100755
+--- a/tools/old/biosnoop.py
++++ b/tools/old/biosnoop.py
+@@ -98,7 +98,7 @@ int trace_req_completion(struct pt_regs *ctx, struct request *req)
+ b.attach_kprobe(event="blk_account_io_start", fn_name="trace_pid_start")
+ b.attach_kprobe(event="blk_start_request", fn_name="trace_req_start")
+ b.attach_kprobe(event="blk_mq_start_request", fn_name="trace_req_start")
+-b.attach_kprobe(event="blk_account_io_completion",
++b.attach_kprobe(event="blk_account_io_done",
+     fn_name="trace_req_completion")
+ 
+ # header
+-- 
+2.17.1
+
