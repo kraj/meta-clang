@@ -19,6 +19,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc \
            file://0001-tools-opensnoop-snoop-do_sys_openat2-for-kernel-v5.6.patch \
            file://0001-Replace-kprobe-function-blk_account_io_completion-to.patch \
            file://0001-tools-trace.py-Fix-failing-to-exit.patch \
+           file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
            "
 
 SRCREV = "e41f7a3be5c8114ef6a0990e50c2fbabea0e928e"
