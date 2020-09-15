@@ -1,4 +1,4 @@
-[![Build Status](https://drone.yoedistro.org/api/badges/kraj/meta-clang/status.svg)](https://drone.yoedistro.org/kraj/meta-clang)
+![Yoe Distro CI](https://github.com/kraj/meta-clang/workflows/Yoe%20Distro%20CI/badge.svg?branch=master)
 
 # meta-clang (a C language family frontend and LLVM compiler backend)
 
