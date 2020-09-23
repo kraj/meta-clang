@@ -1,9 +1,10 @@
-![Yoe Distro CI](https://github.com/kraj/meta-clang/workflows/Yoe%20Distro%20CI/badge.svg?branch=master)
+[![Yoe Distro CI](https://github.com/kraj/meta-clang/workflows/Yoe%20Distro%20CI/badge.svg?branch=master)](https://github.com/kraj/meta-clang/actions?query=workflow%3AYoe%20Distro%20CI+branch%3Amaster)
 
-# meta-clang (a C language family frontend and LLVM compiler backend)
+# meta-clang (C/C++ frontend and LLVM compiler backend)
 
-This layer provides [clang/llvm](http://clang.llvm.org/) as alternative to your system
-C/C++ compiler for OpenEmbedded or Yocto Project based distributions along with gcc
+This layer provides [clang/llvm](http://clang.llvm.org/) as alternative to system
+C/C++ compiler for OpenEmbedded/Yocto Project based distributions. This can cohabit
+with GNU Compiler and can be used for specific recipes or full system Compiler
 
 # Getting Started
 
