@@ -32,7 +32,7 @@ bitbake-layers add-layer ../meta-clang
 
 Check `conf/bblayers.conf` to see that meta-clang is added to layer mix e.g.
 
-# Default Compiler Switch
+# Default Compiler
 
 Note that by default gcc will remain the system compiler, however if you wish
 clang to be the default compiler then set
@@ -47,45 +47,56 @@ you can select clang per recipe too by writing bbappends for them containing
 ```shell
 TOOLCHAIN = "clang"
 ```
+also look at `conf/nonclangable.conf` for list of recipes which do not yet fully
+build with clang
+
+# Default Compiler Runtime
+
+Default is to use GNU runtime `RUNTIME = "gnu"` which consists of libgcc, libstdc++ to provide C/C++
+runtime support. However its possible to use LLVM runtime to replace it where
+compile-rt, llvm libunwind, and libc++ are used to provide C/C++ runtime, while
+GNU runtime works with both GCC and Clang, LLVM runtime is only tested with Clang
+compiler, Switching to use LLVM runtime is done via a config metadata knob
+
+```shell
+RUNTIME = "llvm"
+```
+
+RUNTIME variable influences individual runtime elements and can be set explcitly as well
+e.g. `LIBCPLUSPLUS` `COMPILER_RT` and `UNWINDLIB`
+
+Please note that this will still use crt files from GNU compiler always, while llvm now
+do provide crt files, they have not been yet intergrated into toolchain
 
 # Default C++ Standard Library Switch
 
-Note that by default clang libc++ is default C++ standard library, however if you wish
-to keep GNU libstdc++ to be the default then set
+Using RUNTIME bariable will select which C++ runtime is used, however it can be overridden
+if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `RUNTIME` is
+best fit. e.g. below we select LLVM C++ as default C++ runtime.
 
 ```shell
-LIBCPLUSPLUS = ""
+LIBCPLUSPLUS = "--stdlib=libc++"
 ```
 
 in `local.conf`.
 You can select libstdc++ per package too by writing bbappends for them containing
 
 ```shell
-LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = ""
+LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = "--stdlibc=libc++"
 ```
+Defaults are chosen to be GNU for maximum compatibility with existing GNU systems. Its always
+good to use single runtime on a system, mixing runtimes can cause complications during
+compilation as well as runtime. However, its upto distribution policies to decide which runtime
+to use.
 
-# Default Compiler Runtime ( Compiler-rt + libc++ )
+# Adding clang in generated SDK toolchain
 
-By default, clang build from meta-clang uses clang runtime ( compiler-rt + libc++ + libunwind ) out of box
-However, it is possible to switch to using gcc runtime as default, In order to do that
-following settings are needed in site configurations e.g. in `local.conf`
+clang based cross compiler is not included into the generated SDK using `bitbake meta-toolchain` or
+`bitbake -cpopulate_sdk <image>` if clang is expected to be part of SDK, add `CLANGSDK = "1"`
+in `local.conf`
 
 ```shell
-TOOLCHAIN ?= "clang"
-LIBCPLUSPLUS = ""
-COMPILER_RT = ""
-UNWINDLIB = ""
-
-```
-
-# Removing clang from generated SDK toolchain
-
-clang based cross compiler is automatically included into the generated SDK using `bitbake meta-toolchain` or
-`bitbake -cpopulate_sdk <image>` in circumstanced where clang is not expected to be part of SDK, then reset `CLANGSDK`
-variable in `local.conf`
-
-```shell
-CLANGSDK = ""
+CLANGSDK = "1"
 ```
 
 # Building
@@ -104,7 +115,7 @@ $ runqemu nographic
 # Limitations
 
 Few components do not build with clang, if you have a component to add to that list
-simply add it to conf/nonclangable.inc e.g.
+simply add it to `conf/nonclangable.inc` e.g.
 
 ```shell
 TOOLCHAIN_pn-<recipe> = "gcc"
@@ -112,7 +123,7 @@ TOOLCHAIN_pn-<recipe> = "gcc"
 
 and OE will start using gcc to cross compile that recipe.
 
-And if a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
+if a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
 
 ```shell
 CXX_remove_pn-<recipe>_toolchain-clang = " -stdlib=libc++ "
