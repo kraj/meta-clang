@@ -195,7 +195,7 @@ do_install_append_class-native () {
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
     for f in `find ${D}${bindir} -executable -type f -not -type l`; do
-        test -n "`file $f|grep -i ELF`" && ${STRIP} $f
+        test -n "`file -b $f|grep -i ELF`" && ${STRIP} $f
         echo "stripped $f"
     done
     ln -sf clang-tblgen ${D}${bindir}/clang-tblgen${PV}
@@ -207,7 +207,7 @@ do_install_append_class-nativesdk () {
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
     for f in `find ${D}${bindir} -executable -type f -not -type l`; do
-        test -n "`file $f|grep -i ELF`" && ${STRIP} $f
+        test -n "`file -b $f|grep -i ELF`" && ${STRIP} $f
     done
     ln -sf clang-tblgen ${D}${bindir}/clang-tblgen${PV}
     ln -sf llvm-tblgen ${D}${bindir}/llvm-tblgen${PV}
