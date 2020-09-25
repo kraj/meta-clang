@@ -189,6 +189,9 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
         lnr ${D}${nonarch_libdir}/clang ${D}${libdir}/clang
         rmdir --ignore-fail-on-non-empty ${D}${libdir}
     fi
+    for t in clang clang++ llvm-nm llvm-ar llvm-as llvm-ranlib llvm-strip; do
+        ln -sf $t ${D}${bindir}/${TARGET_PREFIX}$t
+    done
 }
 
 do_install_append_class-native () {
