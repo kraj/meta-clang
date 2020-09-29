@@ -100,5 +100,6 @@ cmake_do_generate_toolchain_file_append_toolchain-clang () {
     cat >> ${WORKDIR}/toolchain.cmake <<EOF
 set( CMAKE_CLANG_TIDY ${CLANG_TIDY} )
 EOF
+    sed -i 's/ -mmusl / /g' ${WORKDIR}/toolchain.cmake
 }
 
