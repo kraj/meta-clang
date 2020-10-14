@@ -153,6 +153,7 @@ EXTRA_OECMAKE_append_class-target = "\
                   -DCMAKE_STRIP=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-strip \
                   -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS}${HF} \
+                  -DLLVM_HOST_TRIPLE=${TARGET_SYS}${HF} \
                   -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
                   -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
                   -DLLVM_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
