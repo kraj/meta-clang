@@ -1,0 +1,115 @@
+From dec703abdd0503edcc513bdb45eb36402792b47a Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 14 Oct 2020 22:19:57 -0700
+Subject: [PATCH 26/26] clang: Use python3 in python scripts
+
+Some scripts ask for python, but they work fine with python3
+and in OE python symlink is not exposed to build, only python3 is
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ .../find-all-symbols/tool/run-find-all-symbols.py               | 2 +-
+ clang-tools-extra/clang-tidy/add_new_check.py                   | 2 +-
+ clang-tools-extra/clang-tidy/rename_check.py                    | 2 +-
+ clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py            | 2 +-
+ clang-tools-extra/clang-tidy/tool/run-clang-tidy.py             | 2 +-
+ clang/tools/clang-format/clang-format-diff.py                   | 2 +-
+ clang/tools/clang-format/git-clang-format                       | 2 +-
+ clang/tools/scan-view/bin/scan-view                             | 2 +-
+ clang/utils/hmaptool/hmaptool                                   | 2 +-
+ 9 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py b/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
+index 8655af137bb..e95ba59a421 100755
+--- a/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
++++ b/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #=- run-find-all-symbols.py - Parallel find-all-symbols runner -*- python  -*-=#
+ #
+diff --git a/clang-tools-extra/clang-tidy/add_new_check.py b/clang-tools-extra/clang-tidy/add_new_check.py
+index 231f43c0b8f..fb8477b037a 100755
+--- a/clang-tools-extra/clang-tidy/add_new_check.py
++++ b/clang-tools-extra/clang-tidy/add_new_check.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- add_new_check.py - clang-tidy check generator ---------*- python -*--===#
+ #
+diff --git a/clang-tools-extra/clang-tidy/rename_check.py b/clang-tools-extra/clang-tidy/rename_check.py
+index 4d5311c9a29..c869744dd94 100755
+--- a/clang-tools-extra/clang-tidy/rename_check.py
++++ b/clang-tools-extra/clang-tidy/rename_check.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- rename_check.py - clang-tidy check renamer ------------*- python -*--===#
+ #
+diff --git a/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py b/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
+index 17086d15053..a20b1f1f46b 100755
+--- a/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
++++ b/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- clang-tidy-diff.py - ClangTidy Diff Checker -----------*- python -*--===#
+ #
+diff --git a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
+index 7e23419cd91..3e5986d0f7d 100755
+--- a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
++++ b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- run-clang-tidy.py - Parallel clang-tidy runner --------*- python -*--===#
+ #
+diff --git a/clang/tools/clang-format/clang-format-diff.py b/clang/tools/clang-format/clang-format-diff.py
+index c5331202fc1..374253cf234 100755
+--- a/clang/tools/clang-format/clang-format-diff.py
++++ b/clang/tools/clang-format/clang-format-diff.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- clang-format-diff.py - ClangFormat Diff Reformatter ----*- python -*--===#
+ #
+diff --git a/clang/tools/clang-format/git-clang-format b/clang/tools/clang-format/git-clang-format
+index f3cd585e7f4..63899c6f54a 100755
+--- a/clang/tools/clang-format/git-clang-format
++++ b/clang/tools/clang-format/git-clang-format
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ #
+ #===- git-clang-format - ClangFormat Git Integration ---------*- python -*--===#
+ #
+diff --git a/clang/tools/scan-view/bin/scan-view b/clang/tools/scan-view/bin/scan-view
+index 04ad518a60c..07effbca596 100755
+--- a/clang/tools/scan-view/bin/scan-view
++++ b/clang/tools/scan-view/bin/scan-view
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python2
++#!/usr/bin/env python3
+ 
+ from __future__ import print_function
+ 
+diff --git a/clang/utils/hmaptool/hmaptool b/clang/utils/hmaptool/hmaptool
+index 58baab2f774..00296f11a16 100755
+--- a/clang/utils/hmaptool/hmaptool
++++ b/clang/utils/hmaptool/hmaptool
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ from __future__ import absolute_import, division, print_function
+ 
+ import json
+-- 
+2.28.0
+
