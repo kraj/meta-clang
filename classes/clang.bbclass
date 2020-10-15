@@ -102,4 +102,13 @@ set( CMAKE_CLANG_TIDY ${CLANG_TIDY} )
 EOF
     sed -i 's/ -mmusl / /g' ${WORKDIR}/toolchain.cmake
 }
+#
+# dump recipes which still use gcc
+#python __anonymous() {
+#    toolchain = d.getVar("TOOLCHAIN")
+#    if not toolchain or toolchain == "clang" or 'class-target' not in d.getVar('OVERRIDES').split(':'):
+#        return
+#    pkgn = d.getVar("PN")
+#    bb.warn("%s - %s" % (pkgn, toolchain))
+#}
 
