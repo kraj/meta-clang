@@ -1,0 +1,114 @@
+From 4770490fa38a03624376b3c3973705a4bf8cc193 Mon Sep 17 00:00:00 2001
+From: Alexey Sotkin <alexey.sotkin@intel.com>
+Date: Mon, 27 Jan 2020 12:25:03 +0300
+Subject: [PATCH] [OpenCL] Fix support for cl_khr_mipmap_image_writes
+
+Text of the extension is available here:
+https://github.com/KhronosGroup/OpenCL-Docs/blob/master/ext/cl_khr_mipmap_image.asciidoc
+
+Patch by Ilya Mashkov
+
+Differential Revision: https://reviews.llvm.org/D71460
+
+Upstream-Status: Backport [https://github.com/llvm/llvm-project/commit/f780e15caf1bed0a9fbc87fde70bd5ab3d80a439]
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ clang/include/clang/Basic/OpenCLExtensions.def |  1 +
+ clang/lib/Headers/opencl-c.h                   | 18 ++++++++++--------
+ clang/test/SemaOpenCL/extension-version.cl     | 12 ++++++++++++
+ 3 files changed, 23 insertions(+), 8 deletions(-)
+
+diff --git a/clang/include/clang/Basic/OpenCLExtensions.def b/clang/include/clang/Basic/OpenCLExtensions.def
+index 5536a6e8e4d..51748158431 100644
+--- a/clang/include/clang/Basic/OpenCLExtensions.def
++++ b/clang/include/clang/Basic/OpenCLExtensions.def
+@@ -70,6 +70,7 @@ OPENCLEXT_INTERNAL(cl_khr_spir, 120, ~0U)
+ OPENCLEXT_INTERNAL(cl_khr_egl_event, 200, ~0U)
+ OPENCLEXT_INTERNAL(cl_khr_egl_image, 200, ~0U)
+ OPENCLEXT_INTERNAL(cl_khr_mipmap_image, 200, ~0U)
++OPENCLEXT_INTERNAL(cl_khr_mipmap_image_writes, 200, ~0U)
+ OPENCLEXT_INTERNAL(cl_khr_srgb_image_writes, 200, ~0U)
+ OPENCLEXT_INTERNAL(cl_khr_subgroups, 200, ~0U)
+ OPENCLEXT_INTERNAL(cl_khr_terminate_context, 200, ~0U)
+diff --git a/clang/lib/Headers/opencl-c.h b/clang/lib/Headers/opencl-c.h
+index 06c5ab6a72f..3210f93cc85 100644
+--- a/clang/lib/Headers/opencl-c.h
++++ b/clang/lib/Headers/opencl-c.h
+@@ -14682,7 +14682,7 @@ void __ovld write_imagef(write_only image2d_array_depth_t image, int4 coord, flo
+ 
+ // OpenCL Extension v2.0 s9.18 - Mipmaps
+ #if defined(__OPENCL_CPP_VERSION__) || (__OPENCL_C_VERSION__ >= CL_VERSION_2_0)
+-#ifdef cl_khr_mipmap_image
++#if defined(cl_khr_mipmap_image_writes)
+ void __ovld write_imagef(write_only image1d_t image, int coord, int lod, float4 color);
+ void __ovld write_imagei(write_only image1d_t image, int coord, int lod, int4 color);
+ void __ovld write_imageui(write_only image1d_t image, int coord, int lod, uint4 color);
+@@ -14699,15 +14699,16 @@ void __ovld write_imagef(write_only image2d_array_t image_array, int4 coord, int
+ void __ovld write_imagei(write_only image2d_array_t image_array, int4 coord, int lod, int4 color);
+ void __ovld write_imageui(write_only image2d_array_t image_array, int4 coord, int lod, uint4 color);
+ 
+-void __ovld write_imagef(write_only image2d_depth_t image, int2 coord, int lod, float color);
+-void __ovld write_imagef(write_only image2d_array_depth_t image, int4 coord, int lod, float color);
++void __ovld write_imagef(write_only image2d_depth_t image, int2 coord, int lod, float depth);
++void __ovld write_imagef(write_only image2d_array_depth_t image, int4 coord, int lod, float depth);
+ 
+ #ifdef cl_khr_3d_image_writes
+ void __ovld write_imagef(write_only image3d_t image, int4 coord, int lod, float4 color);
+ void __ovld write_imagei(write_only image3d_t image, int4 coord, int lod, int4 color);
+ void __ovld write_imageui(write_only image3d_t image, int4 coord, int lod, uint4 color);
+-#endif
+-#endif //cl_khr_mipmap_image
++#endif //cl_khr_3d_image_writes
++
++#endif //defined(cl_khr_mipmap_image_writes)
+ #endif //defined(__OPENCL_CPP_VERSION__) || (__OPENCL_C_VERSION__ >= CL_VERSION_2_0)
+ 
+ // Image write functions for half4 type
+@@ -14756,7 +14757,7 @@ void __ovld write_imagef(read_write image2d_array_depth_t image, int4 coord, flo
+ #endif //cl_khr_depth_images
+ 
+ #if defined(__OPENCL_CPP_VERSION__) || (__OPENCL_C_VERSION__ >= CL_VERSION_2_0)
+-#ifdef cl_khr_mipmap_image
++#if defined(cl_khr_mipmap_image_writes)
+ void __ovld write_imagef(read_write image1d_t image, int coord, int lod, float4 color);
+ void __ovld write_imagei(read_write image1d_t image, int coord, int lod, int4 color);
+ void __ovld write_imageui(read_write image1d_t image, int coord, int lod, uint4 color);
+@@ -14780,8 +14781,9 @@ void __ovld write_imagef(read_write image2d_array_depth_t image, int4 coord, int
+ void __ovld write_imagef(read_write image3d_t image, int4 coord, int lod, float4 color);
+ void __ovld write_imagei(read_write image3d_t image, int4 coord, int lod, int4 color);
+ void __ovld write_imageui(read_write image3d_t image, int4 coord, int lod, uint4 color);
+-#endif
+-#endif //cl_khr_mipmap_image
++#endif //cl_khr_3d_image_writes
++
++#endif //cl_khr_mipmap_image_writes
+ #endif //defined(__OPENCL_CPP_VERSION__) || (__OPENCL_C_VERSION__ >= CL_VERSION_2_0)
+ 
+ // Image write functions for half4 type
+diff --git a/clang/test/SemaOpenCL/extension-version.cl b/clang/test/SemaOpenCL/extension-version.cl
+index 19d08849535..0e6bbb7d3bc 100644
+--- a/clang/test/SemaOpenCL/extension-version.cl
++++ b/clang/test/SemaOpenCL/extension-version.cl
+@@ -242,6 +242,18 @@
+ #endif
+ #pragma OPENCL EXTENSION cl_khr_mipmap_image : enable
+ 
++#if (defined(__OPENCL_CPP_VERSION__) || __OPENCL_C_VERSION__ >= 200)
++#ifndef cl_khr_mipmap_image_writes
++#error "Missing cl_khr_mipmap_image_writes define"
++#endif
++#else
++#ifdef cl_khr_mipmap_image_writes
++#error "Incorrect cl_khr_mipmap_image_writes define"
++#endif
++// expected-warning@+2{{unsupported OpenCL extension 'cl_khr_mipmap_image_writes' - ignoring}}
++#endif
++#pragma OPENCL EXTENSION cl_khr_mipmap_image_writes : enable
++
+ #if (defined(__OPENCL_CPP_VERSION__) || __OPENCL_C_VERSION__ >= 200)
+ #ifndef cl_khr_srgb_image_writes
+ #error "Missing cl_khr_srgb_image_writes define"
+-- 
+2.17.1
+
