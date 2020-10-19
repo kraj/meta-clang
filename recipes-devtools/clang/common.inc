@@ -33,6 +33,7 @@ SRC_URI = "\
     file://0023-clang-Fix-resource-dir-location-for-cross-toolchains.patch \
     file://0024-fix-path-to-libffi.patch \
     file://0025-clang-driver-Add-dyld-prefix-when-checking-sysroot-f.patch \
+    file://0026-OpenCL-Fix-support-for-cl_khr_mipmap_image_writes.patch \
 "
 
 # Fallback to no-PIE if not set
