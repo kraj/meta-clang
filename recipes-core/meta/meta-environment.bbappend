@@ -14,6 +14,6 @@ create_sdk_files_append() {
             echo 'export CLANGCC="${TARGET_PREFIX}clang ${TARGET_CLANGCC_ARCH} --sysroot=$SDKTARGETSYSROOT"' >> $script
             echo 'export CLANGCXX="${TARGET_PREFIX}clang++ ${TARGET_CLANGCC_ARCH} --sysroot=$SDKTARGETSYSROOT"' >> $script
             echo 'export CLANGCPP="${TARGET_PREFIX}clang -E ${TARGET_CLANGCC_ARCH} --sysroot=$SDKTARGETSYSROOT"' >> $script
-            echo 'export CLANG_TIDY_EXE="${TARGET_PREFIX}clang-tidy ${TARGET_CLANGCC_ARCH} --sysroot=$SDKTARGETSYSROOT"' >> $script
+            echo 'export CLANG_TIDY_EXE="${TARGET_PREFIX}clang-tidy"' >> $script
         fi
 }
