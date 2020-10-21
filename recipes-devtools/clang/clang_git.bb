@@ -56,7 +56,7 @@ PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs lldb-wchar \
                    rtti eh libedit \
                    "
 PACKAGECONFIG_class-native = "rtti eh libedit"
-PACKAGECONFIG_class-nativesdk = "rtti eh libedit ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)}"
+PACKAGECONFIG_class-nativesdk = "rtti eh libedit shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto full-lto', d)}"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,libcxx,compiler-rt"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,libcxx"
