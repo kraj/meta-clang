@@ -37,6 +37,10 @@ TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", 
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mtune=cortex-a35", "", d)}"
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortex-a55 cortexa76-cortex-a55", " -mtune=cortex-a55", "", d)}"
 
+# LLD does not yet support relaxation for RISCV e.g. https://reviews.freebsd.org/D25210
+TUNE_CCARGS_append_toolchain-clang_riscv32 = " -mno-relax"
+TUNE_CCARGS_append_toolchain-clang_riscv64 = " -mno-relax"
+
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
 TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
 
