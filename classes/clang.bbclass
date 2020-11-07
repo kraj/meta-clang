@@ -9,6 +9,8 @@ RANLIB_toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
 AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
+LTO_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto ', d)}"
+
 export CLANG_TIDY_toolchain-clang = "${HOST_PREFIX}clang-tidy"
 
 COMPILER_RT ??= "${@bb.utils.contains("RUNTIME", "llvm", "-rtlib=compiler-rt ${UNWINDLIB}", "", d)}"
