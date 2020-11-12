@@ -9,7 +9,8 @@ RANLIB_toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
 AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
-LTO_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto ', d)}"
+LTO_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
+PACKAGE_DEBUG_SPLIT_STYLE_toolchain-clang = "debug-without-src"
 
 export CLANG_TIDY_toolchain-clang = "${HOST_PREFIX}clang-tidy"
 
