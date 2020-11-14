@@ -1,7 +1,8 @@
-From b0332a97ab1abdddadbe34dc30ee2b8e7d5cb2f9 Mon Sep 17 00:00:00 2001
+From e7c1d4b74df67070d3666843caeced417387886e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 2 Aug 2020 10:11:00 -0700
-Subject: [PATCH] libcxx: Define __NR_futex to be __NR_futex_time64 on riscv32
+Subject: [PATCH 25/26] libcxx: Define __NR_futex to be __NR_futex_time64 on
+ riscv32
 
 RISCV glibc has decided to use 64bit time_t from get go unlike
 other 32bit architecture therefore aliasing __NR_futex to
@@ -10,23 +11,30 @@ __NR_futex_time64 helps avoid the below errors on rv32
 Upstream-Status: Submittted [https://reviews.llvm.org/D85095]
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- libcxx/src/atomic.cpp | 3 +++
- 1 file changed, 3 insertions(+)
+ libcxx/src/atomic.cpp | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/libcxx/src/atomic.cpp b/libcxx/src/atomic.cpp
-index 65d4837bb4a7..e9969b8e570e 100644
+index 6b73ed771cd..d2511529dce 100644
 --- a/libcxx/src/atomic.cpp
 +++ b/libcxx/src/atomic.cpp
-@@ -16,6 +16,9 @@
- #include <iostream>
+@@ -15,6 +15,16 @@
  
  #ifdef __linux__
-+#if !defined(__NR_futex) && defined(__riscv) && __riscv_xlen == 32
-+# define __NR_futex __NR_futex_time64
-+#endif
  
++// libc++ uses SYS_futex, which it expects from system C library.
++// in glibc (/usr/include/bits/syscall.h defines it in terms of of NR_futex)
++// rv32 is using 64bit time_t from get go unlike other 32bit architectures
++// in glibc, therefore it wont have NR_futex defined but just NR_futex_time64
++// this aliases it to NR_futex so that SYS_futex is then defined for rv32
++
++#if !defined(SYS_futex) && defined(SYS_futex_time64)
++# define SYS_futex SYS_futex_time64
++#endif
++
  #include <unistd.h>
  #include <linux/futex.h>
+ #include <sys/syscall.h>
 -- 
-2.28.0
+2.29.2
 
