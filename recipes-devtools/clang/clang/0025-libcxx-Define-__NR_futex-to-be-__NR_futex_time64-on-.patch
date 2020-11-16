@@ -14,13 +14,11 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  libcxx/src/atomic.cpp | 10 ++++++++++
  1 file changed, 10 insertions(+)
 
-diff --git a/libcxx/src/atomic.cpp b/libcxx/src/atomic.cpp
-index 6b73ed771cd..d2511529dce 100644
 --- a/libcxx/src/atomic.cpp
 +++ b/libcxx/src/atomic.cpp
-@@ -15,6 +15,16 @@
- 
- #ifdef __linux__
+@@ -21,6 +21,16 @@
+ #include <linux/futex.h>
+ #include <sys/syscall.h>
  
 +// libc++ uses SYS_futex, which it expects from system C library.
 +// in glibc (/usr/include/bits/syscall.h defines it in terms of of NR_futex)
@@ -29,12 +27,9 @@ index 6b73ed771cd..d2511529dce 100644
 +// this aliases it to NR_futex so that SYS_futex is then defined for rv32
 +
 +#if !defined(SYS_futex) && defined(SYS_futex_time64)
-+# define SYS_futex SYS_futex_time64
++#define SYS_futex SYS_futex_time64
 +#endif
 +
- #include <unistd.h>
- #include <linux/futex.h>
- #include <sys/syscall.h>
--- 
-2.29.2
-
+ #else // <- Add other operating systems here
+ 
+ // Baseline needs no new headers
