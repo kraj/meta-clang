@@ -12,10 +12,9 @@ DEPENDS += "bison-native \
 
 RDEPENDS_${PN} += "bash python3 xz"
 
-SRC_URI = "git://github.com/iovisor/bpftrace \
-	   file://0001-bpftrace-Fix-compilation-with-LLVM-11.patch \
+SRC_URI = "git://github.com/iovisor/bpftrace;branch=0.11_release \
            "
-SRCREV = "a9ba414ea8212e825cd48ac536aba66af76c0cfc"
+SRCREV = "0cd90b8b91f67cae9f612a07498bf8d92306fab1"
 
 S = "${WORKDIR}/git"
 
