@@ -40,6 +40,9 @@ TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", 
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mtune=cortex-a35", "", d)}"
 TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortex-a55 cortexa76-cortex-a55", " -mtune=cortex-a55", "", d)}"
 
+# Clang does not support octeontx2 processor
+TUNE_CCARGS_remove_toolchain-clang = "-mcpu=octeontx2"
+
 # LLD does not yet support relaxation for RISCV e.g. https://reviews.freebsd.org/D25210
 TUNE_CCARGS_append_toolchain-clang_riscv32 = " -mno-relax"
 TUNE_CCARGS_append_toolchain-clang_riscv64 = " -mno-relax"
