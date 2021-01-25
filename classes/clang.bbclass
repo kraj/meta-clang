@@ -1,5 +1,5 @@
 # Add the necessary override
-CCACHE_COMPILERCHECK_toolchain-clang = "%compiler% -v"
+CCACHE_COMPILERCHECK_toolchain-clang ?= "%compiler% -v"
 HOST_CC_ARCH_prepend_toolchain-clang = "-target ${HOST_SYS} "
 CC_toolchain-clang  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 CXX_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
