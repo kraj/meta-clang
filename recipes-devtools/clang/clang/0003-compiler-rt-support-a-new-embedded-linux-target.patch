@@ -1,7 +1,7 @@
-From 7a7a7d6f730ec71b95475855ff216e431c6cfe1f Mon Sep 17 00:00:00 2001
+From f8ec4b59e6ad2a91ded1f05a9e711a68d9897608 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 19 Apr 2015 15:16:23 -0700
-Subject: [PATCH 03/24] compiler-rt: support a new embedded linux target
+Subject: [PATCH] compiler-rt: support a new embedded linux target
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -13,7 +13,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  create mode 100644 compiler-rt/make/platform/clang_linux_embedded_test_input.c
 
 diff --git a/compiler-rt/lib/builtins/int_util.c b/compiler-rt/lib/builtins/int_util.c
-index 226a6e93440..efc977acbb3 100644
+index 226a6e93440d..efc977acbb39 100644
 --- a/compiler-rt/lib/builtins/int_util.c
 +++ b/compiler-rt/lib/builtins/int_util.c
 @@ -54,7 +54,7 @@ void __compilerrt_abort_impl(const char *file, int line, const char *function) {
@@ -27,7 +27,7 @@ index 226a6e93440..efc977acbb3 100644
  __attribute__((weak))
 diff --git a/compiler-rt/make/platform/clang_linux_embedded.mk b/compiler-rt/make/platform/clang_linux_embedded.mk
 new file mode 100644
-index 00000000000..d0a890075a1
+index 000000000000..d0a890075a1c
 --- /dev/null
 +++ b/compiler-rt/make/platform/clang_linux_embedded.mk
 @@ -0,0 +1,286 @@
@@ -319,7 +319,4 @@ index 00000000000..d0a890075a1
 +FUNCTIONS.hard_pic.x86_64    := $(FUNCTIONS_X86_64)
 diff --git a/compiler-rt/make/platform/clang_linux_embedded_test_input.c b/compiler-rt/make/platform/clang_linux_embedded_test_input.c
 new file mode 100644
-index 00000000000..e69de29bb2d
--- 
-2.27.0
-
+index 000000000000..e69de29bb2d1

@@ -1,8 +1,7 @@
-From 70646ae410a97feb236b84bbb46fa8ff8e7da79a Mon Sep 17 00:00:00 2001
+From 81ece1b8e6762676679106f2c17c5fdd2aad3035 Mon Sep 17 00:00:00 2001
 From: Jeremy Puhlman <jpuhlman@mvista.com>
 Date: Thu, 16 Jan 2020 21:16:10 +0000
-Subject: [PATCH 20/24] libcxx: Add compiler runtime library to link step for
- libcxx
+Subject: [PATCH] libcxx: Add compiler runtime library to link step for libcxx
 
 This corrects "undefined reference to __divti3"
 
@@ -15,19 +14,19 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/libcxx/src/CMakeLists.txt b/libcxx/src/CMakeLists.txt
-index 2001c09761d..59ba5f7490c 100644
+index 9965104cb5b2..bee4d80bc67a 100644
 --- a/libcxx/src/CMakeLists.txt
 +++ b/libcxx/src/CMakeLists.txt
-@@ -164,7 +164,7 @@ if (LIBCXX_ENABLE_SHARED)
-     llvm_setup_rpath(cxx_shared)
-   endif()
+@@ -177,7 +177,7 @@ split_list(LIBCXX_LINK_FLAGS)
+ if (LIBCXX_ENABLE_SHARED)
+   add_library(cxx_shared SHARED ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_link_libraries(cxx_shared PUBLIC cxx-headers
 -                                   PRIVATE ${LIBCXX_LIBRARIES})
 +                                   PRIVATE ${LIBCXX_LIBRARIES} "$$($$CC --print-libgcc-file-name)")
    set_target_properties(cxx_shared
      PROPERTIES
        COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
-@@ -246,7 +246,7 @@ endif()
+@@ -252,7 +252,7 @@ endif()
  if (LIBCXX_ENABLE_STATIC)
    add_library(cxx_static STATIC ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_link_libraries(cxx_static PUBLIC cxx-headers
@@ -36,6 +35,3 @@ index 2001c09761d..59ba5f7490c 100644
    set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
    set_target_properties(cxx_static
      PROPERTIES
--- 
-2.27.0
-

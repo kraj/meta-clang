@@ -1,8 +1,8 @@
-From 17e1e38501cb4008c53727d88ef87d2c89182008 Mon Sep 17 00:00:00 2001
+From 6c2721a8ee7f15f3035592dfd0d7983369ffd12a Mon Sep 17 00:00:00 2001
 From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 Date: Wed, 15 Apr 2020 00:08:39 +0300
-Subject: [PATCH 24/24] clang: driver: Add dyld-prefix when checking sysroot
- for ldso path
+Subject: [PATCH] clang: driver: Add dyld-prefix when checking sysroot for ldso
+ path
 
  * the dyld-prefix shall be taken into account when the default
    path for the dynamic linker has to be checked.
@@ -18,10 +18,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 9128d4e0fa0..7f7d752a9a1 100644
+index 98f54a935465..cab25988e81a 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -507,8 +507,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -524,8 +524,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      LibDir = "lib64";
      Loader =
          (tools::ppc::hasPPCAbiArg(Args, "elfv2")) ? "ld64.so.2" : "ld64.so.1";
@@ -32,7 +32,7 @@ index 9128d4e0fa0..7f7d752a9a1 100644
          LibDir = "lib";
      }
      break;
-@@ -516,8 +516,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -533,8 +533,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      LibDir = "lib64";
      Loader =
          (tools::ppc::hasPPCAbiArg(Args, "elfv1")) ? "ld64.so.1" : "ld64.so.2";
@@ -43,7 +43,7 @@ index 9128d4e0fa0..7f7d752a9a1 100644
          LibDir = "lib";
      }
      break;
-@@ -541,8 +541,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -558,8 +558,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
    case llvm::Triple::sparcv9:
      LibDir = "lib64";
      Loader = "ld-linux.so.2";
@@ -54,7 +54,7 @@ index 9128d4e0fa0..7f7d752a9a1 100644
          LibDir = "lib";
      }
      break;
-@@ -559,8 +559,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -576,8 +576,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
  
      LibDir = X32 ? "libx32" : "lib64";
      Loader = X32 ? "ld-linux-x32.so.2" : "ld-linux-x86-64.so.2";
@@ -65,6 +65,3 @@ index 9128d4e0fa0..7f7d752a9a1 100644
          LibDir = "lib";
      }
      break;
--- 
-2.27.0
-

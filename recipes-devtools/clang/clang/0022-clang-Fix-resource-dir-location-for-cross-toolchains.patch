@@ -1,7 +1,7 @@
-From 5fb5780cdf9fe0f26ac1a076d0eaa82de61b5f8b Mon Sep 17 00:00:00 2001
+From 1dcf3b4cd50bfd75f7530a463f818ff2705fdb60 Mon Sep 17 00:00:00 2001
 From: Jim Broadus <jbroadus@xevo.com>
 Date: Thu, 26 Mar 2020 16:05:53 -0700
-Subject: [PATCH 22/24] clang: Fix resource dir location for cross toolchains
+Subject: [PATCH] clang: Fix resource dir location for cross toolchains
 
 When clang looks for the resources directory, it does so based on the binary
 location and assumes that the containing directory is a sibling to lib. The
@@ -18,9 +18,11 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  clang/lib/Driver/Driver.cpp | 8 +++++++-
  1 file changed, 7 insertions(+), 1 deletion(-)
 
+diff --git a/clang/lib/Driver/Driver.cpp b/clang/lib/Driver/Driver.cpp
+index 418e1d3e8ec9..44c9f6e59d3f 100644
 --- a/clang/lib/Driver/Driver.cpp
 +++ b/clang/lib/Driver/Driver.cpp
-@@ -112,7 +112,13 @@ std::string Driver::GetResourcesPath(Str
+@@ -119,7 +119,13 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
      // With a static-library build of libclang, LibClangPath will contain the
      // path of the embedding binary, which for LLVM binaries will be in bin/.
      // ../lib gets us to lib/ in both cases.

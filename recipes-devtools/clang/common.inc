@@ -33,13 +33,11 @@ SRC_URI = "\
     file://0022-clang-Fix-resource-dir-location-for-cross-toolchains.patch \
     file://0023-fix-path-to-libffi.patch \
     file://0024-clang-driver-Add-dyld-prefix-when-checking-sysroot-f.patch \
-    file://0025-libcxx-Define-__NR_futex-to-be-__NR_futex_time64-on-.patch \
-    file://0026-clang-Use-python3-in-python-scripts.patch \
-    file://0027-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
-    file://D95527_against_11.x.patch \
-    file://0001-Fix-libclc-to-look-for-python3-explicitly.patch \
+    file://0025-clang-Use-python3-in-python-scripts.patch \
+    file://0026-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
+    file://0027-compiler-rt-Include-stddef.h.patch \
+    file://0028-llvm-Do-not-use-find_library-for-ncurses.patch \
 "
-
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
 

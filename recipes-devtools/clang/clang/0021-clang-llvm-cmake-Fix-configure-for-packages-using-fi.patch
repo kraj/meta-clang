@@ -1,7 +1,7 @@
-From f48b53ec65d4138139339f4d1cdc12c4e1a1c042 Mon Sep 17 00:00:00 2001
+From 62e0614c52cc2b084d993914451b5290759a1187 Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
-Subject: [PATCH 21/24] clang,llvm: cmake: Fix configure for packages using
+Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
  find_package()
 
 Currently, when a package (i.e. bcc [https://github.com/iovisor/bcc.git])
@@ -32,7 +32,7 @@ Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
  3 files changed, 33 deletions(-)
 
 diff --git a/clang/cmake/modules/AddClang.cmake b/clang/cmake/modules/AddClang.cmake
-index 704278a0e93..6ea99c90772 100644
+index 704278a0e93b..6ea99c90772c 100644
 --- a/clang/cmake/modules/AddClang.cmake
 +++ b/clang/cmake/modules/AddClang.cmake
 @@ -161,15 +161,8 @@ macro(add_clang_tool name)
@@ -60,10 +60,10 @@ index 704278a0e93..6ea99c90772 100644
  endmacro()
  
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 333167bfb6b..f00fd98bdb2 100644
+index 97c9980c7de3..2cb2ead31ba0 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
-@@ -1169,15 +1169,8 @@ macro(add_llvm_tool name)
+@@ -1210,15 +1210,8 @@ macro(add_llvm_tool name)
  
    if ( ${name} IN_LIST LLVM_TOOLCHAIN_TOOLS OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
      if( LLVM_BUILD_TOOLS )
@@ -79,7 +79,7 @@ index 333167bfb6b..f00fd98bdb2 100644
                RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1188,9 +1181,6 @@ macro(add_llvm_tool name)
+@@ -1229,9 +1222,6 @@ macro(add_llvm_tool name)
        endif()
      endif()
    endif()
@@ -89,9 +89,9 @@ index 333167bfb6b..f00fd98bdb2 100644
    set_target_properties(${name} PROPERTIES FOLDER "Tools")
  endmacro(add_llvm_tool name)
  
-@@ -1228,15 +1218,8 @@ macro(add_llvm_utility name)
+@@ -1269,15 +1259,8 @@ macro(add_llvm_utility name)
    set_target_properties(${name} PROPERTIES FOLDER "Utils")
-   if (NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+   if ( ${name} IN_LIST LLVM_TOOLCHAIN_UTILITIES OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
      if (LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS)
 -      set(export_to_llvmexports)
 -      if (${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
@@ -105,7 +105,7 @@ index 333167bfb6b..f00fd98bdb2 100644
                RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1245,7 +1228,6 @@ macro(add_llvm_utility name)
+@@ -1286,7 +1269,6 @@ macro(add_llvm_utility name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
@@ -114,10 +114,10 @@ index 333167bfb6b..f00fd98bdb2 100644
        set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS_BUILDTREE_ONLY ${name})
      endif()
 diff --git a/llvm/cmake/modules/TableGen.cmake b/llvm/cmake/modules/TableGen.cmake
-index 73c1e96d3d9..7b1c33961c1 100644
+index 5f07acc1f692..47fe887e083b 100644
 --- a/llvm/cmake/modules/TableGen.cmake
 +++ b/llvm/cmake/modules/TableGen.cmake
-@@ -183,14 +183,8 @@ macro(add_tablegen target project)
+@@ -177,14 +177,8 @@ macro(add_tablegen target project)
    endif()
  
    if ((${project} STREQUAL LLVM OR ${project} STREQUAL MLIR) AND NOT LLVM_INSTALL_TOOLCHAIN_ONLY AND LLVM_BUILD_UTILS)
@@ -132,12 +132,9 @@ index 73c1e96d3d9..7b1c33961c1 100644
              COMPONENT ${target}
              RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR})
      if(NOT LLVM_ENABLE_IDE)
-@@ -199,5 +193,4 @@ macro(add_tablegen target project)
+@@ -193,5 +187,4 @@ macro(add_tablegen target project)
                                 COMPONENT ${target})
      endif()
    endif()
 -  set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${target})
  endmacro()
--- 
-2.27.0
-
