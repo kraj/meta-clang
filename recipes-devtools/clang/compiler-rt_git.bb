@@ -19,7 +19,7 @@ TUNE_CCARGS_remove = "-no-integrated-as"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
-DEPENDS += "ninja-native clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs virtual/crypt"
+DEPENDS += "ninja-native clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 DEPENDS_append_class-nativesdk = " clang-native"
 
 PACKAGECONFIG ??= ""
@@ -34,6 +34,7 @@ OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_XRAY=OFF \
+                  -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
                   -DLLVM_ENABLE_PROJECTS='compiler-rt' \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
@@ -46,9 +47,7 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
 
-EXTRA_OECMAKE_append_libc-musl = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF "
 CXXFLAGS_append_libc-musl = " -D_LIBCPP_HAS_MUSL_LIBC=ON "
-EXTRA_OECMAKE_append_mipsarch = " -DCOMPILER_RT_BUILD_SANITIZERS=OFF "
 EXTRA_OECMAKE_append_powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
 do_install_append () {
