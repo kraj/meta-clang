@@ -1,7 +1,7 @@
-From 358d0e3732ffa2c7204d20a302c065b71806e3b8 Mon Sep 17 00:00:00 2001
+From d45e47dd0d7fe5e8b179557822292fc312a55cfc Mon Sep 17 00:00:00 2001
 From: Anuj Mittal <anuj.mittal@intel.com>
 Date: Fri, 3 Apr 2020 15:10:37 +0800
-Subject: [PATCH 23/24] fix path to libffi
+Subject: [PATCH] fix path to libffi
 
 FFI_LIBRARY_PATH is the full path to libffi so when building something that links to
 libLLVMInterpreter, we were looking for libffi in clang's recipe-sysroot instead of
@@ -14,16 +14,13 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/llvm/lib/ExecutionEngine/Interpreter/CMakeLists.txt b/llvm/lib/ExecutionEngine/Interpreter/CMakeLists.txt
-index b8adea5b7a9..7d8434c2d0e 100644
+index 976219830d5e..9930e01559e9 100644
 --- a/llvm/lib/ExecutionEngine/Interpreter/CMakeLists.txt
 +++ b/llvm/lib/ExecutionEngine/Interpreter/CMakeLists.txt
-@@ -16,5 +16,5 @@ add_llvm_component_library(LLVMInterpreter
+@@ -22,5 +22,5 @@ add_llvm_component_library(LLVMInterpreter
    )
  
  if( LLVM_ENABLE_FFI )
 -  target_link_libraries( LLVMInterpreter PRIVATE ${FFI_LIBRARY_PATH} )
 +  target_link_libraries( LLVMInterpreter PRIVATE ffi )
  endif()
--- 
-2.27.0
-

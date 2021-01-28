@@ -1,0 +1,27 @@
+From cea47d9b88c94d1daf7d4c579e6ca4f9c72dc874 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 6 Feb 2021 12:44:30 -0800
+Subject: [PATCH] compiler-rt: Include stddef.h
+
+size_t is use in the source needs relevant header to include the
+definition, fixes build on musl
+
+compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp:82:61: error: unknown type name 'size_t'; did you mean 'std::size_t'?
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp b/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp
+index b87798603fda..34e11727d77b 100644
+--- a/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp
++++ b/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp
+@@ -26,6 +26,7 @@
+ 
+ #include <cassert>
+ #include <cstdint>
++#include <cstddef> // for size_t
+ #include <dlfcn.h> // for dlsym()
+ 
+ static void *getFuncAddr(const char *name, uintptr_t wrapper_addr) {

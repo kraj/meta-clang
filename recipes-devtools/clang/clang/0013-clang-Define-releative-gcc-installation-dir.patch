@@ -1,7 +1,7 @@
-From 7d7eb4b90e924649f317233fd87c3b700f98d4c0 Mon Sep 17 00:00:00 2001
+From 3658b52189bdbd9e742c0166d9bc919d4195b40e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 21 May 2017 15:38:25 -0700
-Subject: [PATCH 13/24] clang: Define / releative gcc installation dir
+Subject: [PATCH] clang: Define / releative gcc installation dir
 
 This is required for OE gcc installation to work.
 Without this its not able to find the paths for libgcc
@@ -10,23 +10,36 @@ installation in OE
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- clang/lib/Driver/ToolChains/Gnu.cpp | 3 +++
- 1 file changed, 3 insertions(+)
+ clang/lib/Driver/ToolChains/Gnu.cpp | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 48723c507a1..d02e644c720 100644
+index 195a302c8771..05d1d3003881 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -2481,6 +2481,9 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
-       {"gcc-cross/" + CandidateTriple.str(), "../..",
-        TargetTriple.getOS() != llvm::Triple::Solaris},
- 
-+      // OE cross-compilers path structures
-+      {"/" + CandidateTriple.str(), "..", true},
-+
+@@ -2514,12 +2514,6 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+     // Whether this library suffix is relevant for the triple.
+     bool Active;
+   } Suffixes[] = {
+-      // This is the normal place.
+-      {"gcc/" + CandidateTriple.str(), "../..", GCCDirExists},
+-
+-      // Debian puts cross-compilers in gcc-cross.
+-      {"gcc-cross/" + CandidateTriple.str(), "../..", GCCCrossDirExists},
+-
        // The Freescale PPC SDK has the gcc libraries in
        // <sysroot>/usr/lib/<triple>/x.y.z so have a look there as well. Only do
        // this on Freescale triples, though, since some systems put a *lot* of
--- 
-2.27.0
-
+@@ -2528,6 +2522,12 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+        TargetTriple.getVendor() == llvm::Triple::Freescale ||
+        TargetTriple.getVendor() == llvm::Triple::OpenEmbedded},
+ 
++      // This is the normal place.
++      {"gcc/" + CandidateTriple.str(), "../..", GCCDirExists},
++
++      // Debian puts cross-compilers in gcc-cross.
++      {"gcc-cross/" + CandidateTriple.str(), "../..", GCCCrossDirExists},
++
+       // Natively multiarch systems sometimes put the GCC triple-specific
+       // directory within their multiarch lib directory, resulting in the
+       // triple appearing twice.

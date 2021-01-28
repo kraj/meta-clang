@@ -1,7 +1,7 @@
-From 435b79f52c7b20a88a6ec0d9a272a9ffd1b6d80d Mon Sep 17 00:00:00 2001
+From 6bf608a67654eaf3312d8ca4813a19526e35c8b1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 22 May 2017 17:36:16 -0700
-Subject: [PATCH 01/24] lldb: Add -lxml2 to linker cmdline of xml is found
+Subject: [PATCH] lldb: Add -lxml2 to linker cmdline of xml is found
 
 When cross compiling for systems where static libs
 for libxml are not available cmake's detection mechanism
@@ -23,7 +23,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/lldb/source/Host/CMakeLists.txt b/lldb/source/Host/CMakeLists.txt
-index add503a5f36..8ddb874c880 100644
+index 7456cb98bfa1..1a732ec5cb89 100644
 --- a/lldb/source/Host/CMakeLists.txt
 +++ b/lldb/source/Host/CMakeLists.txt
 @@ -138,7 +138,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "NetBSD")
@@ -35,6 +35,3 @@ index add503a5f36..8ddb874c880 100644
  endif()
  if (HAVE_LIBDL)
    list(APPEND EXTRA_LIBS ${CMAKE_DL_LIBS})
--- 
-2.27.0
-
