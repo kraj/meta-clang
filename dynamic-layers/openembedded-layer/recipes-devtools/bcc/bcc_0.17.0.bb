@@ -18,6 +18,8 @@ SRC_URI = "gitsm://github.com/iovisor/bcc \
            file://0001-python-CMakeLists.txt-Remove-check-for-host-etc-debi.patch \
            file://0001-tools-trace.py-Fix-failing-to-exit.patch \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
+           file://0001-fix-compilation-issues-with-latest-llvm12-trunk.patch \
+           file://0002-fix-compilation-error-with-latest-llvm12-trunk.patch \
            "
 
 SRCREV = "ad5b82a5196b222ed2cdc738d8444e8c9546a77f"
