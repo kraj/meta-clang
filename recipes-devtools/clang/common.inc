@@ -35,6 +35,7 @@ SRC_URI = "\
     file://0025-libcxx-Define-__NR_futex-to-be-__NR_futex_time64-on-.patch \
     file://0026-clang-Use-python3-in-python-scripts.patch \
     file://0027-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
+    file://D95527_against_11.x.patch \
 "
 
 # Fallback to no-PIE if not set
