@@ -36,6 +36,7 @@ SRC_URI = "\
     file://0026-clang-Use-python3-in-python-scripts.patch \
     file://0027-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
     file://D95527_against_11.x.patch \
+    file://0001-Fix-libclc-to-look-for-python3-explicitly.patch \
 "
 
 # Fallback to no-PIE if not set
