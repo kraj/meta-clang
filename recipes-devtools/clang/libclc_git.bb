@@ -35,3 +35,5 @@ EOF
 }
 
 FILES_${PN} += "${datadir}/clc"
+
+BBCLASSEXTEND = "native nativesdk"
