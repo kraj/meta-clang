@@ -15,11 +15,10 @@ DEPENDS_append = " qemu-native clang"
 
 OECMAKE_SOURCEPATH = "${S}/libclc"
 
+CXXFLAGS += "-std=c++17"
+
 EXTRA_OECMAKE += " \
 				-DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
-				-DCMAKE_CXX_FLAGS=-std=c++17 \
-				-DCMAKE_SHARED_LINKER_FLAGS=-std=c++17 \
-				-DCMAKE_EXE_LINKER_FLAGS=-std=c++17 \
 				-Dclc_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeCLCCompiler.cmake.in \
 				-Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
 			"
