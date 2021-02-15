@@ -11,9 +11,7 @@ LIC_FILES_CHKSUM = "file://libclc/LICENSE.TXT;md5=7cc795f6cbb2d801d84336b83c8017
 
 inherit cmake pkgconfig python3native qemu
 
-SPIRV_DEP = "${@'spirv-tools spirv-tools-native' if int(d.getVar('MAJOR_VER')) >= 12 else ''}"
-
-DEPENDS_append = " qemu-native clang ${SPIRV_DEP}"
+DEPENDS += "qemu-native clang spirv-tools spirv-llvm-translator spirv-llvm-translator-native ncurses"
 
 OECMAKE_SOURCEPATH = "${S}/libclc"
 
