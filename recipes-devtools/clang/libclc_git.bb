@@ -14,6 +14,7 @@ inherit cmake pkgconfig python3native qemu
 SPIRV_DEP = "${@'spirv-tools spirv-tools-native' if int(d.getVar('MAJOR_VER')) >= 12 else ''}"
 
 DEPENDS_append = " qemu-native clang ${SPIRV_DEP}"
+DEPENDS_append_class-target = " llvm-common"
 
 OECMAKE_SOURCEPATH = "${S}/libclc"
 
