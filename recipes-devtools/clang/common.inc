@@ -8,6 +8,7 @@ LICENSE = "Apache-2.0-with-LLVM-exception"
 BASEURI ??= "${LLVM_GIT}/llvm-project;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
 SRC_URI = "\
     ${BASEURI} \
+    file://llvm-config \
     file://0001-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch \
     file://0002-libcxxabi-Find-libunwind-headers-when-LIBCXXABI_LIBU.patch \
     file://0003-compiler-rt-support-a-new-embedded-linux-target.patch \

@@ -296,3 +296,11 @@ TOOLCHAIN_class-native = "gcc"
 TOOLCHAIN_class-nativesdk = "clang"
 
 SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+
+SYSROOT_PREPROCESS_FUNCS_append_class-target = " clang_sysroot_preprocess"
+
+clang_sysroot_preprocess() {
+	install -d ${SYSROOT_DESTDIR}${bindir_crossscripts}/
+	install -m 0755 ${S}/../llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/
+	ln -sf llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/llvm-config${PV}
+}
