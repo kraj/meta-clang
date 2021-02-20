@@ -115,7 +115,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
 
 --- a/coreutils/test.c
 +++ b/coreutils/test.c
-@@ -401,7 +401,7 @@ struct test_statics {
+@@ -435,7 +435,7 @@ struct test_statics {
  };
  
  /* See test_ptr_hack.c */
@@ -127,15 +127,15 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
 --- a/include/libbb.h
 +++ b/include/libbb.h
 @@ -342,7 +342,7 @@ struct BUG_off_t_size_is_misdetected {
- #if defined(__GLIBC__)
- /* glibc uses __errno_location() to get a ptr to errno */
- /* We can just memorize it once - no multithreading in busybox :) */
+ #if defined(errno)
+ /* If errno is a define, assume it's "define errno (*__errno_location())"
+  * and we will cache it's result in this variable */
 -extern int *const bb_errno;
 +extern int *bb_errno;
  #undef errno
  #define errno (*bb_errno)
- #endif
-@@ -2168,7 +2168,7 @@ struct globals;
+ #define bb_cached_errno_ptr 1
+@@ -2228,7 +2228,7 @@ struct globals;
  /* '*const' ptr makes gcc optimize code much better.
   * Magic prevents ptr_to_globals from going into rodata.
   * If you want to assign a value, use SET_PTR_TO_GLOBALS(x) */
@@ -146,7 +146,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  /* Clang/llvm drops assignment to "constant" storage. Silently.
 --- a/libbb/lineedit.c
 +++ b/libbb/lineedit.c
-@@ -181,7 +181,7 @@ struct lineedit_statics {
+@@ -192,7 +192,7 @@ struct lineedit_statics {
  };
  
  /* See lineedit_ptr_hack.c */
