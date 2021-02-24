@@ -8,9 +8,13 @@ inherit cmake python3native manpages
 DEPENDS += "bison-native \
             flex-native \
             elfutils \
-            luajit \
+            ${LUAJIT} \
             clang \
             "
+
+LUAJIT ?= "luajit"
+LUAJIT_powerpc64le = ""
+LUAJIT_powerpc64 = ""
 
 RDEPENDS_${PN} += "bash python3 python3-core python3-setuptools xz"
 
