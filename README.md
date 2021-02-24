@@ -1,4 +1,4 @@
-[![Yoe Distro CI](https://github.com/kraj/meta-clang/workflows/Yoe%20Distro%20CI/badge.svg?branch=master)](https://github.com/kraj/meta-clang/actions?query=workflow%3AYoe%20Distro%20CI+branch%3Amaster)
+[![Yoe Distro CI](https://github.com/kraj/meta-clang/workflows/Yoe%20Distro%20CI/badge.svg?branch=master)](https://github.com/kraj/meta-clang/actions/workflows/yoe.yml?query=workflow%3AYoe+branch%3Amaster)
 
 # meta-clang (C/C++ frontend and LLVM compiler backend)
 
