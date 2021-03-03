@@ -4,6 +4,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=47e311aa9caedd1b3abf098bd7814d1d"
 BRANCH = "llvm_release_120"
 SRC_URI = "git://github.com/KhronosGroup/SPIRV-LLVM-Translator/;protocol=https;branch=${BRANCH} \
            file://0001-Use-12.0.0-for-base-llvm-version.patch \
+           file://0001-cmake-allow-to-enable-disable-ccache.patch \
           "
 
 PV = "12.0.0"
@@ -27,6 +28,7 @@ EXTRA_OECMAKE = "\
         -DLLVM_EXTERNAL_LIT=lit \
         -DLLVM_INCLUDE_TESTS=ON \
         -Wno-dev \
+        -DCCACHE_ALLOWED=FALSE \
 "
 
 do_compile_append() {
