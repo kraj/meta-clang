@@ -1,0 +1,239 @@
+From ab9a9dadf294f69e024a8b58c983a6c2085c223a Mon Sep 17 00:00:00 2001
+From: Luca Boccassi <bluca@debian.org>
+Date: Fri, 8 Jan 2021 16:58:56 +0000
+Subject: [PATCH 2/3] cmake: always link to packaged libbpf if
+ CMAKE_USE_LIBBPF_PACKAGE is set (#3210)
+
+Some of the executables still link to the local static versions
+even if the user requested CMAKE_USE_LIBBPF_PACKAGE. Fix this by
+using bcc-shared-no-libbpf more widely if the variable is set.
+
+Skip the git submodule and the extraction commands if the user
+set CMAKE_USE_LIBBPF_PACKAGE
+---
+ CMakeLists.txt                     |  2 +-
+ examples/cpp/CMakeLists.txt        | 59 ++++++++----------------------
+ examples/cpp/pyperf/CMakeLists.txt |  5 +++
+ introspection/CMakeLists.txt       |  8 +++-
+ src/cc/CMakeLists.txt              | 29 ++++++++++-----
+ tests/cc/CMakeLists.txt            | 22 +++++++----
+ 6 files changed, 61 insertions(+), 64 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b2e334e9..b68571ea 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -14,7 +14,7 @@ endif()
+ enable_testing()
+ 
+ # populate submodules (libbpf)
+-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/cc/libbpf/src)
++if(NOT CMAKE_USE_LIBBPF_PACKAGE AND NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/cc/libbpf/src)
+   execute_process(COMMAND git submodule update --init --recursive
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+ endif()
+diff --git a/examples/cpp/CMakeLists.txt b/examples/cpp/CMakeLists.txt
+index dae0e9ce..dd343245 100644
+--- a/examples/cpp/CMakeLists.txt
++++ b/examples/cpp/CMakeLists.txt
+@@ -11,49 +11,20 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+ 
+ option(INSTALL_CPP_EXAMPLES "Install C++ examples. Those binaries are statically linked and can take plenty of disk space" OFF)
+ 
+-add_executable(HelloWorld HelloWorld.cc)
+-target_link_libraries(HelloWorld bcc-static)
+-
+-add_executable(CPUDistribution CPUDistribution.cc)
+-target_link_libraries(CPUDistribution bcc-static)
+-
+-add_executable(RecordMySQLQuery RecordMySQLQuery.cc)
+-target_link_libraries(RecordMySQLQuery bcc-static)
+-
+-add_executable(TCPSendStack TCPSendStack.cc)
+-target_link_libraries(TCPSendStack bcc-static)
+-
+-add_executable(RandomRead RandomRead.cc)
+-target_link_libraries(RandomRead bcc-static)
+-
+-add_executable(LLCStat LLCStat.cc)
+-target_link_libraries(LLCStat bcc-static)
+-
+-add_executable(FollyRequestContextSwitch FollyRequestContextSwitch.cc)
+-target_link_libraries(FollyRequestContextSwitch bcc-static)
+-
+-add_executable(UseExternalMap UseExternalMap.cc)
+-target_link_libraries(UseExternalMap bcc-static)
+-
+-add_executable(CGroupTest CGroupTest.cc)
+-target_link_libraries(CGroupTest bcc-static)
+-
+-add_executable(TaskIterator TaskIterator.cc)
+-target_link_libraries(TaskIterator bcc-static)
+-
+-add_executable(SkLocalStorageIterator SkLocalStorageIterator.cc)
+-target_link_libraries(SkLocalStorageIterator bcc-static)
+-
+-if(INSTALL_CPP_EXAMPLES)
+-  install (TARGETS HelloWorld DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS CPUDistribution DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS RecordMySQLQuery DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS TCPSendStack DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS RandomRead DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS LLCStat DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS FollyRequestContextSwitch DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS UseExternalMap DESTINATION share/bcc/examples/cpp)
+-  install (TARGETS CGroupTest DESTINATION share/bcc/examples/cpp)
+-endif(INSTALL_CPP_EXAMPLES)
++file(GLOB EXAMPLES *.cc)
++foreach(EXAMPLE ${EXAMPLES})
++  get_filename_component(NAME ${EXAMPLE} NAME_WE)
++  add_executable(${NAME} ${EXAMPLE})
++
++  if(NOT CMAKE_USE_LIBBPF_PACKAGE)
++    target_link_libraries(${NAME} bcc-static)
++  else()
++    target_link_libraries(${NAME} bcc-shared-no-libbpf)
++  endif()
++
++  if(INSTALL_CPP_EXAMPLES)
++    install (TARGETS ${NAME} DESTINATION share/bcc/examples/cpp)
++  endif(INSTALL_CPP_EXAMPLES)
++endforeach()
+ 
+ add_subdirectory(pyperf)
+diff --git a/examples/cpp/pyperf/CMakeLists.txt b/examples/cpp/pyperf/CMakeLists.txt
+index 6f963c66..97420806 100644
+--- a/examples/cpp/pyperf/CMakeLists.txt
++++ b/examples/cpp/pyperf/CMakeLists.txt
+@@ -7,6 +7,11 @@ include_directories(${CMAKE_SOURCE_DIR}/src/cc/libbpf/include/uapi)
+ 
+ add_executable(PyPerf PyPerf.cc PyPerfUtil.cc PyPerfBPFProgram.cc PyPerfLoggingHelper.cc PyPerfDefaultPrinter.cc Py36Offsets.cc)
+ target_link_libraries(PyPerf bcc-static)
++if(NOT CMAKE_USE_LIBBPF_PACKAGE)
++  target_link_libraries(PyPerf bcc-static)
++else()
++  target_link_libraries(PyPerf bcc-shared-no-libbpf)
++endif()
+ 
+ if(INSTALL_CPP_EXAMPLES)
+   install (TARGETS PyPerf DESTINATION share/bcc/examples/cpp)
+diff --git a/introspection/CMakeLists.txt b/introspection/CMakeLists.txt
+index 4328ee11..6c83f0c8 100644
+--- a/introspection/CMakeLists.txt
++++ b/introspection/CMakeLists.txt
+@@ -8,7 +8,13 @@ include_directories(${CMAKE_SOURCE_DIR}/src/cc/libbpf/include/uapi)
+ option(INSTALL_INTROSPECTION "Install BPF introspection tools" ON)
+ option(BPS_LINK_RT "Pass -lrt to linker when linking bps tool" ON)
+ 
+-set(bps_libs_to_link bpf-static elf z)
++# Note that the order matters! bpf-static first, the rest later
++if(CMAKE_USE_LIBBPF_PACKAGE AND LIBBPF_FOUND)
++set(bps_libs_to_link bpf-shared ${LIBBPF_LIBRARIES})
++else()
++set(bps_libs_to_link bpf-static)
++endif()
++list(APPEND bps_libs_to_link elf z)
+ if(BPS_LINK_RT)
+ list(APPEND bps_libs_to_link rt)
+ endif()
+diff --git a/src/cc/CMakeLists.txt b/src/cc/CMakeLists.txt
+index 4021c662..c8ea63aa 100644
+--- a/src/cc/CMakeLists.txt
++++ b/src/cc/CMakeLists.txt
+@@ -10,8 +10,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/frontends/clang)
+ include_directories(${LLVM_INCLUDE_DIRS})
+ include_directories(${LIBELF_INCLUDE_DIRS})
+ # todo: if check for kernel version
+-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libbpf/include)
+-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libbpf/include/uapi)
++if (CMAKE_USE_LIBBPF_PACKAGE AND LIBBPF_FOUND)
++  include_directories(${LIBBPF_INCLUDE_DIRS})
++else()
++  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libbpf/include)
++  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libbpf/include/uapi)
++endif()
+ 
+ # add_definitions has a problem parsing "-D_GLIBCXX_USE_CXX11_ABI=0", this is safer
+ separate_arguments(LLVM_DEFINITIONS)
+@@ -41,21 +45,26 @@ if(LIBBPF_INCLUDE_DIR)
+   add_definitions(-DHAVE_EXTERNAL_LIBBPF)
+ endif()
+ 
+-if(LIBBPF_FOUND)
+-  set(extract_dir ${CMAKE_CURRENT_BINARY_DIR}/libbpf_a_extract)
+-  execute_process(COMMAND sh -c "mkdir -p ${extract_dir} && cd ${extract_dir} && ${CMAKE_AR} x ${LIBBPF_STATIC_LIBRARIES}")
+-  file(GLOB libbpf_sources "${extract_dir}/*.o")
+-else()
+-  file(GLOB libbpf_sources "libbpf/src/*.c")
+-endif()
++if(NOT CMAKE_USE_LIBBPF_PACKAGE)
++  if(LIBBPF_FOUND)
++    set(extract_dir ${CMAKE_CURRENT_BINARY_DIR}/libbpf_a_extract)
++    execute_process(COMMAND sh -c "mkdir -p ${extract_dir} && cd ${extract_dir} && ${CMAKE_AR} x ${LIBBPF_STATIC_LIBRARIES}")
++    file(GLOB libbpf_sources "${extract_dir}/*.o")
++  else()
++    file(GLOB libbpf_sources "libbpf/src/*.c")
++  endif()
+ 
+-set(libbpf_uapi libbpf/include/uapi/linux/)
++  set(libbpf_uapi libbpf/include/uapi/linux/)
++endif()
+ 
+ add_library(bpf-static STATIC libbpf.c perf_reader.c ${libbpf_sources})
+ set_target_properties(bpf-static PROPERTIES OUTPUT_NAME bcc_bpf)
+ add_library(bpf-shared SHARED libbpf.c perf_reader.c ${libbpf_sources})
+ set_target_properties(bpf-shared PROPERTIES VERSION ${REVISION_LAST} SOVERSION 0)
+ set_target_properties(bpf-shared PROPERTIES OUTPUT_NAME bcc_bpf)
++if(CMAKE_USE_LIBBPF_PACKAGE AND LIBBPF_FOUND)
++  target_link_libraries(bpf-shared ${LIBBPF_LIBRARIES})
++endif()
+ 
+ set(bcc_common_sources bcc_common.cc bpf_module.cc bcc_btf.cc exported_files.cc)
+ if (${LLVM_PACKAGE_VERSION} VERSION_EQUAL 6 OR ${LLVM_PACKAGE_VERSION} VERSION_GREATER 6)
+diff --git a/tests/cc/CMakeLists.txt b/tests/cc/CMakeLists.txt
+index 528f1bda..b2fba5e3 100644
+--- a/tests/cc/CMakeLists.txt
++++ b/tests/cc/CMakeLists.txt
+@@ -7,7 +7,11 @@ include_directories(${CMAKE_SOURCE_DIR}/src/cc/libbpf/include/uapi)
+ include_directories(${CMAKE_SOURCE_DIR}/tests/python/include)
+ 
+ add_executable(test_static test_static.c)
+-target_link_libraries(test_static bcc-static)
++if(NOT CMAKE_USE_LIBBPF_PACKAGE)
++  target_link_libraries(test_static bcc-static)
++else()
++  target_link_libraries(test_static bcc-shared-no-libbpf)
++endif()
+ 
+ add_test(NAME c_test_static COMMAND ${TEST_WRAPPER} c_test_static sudo ${CMAKE_CURRENT_BINARY_DIR}/test_static)
+ 
+@@ -35,17 +39,19 @@ set(TEST_LIBBCC_SOURCES
+ 	utils.cc
+ 	test_parse_tracepoint.cc)
+ 
+-add_executable(test_libbcc ${TEST_LIBBCC_SOURCES})
+-
+ file(COPY dummy_proc_map.txt DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+ add_library(usdt_test_lib SHARED usdt_test_lib.cc)
+ 
+-add_dependencies(test_libbcc bcc-shared)
+-target_link_libraries(test_libbcc ${PROJECT_BINARY_DIR}/src/cc/libbcc.so dl usdt_test_lib)
+-set_target_properties(test_libbcc PROPERTIES INSTALL_RPATH ${PROJECT_BINARY_DIR}/src/cc)
+-target_compile_definitions(test_libbcc PRIVATE -DLIBBCC_NAME=\"libbcc.so\")
++if(NOT CMAKE_USE_LIBBPF_PACKAGE)
++  add_executable(test_libbcc ${TEST_LIBBCC_SOURCES})
++  add_dependencies(test_libbcc bcc-shared)
+ 
+-add_test(NAME test_libbcc COMMAND ${TEST_WRAPPER} c_test_all sudo ${CMAKE_CURRENT_BINARY_DIR}/test_libbcc)
++  target_link_libraries(test_libbcc ${PROJECT_BINARY_DIR}/src/cc/libbcc.so dl usdt_test_lib)
++  set_target_properties(test_libbcc PROPERTIES INSTALL_RPATH ${PROJECT_BINARY_DIR}/src/cc)
++  target_compile_definitions(test_libbcc PRIVATE -DLIBBCC_NAME=\"libbcc.so\")
++
++  add_test(NAME test_libbcc COMMAND ${TEST_WRAPPER} c_test_all sudo ${CMAKE_CURRENT_BINARY_DIR}/test_libbcc)
++endif()
+ 
+ if(LIBBPF_FOUND)
+   add_executable(test_libbcc_no_libbpf ${TEST_LIBBCC_SOURCES})
+-- 
+2.29.2
+
