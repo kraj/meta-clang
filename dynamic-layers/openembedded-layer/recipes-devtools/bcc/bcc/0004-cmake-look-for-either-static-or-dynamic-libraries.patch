@@ -1,0 +1,69 @@
+From 6b4222cd41b3f5e833307aeff2b10c6b084d3f4f Mon Sep 17 00:00:00 2001
+From: Matteo Croce <mcroce@microsoft.com>
+Date: Wed, 27 Jan 2021 00:26:39 +0100
+Subject: [PATCH] cmake: look for either static or dynamic libraries
+
+On some distro, static libraries are shipped in a separate package.
+Look for either a static or dynamic libbpf, and only fail if neither is found.
+---
+ cmake/FindLibBpf.cmake | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/cmake/FindLibBpf.cmake b/cmake/FindLibBpf.cmake
+index 75683ae3d..dc10dcee4 100644
+--- a/cmake/FindLibBpf.cmake
++++ b/cmake/FindLibBpf.cmake
+@@ -28,9 +28,9 @@ find_path (LIBBPF_INCLUDE_DIR
+     /sw/include
+     ENV CPATH)
+ 
+-find_library (LIBBPF_STATIC_LIBRARIES
++find_library (LIBBPF_LIBRARIES
+   NAMES
+-    libbpf.a
++    bpf
+   PATHS
+     /usr/lib
+     /usr/local/lib
+@@ -38,10 +38,13 @@ find_library (LIBBPF_STATIC_LIBRARIES
+     /sw/lib
+     ENV LIBRARY_PATH
+     ENV LD_LIBRARY_PATH)
++if(LIBBPF_LIBRARIES)
++list(APPEND PATHS LIBBPF_LIBRARIES)
++endif()
+ 
+-find_library (LIBBPF_LIBRARIES
++find_library (LIBBPF_STATIC_LIBRARIES
+   NAMES
+-    bpf
++    libbpf.a
+   PATHS
+     /usr/lib
+     /usr/local/lib
+@@ -49,13 +52,19 @@ find_library (LIBBPF_LIBRARIES
+     /sw/lib
+     ENV LIBRARY_PATH
+     ENV LD_LIBRARY_PATH)
++if(LIBBPF_STATIC_LIBRARIES)
++list(APPEND PATHS LIBBPF_STATIC_LIBRARIES)
++endif()
+ 
++if(LIBBPF_STATIC_LIBRARIES OR LIBBPF_LIBRARIES)
+ include (FindPackageHandleStandardArgs)
+ 
+ # handle the QUIETLY and REQUIRED arguments and set LIBBPF_FOUND to TRUE if all listed variables are TRUE
+ FIND_PACKAGE_HANDLE_STANDARD_ARGS(LibBpf "Please install the libbpf development package"
+-  LIBBPF_LIBRARIES
+-  LIBBPF_STATIC_LIBRARIES
++  ${PATHS}
+   LIBBPF_INCLUDE_DIR)
+ 
+-mark_as_advanced(LIBBPF_INCLUDE_DIR LIBBPF_STATIC_LIBRARIES LIBBPF_LIBRARIES)
++mark_as_advanced(LIBBPF_INCLUDE_DIR ${PATHS})
++else()
++message(Please install the libbpf development package)
++endif()
+-- 
+2.29.2
+
