@@ -47,6 +47,8 @@ jobs:
           echo ERR_REPORT_USERNAME = \"Drone Autobuilder\" >> conf/local.conf
           echo ERR_REPORT_EMAIL = \"info@yoedistro.org\" >> conf/local.conf
           echo TOOLCHAIN = \"clang\" >> conf/local.conf
+          echo BB_NUMBER_THREADS = \"16\" >> conf/local.conf
+          echo PARALLEL_MAKE = \"-j 32\" >> conf/local.conf
           echo CLANGSDK = \"1\" >> conf/local.conf
           echo IMAGE_INSTALL_append = \" clang \" >> conf/local.conf
           echo XZ_DEFAULTS = \"--threads=8\" >> conf/local.conf
