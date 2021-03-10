@@ -303,4 +303,7 @@ clang_sysroot_preprocess() {
 	install -d ${SYSROOT_DESTDIR}${bindir_crossscripts}/
 	install -m 0755 ${S}/../llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/
 	ln -sf llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/llvm-config${PV}
+	# LLDTargets.cmake references the lld executable(!) that some modules/plugins link to
+	install -d ${SYSROOT_DESTDIR}${bindir}
+	install -m 755 ${D}${bindir}/lld ${SYSROOT_DESTDIR}${bindir}/
 }
