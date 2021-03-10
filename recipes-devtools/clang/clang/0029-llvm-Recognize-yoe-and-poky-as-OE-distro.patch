@@ -6,20 +6,24 @@ Subject: [PATCH] llvm: Recognize yoe and poky as OE distro
 This helps in making right detection for OE built gcc toolchains
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
+
+Add wrs
+Signed-off-by: Yi Fan Yu <yifan.yu@windriver.com>
 ---
- llvm/lib/Support/Triple.cpp | 2 ++
- 1 file changed, 2 insertions(+)
+ llvm/lib/Support/Triple.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/llvm/lib/Support/Triple.cpp b/llvm/lib/Support/Triple.cpp
 index 4f483c965282..abd181759786 100644
 --- a/llvm/lib/Support/Triple.cpp
 +++ b/llvm/lib/Support/Triple.cpp
-@@ -490,6 +490,8 @@ static Triple::VendorType parseVendor(StringRef VendorName) {
+@@ -490,6 +490,9 @@ static Triple::VendorType parseVendor(StringRef VendorName) {
      .Case("mesa", Triple::Mesa)
      .Case("suse", Triple::SUSE)
      .Case("oe", Triple::OpenEmbedded)
 +    .Case("yoe", Triple::OpenEmbedded)
 +    .Case("poky", Triple::OpenEmbedded)
++    .Case("wrs", Triple::OpenEmbedded)
      .Default(Triple::UnknownVendor);
  }
  
