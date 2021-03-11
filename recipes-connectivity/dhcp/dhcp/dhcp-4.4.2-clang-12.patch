@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Huawei Inc.
+# SPDX-License-Identifier: Apache-2.0
+
+Fix building with modern compilers, such as clang 12 and gcc 11.
+
+Signed-off-by: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+
+diff -up dhcp-4.4.2/server/mdb.c.omv~ dhcp-4.4.2/server/mdb.c
+--- dhcp-4.4.2/server/mdb.c.omv~	2021-03-11 18:08:56.890166779 +0100
++++ dhcp-4.4.2/server/mdb.c	2021-03-11 18:09:01.930189762 +0100
+@@ -67,7 +67,7 @@ static host_id_info_t *host_id_info = NU
+ 
+ int numclasseswritten;
+ 
+-omapi_object_type_t *dhcp_type_host;
++extern omapi_object_type_t *dhcp_type_host;
+ 
+ isc_result_t enter_class(cd, dynamicp, commit)
+ 	struct class *cd;
