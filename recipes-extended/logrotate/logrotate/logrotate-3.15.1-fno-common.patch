@@ -1,0 +1,30 @@
+This patch fixes building logrotate 3.15.1 with modern compilers
+that default to -fno-common (such as clang >= 10, gcc >= 10)
+
+Signed-off-by: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+
+diff -up logrotate-3.15.1/logrotate.h.omv~ logrotate-3.15.1/logrotate.h
+--- logrotate-3.15.1/logrotate.h.omv~	2021-03-18 13:48:57.662529086 +0100
++++ logrotate-3.15.1/logrotate.h	2021-03-18 13:49:28.983736070 +0100
+@@ -89,7 +89,8 @@ struct logInfo {
+     TAILQ_ENTRY(logInfo) list;
+ };
+ 
+-TAILQ_HEAD(logInfoHead, logInfo) logs;
++TAILQ_HEAD(logInfoHead, logInfo);
++extern struct logInfoHead logs;
+ 
+ extern int numLogs;
+ extern int debug;
+diff -up logrotate-3.15.1/config.c.omv~ logrotate-3.15.1/config.c
+--- logrotate-3.15.1/config.c.omv~	2021-03-18 18:22:09.897571389 +0100
++++ logrotate-3.15.1/config.c	2021-03-18 18:22:24.023660076 +0100
+@@ -32,6 +32,8 @@
+ #include "log.h"
+ #include "logrotate.h"
+ 
++struct logInfoHead logs;
++
+ #if !defined(GLOB_ABORTED) && defined(GLOB_ABEND)
+ #define GLOB_ABORTED GLOB_ABEND
+ #endif
