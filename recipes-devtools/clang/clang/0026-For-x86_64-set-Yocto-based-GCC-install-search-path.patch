@@ -43,8 +43,13 @@ BTW, it is hardly to insert a triple by the replacement of TARGET_SYS
 (=${TARGET_ARCH}${TARGET_VENDOR}-${TARGET_OS}), since TARGET_VENDOR
 is different between clang and clang-native
 
+The //CLANG_EXTRA_OE_VENDORS_TRIPLES string is replaced with list of
+additional triples based on CLANG_EXTRA_OE_VENDORS variable in
+recipes-devtools/clang/llvm-project-source.inc:add_more_target_vendors()
+
 Upstream-Status: Inappropriate [oe specific]
 
+Signed-off-by: Martin Jansa <martin.jansa@gmail.com>
 Signed-off-by: Hongxu Jia <hongxu.jia@windriver.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -59,7 +64,7 @@ index 05d1d3003881..e56812145e6d 100644
        "x86_64-redhat-linux",    "x86_64-suse-linux",
        "x86_64-manbo-linux-gnu", "x86_64-linux-gnu",
        "x86_64-slackware-linux", "x86_64-unknown-linux",
-+      "x86_64-oe-linux", "x86_64-poky-linux", "x86_64-wrs-linux",
++      "x86_64-oe-linux", //CLANG_EXTRA_OE_VENDORS_TRIPLES
        "x86_64-amazon-linux",    "x86_64-linux-android"};
    static const char *const X32LibDirs[] = {"/libx32"};
    static const char *const X86LibDirs[] = {"/lib32", "/lib"};
