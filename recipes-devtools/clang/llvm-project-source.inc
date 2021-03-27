@@ -19,19 +19,26 @@ INHIBIT_DEFAULT_DEPS = "1"
 DEPENDS = ""
 PACKAGES = ""
 
-# additional TARGET_VENDOR values we want to support
+# space separated list of additional distro vendor values we want to support e.g.
+# "yoe webos" or "-yoe -webos" '-' is optional
 CLANG_EXTRA_OE_VENDORS ?= "${TARGET_VENDOR}"
 
-add_more_target_vendors() {
-    local cases="" triples=""
-    for dash_vendor in ${CLANG_EXTRA_OE_VENDORS}; do
-        vendor=`echo $dash_vendor | sed 's/^-//g'`
-        cases="$cases.Case(\"$vendor\", Triple::OpenEmbedded)"
-        triples="$triples\"x86_64-$vendor-linux\","
-    done
-    bbnote "Adding support following TARGET_VENDOR values: ${CLANG_EXTRA_OE_VENDORS} in ${S}/llvm/lib/Support/Triple.cpp and ${S}/clang/lib/Driver/ToolChains/Gnu.cpp"
-    sed "s#//CLANG_EXTRA_OE_VENDORS_CASES#$cases#g" -i ${S}/llvm/lib/Support/Triple.cpp
-    sed "s#//CLANG_EXTRA_OE_VENDORS_TRIPLES#$triples#g" -i ${S}/clang/lib/Driver/ToolChains/Gnu.cpp
+python add_distro_vendor() {
+    import subprocess
+    case = ""
+    triple = ""
+    vendors = d.getVar('CLANG_EXTRA_OE_VENDORS')
+    for vendor in vendors.split():
+        # convert -yoe into yoe
+        vendor = vendor.lstrip('-')
+        if vendor == "oe":
+            continue
+        case += '\\n    .Case("' + vendor + '", Triple::OpenEmbedded)'
+        triple += ' "x86_64-' + vendor + '-linux",'
+    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_TRIPLES#%s#g' ${S}/clang/lib/Driver/ToolChains/Gnu.cpp" % (triple))
+    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_CASES#%s#g' -i ${S}/llvm/lib/Support/Triple.cpp" % (case))
+    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 
-do_patch[postfuncs] += "add_more_target_vendors"
+do_patch[postfuncs] += "add_distro_vendor"
