@@ -1,0 +1,31 @@
+From ec41ce71f8cd318ab3ca4ce727e7398289b5d7cf Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 30 Mar 2021 17:25:10 -0700
+Subject: [PATCH] bpforc.h: Include <optional> header
+
+This is required since this header had std::optional<std::tuple<uint8_t *, uintptr_t>>
+
+Fixes buiild errors with clang-12 with gcc11-runtime
+
+Upstream-Status: Submitted [https://github.com/iovisor/bpftrace/pull/1762]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ src/bpforc.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/bpforc.h b/src/bpforc.h
+index da6345be..5634c544 100644
+--- a/src/bpforc.h
++++ b/src/bpforc.h
+@@ -22,6 +22,8 @@
+ #include <llvm/ExecutionEngine/Orc/JITTargetMachineBuilder.h>
+ #endif
+ 
++#include <optional>
++
+ namespace bpftrace {
+ 
+ const std::string LLVMTargetTriple = "bpf-pc-linux";
+-- 
+2.31.1
+
