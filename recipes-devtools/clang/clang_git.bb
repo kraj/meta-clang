@@ -15,7 +15,6 @@ BUILD_CXX_class-nativesdk = "clang++"
 BUILD_AR_class-nativesdk = "llvm-ar"
 BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
 BUILD_NM_class-nativesdk = "llvm-nm"
-LDFLAGS_append_class-nativesdk = " -fuse-ld=lld"
 
 inherit cmake cmake-native pkgconfig python3native
 
