@@ -28,13 +28,25 @@ python add_distro_vendor() {
     case = ""
     triple = ""
     vendors = d.getVar('CLANG_EXTRA_OE_VENDORS')
+    multilib_variants = d.getVar('MULTILIB_VARIANTS').split()
+    vendors_to_add = []
     for vendor in vendors.split():
         # convert -yoe into yoe
         vendor = vendor.lstrip('-')
-        if vendor == "oe":
-            continue
-        case += '\\n    .Case("' + vendor + '", Triple::OpenEmbedded)'
-        triple += ' "x86_64-' + vendor + '-linux",'
+        # generate possible multilib vendor names for yoe
+        # such as yoemllib32
+        vendors_to_add.extend([vendor + 'ml' + variant for variant in multilib_variants])
+        # skip oe since already part of the cpp file
+        if vendor != "oe":
+            vendors_to_add.append(vendor)
+
+    for vendor_to_add in vendors_to_add:
+        case += '\\n    .Case("' + vendor_to_add + '", Triple::OpenEmbedded)'
+        triple += ' "x86_64-' + vendor_to_add + '-linux",'
+
+    bb.note("Adding support following TARGET_VENDOR values")
+    bb.note(str(vendors_to_add))
+    bb.note("in llvm/lib/Support/Triple.cpp and ${S}/clang/lib/Driver/ToolChains/Gnu.cpp")
     cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_TRIPLES#%s#g' ${S}/clang/lib/Driver/ToolChains/Gnu.cpp" % (triple))
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
     cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_CASES#%s#g' -i ${S}/llvm/lib/Support/Triple.cpp" % (case))
