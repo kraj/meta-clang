@@ -1,0 +1,28 @@
+From 1d07b3e71bf073da0a25b30efb135adaa876e3df Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 15 Apr 2021 18:58:07 -0700
+Subject: [PATCH] clang: Switch defaults to dwarf-5 debug info on Linux
+
+GCC 11 has defaulted to DWARF-5 as well, this matches
+debug info formats,  so mix and match of components with GCC 11
+works.
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/Linux.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/clang/lib/Driver/ToolChains/Linux.h b/clang/lib/Driver/ToolChains/Linux.h
+index 582d4bef81df..82c9494c744e 100644
+--- a/clang/lib/Driver/ToolChains/Linux.h
++++ b/clang/lib/Driver/ToolChains/Linux.h
+@@ -58,6 +58,8 @@ public:
+       const llvm::opt::ArgList &DriverArgs, const JobAction &JA,
+       const llvm::fltSemantics *FPType = nullptr) const override;
+ 
++  unsigned GetDefaultDwarfVersion() const override { return 5; }
++
+ protected:
+   Tool *buildAssembler() const override;
+   Tool *buildLinker() const override;

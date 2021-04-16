@@ -1,4 +1,4 @@
-From 9aaf03ac32985430e5c08347ed4e5d2721d5db1b Mon Sep 17 00:00:00 2001
+From 6c786d55d560abca076b7c1b718cdcb31ef5b388 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:11:45 -0700
 Subject: [PATCH] compiler-rt: Simplify cross-compilation. Don't use
