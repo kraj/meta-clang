@@ -1,4 +1,4 @@
-From 97123bf7bc7cc2a55c3dfb5006be5dd66c46d790 Mon Sep 17 00:00:00 2001
+From 4f45514fb8841a08d8d3bb68d9cb84b607e652f2 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 24 Mar 2021 00:32:09 -0700
 Subject: [PATCH] compiler-rt: Use mcr based barrier on armv6
@@ -69,6 +69,3 @@ index f6ce6a9fccff..5c6cd9376ac4 100644
  #if defined(USE_THUMB_2)
  #define WIDE(op) op.w
  #else
--- 
-2.31.0
-

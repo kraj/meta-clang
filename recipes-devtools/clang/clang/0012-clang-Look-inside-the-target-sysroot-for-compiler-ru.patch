@@ -1,4 +1,4 @@
-From b1b677981b251e231b863dabbed938b7ece54eef Mon Sep 17 00:00:00 2001
+From f946307a70619c45919ac06fa37c267fd25c3ec8 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
 Subject: [PATCH] clang: Look inside the target sysroot for compiler runtime

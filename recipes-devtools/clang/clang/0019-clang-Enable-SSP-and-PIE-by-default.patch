@@ -1,4 +1,4 @@
-From 460c9c3c8d6384613f3a12af6f27513d1a2222f0 Mon Sep 17 00:00:00 2001
+From d0f788c1fb3d00350c51e88302ecbcf3506e4b53 Mon Sep 17 00:00:00 2001
 From: Evangelos Foutras <evangelos@foutrelis.com>
 Date: Thu, 26 Dec 2019 15:46:19 -0800
 Subject: [PATCH] clang: Enable SSP and PIE by default
@@ -37,10 +37,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  13 files changed, 42 insertions(+), 30 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 8b72e8f505fe..98f54a935465 100644
+index b64396647882..604024bb3df4 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -865,8 +865,14 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
+@@ -856,8 +856,14 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
  }
  
  bool Linux::isPIEDefault() const {
@@ -221,7 +221,7 @@ index 0959bd7ba0a1..4056a672b6f9 100644
  // CHECK-SPARCV9PIC: as
  // CHECK-SPARCV9PIC: -64
 diff --git a/clang/test/Driver/linux-ld.c b/clang/test/Driver/linux-ld.c
-index 0b788ffcb852..0ee504cd00e3 100644
+index 24d3c78643f8..9ea22e6e0f64 100644
 --- a/clang/test/Driver/linux-ld.c
 +++ b/clang/test/Driver/linux-ld.c
 @@ -1,3 +1,5 @@

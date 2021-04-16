@@ -1,4 +1,4 @@
-From 09a0e9e8e39b31570f00ac70880e60377ce38973 Mon Sep 17 00:00:00 2001
+From 15008103e23b5e1cd65bcc32746aa41579583dc5 Mon Sep 17 00:00:00 2001
 From: Dan McGregor <dan.mcgregor@usask.ca>
 Date: Wed, 26 Apr 2017 20:29:41 -0600
 Subject: [PATCH] clang: driver: Check sysroot for ldso path
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 16 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index e17a6bd4bdd2..199d9c867c96 100644
+index 9663a7390ada..06b92cc0bf5b 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -516,11 +516,19 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -507,11 +507,19 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      LibDir = "lib64";
      Loader =
          (tools::ppc::hasPPCAbiArg(Args, "elfv2")) ? "ld64.so.2" : "ld64.so.1";
@@ -37,7 +37,7 @@ index e17a6bd4bdd2..199d9c867c96 100644
      break;
    case llvm::Triple::riscv32: {
      StringRef ABIName = tools::riscv::getRISCVABI(Args, Triple);
-@@ -542,6 +550,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -533,6 +541,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
    case llvm::Triple::sparcv9:
      LibDir = "lib64";
      Loader = "ld-linux.so.2";
@@ -48,7 +48,7 @@ index e17a6bd4bdd2..199d9c867c96 100644
      break;
    case llvm::Triple::systemz:
      LibDir = "lib";
-@@ -556,6 +568,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -547,6 +559,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
  
      LibDir = X32 ? "libx32" : "lib64";
      Loader = X32 ? "ld-linux-x32.so.2" : "ld-linux-x86-64.so.2";

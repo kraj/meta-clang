@@ -37,8 +37,10 @@ SRC_URI = "\
     file://0026-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
     file://0027-compiler-rt-Include-stddef.h.patch \
     file://0028-llvm-Do-not-use-find_library-for-ncurses.patch \
-    file://0029-llvm-Recognize-yoe-and-poky-as-OE-distro.patch \
-    file://0030-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
+    file://0029-llvm-Insert-anchor-for-adding-OE-distro-vendor-names.patch \
+    file://0030-AsmMatcherEmitter-sort-ClassInfo-lists-by-name-as-we.patch \
+    file://0031-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
+    file://0032-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""

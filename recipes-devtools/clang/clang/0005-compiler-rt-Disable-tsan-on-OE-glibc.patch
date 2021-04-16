@@ -1,4 +1,4 @@
-From 0565a77f6bd5fdc7a440455fb31ee5f6fd42afff Mon Sep 17 00:00:00 2001
+From 121a71a3923dbace24dbb7bd25f9f286fb9f91fb Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Jul 2016 08:05:02 +0000
 Subject: [PATCH] compiler-rt: Disable tsan on OE/glibc
