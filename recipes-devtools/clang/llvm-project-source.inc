@@ -28,7 +28,7 @@ python add_distro_vendor() {
     case = ""
     triple = ""
     vendors = d.getVar('CLANG_EXTRA_OE_VENDORS')
-    multilib_variants = d.getVar('MULTILIB_VARIANTS').split()
+    multilib_variants = (d.getVar("MULTILIB_GLOBAL_VARIANTS") or "").split()
     vendors_to_add = []
     for vendor in vendors.split():
         # convert -yoe into yoe
