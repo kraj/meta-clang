@@ -1,4 +1,4 @@
-From 6660c7d48601df4276fb3f51156c96fff103fb79 Mon Sep 17 00:00:00 2001
+From 6db98ec43e4dab2d4638a97caa81e5ef4b3f7310 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 7 Feb 2021 23:58:41 -0800
 Subject: [PATCH] llvm: Do not use find_library for ncurses
@@ -17,7 +17,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/compiler-rt/cmake/config-ix.cmake b/compiler-rt/cmake/config-ix.cmake
-index 196aa62fd01c..49bbbd257d97 100644
+index 0b5b81259492..d9e6fd1083d8 100644
 --- a/compiler-rt/cmake/config-ix.cmake
 +++ b/compiler-rt/cmake/config-ix.cmake
 @@ -140,7 +140,7 @@ else()
@@ -30,7 +30,7 @@ index 196aa62fd01c..49bbbd257d97 100644
  if(COMPILER_RT_TERMINFO_LIB)
    set(LLVM_ENABLE_TERMINFO 1)
 diff --git a/llvm/cmake/config-ix.cmake b/llvm/cmake/config-ix.cmake
-index 818fafbce148..2f8ad6652334 100644
+index d4cbf37d19a2..a320cf97b306 100644
 --- a/llvm/cmake/config-ix.cmake
 +++ b/llvm/cmake/config-ix.cmake
 @@ -175,7 +175,7 @@ if(NOT LLVM_USE_SANITIZER MATCHES "Memory.*")

@@ -1,7 +1,7 @@
-From 9583baa3f6787236a2452937bbf962a2418f6423 Mon Sep 17 00:00:00 2001
+From 81360dd267eae6c34c4ab1000a1343b6488d84d5 Mon Sep 17 00:00:00 2001
 From: Jack Andersen <jackoalan@gmail.com>
 Date: Sun, 5 Dec 2021 14:45:33 -0500
-Subject: [PATCH] [CMake] Installable find modules for terminfo and libffi
+Subject: [PATCH] Installable find modules for terminfo and libffi
 
 Improves cross-distro portability of LLVM cmake package by resolving paths for
 terminfo and libffi via import targets.
@@ -16,6 +16,7 @@ environment of the LLVM package importer.
 Reviewed By: JDevlieghere
 
 Differential Revision: https://reviews.llvm.org/D114327
+
 ---
  llvm/cmake/config-ix.cmake                    | 50 +++---------
  llvm/cmake/modules/FindFFI.cmake              | 81 +++++++++++++++++++
@@ -28,7 +29,7 @@ Differential Revision: https://reviews.llvm.org/D114327
  create mode 100644 llvm/cmake/modules/FindTerminfo.cmake
 
 diff --git a/llvm/cmake/config-ix.cmake b/llvm/cmake/config-ix.cmake
-index 2f8ad6652334..ea0cd107a783 100644
+index a320cf97b306..21cadf1893c6 100644
 --- a/llvm/cmake/config-ix.cmake
 +++ b/llvm/cmake/config-ix.cmake
 @@ -169,18 +169,13 @@ if(NOT LLVM_USE_SANITIZER MATCHES "Memory.*")
@@ -56,7 +57,7 @@ index 2f8ad6652334..ea0cd107a783 100644
      endif()
    else()
      set(LLVM_ENABLE_TERMINFO 0)
-@@ -318,38 +313,19 @@ if (LLVM_ENABLE_DOXYGEN)
+@@ -325,38 +320,19 @@ if (LLVM_ENABLE_DOXYGEN)
    llvm_find_program(dot)
  endif ()
  
@@ -100,8 +101,8 @@ index 2f8ad6652334..ea0cd107a783 100644
 -endif( LLVM_ENABLE_FFI )
 +endif()
  
- # Whether we can use std::is_trivially_copyable to verify llvm::is_trivially_copyable.
- CHECK_CXX_SOURCE_COMPILES("
+ check_symbol_exists(proc_pid_rusage "libproc.h" HAVE_PROC_PID_RUSAGE)
+ 
 diff --git a/llvm/cmake/modules/FindFFI.cmake b/llvm/cmake/modules/FindFFI.cmake
 new file mode 100644
 index 000000000000..b0d859af8959
@@ -239,7 +240,7 @@ index 000000000000..65edb80fa69a
 +  endif()
 +endif()
 diff --git a/llvm/cmake/modules/LLVMConfig.cmake.in b/llvm/cmake/modules/LLVMConfig.cmake.in
-index ac053141b008..42c1ea819717 100644
+index a71bef19fd0c..5a2fea5be399 100644
 --- a/llvm/cmake/modules/LLVMConfig.cmake.in
 +++ b/llvm/cmake/modules/LLVMConfig.cmake.in
 @@ -2,6 +2,9 @@
@@ -294,7 +295,7 @@ index 9930e01559e9..14522ba2a1bf 100644
 +  target_link_libraries( LLVMInterpreter PRIVATE FFI::ffi )
  endif()
 diff --git a/llvm/lib/Support/CMakeLists.txt b/llvm/lib/Support/CMakeLists.txt
-index cdee11412eb5..5909eeef056a 100644
+index 2242b0ec60ab..5cf80c1bb59d 100644
 --- a/llvm/lib/Support/CMakeLists.txt
 +++ b/llvm/lib/Support/CMakeLists.txt
 @@ -24,7 +24,7 @@ elseif( CMAKE_HOST_UNIX )
@@ -306,7 +307,7 @@ index cdee11412eb5..5909eeef056a 100644
    endif()
    if( LLVM_ENABLE_THREADS AND (HAVE_LIBATOMIC OR HAVE_CXX_LIBATOMICS64) )
      set(system_libs ${system_libs} atomic)
-@@ -249,7 +249,10 @@ if(LLVM_ENABLE_ZLIB)
+@@ -256,7 +256,10 @@ if(LLVM_ENABLE_ZLIB)
  endif()
  
  if(LLVM_ENABLE_TERMINFO)

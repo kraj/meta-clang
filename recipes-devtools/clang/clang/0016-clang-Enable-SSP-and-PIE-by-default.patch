@@ -1,4 +1,4 @@
-From d0f788c1fb3d00350c51e88302ecbcf3506e4b53 Mon Sep 17 00:00:00 2001
+From f44a8afe89238ba008d3452c295868aea221ba4b Mon Sep 17 00:00:00 2001
 From: Evangelos Foutras <evangelos@foutrelis.com>
 Date: Thu, 26 Dec 2019 15:46:19 -0800
 Subject: [PATCH] clang: Enable SSP and PIE by default
@@ -37,10 +37,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  13 files changed, 42 insertions(+), 30 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index b64396647882..604024bb3df4 100644
+index d2ccbe635208..5bd2e5061f3c 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -856,8 +856,14 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
+@@ -671,8 +671,14 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
  }
  
  bool Linux::isPIEDefault() const {
@@ -56,12 +56,12 @@ index b64396647882..604024bb3df4 100644
 +  return true;
  }
  
- bool Linux::isNoExecStackDefault() const {
+ bool Linux::IsAArch64OutlineAtomicsDefault(const ArgList &Args) const {
 diff --git a/clang/lib/Driver/ToolChains/Linux.h b/clang/lib/Driver/ToolChains/Linux.h
-index 6b16b0e64990..582d4bef81df 100644
+index 169a37c44072..b3544a0c7681 100644
 --- a/clang/lib/Driver/ToolChains/Linux.h
 +++ b/clang/lib/Driver/ToolChains/Linux.h
-@@ -39,6 +39,10 @@ public:
+@@ -46,6 +46,10 @@ public:
    bool isPIEDefault() const override;
    bool isNoExecStackDefault() const override;
    bool IsMathErrnoDefault() const override;
@@ -73,68 +73,68 @@ index 6b16b0e64990..582d4bef81df 100644
    void addProfileRTLibs(const llvm::opt::ArgList &Args,
                          llvm::opt::ArgStringList &CmdArgs) const override;
 diff --git a/clang/test/Driver/cross-linux.c b/clang/test/Driver/cross-linux.c
-index 6c2dab260695..c28c5653e348 100644
+index 59f5a97d2d9d..8d0e9e724aa0 100644
 --- a/clang/test/Driver/cross-linux.c
 +++ b/clang/test/Driver/cross-linux.c
-@@ -42,8 +42,8 @@
- // CHECK-MULTI32-I386: "{{.*}}/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/4.6.0/../../../../i386-unknown-linux/bin{{/|\\\\}}ld"
+@@ -43,8 +43,8 @@
+ // CHECK-MULTI32-I386: "{{.*}}/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/10.2.0/../../../../i386-unknown-linux/bin{{/|\\\\}}ld"
  // CHECK-MULTI32-I386: "--sysroot=[[sysroot:.*/Inputs/basic_linux_tree]]"
  // CHECK-MULTI32-I386: "-m" "elf_i386"
--// CHECK-MULTI32-I386: "crti.o" "[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/4.6.0]]{{/|\\\\}}crtbegin.o"
+-// CHECK-MULTI32-I386: "crti.o" "[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/10.2.0]]{{/|\\\\}}crtbegin.o"
 -// CHECK-MULTI32-I386: "-L[[gcc_install]]"
 +// CHECK-MULTI32-I386: "crti.o" "crtbeginS.o"
-+// CHECK-MULTI32-I386: "-L[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/4.6.0]]"
++// CHECK-MULTI32-I386: "-L[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/10.2.0]]"
  // CHECK-MULTI32-I386: "-L[[gcc_install]]/../../../../i386-unknown-linux/lib/../lib32"
  // CHECK-MULTI32-I386: "-L[[gcc_install]]/../../../../i386-unknown-linux/lib"
  // CHECK-MULTI32-I386: "-L[[sysroot]]/lib"
-@@ -60,8 +60,8 @@
- // CHECK-MULTI32-X86-64: "{{.*}}/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/4.6.0/../../../../i386-unknown-linux/bin{{/|\\\\}}ld"
+@@ -61,8 +61,8 @@
+ // CHECK-MULTI32-X86-64: "{{.*}}/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/10.2.0/../../../../i386-unknown-linux/bin{{/|\\\\}}ld"
  // CHECK-MULTI32-X86-64: "--sysroot=[[sysroot:.*/Inputs/basic_linux_tree]]"
  // CHECK-MULTI32-X86-64: "-m" "elf_x86_64"
--// CHECK-MULTI32-X86-64: "crti.o" "[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/4.6.0]]/64{{/|\\\\}}crtbegin.o"
+-// CHECK-MULTI32-X86-64: "crti.o" "[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/10.2.0]]/64{{/|\\\\}}crtbegin.o"
 -// CHECK-MULTI32-X86-64: "-L[[gcc_install]]/64"
 +// CHECK-MULTI32-X86-64: "crti.o" "crtbeginS.o"
-+// CHECK-MULTI32-X86-64: "-L[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/4.6.0]]/64"
++// CHECK-MULTI32-X86-64: "-L[[gcc_install:.*/Inputs/multilib_32bit_linux_tree/usr/lib/gcc/i386-unknown-linux/10.2.0]]/64"
  // CHECK-MULTI32-X86-64: "-L[[gcc_install]]/../../../../i386-unknown-linux/lib/../lib64"
- // CHECK-MULTI32-X86-64: "-L[[gcc_install]]"
  // CHECK-MULTI32-X86-64: "-L[[gcc_install]]/../../../../i386-unknown-linux/lib"
+ // CHECK-MULTI32-X86-64: "-L[[sysroot]]/lib"
 @@ -79,8 +79,8 @@
- // CHECK-MULTI64-I386: "{{.*}}/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/4.6.0/../../../../x86_64-unknown-linux/bin{{/|\\\\}}ld"
+ // CHECK-MULTI64-I386: "{{.*}}/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/10.2.0/../../../../x86_64-unknown-linux/bin{{/|\\\\}}ld"
  // CHECK-MULTI64-I386: "--sysroot=[[sysroot:.*/Inputs/basic_linux_tree]]"
  // CHECK-MULTI64-I386: "-m" "elf_i386"
--// CHECK-MULTI64-I386: "crti.o" "[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/4.6.0]]/32{{/|\\\\}}crtbegin.o"
+-// CHECK-MULTI64-I386: "crti.o" "[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/10.2.0]]/32{{/|\\\\}}crtbegin.o"
 -// CHECK-MULTI64-I386: "-L[[gcc_install]]/32"
 +// CHECK-MULTI64-I386: "crti.o" "crtbeginS.o"
-+// CHECK-MULTI64-I386: "-L[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/4.6.0]]/32"
++// CHECK-MULTI64-I386: "-L[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/10.2.0]]/32"
  // CHECK-MULTI64-I386: "-L[[gcc_install]]/../../../../x86_64-unknown-linux/lib/../lib32"
- // CHECK-MULTI64-I386: "-L[[gcc_install]]"
  // CHECK-MULTI64-I386: "-L[[gcc_install]]/../../../../x86_64-unknown-linux/lib"
-@@ -98,8 +98,8 @@
- // CHECK-MULTI64-X86-64: "{{.*}}/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/4.6.0/../../../../x86_64-unknown-linux/bin{{/|\\\\}}ld"
+ // CHECK-MULTI64-I386: "-L[[sysroot]]/lib"
+@@ -97,8 +97,8 @@
+ // CHECK-MULTI64-X86-64: "{{.*}}/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/10.2.0/../../../../x86_64-unknown-linux/bin{{/|\\\\}}ld"
  // CHECK-MULTI64-X86-64: "--sysroot=[[sysroot:.*/Inputs/basic_linux_tree]]"
  // CHECK-MULTI64-X86-64: "-m" "elf_x86_64"
--// CHECK-MULTI64-X86-64: "crti.o" "[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/4.6.0]]{{/|\\\\}}crtbegin.o"
+-// CHECK-MULTI64-X86-64: "crti.o" "[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/10.2.0]]{{/|\\\\}}crtbegin.o"
 -// CHECK-MULTI64-X86-64: "-L[[gcc_install]]"
 +// CHECK-MULTI64-X86-64: "crti.o" "crtbeginS.o"
-+// CHECK-MULTI64-X86-64: "-L[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/4.6.0]]"
++// CHECK-MULTI64-X86-64: "-L[[gcc_install:.*/Inputs/multilib_64bit_linux_tree/usr/lib/gcc/x86_64-unknown-linux/10.2.0]]"
  // CHECK-MULTI64-X86-64: "-L[[gcc_install]]/../../../../x86_64-unknown-linux/lib/../lib64"
  // CHECK-MULTI64-X86-64: "-L[[gcc_install]]/../../../../x86_64-unknown-linux/lib"
  // CHECK-MULTI64-X86-64: "-L[[sysroot]]/lib"
 diff --git a/clang/test/Driver/env.c b/clang/test/Driver/env.c
-index 0371bc91c4a3..ea89f5251217 100644
+index e9b86cbcf428..47f304c0420d 100644
 --- a/clang/test/Driver/env.c
 +++ b/clang/test/Driver/env.c
-@@ -20,7 +20,7 @@
+@@ -22,7 +22,7 @@
  //
  // CHECK-LD-32-NOT: warning:
  // CHECK-LD-32: "{{.*}}ld{{(.exe)?}}" "--sysroot=[[SYSROOT:[^"]+]]"
--// CHECK-LD-32: "{{.*}}/usr/lib/gcc/i386-unknown-linux/4.6.0{{/|\\\\}}crtbegin.o"
+-// CHECK-LD-32: "{{.*}}/usr/lib/gcc/i386-unknown-linux/10.2.0{{/|\\\\}}crtbegin.o"
 +// CHECK-LD-32: "crtbeginS.o"
- // CHECK-LD-32: "-L[[SYSROOT]]/usr/lib/gcc/i386-unknown-linux/4.6.0"
- // CHECK-LD-32: "-L[[SYSROOT]]/usr/lib/gcc/i386-unknown-linux/4.6.0/../../../../i386-unknown-linux/lib"
- // CHECK-LD-32: "-L[[SYSROOT]]/usr/lib/gcc/i386-unknown-linux/4.6.0/../../.."
+ // CHECK-LD-32: "-L[[SYSROOT]]/usr/lib/gcc/i386-unknown-linux/10.2.0"
+ // CHECK-LD-32: "-L[[SYSROOT]]/usr/lib/gcc/i386-unknown-linux/10.2.0/../../../../i386-unknown-linux/lib"
+ // CHECK-LD-32: "-L[[SYSROOT]]/lib"
 diff --git a/clang/test/Driver/fsanitize.c b/clang/test/Driver/fsanitize.c
-index 8926d55a0cf4..40f628ccae45 100644
+index 7febfd02a1ad..1381d9018e32 100644
 --- a/clang/test/Driver/fsanitize.c
 +++ b/clang/test/Driver/fsanitize.c
 @@ -330,15 +330,15 @@
@@ -157,7 +157,7 @@ index 8926d55a0cf4..40f628ccae45 100644
  
  // CHECK-NO-PIE-NOT: "-pie"
  // CHECK-NO-PIE: "-mrelocation-model" "static"
-@@ -667,12 +667,12 @@
+@@ -673,12 +673,12 @@
  // RUN: %clang -fno-sanitize=safe-stack -### %s 2>&1 | FileCheck %s -check-prefix=NOSP
  // NOSP-NOT: "-fsanitize=safe-stack"
  
@@ -174,17 +174,18 @@ index 8926d55a0cf4..40f628ccae45 100644
  // NO-SP-NOT: stack-protector
  // NO-SP: "-fsanitize=safe-stack"
 diff --git a/clang/test/Driver/gcc-toolchain.cpp b/clang/test/Driver/gcc-toolchain.cpp
-index 6c872f4255c3..f5006d1dd9ab 100644
+index 7cdba0841b8c..e2b3c6b04f08 100644
 --- a/clang/test/Driver/gcc-toolchain.cpp
 +++ b/clang/test/Driver/gcc-toolchain.cpp
-@@ -26,6 +26,6 @@
+@@ -23,7 +23,7 @@
  // the same precise formatting of the path as the '-internal-system' flags
  // above, so we just blanket wildcard match the 'crtbegin.o'.
  // CHECK: "{{[^"]*}}ld{{(.exe)?}}"
--// CHECK: "{{[^"]*}}/usr/lib/i386-linux-gnu/gcc/i686-linux-gnu/4.5{{/|\\\\}}crtbegin.o"
-+// CHECK: "crtbeginS.o"
- // CHECK: "-L[[TOOLCHAIN]]/usr/lib/i386-linux-gnu/gcc/i686-linux-gnu/4.5"
- // CHECK: "-L[[TOOLCHAIN]]/usr/lib/i386-linux-gnu/gcc/i686-linux-gnu/4.5/../../../.."
+-// CHECK-SAME: "{{[^"]*}}/usr/lib/gcc/x86_64-linux-gnu/4.8{{/|\\\\}}crtbegin.o"
++// CHECK-SAME: "crtbeginS.o"
+ // CHECK-SAME: "-L[[TOOLCHAIN]]/usr/lib/gcc/x86_64-linux-gnu/4.8"
+ /// On x86_64, there is an extra usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu but we should not test it.
+ 
 diff --git a/clang/test/Driver/hexagon-toolchain-elf.c b/clang/test/Driver/hexagon-toolchain-elf.c
 index cc11f9fcba9e..1fe8b5db587b 100644
 --- a/clang/test/Driver/hexagon-toolchain-elf.c
@@ -221,10 +222,11 @@ index 0959bd7ba0a1..4056a672b6f9 100644
  // CHECK-SPARCV9PIC: as
  // CHECK-SPARCV9PIC: -64
 diff --git a/clang/test/Driver/linux-ld.c b/clang/test/Driver/linux-ld.c
-index 24d3c78643f8..9ea22e6e0f64 100644
+index cc505588331b..c7f81d2c5e49 100644
 --- a/clang/test/Driver/linux-ld.c
 +++ b/clang/test/Driver/linux-ld.c
-@@ -1,3 +1,5 @@
+@@ -1,4 +1,6 @@
+ // UNSUPPORTED: system-windows
 +// XFAIL: linux
 +
  // General tests that ld invocations on Linux targets sane. Note that we use

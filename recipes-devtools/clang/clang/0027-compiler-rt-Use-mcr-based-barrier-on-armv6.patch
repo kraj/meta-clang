@@ -1,4 +1,4 @@
-From 4f45514fb8841a08d8d3bb68d9cb84b607e652f2 Mon Sep 17 00:00:00 2001
+From 16ee97fc3d678472f761e7ab8254ffef12ad6502 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 24 Mar 2021 00:32:09 -0700
 Subject: [PATCH] compiler-rt: Use mcr based barrier on armv6
@@ -51,10 +51,10 @@ index c9623249e5d2..7a26170741ad 100644
  
  #define MINMAX_4(rD, rN, rM, cmp_kind)                                         \
 diff --git a/compiler-rt/lib/builtins/assembly.h b/compiler-rt/lib/builtins/assembly.h
-index f6ce6a9fccff..5c6cd9376ac4 100644
+index 9c015059af5a..aec4ff59beb7 100644
 --- a/compiler-rt/lib/builtins/assembly.h
 +++ b/compiler-rt/lib/builtins/assembly.h
-@@ -181,6 +181,14 @@
+@@ -183,6 +183,14 @@
    JMP(ip)
  #endif
  
