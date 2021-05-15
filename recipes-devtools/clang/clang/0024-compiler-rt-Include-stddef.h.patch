@@ -1,4 +1,4 @@
-From f5367ee64b6e74039c0957e1f7d81dc8d597804d Mon Sep 17 00:00:00 2001
+From 574ba321d2e58b8aa791b32a4bdbc3110e0978e0 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 6 Feb 2021 12:44:30 -0800
 Subject: [PATCH] compiler-rt: Include stddef.h
@@ -14,14 +14,14 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp b/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp
-index b87798603fda..34e11727d77b 100644
+index b87798603fda..d5b0a42fd3fb 100644
 --- a/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp
 +++ b/compiler-rt/lib/fuzzer/FuzzerInterceptors.cpp
-@@ -26,6 +26,7 @@
+@@ -25,6 +25,7 @@
+   }
  
  #include <cassert>
- #include <cstdint>
 +#include <cstddef> // for size_t
+ #include <cstdint>
  #include <dlfcn.h> // for dlsym()
  
- static void *getFuncAddr(const char *name, uintptr_t wrapper_addr) {
