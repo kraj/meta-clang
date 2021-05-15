@@ -10,13 +10,18 @@ require common-source.inc
 
 TOOLCHAIN = "clang"
 
-LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=d75288d1ce0450b28b8d58a284c09c79"
+LIC_FILES_CHKSUM = "file://openmp/LICENSE.TXT;md5=d75288d1ce0450b28b8d58a284c09c79"
 
 inherit cmake pkgconfig perlnative
 
-DEPENDS += "elfutils libffi"
+DEPENDS += "elfutils libffi clang"
 
-EXTRA_OECMAKE += "-DOPENMP_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')}"
+EXTRA_OECMAKE += "-DOPENMP_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
+                  -DOPENMP_STANDALONE_BUILD=ON \
+                  -DCLANG_TOOL=${STAGING_BINDIR_NATIVE}/clang \
+                  -DLINK_TOOL=${STAGING_BINDIR_NATIVE}/llvm-link \
+                  -DOPT_TOOL=${STAGING_BINDIR_NATIVE}/opt \
+                  "
 
 OECMAKE_SOURCEPATH = "${S}/openmp"
 
@@ -30,8 +35,10 @@ PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_
 PACKAGECONFIG[aliases] = "-DLIBOMP_INSTALL_ALIASES=ON,-DLIBOMP_INSTALL_ALIASES=OFF,"
 PACKAGECONFIG[offloading-plugin] = ",,elfutils libffi,libelf libffi"
 
+PACKAGES += "${PN}-libomptarget-amdgcn"
 FILES_SOLIBSDEV = ""
 FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
+FILES_${PN}-libomptarget-amdgcn = "${libdir}/libomptarget-amdgcn-*.bc"
 INSANE_SKIP_${PN} = "dev-so"
 
 COMPATIBLE_HOST_mips64 = "null"
