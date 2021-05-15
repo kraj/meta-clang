@@ -1,4 +1,4 @@
-From 12fe6e45d18add7da95fe637f9e21425330666f9 Mon Sep 17 00:00:00 2001
+From 863e525e1ee6621f198ee1602702263f803f3ecd Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
@@ -26,32 +26,24 @@ Upstream-Status: Innapropriate [oe-specific]
 
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 ---
- clang/cmake/modules/AddClang.cmake |  8 --------
- llvm/cmake/modules/AddLLVM.cmake   | 18 ------------------
- llvm/cmake/modules/TableGen.cmake  |  7 -------
- 3 files changed, 33 deletions(-)
+ clang/cmake/modules/AddClang.cmake | 2 --
+ llvm/cmake/modules/AddLLVM.cmake   | 6 ------
+ llvm/cmake/modules/TableGen.cmake  | 7 -------
+ 3 files changed, 15 deletions(-)
 
 diff --git a/clang/cmake/modules/AddClang.cmake b/clang/cmake/modules/AddClang.cmake
-index 704278a0e93b..6ea99c90772c 100644
+index 5752f4277444..f40ea35faf46 100644
 --- a/clang/cmake/modules/AddClang.cmake
 +++ b/clang/cmake/modules/AddClang.cmake
-@@ -161,15 +161,8 @@ macro(add_clang_tool name)
-   add_dependencies(${name} clang-resource-headers)
- 
+@@ -158,7 +158,6 @@ macro(add_clang_tool name)
    if (CLANG_BUILD_TOOLS)
--    set(export_to_clangtargets)
--    if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
--        NOT LLVM_DISTRIBUTION_COMPONENTS)
--      set(export_to_clangtargets EXPORT ClangTargets)
--      set_property(GLOBAL PROPERTY CLANG_HAS_EXPORTS True)
--    endif()
- 
+     get_target_export_arg(${name} Clang export_to_clangtargets)
      install(TARGETS ${name}
 -      ${export_to_clangtargets}
        RUNTIME DESTINATION bin
        COMPONENT ${name})
  
-@@ -178,7 +171,6 @@ macro(add_clang_tool name)
+@@ -167,7 +166,6 @@ macro(add_clang_tool name)
                                 DEPENDS ${name}
                                 COMPONENT ${name})
      endif()
@@ -60,26 +52,18 @@ index 704278a0e93b..6ea99c90772c 100644
  endmacro()
  
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 97c9980c7de3..2cb2ead31ba0 100644
+index f3b27937fd8e..a48040a45275 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
-@@ -1210,15 +1210,8 @@ macro(add_llvm_tool name)
- 
-   if ( ${name} IN_LIST LLVM_TOOLCHAIN_TOOLS OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+@@ -1209,7 +1209,6 @@ macro(add_llvm_tool name)
      if( LLVM_BUILD_TOOLS )
--      set(export_to_llvmexports)
--      if(${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
--          NOT LLVM_DISTRIBUTION_COMPONENTS)
--        set(export_to_llvmexports EXPORT LLVMExports)
--        set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
--      endif()
- 
+       get_target_export_arg(${name} LLVM export_to_llvmexports)
        install(TARGETS ${name}
 -              ${export_to_llvmexports}
                RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1229,9 +1222,6 @@ macro(add_llvm_tool name)
+@@ -1220,9 +1219,6 @@ macro(add_llvm_tool name)
        endif()
      endif()
    endif()
@@ -89,23 +73,15 @@ index 97c9980c7de3..2cb2ead31ba0 100644
    set_target_properties(${name} PROPERTIES FOLDER "Tools")
  endmacro(add_llvm_tool name)
  
-@@ -1269,15 +1259,8 @@ macro(add_llvm_utility name)
-   set_target_properties(${name} PROPERTIES FOLDER "Utils")
-   if ( ${name} IN_LIST LLVM_TOOLCHAIN_UTILITIES OR NOT LLVM_INSTALL_TOOLCHAIN_ONLY)
+@@ -1262,7 +1258,6 @@ macro(add_llvm_utility name)
      if (LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS)
--      set(export_to_llvmexports)
--      if (${name} IN_LIST LLVM_DISTRIBUTION_COMPONENTS OR
--          NOT LLVM_DISTRIBUTION_COMPONENTS)
--        set(export_to_llvmexports EXPORT LLVMExports)
--        set_property(GLOBAL PROPERTY LLVM_HAS_EXPORTS True)
--      endif()
- 
+       get_target_export_arg(${name} LLVM export_to_llvmexports)
        install(TARGETS ${name}
 -              ${export_to_llvmexports}
                RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1286,7 +1269,6 @@ macro(add_llvm_utility name)
+@@ -1271,7 +1266,6 @@ macro(add_llvm_utility name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
