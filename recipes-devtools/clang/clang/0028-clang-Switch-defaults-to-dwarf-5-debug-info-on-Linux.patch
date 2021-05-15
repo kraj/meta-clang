@@ -1,4 +1,4 @@
-From 1d07b3e71bf073da0a25b30efb135adaa876e3df Mon Sep 17 00:00:00 2001
+From 43733c59ee8fb7a4867f6f51fda1f449d6ce9013 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 15 Apr 2021 18:58:07 -0700
 Subject: [PATCH] clang: Switch defaults to dwarf-5 debug info on Linux
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.h b/clang/lib/Driver/ToolChains/Linux.h
-index 582d4bef81df..82c9494c744e 100644
+index b3544a0c7681..ae421580a017 100644
 --- a/clang/lib/Driver/ToolChains/Linux.h
 +++ b/clang/lib/Driver/ToolChains/Linux.h
-@@ -58,6 +58,8 @@ public:
+@@ -65,6 +65,8 @@ public:
        const llvm::opt::ArgList &DriverArgs, const JobAction &JA,
        const llvm::fltSemantics *FPType = nullptr) const override;
  
