@@ -19,6 +19,7 @@ EXTRA_OECMAKE += " \
 				-DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
 				-Dclc_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeCLCCompiler.cmake.in \
 				-Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
+                                -DCMAKE_LLAsm_FLAGS=-cl-no-stdinc -DCMAKE_CLC_FLAGS=-cl-no-stdinc \
 			"
 
 do_configure_prepend () {
