@@ -2,7 +2,7 @@ LICENSE = "NCSA"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=47e311aa9caedd1b3abf098bd7814d1d"
 
 BRANCH = "master"
-SRC_URI = "git://github.com/KhronosGroup/SPIRV-LLVM-Translator/;protocol=https;branch=${BRANCH} \
+SRC_URI = "git://github.com/KhronosGroup/SPIRV-LLVM-Translator;protocol=https;branch=${BRANCH} \
           "
 
 PV = "13.0.0"
