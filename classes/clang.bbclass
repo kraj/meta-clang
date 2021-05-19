@@ -13,8 +13,8 @@ LTO_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flt
 PACKAGE_DEBUG_SPLIT_STYLE_toolchain-clang = "debug-without-src"
 
 COMPILER_RT ??= "${@bb.utils.contains("RUNTIME", "llvm", "-rtlib=compiler-rt ${UNWINDLIB}", "", d)}"
-COMPILER_RT_powerpc = "--rtlib=libgcc ${UNWINDLIB}"
-COMPILER_RT_armeb = "--rtlib=libgcc ${UNWINDLIB}"
+COMPILER_RT_powerpc = "-rtlib=libgcc ${UNWINDLIB}"
+COMPILER_RT_armeb = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= "${@bb.utils.contains("RUNTIME", "llvm", "--unwindlib=libgcc", "", d)}"
 UNWINDLIB_riscv64 = "--unwindlib=libgcc"
@@ -89,7 +89,7 @@ def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
             ret = " clang-cross-${TARGET_ARCH} virtual/libc "
-            if (d.getVar('COMPILER_RT').find('--rtlib=compiler-rt') != -1):
+            if (d.getVar('COMPILER_RT').find('-rtlib=compiler-rt') != -1):
                 ret += " compiler-rt "
             else:
                 ret += " libgcc "
