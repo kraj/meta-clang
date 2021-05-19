@@ -76,14 +76,14 @@ if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `RUN
 best fit. e.g. below we select LLVM C++ as default C++ runtime.
 
 ```shell
-LIBCPLUSPLUS = "--stdlib=libc++"
+LIBCPLUSPLUS = "-stdlib=libc++"
 ```
 
 in `local.conf`.
 You can select libstdc++ per package too by writing bbappends for them containing
 
 ```shell
-LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = "--stdlibc=libc++"
+LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = "-stdlibc=libc++"
 ```
 Defaults are chosen to be GNU for maximum compatibility with existing GNU systems. Its always
 good to use single runtime on a system, mixing runtimes can cause complications during
