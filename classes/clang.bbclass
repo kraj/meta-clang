@@ -22,7 +22,7 @@ UNWINDLIB_riscv32 = "--unwindlib=libgcc"
 UNWINDLIB_powerpc = "--unwindlib=libgcc"
 UNWINDLIB_armeb = "--unwindlib=libgcc"
 
-LIBCPLUSPLUS ??= "${@bb.utils.contains("RUNTIME", "llvm", "--stdlib=libc++", "", d)}"
+LIBCPLUSPLUS ??= "${@bb.utils.contains("RUNTIME", "llvm", "-stdlib=libc++", "", d)}"
 
 TARGET_CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
 TUNE_CCARGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
@@ -95,7 +95,7 @@ def clang_base_deps(d):
                 ret += " libgcc "
             if (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
                 ret += " libcxx "
-            if (d.getVar('LIBCPLUSPLUS').find('--stdlib=libc++') != -1):
+            if (d.getVar('LIBCPLUSPLUS').find('-stdlib=libc++') != -1):
                 ret += " libcxx "
             else:
                 ret += " virtual/${TARGET_PREFIX}compilerlibs "
