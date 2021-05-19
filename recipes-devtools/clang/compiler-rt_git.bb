@@ -47,8 +47,6 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
-
-CXXFLAGS_append_libc-musl = " -D_LIBCPP_HAS_MUSL_LIBC=ON "
 EXTRA_OECMAKE_append_powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
 do_install_append () {
