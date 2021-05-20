@@ -37,6 +37,7 @@ SRC_URI = "\
     file://0026-llvm-Insert-anchor-for-adding-OE-distro-vendor-names.patch \
     file://0027-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
     file://0028-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
+    file://0029-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
