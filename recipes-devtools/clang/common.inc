@@ -38,6 +38,7 @@ SRC_URI = "\
     file://0027-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
     file://0028-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
     file://0029-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
+    file://0030-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
