@@ -38,6 +38,7 @@ SRC_URI = "\
     file://0027-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
     file://0028-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
     file://0029-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
+    file://0030-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
     file://0033-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
     file://0034-CMake-Installable-find-modules-for-terminfo-and-libf.patch \
     file://0035-llvm-Do-not-use-standard-search-paths-in-find_librar.patch \
