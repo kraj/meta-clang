@@ -95,3 +95,9 @@ ALLOW_EMPTY_${PN}-dev = "1"
 
 TOOLCHAIN_forcevariable = "clang"
 SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+
+# riscv and x86_64 Sanitizers work on musl too
+COMPATIBLE_HOST_libc-musl_x86-64 = "(.*)"
+COMPATIBLE_HOST_libc-musl_riscv64 = "(.*)"
+COMPATIBLE_HOST_libc-musl_riscv32 = "(.*)"
+COMPATIBLE_HOST_libc-musl = "null"
