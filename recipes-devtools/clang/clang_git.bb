@@ -102,10 +102,13 @@ LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_a
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
 
-LLVM_PROJECTS ?= "clang;clang-tools-extra;lld;lldb"
-# There is no LLDB support for RISCV
-LLVM_PROJECTS_riscv32 ?= "clang;clang-tools-extra;lld"
-LLVM_PROJECTS_riscv64 ?= "clang;clang-tools-extra;lld"
+LLVM_PROJECTS ?= "clang;clang-tools-extra;lld${LLDB}"
+LLDB ?= ";lldb"
+# LLDB support for RISCV/Mips32 does not work yet
+LLDB_riscv32 = ""
+LLDB_riscv64 = ""
+LLDB_mips = ""
+LLDB_mipsel = ""
 
 #CMAKE_VERBOSE = "VERBOSE=1"
 
