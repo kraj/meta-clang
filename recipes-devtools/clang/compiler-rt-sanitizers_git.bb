@@ -62,6 +62,8 @@ do_install_append () {
         mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
         rmdir --ignore-fail-on-non-empty ${D}${libdir}
     fi
+    # Already shipped with compile-rt Orc support
+    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.orc-x86_64.a
 }
 
 FILES_SOLIBSDEV = ""
