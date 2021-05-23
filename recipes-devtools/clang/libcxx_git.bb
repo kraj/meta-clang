@@ -10,20 +10,20 @@ require common-source.inc
 
 inherit cmake python3native
 
-PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind", "", d)}"
+PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
 PACKAGECONFIG_append_armv5 = " no-atomics"
 
-PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY=ON -DLIBCXXABI_STATICALLY_LINK_UNWINDER_IN_STATIC_LIBRARY=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"
+PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"
 PACKAGECONFIG[exceptions] = "-DLIBCXXABI_ENABLE_EXCEPTIONS=ON -DDLIBCXX_ENABLE_EXCEPTIONS=ON,-DLIBCXXABI_ENABLE_EXCEPTIONS=OFF -DLIBCXX_ENABLE_EXCEPTIONS=OFF -DCMAKE_REQUIRED_FLAGS='-fno-exceptions',"
 PACKAGECONFIG[no-atomics] = "-D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF -DCMAKE_SHARED_LINKER_FLAGS='-latomic',,"
-PACKAGECONFIG[compiler-rt] = ",,compiler-rt"
+PACKAGECONFIG[compiler-rt] = "-DLIBCXX_USE_COMPILER_RT=ON -DLIBCXXABI_USE_COMPILER_RT=ON -DLIBUNWIND_USE_COMPILER_RT=ON,,compiler-rt"
+PACKAGECONFIG[unwind-shared] = "-DLIBUNWIND_ENABLE_SHARED=ON,-DLIBUNWIND_ENABLE_SHARED=OFF,,"
 
 DEPENDS += "ninja-native"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 
 LIBCPLUSPLUS = ""
-COMPILER_RT ?= "${@bb.utils.contains("PACKAGECONFIG", "compiler-rt", "-rtlib=compiler-rt", "", d)} ${UNWINDLIB}"
-UNWINDLIB ?= "${@bb.utils.contains("RUNTIME", "gnu", "--unwindlib=libgcc", "", d)}"
+COMPILER_RT ?= "-rtlib=compiler-rt"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
@@ -35,15 +35,13 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
 LLVM_LIBDIR_SUFFIX_powerpc64 = "64"
 
 OECMAKE_TARGET_COMPILE = "cxxabi cxx"
-OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi"
+OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi ${@bb.utils.contains("RUNTIME", "llvm", "install-unwind", "", d)}"
+
 OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "\
                   -DCMAKE_CROSSCOMPILING=ON \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
                   -DLLVM_ENABLE_RTTI=ON \
-                  -DLIBUNWIND_ENABLE_SHARED=OFF \
-                  -DLIBUNWIND_ENABLE_THREADS=OFF \
-                  -DLIBUNWIND_WEAK_PTHREAD_LIB=ON \
                   -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON \
                   -DLIBCXXABI_INCLUDE_TESTS=OFF \
                   -DLIBCXXABI_ENABLE_SHARED=ON \
@@ -77,4 +75,3 @@ ALLOW_EMPTY_${PN} = "1"
 
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN = "clang"
-
