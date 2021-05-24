@@ -26,7 +26,7 @@ do_scanbuild() {
 
 do_scanview() {
         bbplain "================================================================"
-        bbplain "Stating scan-view server at: http://${CLANG_SCAN_SERVER_IP}:${CLANG_SCAN_PORT}"
+        bbplain "Starting scan-view server at: http://${CLANG_SCAN_SERVER_IP}:${CLANG_SCAN_PORT}"
         bbplain "Use Ctrl-C to exit"
         bbplain "================================================================"
         scan-view --host ${CLANG_SCAN_SERVER_IP} --port ${CLANG_SCAN_PORT} --allow-all-hosts ${SCAN_RESULTS_DIR}/*/
