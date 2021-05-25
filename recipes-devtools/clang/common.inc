@@ -41,6 +41,7 @@ SRC_URI = "\
     file://0030-AsmMatcherEmitter-sort-ClassInfo-lists-by-name-as-we.patch \
     file://0031-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
     file://0032-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
+    file://0033-Import-upstream-patch-to-re-add-Reporter.py.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
