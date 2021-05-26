@@ -15,14 +15,13 @@ LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee
 
 TUNE_CCARGS_remove = "-no-integrated-as"
 
-RUNTIME = "llvm"
-
-DEPENDS += "ninja-native clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
-DEPENDS_append_libc-glibc = " libxcrypt"
+DEPENDS += "ninja-native virtual/crypt"
+DEPENDS_append_class-native = " clang-native libxcrypt-native"
 DEPENDS_append_class-nativesdk = " clang-native nativesdk-libxcrypt"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
+PACKAGECONFIG[static-libcxx] = "-DSANITIZER_USE_STATIC_CXX_ABI=ON -DSANITIZER_USE_STATIC_LLVM_UNWINDER=ON,,"
 
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
@@ -34,8 +33,6 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_BUILTINS=OFF \
                   -DSANITIZER_CXX_ABI_LIBNAME=${@bb.utils.contains("RUNTIME", "llvm", "libc++", "libstdc++", d)} \
-                  -DSANITIZER_USE_STATIC_CXX_ABI=ON \
-                  -DSANITIZER_USE_STATIC_LLVM_UNWINDER=ON \
                   -DCOMPILER_RT_BUILD_XRAY=ON \
                   -DCOMPILER_RT_BUILD_SANITIZERS=ON \
                   -DCOMPILER_RT_BUILD_LIBFUZZER=ON \
