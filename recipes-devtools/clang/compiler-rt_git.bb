@@ -8,21 +8,25 @@ SECTION = "base"
 require clang.inc
 require common-source.inc
 
-inherit cmake pkgconfig python3native
+inherit cmake cmake-native pkgconfig python3native
 
 
 LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee54e877a"
 
 LIBCPLUSPLUS = ""
 COMPILER_RT = ""
+
 TUNE_CCARGS_remove = "-no-integrated-as"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
-DEPENDS += "ninja-native"
-DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
+DEPENDS += "ninja-native libgcc"
+DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc gcc-runtime"
 DEPENDS_append_class-nativesdk = " clang-native"
 DEPENDS_append_class-native = " clang-native"
+
+CXXFLAGS += "-stdlib=libstdc++"
+LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
