@@ -12,17 +12,17 @@ NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
 LTO_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
 PACKAGE_DEBUG_SPLIT_STYLE_toolchain-clang = "debug-without-src"
 
-COMPILER_RT ??= "${@bb.utils.contains("RUNTIME", "llvm", "-rtlib=compiler-rt ${UNWINDLIB}", "", d)}"
+COMPILER_RT ??= ""
 COMPILER_RT_powerpc = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT_armeb = "-rtlib=libgcc ${UNWINDLIB}"
 
-UNWINDLIB ??= "${@bb.utils.contains("RUNTIME", "llvm", "--unwindlib=libgcc", "", d)}"
+UNWINDLIB ??= ""
 UNWINDLIB_riscv64 = "--unwindlib=libgcc"
 UNWINDLIB_riscv32 = "--unwindlib=libgcc"
 UNWINDLIB_powerpc = "--unwindlib=libgcc"
 UNWINDLIB_armeb = "--unwindlib=libgcc"
 
-LIBCPLUSPLUS ??= "${@bb.utils.contains("RUNTIME", "llvm", "-stdlib=libc++", "", d)}"
+LIBCPLUSPLUS ??= ""
 
 TARGET_CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
 TUNE_CCARGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
@@ -69,7 +69,7 @@ LDFLAGS_append_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is
 TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
 RUNTIME ??= "gnu"
-RUNTIME_toolchain-gcc = "gnu"
+#RUNTIME_toolchain-gcc = "gnu"
 RUNTIME_armeb = "gnu"
 
 TOOLCHAIN_class-native = "gcc"
@@ -89,13 +89,17 @@ def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
             ret = " clang-cross-${TARGET_ARCH} virtual/libc "
-            if (d.getVar('COMPILER_RT').find('-rtlib=compiler-rt') != -1):
+            if (d.getVar('RUNTIME').find('llvm') != -1):
+                ret += " compiler-rt libcxx"
+            elif (d.getVar('COMPILER_RT').find('-rtlib=compiler-rt') != -1):
                 ret += " compiler-rt "
             else:
                 ret += " libgcc "
-            if (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
+            if (d.getVar('RUNTIME').find('llvm') != -1):
+                ret += " libcxx"
+            elif (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
                 ret += " libcxx "
-            if (d.getVar('LIBCPLUSPLUS').find('-stdlib=libc++') != -1):
+            elif (d.getVar('LIBCPLUSPLUS').find('-stdlib=libc++') != -1):
                 ret += " libcxx "
             else:
                 ret += " virtual/${TARGET_PREFIX}compilerlibs "
