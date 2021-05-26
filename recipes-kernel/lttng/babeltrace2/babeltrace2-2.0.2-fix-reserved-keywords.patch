@@ -1,0 +1,31 @@
+From 790d3e55982df7b21caea7eff97dbd0ebce4f8cd Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bernhard=20Rosenkr=C3=A4nzer?= <bero@lindev.ch>
+Date: Wed, 26 May 2021 05:06:55 +0200
+Subject: [PATCH] ctf-writer: Fix list of reserved keywords
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The missing comma between "void" and "_Bool" causes the compiler to
+treat it as one string ("void_Bool"), missing both "void" and "_Bool"
+as real reserved keywords.
+
+Signed-off-by: Bernhard Rosenkränzer <bero@lindev.ch>
+Upstream-Status: Submitted [https://github.com/efficios/babeltrace/pull/117]
+---
+ src/ctf-writer/utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/ctf-writer/utils.c b/src/ctf-writer/utils.c
+index 0cfb5742b..6c4b0ed8f 100644
+--- a/src/ctf-writer/utils.c
++++ b/src/ctf-writer/utils.c
+@@ -25,7 +25,7 @@ const char * const reserved_keywords_str[] = {"align", "callsite",
+ 	"const", "char", "clock", "double", "enum", "env", "event",
+ 	"floating_point", "float", "integer", "int", "long", "short", "signed",
+ 	"stream", "string", "struct", "trace", "typealias", "typedef",
+-	"unsigned", "variant", "void" "_Bool", "_Complex", "_Imaginary"};
++	"unsigned", "variant", "void", "_Bool", "_Complex", "_Imaginary"};
+ 
+ static GHashTable *reserved_keywords_set;
+ static int init_done;
