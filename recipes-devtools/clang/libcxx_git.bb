@@ -8,7 +8,7 @@ SECTION = "base"
 require clang.inc
 require common-source.inc
 
-inherit cmake python3native
+inherit cmake cmake-native python3native
 
 PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
 PACKAGECONFIG_append_armv5 = " no-atomics"
@@ -25,6 +25,8 @@ DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}li
 LIBCPLUSPLUS = ""
 COMPILER_RT ?= "-rtlib=compiler-rt"
 
+CXXFLAGS += "-stdlib=libstdc++"
+LDFLAGS += "-unwindlib=libgcc -stdlib=libstdc++"
 INHIBIT_DEFAULT_DEPS = "1"
 
 LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
@@ -65,6 +67,8 @@ EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 CXXFLAGS_append_armv5 = " -mfpu=vfp2"
 
 ALLOW_EMPTY_${PN} = "1"
+
+PROVIDES += "${@bb.utils.contains("RUNTIME", "llvm", "libunwind", "", d)}"
 
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN = "clang"
