@@ -27,6 +27,16 @@ DEPENDS_append_class-native = " clang-native"
 
 CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
+BUILD_CXXFLAGS += "-stdlib=libstdc++"
+BUILD_LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
+
+BUILD_CC_toolchain-clang  = "${CCACHE}clang"
+BUILD_CXX_toolchain-clang = "${CCACHE}clang++"
+BUILD_CPP_toolchain-clang = "${CCACHE}clang -E"
+BUILD_CCLD_toolchain-clang = "${CCACHE}clang"
+BUILD_RANLIB_toolchain-clang = "llvm-ranlib"
+BUILD_AR_toolchain-clang = "llvm-ar"
+BUILD_NM_toolchain-clang = "llvm-nm"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
