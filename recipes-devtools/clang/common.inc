@@ -42,6 +42,7 @@ SRC_URI = "\
     file://0030-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
     file://0031-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
     file://0032-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch \
+    file://0033-libunwind-Added-unw_backtrace-method.patch \
     file://0034-CMake-Installable-find-modules-for-terminfo-and-libf.patch \
     file://0035-llvm-Do-not-use-standard-search-paths-in-find_librar.patch \
 "
