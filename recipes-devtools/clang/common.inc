@@ -42,6 +42,7 @@ SRC_URI = "\
     file://0030-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
     file://0031-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
     file://0032-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch \
+    file://0033-libunwind-Added-unw_backtrace-method.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
