@@ -68,8 +68,7 @@ CXXFLAGS_append_armv5 = " -mfpu=vfp2"
 
 ALLOW_EMPTY_${PN} = "1"
 
-PROVIDES += "${@bb.utils.contains("RUNTIME", "llvm", "libunwind", "", d)}"
-
+PROVIDES_append_runtime-llvm = " libunwind"
 
 do_install_append() {
     if ${@bb.utils.contains("RUNTIME", "llvm", "true", "false", d)}
@@ -80,6 +79,9 @@ do_install_append() {
         sed -e 's,@LIBDIR@,${libdir},g;s,@VERSION@,${PV},g' ${S}/../libunwind.pc.in > ${D}${libdir}/pkgconfig/libunwind.pc
     fi
 }
+
+PACKAGES_append_runtime-llvm = " libunwind"
+FILES_libunwind_runtime-llvm = "${libdir}/libunwind.so.*"
 
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN = "clang"
