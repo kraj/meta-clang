@@ -77,5 +77,16 @@ ALLOW_EMPTY_${PN} = "1"
 
 PROVIDES += "${@bb.utils.contains("RUNTIME", "llvm", "libunwind", "", d)}"
 
+
+do_install_append() {
+    if ${@bb.utils.contains("RUNTIME", "llvm", "true", "false", d)}
+    then
+        install -Dm 0644 ${S}/libunwind/include/libunwind.h ${S}/libunwind/include/__libunwind_config.h ${D}${includedir}
+        install -Dm 0644 ${S}/libunwind/include/unwind.h ${D}${includedir}/unwind.h
+        install -d ${D}${libdir}/pkgconfig
+        sed -e 's,@LIBDIR@,${libdir},g;s,@VERSION@,${PV},g' ${S}/../libunwind.pc.in > ${D}${libdir}/pkgconfig/libunwind.pc
+    fi
+}
+
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN = "clang"
