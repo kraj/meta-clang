@@ -1,4 +1,4 @@
-From b7247e617cef1ed277c17bf0970104ccf55c5d92 Mon Sep 17 00:00:00 2001
+From b7dab91761d8656d802da8d0d754352f58fb05c9 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 21 May 2021 08:14:29 -0700
 Subject: [PATCH] compiler-rt: Link scudo standalone with libatomic on mips
@@ -13,10 +13,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+)
 
 diff --git a/compiler-rt/lib/scudo/standalone/CMakeLists.txt b/compiler-rt/lib/scudo/standalone/CMakeLists.txt
-index 572ad078423f..8e5c0eaad211 100644
+index 8c3708d3a45f..f6687db1a663 100644
 --- a/compiler-rt/lib/scudo/standalone/CMakeLists.txt
 +++ b/compiler-rt/lib/scudo/standalone/CMakeLists.txt
-@@ -131,6 +131,10 @@ append_list_if(COMPILER_RT_HAS_LIBPTHREAD -pthread SCUDO_LINK_FLAGS)
+@@ -134,6 +134,10 @@ append_list_if(COMPILER_RT_HAS_LIBPTHREAD -pthread SCUDO_LINK_FLAGS)
  
  append_list_if(FUCHSIA zircon SCUDO_LINK_LIBS)
  

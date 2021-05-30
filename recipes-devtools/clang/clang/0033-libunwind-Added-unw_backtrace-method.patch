@@ -1,4 +1,4 @@
-From 79195637cf6cde28baa23e41e7b417e98b036913 Mon Sep 17 00:00:00 2001
+From a9ac0832f39e10a08d8b49b7c4968cc30100f706 Mon Sep 17 00:00:00 2001
 From: Maksim Kita <maksim-kita@yandex-team.ru>
 Date: Sun, 23 May 2021 10:27:29 +0000
 Subject: [PATCH] libunwind: Added unw_backtrace method
