@@ -1,4 +1,4 @@
-From f44a8afe89238ba008d3452c295868aea221ba4b Mon Sep 17 00:00:00 2001
+From e797d257fb0e4f8561d39c8a8c4e0bfd2323ed43 Mon Sep 17 00:00:00 2001
 From: Evangelos Foutras <evangelos@foutrelis.com>
 Date: Thu, 26 Dec 2019 15:46:19 -0800
 Subject: [PATCH] clang: Enable SSP and PIE by default
