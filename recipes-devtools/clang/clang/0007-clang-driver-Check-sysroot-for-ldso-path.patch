@@ -1,4 +1,4 @@
-From 3a53f9b0fba8586c531db93fee524a4e4ca2017c Mon Sep 17 00:00:00 2001
+From 036a427f39847a8cc56bb5226ad89a3055a0ec28 Mon Sep 17 00:00:00 2001
 From: Dan McGregor <dan.mcgregor@usask.ca>
 Date: Wed, 26 Apr 2017 20:29:41 -0600
 Subject: [PATCH] clang: driver: Check sysroot for ldso path

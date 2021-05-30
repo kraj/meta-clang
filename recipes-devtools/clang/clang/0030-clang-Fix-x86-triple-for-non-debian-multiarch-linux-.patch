@@ -1,4 +1,4 @@
-From 923e1a9142f88b4970a3a860b6e41bf74dea4091 Mon Sep 17 00:00:00 2001
+From 4cb3ad387cb2b4eb9c9ec8243aaafbffc71c9ede Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 19 May 2021 17:56:03 -0700
 Subject: [PATCH] clang: Fix x86 triple for non-debian multiarch linux distros
@@ -11,9 +11,11 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  clang/lib/Driver/ToolChains/Linux.cpp | 3 +++
  1 file changed, 3 insertions(+)
 
+diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
+index 8a63dd8c0e60..66874319fc44 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -622,6 +622,9 @@ void Linux::addLibStdCxxIncludePaths(con
+@@ -622,6 +622,9 @@ void Linux::addLibStdCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
        GCCInstallation.getTriple().getArch() == llvm::Triple::x86
            ? "i386-linux-gnu"
            : TripleStr;
