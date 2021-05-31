@@ -1,0 +1,643 @@
+From: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+
+Fix inline assembly to work with clang
+Clang's builtin assembler is much stricter than gas in syntax checks.
+
+Signed-off-by: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+Upstream-Status: Pending
+
+diff -up valgrind-3.15.0/none/tests/arm64/cvtf_imm.c.omv~ valgrind-3.15.0/none/tests/arm64/cvtf_imm.c
+--- valgrind-3.15.0/none/tests/arm64/cvtf_imm.c.omv~	2021-05-31 15:38:57.493204990 +0200
++++ valgrind-3.15.0/none/tests/arm64/cvtf_imm.c	2021-05-31 15:39:44.915571692 +0200
+@@ -17,7 +17,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf d18,x13,#1;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_scvtf_d_x_imm32 ( Long x )
+@@ -25,7 +25,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf d18,x13,#32;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_scvtf_d_x_imm64 ( Long x )
+@@ -33,7 +33,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf d18,x13,#64;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ 
+@@ -42,7 +42,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf d18,x13,#1;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_ucvtf_d_x_imm32 ( Long x )
+@@ -50,7 +50,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf d18,x13,#32;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_ucvtf_d_x_imm64 ( Long x )
+@@ -58,7 +58,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf d18,x13,#64;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ 
+@@ -70,7 +70,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf d18,w13,#1;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_scvtf_d_w_imm16 ( Int x )
+@@ -78,7 +78,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf d18,w13,#16;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_scvtf_d_w_imm32 ( Int x )
+@@ -86,7 +86,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf d18,w13,#32;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ 
+@@ -95,7 +95,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf d18,w13,#1;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_ucvtf_d_w_imm16 ( Int x )
+@@ -103,7 +103,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf d18,w13,#16;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ __attribute__((noinline)) double do_ucvtf_d_w_imm32 ( Int x )
+@@ -111,7 +111,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf d18,w13,#32;  str d18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return block[1].d64;
+ }
+ 
+@@ -123,7 +123,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf s18,x13,#1;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_scvtf_s_x_imm32 ( Long x )
+@@ -131,7 +131,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf s18,x13,#32;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_scvtf_s_x_imm64 ( Long x )
+@@ -139,7 +139,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf s18,x13,#64;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ 
+@@ -148,7 +148,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf s18,x13,#1;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_ucvtf_s_x_imm32 ( Long x )
+@@ -156,7 +156,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf s18,x13,#32;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_ucvtf_s_x_imm64 ( Long x )
+@@ -164,7 +164,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf s18,x13,#64;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ 
+@@ -176,7 +176,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf s18,w13,#1;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_scvtf_s_w_imm16 ( Int x )
+@@ -184,7 +184,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf s18,w13,#16;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_scvtf_s_w_imm32 ( Int x )
+@@ -192,7 +192,7 @@ __attribute__((noinline)) double do_scvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  scvtf s18,w13,#32;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ 
+@@ -201,7 +201,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf s18,w13,#1;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_ucvtf_s_w_imm16 ( Int x )
+@@ -209,7 +209,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf s18,w13,#16;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ __attribute__((noinline)) double do_ucvtf_s_w_imm32 ( Int x )
+@@ -217,7 +217,7 @@ __attribute__((noinline)) double do_ucvt
+    U block[2]; block[0].i64 = (Long)x; block[1].i64 = 0;
+    __asm__ __volatile__(
+       "ldr x13,[%0,#0];  ucvtf s18,w13,#32;  str s18, [%0,#8]"
+-      ::"r"(&block[0]) : "memory", "x13","q18");
++      ::"r"(&block[0]) : "memory", "x13","v18");
+    return (double)block[1].f32[0];
+ }
+ 
+diff -up valgrind-3.15.0/none/tests/arm64/fp_and_simd.c.omv~ valgrind-3.15.0/none/tests/arm64/fp_and_simd.c
+--- valgrind-3.15.0/none/tests/arm64/fp_and_simd.c.omv~	2021-05-31 15:45:55.963884114 +0200
++++ valgrind-3.15.0/none/tests/arm64/fp_and_simd.c	2021-05-31 16:07:36.437096320 +0200
+@@ -1909,7 +1909,7 @@ void test_SMAXV ( void )
+      __asm__ __volatile__( \
+         "ldr x9,  [%0, 48];  msr nzcv, x9; " \
+         "ldr q29, [%0, #0];  ldr q11, [%0, #16];  ldr q9, [%0, #32]; " \
+-        "fcmp d29, #0; " \
++        "fcmp d29, #0.0; " \
+         "mrs x9, nzcv; str x9, [%0, 48]; " \
+         "str q29, [%0, #0];  str q11, [%0, #16];  str q9, [%0, #32]; " \
+         ::"r"(&block[0]) : "x9","cc","memory","v9","v11","v29" \
+@@ -1930,7 +1930,7 @@ void test_SMAXV ( void )
+      __asm__ __volatile__( \
+         "ldr x9,  [%0, 48];  msr nzcv, x9; " \
+         "ldr q29, [%0, #0];  ldr q11, [%0, #16];  ldr q9, [%0, #32]; " \
+-        "fcmp s29, #0; " \
++        "fcmp s29, #0.0; " \
+         "mrs x9, nzcv; str x9, [%0, 48]; " \
+         "str q29, [%0, #0];  str q11, [%0, #16];  str q9, [%0, #32]; " \
+         ::"r"(&block[0]) : "x9","cc","memory","v9","v11","v29" \
+@@ -1951,7 +1951,7 @@ void test_SMAXV ( void )
+      __asm__ __volatile__( \
+         "ldr x9,  [%0, 48];  msr nzcv, x9; " \
+         "ldr q29, [%0, #0];  ldr q11, [%0, #16];  ldr q9, [%0, #32]; " \
+-        "fcmpe d29, #0; " \
++        "fcmpe d29, #0.0; " \
+         "mrs x9, nzcv; str x9, [%0, 48]; " \
+         "str q29, [%0, #0];  str q11, [%0, #16];  str q9, [%0, #32]; " \
+         ::"r"(&block[0]) : "x9","cc","memory","v9","v11","v29" \
+@@ -1972,7 +1972,7 @@ void test_SMAXV ( void )
+      __asm__ __volatile__( \
+         "ldr x9,  [%0, 48];  msr nzcv, x9; " \
+         "ldr q29, [%0, #0];  ldr q11, [%0, #16];  ldr q9, [%0, #32]; " \
+-        "fcmpe s29, #0; " \
++        "fcmpe s29, #0.0; " \
+         "mrs x9, nzcv; str x9, [%0, 48]; " \
+         "str q29, [%0, #0];  str q11, [%0, #16];  str q9, [%0, #32]; " \
+         ::"r"(&block[0]) : "x9","cc","memory","v9","v11","v29" \
+@@ -3054,8 +3054,8 @@ GEN_BINARY_TEST(mul, 16b, 16b, 16b)
+ GEN_BINARY_TEST(mul, 8b, 8b, 8b)
+ 
+ /* overkill -- don't need two vecs, only one */
+-GEN_TWOVEC_TEST(movi_16b_0x9C_lsl0, "movi v22.16b, #0x9C, LSL #0", 22, 23)
+-GEN_TWOVEC_TEST(movi_8b_0x8B_lsl0,  "movi v22.8b,  #0x8B, LSL #0", 22, 23)
++GEN_TWOVEC_TEST(movi_16b_0x9C_lsl0, "movi v22.16b, #0x9C", 22, 23)
++GEN_TWOVEC_TEST(movi_8b_0x8B_lsl0,  "movi v22.8b,  #0x8B", 22, 23)
+ 
+ GEN_TWOVEC_TEST(movi_8h_0x5A_lsl0,  "movi v22.8h,  #0x5A, LSL #0", 22, 23)
+ GEN_TWOVEC_TEST(movi_8h_0xA5_lsl8,  "movi v22.8h,  #0xA5, LSL #8", 22, 23)
+diff -up valgrind-3.15.0/none/tests/arm64/integer.c.omv~ valgrind-3.15.0/none/tests/arm64/integer.c
+--- valgrind-3.15.0/none/tests/arm64/integer.c.omv~	2021-05-31 16:37:19.140073620 +0200
++++ valgrind-3.15.0/none/tests/arm64/integer.c	2021-05-31 16:47:04.202303084 +0200
+@@ -9354,23 +9354,23 @@ printf("ADD/SUB(extended reg)(64)\n");
+ #define NN8 0x2e10f2a4055bec0e
+ #define NN9 0x77f3b8dcc730b96a
+ 
+-TESTINST3("add x21,x22,x23,uxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("add x21,x22,x23,uxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("add x21,x22,x23,uxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,uxtw #4", NN8, NN9, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("add x21,x22,w23,uxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("add x21,x22,w23,uxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,uxtw #4", NN8, NN9, x21,x22,x23,0);
+ 
+ TESTINST3("add x21,x22,x23,uxtx #0", NN0, NN1, x21,x22,x23,0);
+ TESTINST3("add x21,x22,x23,uxtx #1", NN2, NN3, x21,x22,x23,0);
+@@ -9378,23 +9378,23 @@ TESTINST3("add x21,x22,x23,uxtx #2", NN4
+ TESTINST3("add x21,x22,x23,uxtx #3", NN6, NN7, x21,x22,x23,0);
+ TESTINST3("add x21,x22,x23,uxtx #4", NN8, NN9, x21,x22,x23,0);
+ 
+-TESTINST3("add x21,x22,x23,sxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("add x21,x22,x23,sxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("add x21,x22,x23,sxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("add x21,x22,x23,sxtw #4", NN8, NN9, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("add x21,x22,w23,sxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("add x21,x22,w23,sxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("add x21,x22,w23,sxtw #4", NN8, NN9, x21,x22,x23,0);
+ 
+ TESTINST3("add x21,x22,x23,sxtx #0", NN0, NN1, x21,x22,x23,0);
+ TESTINST3("add x21,x22,x23,sxtx #1", NN2, NN3, x21,x22,x23,0);
+@@ -9403,72 +9403,72 @@ TESTINST3("add x21,x22,x23,sxtx #3", NN6
+ TESTINST3("add x21,x22,x23,sxtx #4", NN8, NN9, x21,x22,x23,0);
+ 
+ 
+-TESTINST3("adds x21,x22,x23,uxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("adds x21,x22,x23,uxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("adds x21,x22,x23,uxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtw #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("adds x21,x22,x23,uxtx #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtx #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtx #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtx #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,uxtx #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("adds x21,x22,x23,sxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("adds x21,x22,x23,sxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("adds x21,x22,x23,sxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtw #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("adds x21,x22,x23,sxtx #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtx #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtx #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtx #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("adds x21,x22,x23,sxtx #4", NN8, NN9, x21,x22,x23,0);
+-
+-
+-TESTINST3("sub x21,x22,x23,uxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("sub x21,x22,x23,uxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("sub x21,x22,x23,uxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,uxtw #4", NN8, NN9, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("adds x21,x22,w23,uxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("adds x21,x22,w23,uxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtw #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("adds x21,x22,w23,uxtx #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtx #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtx #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtx #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,uxtx #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("adds x21,x22,w23,sxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("adds x21,x22,w23,sxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("adds x21,x22,w23,sxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtw #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("adds x21,x22,w23,sxtx #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtx #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtx #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtx #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("adds x21,x22,w23,sxtx #4", NN8, NN9, x21,x22,x23,0);
++
++
++TESTINST3("sub x21,x22,w23,uxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("sub x21,x22,w23,uxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("sub x21,x22,w23,uxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,uxtw #4", NN8, NN9, x21,x22,x23,0);
+ 
+ TESTINST3("sub x21,x22,x23,uxtx #0", NN0, NN1, x21,x22,x23,0);
+ TESTINST3("sub x21,x22,x23,uxtx #1", NN2, NN3, x21,x22,x23,0);
+@@ -9476,23 +9476,23 @@ TESTINST3("sub x21,x22,x23,uxtx #2", NN4
+ TESTINST3("sub x21,x22,x23,uxtx #3", NN6, NN7, x21,x22,x23,0);
+ TESTINST3("sub x21,x22,x23,uxtx #4", NN8, NN9, x21,x22,x23,0);
+ 
+-TESTINST3("sub x21,x22,x23,sxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("sub x21,x22,x23,sxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("sub x21,x22,x23,sxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("sub x21,x22,x23,sxtw #4", NN8, NN9, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("sub x21,x22,w23,sxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("sub x21,x22,w23,sxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("sub x21,x22,w23,sxtw #4", NN8, NN9, x21,x22,x23,0);
+ 
+ TESTINST3("sub x21,x22,x23,sxtx #0", NN0, NN1, x21,x22,x23,0);
+ TESTINST3("sub x21,x22,x23,sxtx #1", NN2, NN3, x21,x22,x23,0);
+@@ -9501,53 +9501,53 @@ TESTINST3("sub x21,x22,x23,sxtx #3", NN6
+ TESTINST3("sub x21,x22,x23,sxtx #4", NN8, NN9, x21,x22,x23,0);
+ 
+ 
+-TESTINST3("subs x21,x22,x23,uxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("subs x21,x22,x23,uxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("subs x21,x22,x23,uxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtw #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("subs x21,x22,x23,uxtx #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtx #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtx #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtx #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,uxtx #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("subs x21,x22,x23,sxtb #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtb #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtb #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtb #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtb #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("subs x21,x22,x23,sxth #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxth #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxth #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxth #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxth #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("subs x21,x22,x23,sxtw #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtw #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtw #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtw #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtw #4", NN8, NN9, x21,x22,x23,0);
+-
+-TESTINST3("subs x21,x22,x23,sxtx #0", NN0, NN1, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtx #1", NN2, NN3, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtx #2", NN4, NN5, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtx #3", NN6, NN7, x21,x22,x23,0);
+-TESTINST3("subs x21,x22,x23,sxtx #4", NN8, NN9, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("subs x21,x22,w23,uxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("subs x21,x22,w23,uxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtw #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("subs x21,x22,w23,uxtx #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtx #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtx #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtx #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,uxtx #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("subs x21,x22,w23,sxtb #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtb #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtb #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtb #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtb #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("subs x21,x22,w23,sxth #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxth #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxth #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxth #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxth #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("subs x21,x22,w23,sxtw #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtw #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtw #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtw #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtw #4", NN8, NN9, x21,x22,x23,0);
++
++TESTINST3("subs x21,x22,w23,sxtx #0", NN0, NN1, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtx #1", NN2, NN3, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtx #2", NN4, NN5, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtx #3", NN6, NN7, x21,x22,x23,0);
++TESTINST3("subs x21,x22,w23,sxtx #4", NN8, NN9, x21,x22,x23,0);
+ 
+ 
+ ////////////////////////////////////////////////////////////////

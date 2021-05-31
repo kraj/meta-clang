@@ -1,3 +1,12 @@
+Author: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+
+Implement VG_MINIMAL_SETJMP in inline assembly for OHOS/arm64
+
+Signed-off-by: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+Upstream-Status: Pending
+
+Based on patch from Android NDK:
+
 commit cebc9a058d2048e8233ee3eeb510e19b8772909f
 Author: Benoit Jacob <benoitjacob@google.com>
 Date:   Wed May 29 21:15:53 2019 -0400
@@ -10,7 +19,7 @@ diff --git a/include/pub_tool_libcsetjmp.h b/include/pub_tool_libcsetjmp.h
 index 681450cef..ccdf295df 100644
 --- a/include/pub_tool_libcsetjmp.h
 +++ b/include/pub_tool_libcsetjmp.h
-@@ -126,6 +126,111 @@ UWord VG_MINIMAL_SETJMP(VG_MINIMAL_JMP_BUF(_env));
+@@ -126,6 +126,93 @@ UWord VG_MINIMAL_SETJMP(VG_MINIMAL_JMP_BUF(_env));
  __attribute__((noreturn))
  void  VG_MINIMAL_LONGJMP(VG_MINIMAL_JMP_BUF(_env));
  
@@ -80,43 +89,25 @@ index 681450cef..ccdf295df 100644
 +  return 0;
 +}
 +
-+__attribute__((noreturn))
-+inline void VG_MINIMAL_LONGJMP(VG_MINIMAL_JMP_BUF(_env))
-+{
-+   asm volatile(
-+     // Loads to match the stores in the above setjmp implementation.
-+     "  ldp x19, x20, [%[_env], 0]     \n"
-+     "  ldp x21, x22, [%[_env], 0x10]  \n"
-+     "  ldp x23, x24, [%[_env], 0x20]  \n"
-+     "  ldp x25, x26, [%[_env], 0x30]  \n"
-+     "  ldp x27, x28, [%[_env], 0x40]  \n"
-+     "  ldp x29, x30, [%[_env], 0x50]  \n"
-+     "  ldr x9,       [%[_env], 0x60]  \n"
-+     "  mov sp, x9                     \n"
-+     // return as setjmp for the second time, returning 1.
-+     // Since we have loaded the link register x30 from the saved buffer
-+     // that was set by the above setjmp implementation, the 'ret' instruction
-+     // here is going to return to where setjmp was called.
-+     // Per the setjmp/longjmp contract, that pseudo second returning
-+     // of setjmp should return the value 1.
-+     // x0 is holds the integer return value.
-+     "  mov x0, 1                      \n"
-+     "  ret                            \n"
-+     :
-+     // No outputs
-+     :
-+     // Inputs
-+     [_env]"r"(_env)
-+     :
-+     // Clobbers.
-+     // We have used x9 as a temporary
-+     "x9");
-+
-+  // This statement is unreachable because the above asm statement
-+  // unconditionally does a 'ret' instruction. The purpose of this
-+  // statement is to silence clang warnings about this function returning
-+  // while having the 'noreturn' attribute.
-+  __builtin_unreachable();
++#define VG_MINIMAL_LONGJMP(x) \
++{ \
++   asm volatile( \
++     "  ldp x19, x20, [%[_env], 0]     \n" \
++     "  ldp x21, x22, [%[_env], 0x10]  \n" \
++     "  ldp x23, x24, [%[_env], 0x20]  \n" \
++     "  ldp x25, x26, [%[_env], 0x30]  \n" \
++     "  ldp x27, x28, [%[_env], 0x40]  \n" \
++     "  ldp x29, x30, [%[_env], 0x50]  \n" \
++     "  ldr x9,       [%[_env], 0x60]  \n" \
++     "  mov sp, x9                     \n" \
++     "  mov x0, 1                      \n" \
++     "  ret                            \n" \
++     : \
++     : \
++     [_env]"r"(x) \
++     : \
++     "x9"); \
++  __builtin_unreachable(); \
 +}
 +
  #else
