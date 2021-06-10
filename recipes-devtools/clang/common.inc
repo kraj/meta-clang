@@ -44,6 +44,7 @@ SRC_URI = "\
     file://0032-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch \
     file://0033-libunwind-Added-unw_backtrace-method.patch \
     file://0034-compiler-rt-Use-uintptr_t-instead-of-_Unwind_Word.patch \
+    file://0035-compiler-rt-Do-not-force-thumb-mode-directive.patch \
     file://0034-CMake-Installable-find-modules-for-terminfo-and-libf.patch \
     file://0035-llvm-Do-not-use-standard-search-paths-in-find_librar.patch \
 "

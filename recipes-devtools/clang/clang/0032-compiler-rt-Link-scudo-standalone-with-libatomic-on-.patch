@@ -1,4 +1,4 @@
-From b7dab91761d8656d802da8d0d754352f58fb05c9 Mon Sep 17 00:00:00 2001
+From 1e5dfaf08426f235a92081aadda5ae2a149ff871 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 21 May 2021 08:14:29 -0700
 Subject: [PATCH] compiler-rt: Link scudo standalone with libatomic on mips
