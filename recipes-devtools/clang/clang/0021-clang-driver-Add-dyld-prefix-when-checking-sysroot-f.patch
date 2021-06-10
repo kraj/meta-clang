@@ -1,4 +1,4 @@
-From 6e87ead1a81b300f69a5444b0e32ee2db189d6e3 Mon Sep 17 00:00:00 2001
+From 9b0acc4e9fb202a4d224fbf5eba54576fdb95ea3 Mon Sep 17 00:00:00 2001
 From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 Date: Wed, 15 Apr 2020 00:08:39 +0300
 Subject: [PATCH] clang: driver: Add dyld-prefix when checking sysroot for ldso
@@ -18,10 +18,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 5bd2e5061f3c..8a63dd8c0e60 100644
+index af1f7a6e5c48..0b3bbdeab5f3 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -479,8 +479,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -476,8 +476,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      LibDir = "lib64";
      Loader =
          (tools::ppc::hasPPCAbiArg(Args, "elfv2")) ? "ld64.so.2" : "ld64.so.1";
@@ -32,7 +32,7 @@ index 5bd2e5061f3c..8a63dd8c0e60 100644
          LibDir = "lib";
      }
      break;
-@@ -488,8 +488,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -485,8 +485,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      LibDir = "lib64";
      Loader =
          (tools::ppc::hasPPCAbiArg(Args, "elfv1")) ? "ld64.so.1" : "ld64.so.2";
@@ -43,7 +43,7 @@ index 5bd2e5061f3c..8a63dd8c0e60 100644
          LibDir = "lib";
      }
      break;
-@@ -513,8 +513,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -510,8 +510,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
    case llvm::Triple::sparcv9:
      LibDir = "lib64";
      Loader = "ld-linux.so.2";
@@ -54,7 +54,7 @@ index 5bd2e5061f3c..8a63dd8c0e60 100644
          LibDir = "lib";
      }
      break;
-@@ -531,8 +531,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -528,8 +528,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
  
      LibDir = X32 ? "libx32" : "lib64";
      Loader = X32 ? "ld-linux-x32.so.2" : "ld-linux-x86-64.so.2";

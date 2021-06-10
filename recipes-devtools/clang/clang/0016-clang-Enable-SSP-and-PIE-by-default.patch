@@ -1,4 +1,4 @@
-From e797d257fb0e4f8561d39c8a8c4e0bfd2323ed43 Mon Sep 17 00:00:00 2001
+From 24701aa638b8e111d7c93cf129959b63403d2327 Mon Sep 17 00:00:00 2001
 From: Evangelos Foutras <evangelos@foutrelis.com>
 Date: Thu, 26 Dec 2019 15:46:19 -0800
 Subject: [PATCH] clang: Enable SSP and PIE by default
@@ -37,10 +37,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  13 files changed, 42 insertions(+), 30 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index d2ccbe635208..5bd2e5061f3c 100644
+index 50cd166231c9..af1f7a6e5c48 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -671,8 +671,14 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
+@@ -668,8 +668,14 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
  }
  
  bool Linux::isPIEDefault() const {
@@ -134,7 +134,7 @@ index e9b86cbcf428..47f304c0420d 100644
  // CHECK-LD-32: "-L[[SYSROOT]]/usr/lib/gcc/i386-unknown-linux/10.2.0/../../../../i386-unknown-linux/lib"
  // CHECK-LD-32: "-L[[SYSROOT]]/lib"
 diff --git a/clang/test/Driver/fsanitize.c b/clang/test/Driver/fsanitize.c
-index 7febfd02a1ad..1381d9018e32 100644
+index baa37b5fd79d..a6aeb09f6cd8 100644
 --- a/clang/test/Driver/fsanitize.c
 +++ b/clang/test/Driver/fsanitize.c
 @@ -330,15 +330,15 @@

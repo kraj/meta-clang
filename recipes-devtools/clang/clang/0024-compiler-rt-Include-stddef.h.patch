@@ -1,4 +1,4 @@
-From 26bd74255d5fdf7a9dd0fb9140e0f6c2b9be5ac6 Mon Sep 17 00:00:00 2001
+From 83c73d91b61f989a8e3d4b96ada4f10c5c426c73 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 6 Feb 2021 12:44:30 -0800
 Subject: [PATCH] compiler-rt: Include stddef.h

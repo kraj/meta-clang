@@ -1,4 +1,4 @@
-From 4ff7a960f67ee8b0df09fb76113d9a2380e4b802 Mon Sep 17 00:00:00 2001
+From 54593b1564c12f55da088f3d6c68d4a55e411083 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 29 May 2021 13:42:25 -0700
 Subject: [PATCH] compiler-rt: Use uintptr_t instead of _Unwind_Word
