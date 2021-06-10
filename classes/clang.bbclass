@@ -17,8 +17,6 @@ COMPILER_RT_powerpc = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT_armeb = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= ""
-UNWINDLIB_riscv64 = "--unwindlib=libgcc"
-UNWINDLIB_riscv32 = "--unwindlib=libgcc"
 UNWINDLIB_powerpc = "--unwindlib=libgcc"
 UNWINDLIB_armeb = "--unwindlib=libgcc"
 
