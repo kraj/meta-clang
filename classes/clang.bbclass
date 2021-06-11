@@ -15,10 +15,12 @@ PACKAGE_DEBUG_SPLIT_STYLE_toolchain-clang = "debug-without-src"
 COMPILER_RT ??= ""
 COMPILER_RT_powerpc = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT_armeb = "-rtlib=libgcc ${UNWINDLIB}"
+COMPILER_RT_libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= ""
 UNWINDLIB_powerpc = "--unwindlib=libgcc"
 UNWINDLIB_armeb = "--unwindlib=libgcc"
+UNWINDLIB_libc-klibc = "--unwindlib=libgcc"
 
 LIBCPLUSPLUS ??= ""
 
