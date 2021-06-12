@@ -1,0 +1,15 @@
+--- a/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
++++ b/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
+@@ -351,8 +351,12 @@ lp_build_create_jit_compiler_for_module(
+     */
+    TargetOptions options;
+ #if defined(PIPE_ARCH_X86)
++#if LLVM_VERSION_MAJOR >= 13
++   // do nothing
++#else
+    options.StackAlignmentOverride = 4;
+ #endif
++#endif
+ 
+    builder.setEngineKind(EngineKind::JIT)
+           .setErrorStr(&Error)
