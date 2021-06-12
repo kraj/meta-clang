@@ -24,7 +24,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
            "
 
-SRCREV = "ab14fafec3fc13f89bd4678b7fc94829dcacaa7b"
+SRCREV = "b2a76fa63f19036fbc9b3a705fbfa6358992ae22"
 
 PV .= "+git${SRCPV}"
 
