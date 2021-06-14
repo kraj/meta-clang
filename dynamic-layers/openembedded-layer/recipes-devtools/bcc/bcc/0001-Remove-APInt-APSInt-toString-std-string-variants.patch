@@ -1,0 +1,42 @@
+From 3a402d393a02cca4ccbf46e1c9eadb31e33d9753 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 14 Jun 2021 12:49:43 -0700
+Subject: [PATCH] Remove APInt/APSInt toString() std::string variants
+
+clang 13+ has removed this in favour of a pair of llvm::toString
+() helpers inside StringExtras.h to improve compile speed by avoiding
+hits on <string> header
+
+Upstream-Status: Submitted [https://github.com/iovisor/bcc/pull/3488]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ src/cc/json_map_decl_visitor.cc | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/cc/json_map_decl_visitor.cc b/src/cc/json_map_decl_visitor.cc
+index eff4d067..53896199 100644
+--- a/src/cc/json_map_decl_visitor.cc
++++ b/src/cc/json_map_decl_visitor.cc
+@@ -20,6 +20,7 @@
+ #include <clang/AST/ASTContext.h>
+ #include <clang/AST/RecordLayout.h>
+ #include <clang/AST/RecursiveASTVisitor.h>
++#include <llvm/ADT/StringExtras.h>
+ #include "common.h"
+ #include "table_desc.h"
+ 
+@@ -79,7 +80,11 @@ void BMapDeclVisitor::genJSONForField(FieldDecl *F) {
+   result_ += "[";
+   TraverseDecl(F);
+   if (const ConstantArrayType *T = dyn_cast<ConstantArrayType>(F->getType()))
++#if LLVM_MAJOR_VERSION >= 13
++    result_ += ", [" + toString(T->getSize(), 10, false) + "]";
++#else
+     result_ += ", [" + T->getSize().toString(10, false) + "]";
++#endif
+   if (F->isBitField())
+     result_ += ", " + to_string(F->getBitWidthValue(C));
+   result_ += "], ";
+-- 
+2.32.0
+
