@@ -1,4 +1,4 @@
-From d008023e9fcd2615ca21d74c85e197570ba24502 Mon Sep 17 00:00:00 2001
+From aef271e12ce0bdf1d19548b4031cadea88d316d1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 11 Feb 2021 16:42:49 -0800
 Subject: [PATCH] llvm: Insert anchor for adding OE distro vendor names
