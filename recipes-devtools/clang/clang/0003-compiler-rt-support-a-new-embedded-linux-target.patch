@@ -1,30 +1,16 @@
-From adf258f2809c719a3a52b1d832f0139d8e668a34 Mon Sep 17 00:00:00 2001
+From ddb0abe6cd8e28d744f6f911388bbc5ed67a169c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 19 Apr 2015 15:16:23 -0700
 Subject: [PATCH] compiler-rt: support a new embedded linux target
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- compiler-rt/lib/builtins/int_util.c           |   2 +-
  .../make/platform/clang_linux_embedded.mk     | 286 ++++++++++++++++++
  .../clang_linux_embedded_test_input.c         |   0
- 3 files changed, 287 insertions(+), 1 deletion(-)
+ 2 files changed, 286 insertions(+)
  create mode 100644 compiler-rt/make/platform/clang_linux_embedded.mk
  create mode 100644 compiler-rt/make/platform/clang_linux_embedded_test_input.c
 
-diff --git a/compiler-rt/lib/builtins/int_util.c b/compiler-rt/lib/builtins/int_util.c
-index 226a6e93440d..efc977acbb39 100644
---- a/compiler-rt/lib/builtins/int_util.c
-+++ b/compiler-rt/lib/builtins/int_util.c
-@@ -54,7 +54,7 @@ void __compilerrt_abort_impl(const char *file, int line, const char *function) {
- #else
- 
- // Get the system definition of abort()
--#include <stdlib.h>
-+extern void abort (void) __attribute__ ((__noreturn__));
- 
- #ifndef _WIN32
- __attribute__((weak))
 diff --git a/compiler-rt/make/platform/clang_linux_embedded.mk b/compiler-rt/make/platform/clang_linux_embedded.mk
 new file mode 100644
 index 000000000000..d0a890075a1c

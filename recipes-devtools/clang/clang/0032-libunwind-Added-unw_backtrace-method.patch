@@ -1,4 +1,4 @@
-From 049cffbdf0e6e19037a5bc49483e6d68b18d6a0e Mon Sep 17 00:00:00 2001
+From 84bf553c54b6c1ec19623f0564dde3fb671df612 Mon Sep 17 00:00:00 2001
 From: Maksim Kita <maksim-kita@yandex-team.ru>
 Date: Sun, 23 May 2021 10:27:29 +0000
 Subject: [PATCH] libunwind: Added unw_backtrace method
@@ -24,10 +24,10 @@ index 0feecd7bd6fc..670cfa3ed71d 100644
  extern unw_addr_space_t unw_local_addr_space;
  
 diff --git a/libunwind/src/libunwind.cpp b/libunwind/src/libunwind.cpp
-index 9b3b92bdff09..986ef62f9231 100644
+index 1faf000ce44a..1edbdea6a19e 100644
 --- a/libunwind/src/libunwind.cpp
 +++ b/libunwind/src/libunwind.cpp
-@@ -289,7 +289,25 @@ void __unw_remove_dynamic_fde(unw_word_t fde) {
+@@ -295,7 +295,25 @@ void __unw_remove_dynamic_fde(unw_word_t fde) {
  #endif // defined(_LIBUNWIND_SUPPORT_DWARF_UNWIND)
  #endif // !defined(__USING_SJLJ_EXCEPTIONS__)
  
