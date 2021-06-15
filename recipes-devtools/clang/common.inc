@@ -33,18 +33,17 @@ SRC_URI = "\
     file://0021-clang-driver-Add-dyld-prefix-when-checking-sysroot-f.patch \
     file://0022-clang-Use-python3-in-python-scripts.patch \
     file://0023-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
-    file://0024-compiler-rt-Include-stddef.h.patch \
-    file://0025-llvm-Do-not-use-find_library-for-ncurses.patch \
-    file://0026-llvm-Insert-anchor-for-adding-OE-distro-vendor-names.patch \
-    file://0027-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
-    file://0028-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
-    file://0029-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
-    file://0030-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
-    file://0031-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
-    file://0032-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch \
-    file://0033-libunwind-Added-unw_backtrace-method.patch \
-    file://0034-compiler-rt-Use-uintptr_t-instead-of-_Unwind_Word.patch \
-    file://0035-compiler-rt-Do-not-force-thumb-mode-directive.patch \
+    file://0024-llvm-Do-not-use-find_library-for-ncurses.patch \
+    file://0025-llvm-Insert-anchor-for-adding-OE-distro-vendor-names.patch \
+    file://0026-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
+    file://0027-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
+    file://0028-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
+    file://0029-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
+    file://0030-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
+    file://0031-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch \
+    file://0032-libunwind-Added-unw_backtrace-method.patch \
+    file://0033-compiler-rt-Use-uintptr_t-instead-of-_Unwind_Word.patch \
+    file://0034-compiler-rt-Do-not-force-thumb-mode-directive.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
