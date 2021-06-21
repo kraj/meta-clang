@@ -252,6 +252,7 @@ FILES_${PN} += "\
   ${libdir}/${BPN} \
   ${nonarch_libdir}/${BPN}/*/include/ \
   ${datadir}/scan-* \
+  ${libdir}/libscanbuild \
   ${datadir}/opt-viewer/ \
 "
 
@@ -282,6 +283,7 @@ FILES_libclang = "\
 FILES_${PN}-dev += "\
   ${datadir}/llvm/cmake \
   ${libdir}/cmake \
+  ${libdir}/libear \
   ${nonarch_libdir}/${BPN}/*.la \
 "
 
