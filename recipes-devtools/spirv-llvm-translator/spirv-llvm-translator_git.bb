@@ -6,7 +6,7 @@ SRC_URI = "git://github.com/KhronosGroup/SPIRV-LLVM-Translator;protocol=https;br
           "
 
 PV = "13.0.0"
-SRCREV = "76c76efeb8bcb3414dcd26ef938de43eb1beb516"
+SRCREV = "ddb5c962f0a11dc3dcc03e1e1840d2d826b95af9"
 
 S = "${WORKDIR}/git"
 
