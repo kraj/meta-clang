@@ -12,7 +12,7 @@ inherit cmake cmake-native python3native
 
 PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
 PACKAGECONFIG_append_armv5 = " no-atomics"
-
+PACKAGECONFIG_remove_class-native = "compiler-rt"
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"
 PACKAGECONFIG[exceptions] = "-DLIBCXXABI_ENABLE_EXCEPTIONS=ON -DDLIBCXX_ENABLE_EXCEPTIONS=ON,-DLIBCXXABI_ENABLE_EXCEPTIONS=OFF -DLIBCXX_ENABLE_EXCEPTIONS=OFF -DCMAKE_REQUIRED_FLAGS='-fno-exceptions',"
 PACKAGECONFIG[no-atomics] = "-D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF -DCMAKE_SHARED_LINKER_FLAGS='-latomic',,"
@@ -21,9 +21,12 @@ PACKAGECONFIG[unwind-shared] = "-DLIBUNWIND_ENABLE_SHARED=ON,-DLIBUNWIND_ENABLE_
 
 DEPENDS += "ninja-native"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
+DEPENDS_append_class-native = " clang-native"
 
 LIBCPLUSPLUS = ""
 COMPILER_RT ?= "-rtlib=compiler-rt"
+
+CC_append_toolchain-clang_class-native = " -unwindlib=libgcc -rtlib=libgcc"
 
 CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -stdlib=libstdc++"
@@ -60,8 +63,8 @@ EXTRA_OECMAKE_append_class-target = " \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
 "
-
-EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
+EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+"
 
 EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
@@ -91,4 +94,4 @@ PACKAGES_append_runtime-llvm = " libunwind"
 FILES_libunwind_runtime-llvm = "${libdir}/libunwind.so.*"
 
 BBCLASSEXTEND = "native nativesdk"
-TOOLCHAIN = "clang"
+TOOLCHAIN_forcevariable = "clang"
