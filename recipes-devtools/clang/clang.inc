@@ -8,7 +8,7 @@ MAJOR_VER = "13"
 MINOR_VER = "0"
 PATCH_VER = "0"
 
-SRCREV ?= "ec08f03be3942d4ae6694d0f7a9b490fe3cbba9b"
+SRCREV ?= "6088f86a2e1ce3ab6fe9573e26fc63a5cf338fa9"
 
 PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}"
 BRANCH = "main"
