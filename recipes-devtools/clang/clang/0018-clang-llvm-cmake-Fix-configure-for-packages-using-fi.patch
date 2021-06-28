@@ -1,4 +1,4 @@
-From a55cd03900022a08172d85268ee5630099f68278 Mon Sep 17 00:00:00 2001
+From 517fd1ccf607e843eb87466e595a312eff302dd2 Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
@@ -52,10 +52,10 @@ index 5752f4277444..f40ea35faf46 100644
  endmacro()
  
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 689cac474c1a..75f425955e2a 100644
+index 7e91b77adcab..6b46f03f0e2c 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
-@@ -1226,7 +1226,6 @@ macro(add_llvm_tool name)
+@@ -1229,7 +1229,6 @@ macro(add_llvm_tool name)
      if( LLVM_BUILD_TOOLS )
        get_target_export_arg(${name} LLVM export_to_llvmexports)
        install(TARGETS ${name}
@@ -63,7 +63,7 @@ index 689cac474c1a..75f425955e2a 100644
                RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1237,9 +1236,6 @@ macro(add_llvm_tool name)
+@@ -1240,9 +1239,6 @@ macro(add_llvm_tool name)
        endif()
      endif()
    endif()
@@ -73,7 +73,7 @@ index 689cac474c1a..75f425955e2a 100644
    set_target_properties(${name} PROPERTIES FOLDER "Tools")
  endmacro(add_llvm_tool name)
  
-@@ -1279,7 +1275,6 @@ macro(add_llvm_utility name)
+@@ -1282,7 +1278,6 @@ macro(add_llvm_utility name)
      if (LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS)
        get_target_export_arg(${name} LLVM export_to_llvmexports)
        install(TARGETS ${name}
@@ -81,7 +81,7 @@ index 689cac474c1a..75f425955e2a 100644
                RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1288,7 +1283,6 @@ macro(add_llvm_utility name)
+@@ -1291,7 +1286,6 @@ macro(add_llvm_utility name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
