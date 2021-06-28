@@ -1,4 +1,4 @@
-From d362483cf317d224a27c3a1147c4ed50a120aa6e Mon Sep 17 00:00:00 2001
+From a53559aff7c59b120377bca6a2ecd8ced5e3ae22 Mon Sep 17 00:00:00 2001
 From: Jeremy Puhlman <jpuhlman@mvista.com>
 Date: Thu, 16 Jan 2020 21:16:10 +0000
 Subject: [PATCH] libcxx: Add compiler runtime library to link step for libcxx
