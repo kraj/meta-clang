@@ -1,4 +1,4 @@
-From 35659b7324baa809ff04e52e8f0d55584a0e4033 Mon Sep 17 00:00:00 2001
+From 2231e5c5715a97cdc3711a5052e53fd055f16f12 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 14 Oct 2020 22:19:57 -0700
 Subject: [PATCH] clang: Use python3 in python scripts
@@ -60,7 +60,7 @@ index 6bd05531333b..9e134123ef44 100755
  #===- clang-tidy-diff.py - ClangTidy Diff Checker -----------*- python -*--===#
  #
 diff --git a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
-index 313ecd2f9571..a298e38b1a45 100755
+index de810230b285..200b7c6eb652 100755
 --- a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
 +++ b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
 @@ -1,4 +1,4 @@
@@ -70,7 +70,7 @@ index 313ecd2f9571..a298e38b1a45 100755
  #===- run-clang-tidy.py - Parallel clang-tidy runner --------*- python -*--===#
  #
 diff --git a/clang/tools/clang-format/git-clang-format b/clang/tools/clang-format/git-clang-format
-index 3646b4ff41d7..a6a7393448c9 100755
+index 0233ceb3a868..16bc55f98762 100755
 --- a/clang/tools/clang-format/git-clang-format
 +++ b/clang/tools/clang-format/git-clang-format
 @@ -1,4 +1,4 @@

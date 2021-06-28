@@ -1,4 +1,4 @@
-From b03d3a24cd49083a2f8e9cbbc9b66ec72b690d6d Mon Sep 17 00:00:00 2001
+From ee8087a34236d81e3b7630c33777120d1a6f2fbe Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 15 Apr 2021 18:58:07 -0700
 Subject: [PATCH] clang: Switch defaults to dwarf-5 debug info on Linux

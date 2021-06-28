@@ -1,4 +1,4 @@
-From 127d2d9a234809ba2c76bc3f64b0902cc7b24ba3 Mon Sep 17 00:00:00 2001
+From 5acbaaaec447b9083328cef452b4d7d1c542985d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 12 Jun 2021 08:42:36 -0700
 Subject: [PATCH] [compiler-rt] Do not force thumb mode directive
