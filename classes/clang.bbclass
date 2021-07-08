@@ -109,6 +109,7 @@ def clang_base_deps(d):
     return ""
 
 BASE_DEFAULT_DEPS_toolchain-clang_class-target = "${@clang_base_deps(d)}"
+BASE_DEFAULT_DEPS_append_class-native_toolchain-clang_runtime-llvm = " libcxx-native compiler-rt-native"
 
 cmake_do_generate_toolchain_file_append_toolchain-clang () {
     cat >> ${WORKDIR}/toolchain.cmake <<EOF
