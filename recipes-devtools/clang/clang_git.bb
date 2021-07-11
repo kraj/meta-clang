@@ -175,7 +175,7 @@ EXTRA_OECMAKE_append_class-target = "\
 "
 
 DEPENDS = "binutils zlib libffi libxml2 libxml2-native ninja-native swig-native"
-DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
+DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3 gcc-crosssdk-${SDK_SYS}"
 DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
 
 RRECOMMENDS_${PN} = "binutils"
