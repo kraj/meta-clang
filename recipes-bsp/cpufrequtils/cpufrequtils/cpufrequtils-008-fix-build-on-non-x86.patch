@@ -1,0 +1,32 @@
+From: Bernhard Rosenkränzer <bernhard.rosenkraenzer.ext@huawei.com>
+Date: Thu, 27 May 2021 22:51:00 +0200
+Subject: [PATCH] utils: Fix build on non-x86 with clang
+
+Without this patch, there is an invalid asm construct (forcing EAX) on
+non-x86 architectures in unreachable code.
+
+gcc allows this (because it throws out the unreachable code before checking
+it), but clang does not.
+
+Signed-off-by: Bernhard Rosenkränzer <bernhard.rosenkraenzer.ext@huawei.com>
+Upstream-Status: Pending
+
+diff -up git/utils/cpuid.h.omv~ git/utils/cpuid.h
+--- git/utils/cpuid.h.omv~	2021-05-27 22:44:44.833614642 +0200
++++ git/utils/cpuid.h	2021-05-27 22:45:25.546050445 +0200
+@@ -1,6 +1,8 @@
+ #ifndef _CPUFREQ_CPUID_H
+ #define _CPUFREQ_CPUID_H
+ 
++#if defined(__i386__) || defined(__x86_64__)
++
+ static inline void __cpuid(unsigned int *eax, unsigned int *ebx,
+ 				unsigned int *ecx, unsigned int *edx)
+ {
+@@ -72,4 +74,6 @@ static inline unsigned int cpuid_edx(uns
+ 	return edx;
+ }
+ 
++#endif /* i386 || x86_64 */
++
+ #endif /* _CPUFREQ_CPUID_H */

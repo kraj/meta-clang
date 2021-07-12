@@ -1,0 +1,30 @@
+Author: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+
+Remove -lgcc -- it's unneeded and breaks building with compiler-rt.
+
+Signed-off-by: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+Upstream-Status: Pending
+
+diff -up git/builder/FindFunctions.cmake.omv~ git/builder/FindFunctions.cmake
+--- git/builder/FindFunctions.cmake.omv~	2021-06-03 20:35:11.230895070 +0200
++++ git/builder/FindFunctions.cmake	2021-06-03 20:35:49.750360067 +0200
+@@ -200,10 +200,6 @@ function( make_library name variant type
+   set_target_properties( ${target} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BIN_DIR}/${CMAKE_BUILD_TYPE} FOLDER ${folder} )
+   set_target_properties( ${target} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_LIB_DIR}/${CMAKE_BUILD_TYPE} FOLDER ${folder} )
+ 
+-  if( Linux )
+-    target_link_libraries( ${target} "-lgcc" )
+-  endif()
+-
+   set( target ${target} PARENT_SCOPE )
+ endfunction()
+ 
+@@ -278,7 +274,7 @@ function( make_executable name variant )
+   endforeach()
+ 
+   if( Linux )
+-    target_link_libraries( ${target} "-Xlinker --end-group -lgcc" )
++    target_link_libraries( ${target} "-Xlinker --end-group" )
+   endif()
+ 
+   set( target ${target} PARENT_SCOPE )

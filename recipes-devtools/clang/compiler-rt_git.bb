@@ -37,7 +37,7 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_BUILD_SANITIZERS=OFF \
                   -DCOMPILER_RT_BUILD_MEMPROF=OFF \
                   -DCOMPILER_RT_BUILD_LIBFUZZER=OFF \
-                  -DCOMPILER_RT_BUILD_PROFILE=OFF \
+                  -DCOMPILER_RT_BUILD_PROFILE=ON \
                   -DLLVM_ENABLE_PROJECTS='compiler-rt' \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \

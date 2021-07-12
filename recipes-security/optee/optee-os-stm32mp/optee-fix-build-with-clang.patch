@@ -1,0 +1,67 @@
+From: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+Subject: [optee-os-stm] Fix build with clang
+
+Fix build with clang: No suffix to RCC_MP_ENCLRR_OFFSET (it's used
+in assembly code), fix warning in mbedtls, look for compiler-rt
+inside the sysroot instead of on the system
+
+Signed-off-by: Bernhard Rosenkraenzer <bernhard.rosenkraenzer.ext@huawei.com>
+Upstream-Status: Pending
+
+diff -up git/core/include/drivers/stm32mp1_rcc.h.omv~ git/core/include/drivers/stm32mp1_rcc.h
+--- git/core/include/drivers/stm32mp1_rcc.h.omv~	2021-06-04 23:35:39.741212399 +0200
++++ git/core/include/drivers/stm32mp1_rcc.h	2021-06-04 23:37:28.856900701 +0200
+@@ -280,10 +280,10 @@
+ #define RCC_TIMGXPRER_TIMGXPRE		BIT(0)
+ 
+ /* Offset between RCC_MP_xxxENSETR and RCC_MP_xxxENCLRR registers */
+-#define RCC_MP_ENCLRR_OFFSET		4u
++#define RCC_MP_ENCLRR_OFFSET		4
+ 
+ /* Offset between RCC_MP_xxxRSTSETR and RCC_MP_xxxRSTCLRR registers */
+-#define RCC_MP_RSTCLRR_OFFSET		4u
++#define RCC_MP_RSTCLRR_OFFSET		4
+ 
+ /* Fields of RCC_BDCR register */
+ #define RCC_BDCR_LSEON			BIT(0)
+diff -up git/lib/libmbedtls/mbedtls/library/md5.c.omv~ git/lib/libmbedtls/mbedtls/library/md5.c
+--- git/lib/libmbedtls/mbedtls/library/md5.c.omv~	2021-06-04 23:35:39.742212415 +0200
++++ git/lib/libmbedtls/mbedtls/library/md5.c	2021-06-04 23:37:28.857900716 +0200
+@@ -428,8 +428,8 @@ static const unsigned char md5_test_buf[
+     { "message digest" },
+     { "abcdefghijklmnopqrstuvwxyz" },
+     { "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" },
+-    { "12345678901234567890123456789012345678901234567890123456789012"
+-      "345678901234567890" }
++    { ("12345678901234567890123456789012345678901234567890123456789012"
++      "345678901234567890") }
+ };
+ 
+ static const size_t md5_test_buflen[7] =
+diff -up git/mk/clang.mk.omv~ git/mk/clang.mk
+--- git/mk/clang.mk.omv~	2021-06-04 23:35:39.742212415 +0200
++++ git/mk/clang.mk	2021-06-04 23:38:35.887937844 +0200
+@@ -25,10 +25,11 @@ nostdinc$(sm)	:= -nostdinc -isystem $(sh
+ comp-cflags-warns-clang := -Wno-language-extension-token \
+ 			 -Wno-gnu-zero-variadic-macro-arguments
+ 
++SYSROOT := $(shell echo $(CC) |sed -e 's,.*--sysroot=,,;s, .*,,g')
+ # Note, use the compiler runtime library (libclang_rt.builtins.*.a) instead of
+ # libgcc for clang
+-libgcc$(sm)	:= $(shell $(CC$(sm)) $(CFLAGS$(arch-bits-$(sm))) \
+-			-rtlib=compiler-rt -print-libgcc-file-name 2> /dev/null)
++libgcc$(sm)	:= $(SYSROOT)/$(shell echo $(shell $(CC$(sm)) $(CFLAGS$(arch-bits-$(sm))) \
++			-rtlib=compiler-rt -print-libgcc-file-name 2> /dev/null) |sed -e 's,-arm\.a,-armhf.a,')
+ 
+ # Core ASLR relies on the executable being ready to run from its preferred load
+ # address, because some symbols are used before the MMU is enabled and the
+@@ -36,7 +37,8 @@ libgcc$(sm)	:= $(shell $(CC$(sm)) $(CFLA
+ ldflag-apply-dynamic-relocs := --apply-dynamic-relocs
+ 
+ # Define these to something to discover accidental use
+-CC		:= false
++# Not CC because we need it to determine SYSROOT
++#CC		:= false
+ CXX		:= false
+ CPP		:= false
+ LD		:= false
