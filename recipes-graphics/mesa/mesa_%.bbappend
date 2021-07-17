@@ -17,3 +17,6 @@ SRC_URI += "file://0001-gallium-add-missing-header-for-powf.patch \
             "
 
 PACKAGECONFIG[gallium-llvm] = "-Dllvm=true -Dshared-llvm=true -Ddraw-use-llvm=true,-Dllvm=false,clang clang-native elfutils"
+
+# see https://bugs.llvm.org/show_bug.cgi?id=51126
+TOOLCHAIN_aarch64 = "gcc"
