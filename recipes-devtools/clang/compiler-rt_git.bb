@@ -29,6 +29,8 @@ CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
 BUILD_CXXFLAGS += "-stdlib=libstdc++"
 BUILD_LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
+BUILD_CPPFLAGS_remove = "-stdlib=libc++"
+BUILD_LDFLAGS_remove = "-stdlib=libc++ -lc++abi"
 
 BUILD_CC_toolchain-clang  = "${CCACHE}clang"
 BUILD_CXX_toolchain-clang = "${CCACHE}clang++"

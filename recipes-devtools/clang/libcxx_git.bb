@@ -30,6 +30,11 @@ CC_append_toolchain-clang_class-native = " -unwindlib=libgcc -rtlib=libgcc"
 
 CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -stdlib=libstdc++"
+BUILD_CXXFLAGS += "-stdlib=libstdc++"
+BUILD_LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
+BUILD_CPPFLAGS_remove = "-stdlib=libc++"
+BUILD_LDFLAGS_remove = "-stdlib=libc++ -lc++abi"
+
 INHIBIT_DEFAULT_DEPS = "1"
 
 LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da3953 \
