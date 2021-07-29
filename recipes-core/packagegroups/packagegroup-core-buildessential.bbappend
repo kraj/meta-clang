@@ -1,3 +1,3 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-RDEPENDS_packagegroup-core-buildessential_append_toolchain-clang = " clang "
+RDEPENDS:packagegroup-core-buildessential:append:toolchain-clang = " clang "

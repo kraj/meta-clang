@@ -29,11 +29,11 @@ EXTRA_OECMAKE = "\
         -DCCACHE_ALLOWED=FALSE \
 "
 
-do_compile_append() {
+do_compile:append() {
     oe_runmake llvm-spirv
 }
 
-do_install_append() {
+do_install:append() {
     install -Dm755 ${B}/tools/llvm-spirv/llvm-spirv ${D}${bindir}/llvm-spirv
 }
 
