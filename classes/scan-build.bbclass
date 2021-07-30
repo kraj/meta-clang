@@ -17,7 +17,7 @@ SCAN_RESULTS_DIR ?= "${TMPDIR}/static-scan/${PN}"
 
 CCSCAN ?= "${HOST_PREFIX}${TOOLCHAIN}"
 CXXSCAN:toolchain-clang ?= "${HOST_PREFIX}clang++"
-CXXSCAN_toolchain-gcc ?= "${HOST_PREFIX}g++"
+CXXSCAN:toolchain-gcc ?= "${HOST_PREFIX}g++"
 
 do_scanbuild() {
         rm -rf ${SCAN_RESULTS_DIR}
