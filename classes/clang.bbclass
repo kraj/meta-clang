@@ -71,7 +71,7 @@ LDFLAGS:append:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is
 TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
 RUNTIME ??= "gnu"
-#RUNTIME_toolchain-gcc = "gnu"
+#RUNTIME:toolchain-gcc = "gnu"
 RUNTIME:armeb = "gnu"
 
 TOOLCHAIN:class-native = "gcc"
@@ -84,8 +84,8 @@ OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES =. "${@['', 'runtime-${RUNTIME}:']['${RUNTIME}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
 
-#DEPENDS_append_toolchain-clang_class-target = " clang-cross-${TARGET_ARCH} "
-#DEPENDS_remove_toolchain-clang_allarch = "clang-cross-${TARGET_ARCH}"
+#DEPENDS:append:toolchain-clang:class-target = " clang-cross-${TARGET_ARCH} "
+#DEPENDS:remove:toolchain-clang:allarch = "clang-cross-${TARGET_ARCH}"
 
 def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
@@ -111,7 +111,7 @@ def clang_base_deps(d):
 BASE_DEFAULT_DEPS:toolchain-clang:class-target = "${@clang_base_deps(d)}"
 BASE_DEFAULT_DEPS:append:class-native:toolchain-clang_runtime-llvm = " libcxx-native compiler-rt-native"
 
-cmake_do_generate_toolchain_file_append_toolchain-clang () {
+cmake_do_generate_toolchain_file:append:toolchain-clang () {
     cat >> ${WORKDIR}/toolchain.cmake <<EOF
 set( CMAKE_CLANG_TIDY ${HOST_PREFIX}clang-tidy )
 EOF
