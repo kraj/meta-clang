@@ -127,7 +127,7 @@ and OE will start using gcc to cross compile that recipe.
 if a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
 
 ```shell
-CXX:remove:pn-<recipe>_toolchain-clang = " -stdlib=libc++ "
+CXX:remove:pn-<recipe>:toolchain-clang = " -stdlib=libc++ "
 ```
 
 # compiler-rt failing in do_configure with custom TARGET_VENDOR
