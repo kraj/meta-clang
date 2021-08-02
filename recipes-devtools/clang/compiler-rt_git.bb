@@ -16,29 +16,29 @@ LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee
 LIBCPLUSPLUS = ""
 COMPILER_RT = ""
 
-TUNE_CCARGS_remove = "-no-integrated-as"
+TUNE_CCARGS:remove = "-no-integrated-as"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
 DEPENDS += "ninja-native libgcc"
-DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc gcc-runtime"
-DEPENDS_append_class-nativesdk = " clang-native"
-DEPENDS_append_class-native = " clang-native"
+DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc gcc-runtime"
+DEPENDS:append:class-nativesdk = " clang-native"
+DEPENDS:append:class-native = " clang-native"
 
 CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
 BUILD_CXXFLAGS += "-stdlib=libstdc++"
 BUILD_LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
-BUILD_CPPFLAGS_remove = "-stdlib=libc++"
-BUILD_LDFLAGS_remove = "-stdlib=libc++ -lc++abi"
+BUILD_CPPFLAGS:remove = "-stdlib=libc++"
+BUILD_LDFLAGS:remove = "-stdlib=libc++ -lc++abi"
 
-BUILD_CC_toolchain-clang  = "${CCACHE}clang"
-BUILD_CXX_toolchain-clang = "${CCACHE}clang++"
-BUILD_CPP_toolchain-clang = "${CCACHE}clang -E"
-BUILD_CCLD_toolchain-clang = "${CCACHE}clang"
-BUILD_RANLIB_toolchain-clang = "llvm-ranlib"
-BUILD_AR_toolchain-clang = "llvm-ar"
-BUILD_NM_toolchain-clang = "llvm-nm"
+BUILD_CC:toolchain-clang  = "${CCACHE}clang"
+BUILD_CXX:toolchain-clang = "${CCACHE}clang++"
+BUILD_CPP:toolchain-clang = "${CCACHE}clang -E"
+BUILD_CCLD:toolchain-clang = "${CCACHE}clang"
+BUILD_RANLIB:toolchain-clang = "llvm-ranlib"
+BUILD_AR:toolchain-clang = "llvm-ar"
+BUILD_NM:toolchain-clang = "llvm-nm"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
@@ -59,22 +59,22 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DLLVM_ENABLE_PROJECTS='compiler-rt' \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
 "
-EXTRA_OECMAKE_append_class-target = "\
+EXTRA_OECMAKE:append:class-target = "\
                -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
 "
 
-EXTRA_OECMAKE_append_class-nativesdk = "\
+EXTRA_OECMAKE:append:class-nativesdk = "\
                -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
-EXTRA_OECMAKE_append_powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
+EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
-do_install_append () {
+do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
         mkdir -p ${D}${nonarch_libdir}
         mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
@@ -83,17 +83,17 @@ do_install_append () {
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
+FILES:${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
                 ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
                 ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
-FILES_${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES_${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
+FILES:${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
+FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.asan-preinit*.a \
                    "
-INSANE_SKIP_${PN} = "dev-so libdir"
-INSANE_SKIP_${PN}-dbg = "libdir"
+INSANE_SKIP:${PN} = "dev-so libdir"
+INSANE_SKIP:${PN}-dbg = "libdir"
 
 #PROVIDES_append_class-target = "\
 #        virtual/${TARGET_PREFIX}compilerlibs \
@@ -104,12 +104,12 @@ INSANE_SKIP_${PN}-dbg = "libdir"
 #        "
 #
 
-RDEPENDS_${PN}-dev += "${PN}-staticdev"
+RDEPENDS:${PN}-dev += "${PN}-staticdev"
 
 BBCLASSEXTEND = "native nativesdk"
 
-ALLOW_EMPTY_${PN} = "1"
-ALLOW_EMPTY_${PN}-dev = "1"
+ALLOW_EMPTY:${PN} = "1"
+ALLOW_EMPTY:${PN}-dev = "1"
 
-TOOLCHAIN_forcevariable = "clang"
-SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+TOOLCHAIN:forcevariable = "clang"
+SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"

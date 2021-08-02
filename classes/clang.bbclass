@@ -1,90 +1,90 @@
 # Add the necessary override
-CCACHE_COMPILERCHECK_toolchain-clang ?= "%compiler% -v"
-HOST_CC_ARCH_prepend_toolchain-clang = "-target ${HOST_SYS} "
-CC_toolchain-clang  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-CXX_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-CPP_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
-CCLD_toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-RANLIB_toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
-AR_toolchain-clang = "${HOST_PREFIX}llvm-ar"
-NM_toolchain-clang = "${HOST_PREFIX}llvm-nm"
+CCACHE_COMPILERCHECK:toolchain-clang ?= "%compiler% -v"
+HOST_CC_ARCH:prepend:toolchain-clang = "-target ${HOST_SYS} "
+CC:toolchain-clang  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+CXX:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+CPP:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
+CCLD:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+RANLIB:toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
+AR:toolchain-clang = "${HOST_PREFIX}llvm-ar"
+NM:toolchain-clang = "${HOST_PREFIX}llvm-nm"
 
-LTO_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
-PACKAGE_DEBUG_SPLIT_STYLE_toolchain-clang = "debug-without-src"
+LTO:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
+PACKAGE_DEBUG_SPLIT_STYLE:toolchain-clang = "debug-without-src"
 
 COMPILER_RT ??= ""
-COMPILER_RT_class-native = "-rtlib=libgcc ${UNWINDLIB}"
-COMPILER_RT_powerpc = "-rtlib=libgcc ${UNWINDLIB}"
-COMPILER_RT_armeb = "-rtlib=libgcc ${UNWINDLIB}"
+COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
+COMPILER_RT:powerpc = "-rtlib=libgcc ${UNWINDLIB}"
+COMPILER_RT:armeb = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT_libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= ""
-UNWINDLIB_class-native = "--unwindlib=libgcc"
-UNWINDLIB_powerpc = "--unwindlib=libgcc"
-UNWINDLIB_armeb = "--unwindlib=libgcc"
+UNWINDLIB:class-native = "--unwindlib=libgcc"
+UNWINDLIB:powerpc = "--unwindlib=libgcc"
+UNWINDLIB:armeb = "--unwindlib=libgcc"
 UNWINDLIB_libc-klibc = "--unwindlib=libgcc"
 
 LIBCPLUSPLUS ??= ""
 
-CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
-LDFLAGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
+CXXFLAGS:append:toolchain-clang = " ${LIBCPLUSPLUS}"
+LDFLAGS:append:toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
 
-TUNE_CCARGS_remove_toolchain-clang = "-meb"
-TUNE_CCARGS_remove_toolchain-clang = "-mel"
-TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
+TUNE_CCARGS:remove:toolchain-clang = "-meb"
+TUNE_CCARGS:remove:toolchain-clang = "-mel"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
-TUNE_CCARGS_remove_toolchain-clang = "-mcpu=cortex-a57.cortex-a53 -mcpu=cortex-a72.cortex-a53 -mcpu=cortex-a15.cortex-a7 -mcpu=cortex-a17.cortex-a7 -mcpu=cortex-a72.cortex-a35 -mcpu=cortex-a73.cortex-a53 -mcpu=cortex-a75.cortex-a55 -mcpu=cortex-a76.cortex-a55"
-TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mcpu=cortex-a53", "", d)}"
-TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7", "", d)}"
-TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35", "", d)}"
-TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortex-a55 cortexa76-cortex-a55", " -mcpu=cortex-a55", "", d)}"
+TUNE_CCARGS:remove:toolchain-clang = "-mcpu=cortex-a57.cortex-a53 -mcpu=cortex-a72.cortex-a53 -mcpu=cortex-a15.cortex-a7 -mcpu=cortex-a17.cortex-a7 -mcpu=cortex-a72.cortex-a35 -mcpu=cortex-a73.cortex-a53 -mcpu=cortex-a75.cortex-a55 -mcpu=cortex-a76.cortex-a55"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mcpu=cortex-a53", "", d)}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7", "", d)}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35", "", d)}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortex-a55 cortexa76-cortex-a55", " -mcpu=cortex-a55", "", d)}"
 
 # Clang does not support octeontx2 processor
-TUNE_CCARGS_remove_toolchain-clang = "-mcpu=octeontx2"
+TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2"
 
 # LLD does not yet support relaxation for RISCV e.g. https://reviews.freebsd.org/D25210
-TUNE_CCARGS_append_toolchain-clang_riscv32 = " -mno-relax"
-TUNE_CCARGS_append_toolchain-clang_riscv64 = " -mno-relax"
+TUNE_CCARGS:append:toolchain-clang:riscv32 = " -mno-relax"
+TUNE_CCARGS:append:toolchain-clang:riscv64 = " -mno-relax"
 
-TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mhard-float"
-TUNE_CCARGS_remove_toolchain-clang_powerpc = "-mno-spe"
+TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float"
+TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mno-spe"
 
-TUNE_CCARGS_append_toolchain-clang = " -Qunused-arguments"
-TUNE_CCARGS_append_toolchain-clang_libc-musl_powerpc64 = " -mlong-double-64"
-TUNE_CCARGS_append_toolchain-clang_libc-musl_powerpc64le = " -mlong-double-64"
+TUNE_CCARGS:append:toolchain-clang = " -Qunused-arguments"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64le = " -mlong-double-64"
 # usrmerge workaround
-TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("DISTRO_FEATURES", "usrmerge", " --dyld-prefix=/usr", "", d)}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("DISTRO_FEATURES", "usrmerge", " --dyld-prefix=/usr", "", d)}"
 
-LDFLAGS_append_toolchain-clang_class-nativesdk_x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
-LDFLAGS_append_toolchain-clang_class-nativesdk_x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
-LDFLAGS_append_toolchain-clang_class-nativesdk_aarch64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-aarch64.so.1"
+LDFLAGS:append:toolchain-clang:class-nativesdk:x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
+LDFLAGS:append:toolchain-clang:class-nativesdk:x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
+LDFLAGS:append:toolchain-clang:class-nativesdk:aarch64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-aarch64.so.1"
 
-LDFLAGS_toolchain-clang_class-nativesdk = "${BUILDSDK_LDFLAGS} \
+LDFLAGS:toolchain-clang:class-nativesdk = "${BUILDSDK_LDFLAGS} \
                                            -Wl,-rpath-link,${STAGING_LIBDIR}/.. \
                                            -Wl,-rpath,${libdir}/.. "
 
 # Enable lld globally"
-LDFLAGS_append_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
+LDFLAGS:append:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
 
 # choose between 'gcc' 'clang' an empty '' can be used as well
 TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
 RUNTIME ??= "gnu"
 #RUNTIME_toolchain-gcc = "gnu"
-RUNTIME_armeb = "gnu"
+RUNTIME:armeb = "gnu"
 
-TOOLCHAIN_class-native = "gcc"
-TOOLCHAIN_class-nativesdk = "gcc"
-TOOLCHAIN_class-cross-canadian = "gcc"
-TOOLCHAIN_class-crosssdk = "gcc"
-TOOLCHAIN_class-cross = "gcc"
+TOOLCHAIN:class-native = "gcc"
+TOOLCHAIN:class-nativesdk = "gcc"
+TOOLCHAIN:class-cross-canadian = "gcc"
+TOOLCHAIN:class-crosssdk = "gcc"
+TOOLCHAIN:class-cross = "gcc"
 
 OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES =. "${@['', 'runtime-${RUNTIME}:']['${RUNTIME}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
 
-#DEPENDS_append_toolchain-clang_class-target = " clang-cross-${TARGET_ARCH} "
+#DEPENDS_append_toolchain-clang:class-target = " clang-cross-${TARGET_ARCH} "
 #DEPENDS_remove_toolchain-clang_allarch = "clang-cross-${TARGET_ARCH}"
 
 def clang_base_deps(d):
@@ -108,8 +108,8 @@ def clang_base_deps(d):
             return ret
     return ""
 
-BASE_DEFAULT_DEPS_toolchain-clang_class-target = "${@clang_base_deps(d)}"
-BASE_DEFAULT_DEPS_append_class-native_toolchain-clang_runtime-llvm = " libcxx-native compiler-rt-native"
+BASE_DEFAULT_DEPS:toolchain-clang:class-target = "${@clang_base_deps(d)}"
+BASE_DEFAULT_DEPS:append:class-native:toolchain-clang_runtime-llvm = " libcxx-native compiler-rt-native"
 
 cmake_do_generate_toolchain_file_append_toolchain-clang () {
     cat >> ${WORKDIR}/toolchain.cmake <<EOF

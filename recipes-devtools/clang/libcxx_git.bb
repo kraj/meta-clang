@@ -11,8 +11,8 @@ require common-source.inc
 inherit cmake cmake-native python3native
 
 PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
-PACKAGECONFIG_append_armv5 = " no-atomics"
-PACKAGECONFIG_remove_class-native = "compiler-rt"
+PACKAGECONFIG:append:armv5 = " no-atomics"
+PACKAGECONFIG:remove:class-native = "compiler-rt"
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"
 PACKAGECONFIG[exceptions] = "-DLIBCXXABI_ENABLE_EXCEPTIONS=ON -DDLIBCXX_ENABLE_EXCEPTIONS=ON,-DLIBCXXABI_ENABLE_EXCEPTIONS=OFF -DLIBCXX_ENABLE_EXCEPTIONS=OFF -DCMAKE_REQUIRED_FLAGS='-fno-exceptions',"
 PACKAGECONFIG[no-atomics] = "-D_LIBCXXABI_HAS_ATOMIC_BUILTINS=OFF -DCMAKE_SHARED_LINKER_FLAGS='-latomic',,"
@@ -20,20 +20,20 @@ PACKAGECONFIG[compiler-rt] = "-DLIBCXX_USE_COMPILER_RT=ON -DLIBCXXABI_USE_COMPIL
 PACKAGECONFIG[unwind-shared] = "-DLIBUNWIND_ENABLE_SHARED=ON,-DLIBUNWIND_ENABLE_SHARED=OFF,,"
 
 DEPENDS += "ninja-native"
-DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
-DEPENDS_append_class-native = " clang-native"
+DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
+DEPENDS:append:class-native = " clang-native"
 
 LIBCPLUSPLUS = ""
 COMPILER_RT ?= "-rtlib=compiler-rt"
 
-CC_append_toolchain-clang_class-native = " -unwindlib=libgcc -rtlib=libgcc"
+CC:append:toolchain-clang:class-native = " -unwindlib=libgcc -rtlib=libgcc"
 
 CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -stdlib=libstdc++"
 BUILD_CXXFLAGS += "-stdlib=libstdc++"
 BUILD_LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
-BUILD_CPPFLAGS_remove = "-stdlib=libc++"
-BUILD_LDFLAGS_remove = "-stdlib=libc++ -lc++abi"
+BUILD_CPPFLAGS:remove = "-stdlib=libc++"
+BUILD_LDFLAGS:remove = "-stdlib=libc++ -lc++abi"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
@@ -42,7 +42,7 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
                     file://libunwind/LICENSE.TXT;md5=f66970035d12f196030658b11725e1a1 \
 "
 
-LLVM_LIBDIR_SUFFIX_powerpc64 = "64"
+LLVM_LIBDIR_SUFFIX:powerpc64 = "64"
 
 OECMAKE_TARGET_COMPILE = "cxxabi cxx"
 OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi ${@bb.utils.contains("RUNTIME", "llvm", "install-unwind", "", d)}"
@@ -63,31 +63,31 @@ EXTRA_OECMAKE += "\
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
 "
 
-EXTRA_OECMAKE_append_class-target = " \
+EXTRA_OECMAKE:append:class-target = " \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_SYS} \
 "
-EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+EXTRA_OECMAKE:append:class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
 "
 
-EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+EXTRA_OECMAKE:append:class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_SYS} \
 "
 
-EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
+EXTRA_OECMAKE:append:libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
-CXXFLAGS_append_armv5 = " -mfpu=vfp2"
+CXXFLAGS:append:armv5 = " -mfpu=vfp2"
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 
-PROVIDES_append_runtime-llvm = " libunwind"
+PROVIDES:append_runtime-llvm = " libunwind"
 
-do_install_append() {
+do_install:append() {
     if ${@bb.utils.contains("RUNTIME", "llvm", "true", "false", d)}
     then
         install -Dm 0644 ${S}/libunwind/include/libunwind.h ${S}/libunwind/include/__libunwind_config.h ${D}${includedir}
@@ -97,8 +97,8 @@ do_install_append() {
     fi
 }
 
-PACKAGES_append_runtime-llvm = " libunwind"
-FILES_libunwind_runtime-llvm = "${libdir}/libunwind.so.*"
+PACKAGES:append_runtime-llvm = " libunwind"
+FILES:libunwind_runtime-llvm = "${libdir}/libunwind.so.*"
 
 BBCLASSEXTEND = "native nativesdk"
-TOOLCHAIN_forcevariable = "clang"
+TOOLCHAIN:forcevariable = "clang"
