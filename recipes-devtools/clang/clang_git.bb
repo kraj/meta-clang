@@ -10,11 +10,11 @@ require common-source.inc
 
 INHIBIT_DEFAULT_DEPS = "1"
 
-BUILD_CC_class-nativesdk = "clang"
-BUILD_CXX_class-nativesdk = "clang++"
-BUILD_AR_class-nativesdk = "llvm-ar"
-BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
-BUILD_NM_class-nativesdk = "llvm-nm"
+BUILD_CC:class-nativesdk = "clang"
+BUILD_CXX:class-nativesdk = "clang++"
+BUILD_AR:class-nativesdk = "llvm-ar"
+BUILD_RANLIB:class-nativesdk = "llvm-ranlib"
+BUILD_NM:class-nativesdk = "llvm-nm"
 
 inherit cmake cmake-native pkgconfig python3native
 
@@ -55,8 +55,8 @@ PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs lldb-wchar \
                    ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)} \
                    rtti eh libedit terminfo \
                    "
-PACKAGECONFIG_class-native = "rtti eh libedit shared-libs ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
-PACKAGECONFIG_class-nativesdk = "rtti eh libedit shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto lto', d)} ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
+PACKAGECONFIG:class-native = "rtti eh libedit shared-libs ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
+PACKAGECONFIG:class-nativesdk = "rtti eh libedit shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto lto', d)} ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,"
@@ -101,7 +101,7 @@ CLANG_DEFAULT_OPENMP_RUNTIME;\
 LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86"
 
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
-LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_arch(bb, d)}"
+LLVM_EXPERIMENTAL_TARGETS_TO_BUILD:append = ";${@get_clang_experimental_target_arch(bb, d)}"
 
 HF = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
@@ -109,10 +109,10 @@ HF[vardepvalue] = "${HF}"
 LLVM_PROJECTS ?= "clang;clang-tools-extra;lld${LLDB}"
 LLDB ?= ";lldb"
 # LLDB support for RISCV/Mips32 does not work yet
-LLDB_riscv32 = ""
-LLDB_riscv64 = ""
-LLDB_mips = ""
-LLDB_mipsel = ""
+LLDB:riscv32 = ""
+LLDB:riscv64 = ""
+LLDB:mips = ""
+LLDB:mipsel = ""
 
 #CMAKE_VERBOSE = "VERBOSE=1"
 
@@ -136,10 +136,10 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
                   -DLLVM_EXPERIMENTAL_TARGETS_TO_BUILD='${LLVM_EXPERIMENTAL_TARGETS_TO_BUILD}' \
 "
 
-EXTRA_OECMAKE_append_class-native = "\
+EXTRA_OECMAKE:append:class-native = "\
                   -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
-EXTRA_OECMAKE_append_class-nativesdk = "\
+EXTRA_OECMAKE:append:class-nativesdk = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} -DCMAKE_TOOLCHAIN_FILE=${WORKDIR}/toolchain-native.cmake' \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
@@ -154,7 +154,7 @@ EXTRA_OECMAKE_append_class-nativesdk = "\
                   -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
                   -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
-EXTRA_OECMAKE_append_class-target = "\
+EXTRA_OECMAKE:append:class-target = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR}' \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
@@ -175,17 +175,17 @@ EXTRA_OECMAKE_append_class-target = "\
 "
 
 DEPENDS = "binutils zlib libffi libxml2 libxml2-native ninja-native swig-native"
-DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
-DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
+DEPENDS:append:class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
+DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} python3"
 
-RRECOMMENDS_${PN} = "binutils"
-RRECOMMENDS_${PN}_append_class-target = " libcxx-dev"
+RRECOMMENDS:${PN} = "binutils"
+RRECOMMENDS:${PN}:append:class-target = " libcxx-dev"
 
-do_install_append() {
+do_install:append() {
     rm -rf ${D}${libdir}/python*/site-packages/six.py
 }
 
-do_install_append_class-target () {
+do_install:append:class-target () {
     # Allow bin path to change based on YOCTO_ALTERNATE_EXE_PATH
     sed -i 's;${_IMPORT_PREFIX}/bin;${_IMPORT_PREFIX_BIN};g' ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
 
@@ -208,7 +208,7 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
     done
 }
 
-do_install_append_class-native () {
+do_install:append:class-native () {
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
     for f in `find ${D}${bindir} -executable -type f -not -type l`; do
@@ -220,7 +220,7 @@ do_install_append_class-native () {
     ln -sf llvm-config ${D}${bindir}/llvm-config${PV}
 }
 
-do_install_append_class-nativesdk () {
+do_install:append:class-nativesdk () {
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
     for f in `find ${D}${bindir} -executable -type f -not -type l`; do
@@ -236,15 +236,15 @@ do_install_append_class-nativesdk () {
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang lldb lldb-server liblldb"
 
 PROVIDES += "llvm llvm${PV}"
-PROVIDES_append_class-native = " llvm-native"
+PROVIDES:append:class-native = " llvm-native"
 
 BBCLASSEXTEND = "native nativesdk"
 
-RDEPENDS_lldb += "${PN}-lldb-python"
+RDEPENDS:lldb += "${PN}-lldb-python"
 
-FILES_${PN}-lldb-python = "${libdir}/python*/site-packages/lldb/*"
+FILES:${PN}-lldb-python = "${libdir}/python*/site-packages/lldb/*"
 
-FILES_${PN} += "\
+FILES:${PN} += "\
   ${libdir}/BugpointPasses.so \
   ${libdir}/LLVMHello.so \
   ${libdir}/LLVMgold.so \
@@ -256,59 +256,59 @@ FILES_${PN} += "\
   ${datadir}/opt-viewer/ \
 "
 
-FILES_lldb = "\
+FILES:lldb = "\
   ${bindir}/lldb \
 "
 
-FILES_lldb-server = "\
+FILES:lldb-server = "\
   ${bindir}/lldb-server \
 "
 
-FILES_liblldb = "\
+FILES:liblldb = "\
   ${libdir}/liblldbIntelFeatures.so* \
   ${libdir}/liblldb.so* \
 "
 
-FILES_${PN}-libllvm =+ "\
+FILES:${PN}-libllvm =+ "\
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}.so \
   ${libdir}/libLLVM-${MAJOR_VER}.so \
   ${libdir}/libLLVM-${MAJOR_VER}git.so \
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}git.so \
 "
 
-FILES_libclang = "\
+FILES:libclang = "\
   ${libdir}/libclang.so.${MAJOR_VER} \
 "
 
-FILES_${PN}-dev += "\
+FILES:${PN}-dev += "\
   ${datadir}/llvm/cmake \
   ${libdir}/cmake \
   ${nonarch_libdir}/libear \
   ${nonarch_libdir}/${BPN}/*.la \
 "
 
-FILES_${PN}-staticdev += "${nonarch_libdir}/${BPN}/*.a"
+FILES:${PN}-staticdev += "${nonarch_libdir}/${BPN}/*.a"
 
-FILES_${PN}-staticdev_remove = "${libdir}/${BPN}/*.a"
-FILES_${PN}-dev_remove = "${libdir}/${BPN}/*.la"
-FILES_${PN}_remove = "${libdir}/${BPN}/*"
+FILES:${PN}-staticdev:remove = "${libdir}/${BPN}/*.a"
+FILES:${PN}-dev:remove = "${libdir}/${BPN}/*.la"
+FILES:${PN}:remove = "${libdir}/${BPN}/*"
 
 
-INSANE_SKIP_${PN} += "already-stripped"
+INSANE_SKIP:${PN} += "already-stripped"
 #INSANE_SKIP_${PN}-dev += "dev-elf"
-INSANE_SKIP_${PN}-lldb-python += "dev-so dev-deps"
-INSANE_SKIP_liblldb = "dev-so"
+INSANE_SKIP:${PN}-lldb-python += "dev-so dev-deps"
+INSANE_SKIP:liblldb = "dev-so"
 
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
-SSTATE_SCAN_FILES_remove = "*-config"
+SSTATE_SCAN_FILES:remove = "*-config"
 
 TOOLCHAIN = "clang"
-TOOLCHAIN_class-native = "gcc"
-TOOLCHAIN_class-nativesdk = "clang"
+TOOLCHAIN:class-native = "gcc"
+TOOLCHAIN:class-nativesdk = "clang"
 
-SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
 
-SYSROOT_PREPROCESS_FUNCS_append_class-target = " clang_sysroot_preprocess"
+SYSROOT_PREPROCESS_FUNCS:append:class-target = " clang_sysroot_preprocess"
 
 clang_sysroot_preprocess() {
 	install -d ${SYSROOT_DESTDIR}${bindir_crossscripts}/
