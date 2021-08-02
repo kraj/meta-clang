@@ -83,7 +83,7 @@ in `local.conf`.
 You can select libstdc++ per package too by writing bbappends for them containing
 
 ```shell
-LIBCPLUSPLUS_toolchain-clang_pn-<recipe> = "-stdlibc=libc++"
+LIBCPLUSPLUS:toolchain-clang:pn-<recipe> = "-stdlibc=libc++"
 ```
 Defaults are chosen to be GNU for maximum compatibility with existing GNU systems. Its always
 good to use single runtime on a system, mixing runtimes can cause complications during
@@ -119,7 +119,7 @@ Few components do not build with clang, if you have a component to add to that l
 simply add it to `conf/nonclangable.inc` e.g.
 
 ```shell
-TOOLCHAIN_pn-<recipe> = "gcc"
+TOOLCHAIN:pn-<recipe> = "gcc"
 ```
 
 and OE will start using gcc to cross compile that recipe.
@@ -127,7 +127,7 @@ and OE will start using gcc to cross compile that recipe.
 if a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
 
 ```shell
-CXX_remove_pn-<recipe>_toolchain-clang = " -stdlib=libc++ "
+CXX:remove:pn-<recipe>_toolchain-clang = " -stdlib=libc++ "
 ```
 
 # compiler-rt failing in do_configure with custom TARGET_VENDOR

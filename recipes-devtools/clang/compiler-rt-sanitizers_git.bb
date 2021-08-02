@@ -13,11 +13,11 @@ inherit cmake pkgconfig python3native
 
 LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee54e877a"
 
-TUNE_CCARGS_remove = "-no-integrated-as"
+TUNE_CCARGS:remove = "-no-integrated-as"
 
 DEPENDS += "ninja-native virtual/crypt"
-DEPENDS_append_class-native = " clang-native libxcrypt-native"
-DEPENDS_append_class-nativesdk = " clang-native nativesdk-libxcrypt"
+DEPENDS:append:class-native = " clang-native libxcrypt-native"
+DEPENDS:append:class-nativesdk = " clang-native nativesdk-libxcrypt"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
@@ -45,15 +45,15 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
 "
 
-EXTRA_OECMAKE_append_class-nativesdk = "\
+EXTRA_OECMAKE:append:class-nativesdk = "\
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
 
-EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
-EXTRA_OECMAKE_append_powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
+EXTRA_OECMAKE:append:libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
+EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
-do_install_append () {
+do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
         mkdir -p ${D}${nonarch_libdir}
         mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
@@ -64,17 +64,17 @@ do_install_append () {
 }
 
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
+FILES:${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
                 ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
                 ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
-FILES_${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES_${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
+FILES:${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
+FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.asan-preinit*.a \
                    "
-INSANE_SKIP_${PN} = "dev-so libdir"
-INSANE_SKIP_${PN}-dbg = "libdir"
+INSANE_SKIP:${PN} = "dev-so libdir"
+INSANE_SKIP:${PN}-dbg = "libdir"
 
 #PROVIDES_append_class-target = "\
 #        virtual/${TARGET_PREFIX}compilerlibs \
@@ -85,18 +85,18 @@ INSANE_SKIP_${PN}-dbg = "libdir"
 #        "
 #
 
-RDEPENDS_${PN}-dev += "${PN}-staticdev"
+RDEPENDS:${PN}-dev += "${PN}-staticdev"
 
 BBCLASSEXTEND = "native nativesdk"
 
-ALLOW_EMPTY_${PN} = "1"
-ALLOW_EMPTY_${PN}-dev = "1"
+ALLOW_EMPTY:${PN} = "1"
+ALLOW_EMPTY:${PN}-dev = "1"
 
-TOOLCHAIN_forcevariable = "clang"
-SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+TOOLCHAIN:forcevariable = "clang"
+SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
 
 # riscv and x86_64 Sanitizers work on musl too
-COMPATIBLE_HOST_libc-musl_x86-64 = "(.*)"
-COMPATIBLE_HOST_libc-musl_riscv64 = "(.*)"
-COMPATIBLE_HOST_libc-musl_riscv32 = "(.*)"
-COMPATIBLE_HOST_libc-musl = "null"
+COMPATIBLE_HOST:libc-musl:x86-64 = "(.*)"
+COMPATIBLE_HOST:libc-musl:riscv64 = "(.*)"
+COMPATIBLE_HOST:libc-musl:riscv32 = "(.*)"
+COMPATIBLE_HOST:libc-musl = "null"

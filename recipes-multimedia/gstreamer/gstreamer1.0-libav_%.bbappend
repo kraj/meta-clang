@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI_append_toolchain-clang_mips64 = " file://0001-Disable-fpu-using-code-when-using-clang-mips64-combo.patch"
+SRC_URI:append:toolchain-clang:mips64 = " file://0001-Disable-fpu-using-code-when-using-clang-mips64-combo.patch"
 

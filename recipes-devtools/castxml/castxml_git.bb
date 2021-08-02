@@ -14,15 +14,15 @@ DEPENDS = "clang"
 
 # Match clang's idea of what TOOLCHAIN should be.
 TOOLCHAIN = "clang"
-TOOLCHAIN_class-native = "gcc"
-TOOLCHAIN_class-nativesdk = "clang"
+TOOLCHAIN:class-native = "gcc"
+TOOLCHAIN:class-nativesdk = "clang"
 
-BUILD_CC_class-nativesdk = "clang"
-BUILD_CXX_class-nativesdk = "clang++"
-BUILD_AR_class-nativesdk = "llvm-ar"
-BUILD_RANLIB_class-nativesdk = "llvm-ranlib"
-BUILD_NM_class-nativesdk = "llvm-nm"
-LDFLAGS_append_class-nativesdk = " -fuse-ld=gold"
+BUILD_CC:class-nativesdk = "clang"
+BUILD_CXX:class-nativesdk = "clang++"
+BUILD_AR:class-nativesdk = "llvm-ar"
+BUILD_RANLIB:class-nativesdk = "llvm-ranlib"
+BUILD_NM:class-nativesdk = "llvm-nm"
+LDFLAGS:append:class-nativesdk = " -fuse-ld=gold"
 
 inherit cmake cmake-native pkgconfig python3native
 

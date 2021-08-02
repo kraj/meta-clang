@@ -27,6 +27,6 @@ do_install() {
 }
 SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata *-llvm-ar \
                       *-llvm-ranlib *-llvm-nm *-lld *-ld.lld"
-do_install_append() {
+do_install:append() {
         cross_canadian_bindirlinks
 }
