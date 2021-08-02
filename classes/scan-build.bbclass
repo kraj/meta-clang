@@ -4,11 +4,11 @@
 EXTRA_ANALYZER_OPTIONS += "-analyze-headers"
 EXTRA_ANALYZER_OPTIONS += "--force-analyze-debug-code"
 SCAN_BUILD ??= "1"
-SCAN_BUILD_class-native = ""
-SCAN_BUILD_class-nativesdk = ""
-SCAN_BUILD_class-cross = ""
-SCAN_BUILD_class-crosssdk = ""
-SCAN_BUILD_class-cross-canadian = ""
+SCAN_BUILD:class-native = ""
+SCAN_BUILD:class-nativesdk = ""
+SCAN_BUILD:class-cross = ""
+SCAN_BUILD:class-crosssdk = ""
+SCAN_BUILD:class-cross-canadian = ""
 
 #CLANG_SCAN_SERVER_IP ??= "127.0.0.1"
 CLANG_SCAN_SERVER_IP ??= "10.0.0.10"
@@ -16,7 +16,7 @@ CLANG_SCAN_PORT ??= "8181"
 SCAN_RESULTS_DIR ?= "${TMPDIR}/static-scan/${PN}"
 
 CCSCAN ?= "${HOST_PREFIX}${TOOLCHAIN}"
-CXXSCAN_toolchain-clang ?= "${HOST_PREFIX}clang++"
+CXXSCAN:toolchain-clang ?= "${HOST_PREFIX}clang++"
 CXXSCAN_toolchain-gcc ?= "${HOST_PREFIX}g++"
 
 do_scanbuild() {

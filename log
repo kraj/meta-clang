@@ -1,0 +1,121 @@
+recipes-core/meta/clang-environment.inc:TARGET_CLANGCC_ARCH_append = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
+recipes-core/meta/clang-environment.inc:create_sdk_files_append() {
+recipes-core/ncurses/ncurses_%.bbappend:CACHED_CONFIGUREVARS_append_toolchain-clang = " cf_cv_prog_CC_c_o=yes cf_cv_prog_CXX_c_o=yes"
+recipes-core/musl/musl_%.bbappend:DEPENDS_append_toolchain-clang = " clang-cross-${TARGET_ARCH}"
+recipes-core/glib-2.0/glib-2.0_%.bbappend:CFLAGS_append_libc-musl = " -Wno-format-nonliteral"
+recipes-core/packagegroups/packagegroup-core-buildessential.bbappend:RDEPENDS_packagegroup-core-buildessential:append:toolchain-clang = " clang "
+recipes-core/busybox/busybox_1.33%.bbappend:SRC_URI_append_toolchain-clang = "\
+recipes-bsp/systemd-boot/systemd-boot_%.bbappend:do_configure_append_toolchain-clang() {
+recipes-connectivity/openssl/openssl_%.bbappend:LDLIBS_append_toolchain-clang:riscv64 = " -latomic"
+recipes-connectivity/openssl/openssl_%.bbappend:LDLIBS_append_toolchain-clang:riscv32 = " -latomic"
+classes/cmake-native.bbclass:list(APPEND CMAKE_MODULE_PATH "${STAGING_DATADIR_NATIVE}/cmake/Modules/")
+classes/cmake-native.bbclass:list(APPEND CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES ${STAGING_INCDIR_NATIVE})
+classes/cmake-native.bbclass:list(APPEND CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES ${STAGING_INCDIR_NATIVE})
+classes/clang.bbclass:CXXFLAGS_append_toolchain-clang = " ${LIBCPLUSPLUS}"
+classes/clang.bbclass:LDFLAGS_append_toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mcpu=cortex-a53", "", d)}"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7", "", d)}"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35", "", d)}"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortex-a55 cortexa76-cortex-a55", " -mcpu=cortex-a55", "", d)}"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang:riscv32 = " -mno-relax"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang:riscv64 = " -mno-relax"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang = " -Qunused-arguments"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang:libc-musl:powerpc64le = " -mlong-double-64"
+classes/clang.bbclass:TUNE_CCARGS_append_toolchain-clang = "${@bb.utils.contains("DISTRO_FEATURES", "usrmerge", " --dyld-prefix=/usr", "", d)}"
+classes/clang.bbclass:LDFLAGS_append_toolchain-clang:class-nativesdk:x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
+classes/clang.bbclass:LDFLAGS_append_toolchain-clang:class-nativesdk:x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
+classes/clang.bbclass:LDFLAGS_append_toolchain-clang:class-nativesdk:aarch64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-aarch64.so.1"
+classes/clang.bbclass:LDFLAGS_append_toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
+classes/clang.bbclass:#DEPENDS_append_toolchain-clang:class-target = " clang-cross-${TARGET_ARCH} "
+classes/clang.bbclass:BASE_DEFAULT_DEPS_append_class-native:toolchain-clang_runtime-llvm = " libcxx-native compiler-rt-native"
+classes/clang.bbclass:cmake_do_generate_toolchain_file_append_toolchain-clang () {
+.github/workflows/yoe.yml:          echo IMAGE_INSTALL:append = \" clang \" >> conf/local.conf
+recipes-multimedia/gstreamer/gstreamer1.0-libav_%.bbappend:SRC_URI_append_toolchain-clang:mips64 = " file://0001-Disable-fpu-using-code-when-using-clang-mips64-combo.patch"
+recipes-multimedia/ffmpeg/ffmpeg_%.bbappend:SRC_URI_append_toolchain-clang:mips64 = " file://clang_mips64.patch"
+recipes-extended/mdadm/mdadm_%.bbappend:CFLAGS_append_toolchain-clang = " -Wno-error=address-of-packed-member"
+dynamic-layers/networking-layer/recipes-connectivity/samba/samba_4.%.bbappend:SRC_URI_append = " file://fix_duplicate_pdb_search_init.patch "
+dynamic-layers/networking-layer/recipes-connectivity/samba/files/fix_duplicate_pdb_search_init.patch: private_pdb_match.append('!pdb_nds_*')
+dynamic-layers/networking-layer/recipes-connectivity/samba/files/fix_duplicate_pdb_search_init.patch: private_pdb_match.append('!pdb_ldapsam_init*')
+dynamic-layers/networking-layer/recipes-connectivity/samba/files/fix_duplicate_pdb_search_init.patch:-private_pdb_match.append('!pdb_*_init')
+dynamic-layers/openembedded-layer/recipes-kernel/kernel-selftest/kernel-selftest.bbappend:DEPENDS_append = " clang-native"
+dynamic-layers/openembedded-layer/recipes-devtools/bcc/bcc_0.20.0.bb:do_install_append() {
+recipes-devtools/spirv-llvm-translator/spirv-llvm-translator_git.bb:do_compile_append() {
+recipes-devtools/spirv-llvm-translator/spirv-llvm-translator_git.bb:do_install_append() {
+recipes-devtools/gdb/gdb_%.bbappend:SRC_URI_append_toolchain-clang:riscv64 = " file://0001-gdb-Link-with-latomic-for-riscv-clang-alone.patch "
+recipes-devtools/clang/clang-cross-canadian_git.bb:do_install_append() {
+recipes-devtools/clang/clang_git.bb:LLVM_EXPERIMENTAL_TARGETS_TO_BUILD_append = ";${@get_clang_experimental_target_arch(bb, d)}"
+recipes-devtools/clang/clang_git.bb:EXTRA_OECMAKE_append_class-native = "\
+recipes-devtools/clang/clang_git.bb:EXTRA_OECMAKE_append_class-nativesdk = "\
+recipes-devtools/clang/clang_git.bb:EXTRA_OECMAKE_append_class-target = "\
+recipes-devtools/clang/clang_git.bb:DEPENDS_append_class-nativesdk = " clang-crosssdk-${SDK_ARCH} virtual/${TARGET_PREFIX}binutils-crosssdk nativesdk-python3"
+recipes-devtools/clang/clang_git.bb:DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} python3"
+recipes-devtools/clang/clang_git.bb:RRECOMMENDS_${PN}_append_class-target = " libcxx-dev"
+recipes-devtools/clang/clang_git.bb:do_install_append() {
+recipes-devtools/clang/clang_git.bb:do_install_append_class-target () {
+recipes-devtools/clang/clang_git.bb:do_install_append_class-native () {
+recipes-devtools/clang/clang_git.bb:do_install_append_class-nativesdk () {
+recipes-devtools/clang/clang_git.bb:PROVIDES_append_class-native = " llvm-native"
+recipes-devtools/clang/clang_git.bb:SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+recipes-devtools/clang/clang_git.bb:SYSROOT_PREPROCESS_FUNCS_append_class-target = " clang_sysroot_preprocess"
+recipes-devtools/clang/libcxx_git.bb:PACKAGECONFIG_append_armv5 = " no-atomics"
+recipes-devtools/clang/libcxx_git.bb:DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
+recipes-devtools/clang/libcxx_git.bb:DEPENDS_append_class-native = " clang-native"
+recipes-devtools/clang/libcxx_git.bb:CC_append_toolchain-clang:class-native = " -unwindlib=libgcc -rtlib=libgcc"
+recipes-devtools/clang/libcxx_git.bb:EXTRA_OECMAKE_append_class-target = " \
+recipes-devtools/clang/libcxx_git.bb:EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+recipes-devtools/clang/libcxx_git.bb:EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+recipes-devtools/clang/libcxx_git.bb:EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
+recipes-devtools/clang/libcxx_git.bb:CXXFLAGS_append_armv5 = " -mfpu=vfp2"
+recipes-devtools/clang/libcxx_git.bb:PROVIDES_append_runtime-llvm = " libunwind"
+recipes-devtools/clang/libcxx_git.bb:do_install_append() {
+recipes-devtools/clang/libcxx_git.bb:PACKAGES_append_runtime-llvm = " libunwind"
+recipes-devtools/clang/clang/0018-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch:-    set_property(GLOBAL APPEND PROPERTY CLANG_EXPORTS ${name})
+recipes-devtools/clang/clang/0018-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch:-    set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${name})
+recipes-devtools/clang/clang/0018-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch:-      set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${name})
+recipes-devtools/clang/clang/0018-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch:       set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS_BUILDTREE_ONLY ${name})
+recipes-devtools/clang/clang/0018-clang-llvm-cmake-Fix-configure-for-packages-using-fi.patch:-  set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${target})
+recipes-devtools/clang/clang/0031-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch:@@ -134,6 +134,10 @@ append_list_if(COMPILER_RT_HAS_LIBPTHREAD -pthread SCUDO_LINK_FLAGS)
+recipes-devtools/clang/clang/0031-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch: append_list_if(FUCHSIA zircon SCUDO_LINK_LIBS)
+recipes-devtools/clang/clang/0031-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch:+    list(APPEND SCUDO_LINK_LIBS atomic)
+recipes-devtools/clang/clang/0001-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch:   list(APPEND EXTRA_LIBS kvm)
+recipes-devtools/clang/clang/0001-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch:-  list(APPEND EXTRA_LIBS ${LIBXML2_LIBRARIES})
+recipes-devtools/clang/clang/0001-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch:+  list(APPEND EXTRA_LIBS xml2)
+recipes-devtools/clang/clang/0001-lldb-Add-lxml2-to-linker-cmdline-of-xml-is-found.patch:   list(APPEND EXTRA_LIBS ${CMAKE_DL_LIBS})
+recipes-devtools/clang/clang/0011-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch:+  llvm::sys::path::append(Path, "/usr/", Twine("lib") + ClangLibdirSuffix, "clang",
+recipes-devtools/clang/clang/0011-clang-Look-inside-the-target-sysroot-for-compiler-ru.patch:     llvm::sys::path::append(Path, "lib");
+recipes-devtools/clang/clang/0030-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch:@@ -12,6 +12,7 @@ append_list_if(COMPILER_RT_HAS_LIBDL dl SCUDO_MINIMAL_DYNAMIC_LIBS)
+recipes-devtools/clang/clang/0030-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch: append_list_if(COMPILER_RT_HAS_LIBRT rt SCUDO_MINIMAL_DYNAMIC_LIBS)
+recipes-devtools/clang/clang/0030-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch: append_list_if(COMPILER_RT_HAS_LIBPTHREAD pthread SCUDO_MINIMAL_DYNAMIC_LIBS)
+recipes-devtools/clang/clang/0030-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch: append_list_if(COMPILER_RT_HAS_LIBLOG log SCUDO_MINIMAL_DYNAMIC_LIBS)
+recipes-devtools/clang/clang/0030-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch:+append_list_if(SANITIZER_CXX_ABI_LIBRARIES ${SANITIZER_CXX_ABI_LIBRARIES} SCUDO_MINIMAL_DYNAMIC_LIBS)
+recipes-devtools/clang/clang/0030-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch: append_list_if(COMPILER_RT_HAS_OMIT_FRAME_POINTER_FLAG -fno-omit-frame-pointer
+recipes-devtools/clang/clang/0019-clang-Fix-resource-dir-location-for-cross-toolchains.patch:     llvm::sys::path::append(P, Twine("lib") + CLANG_LIBDIR_SUFFIX, "clang",
+recipes-devtools/clang/clang/0004-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch:+  list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:DEPENDS_append_class-native = " clang-native libxcrypt-native"
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:DEPENDS_append_class-nativesdk = " clang-native nativesdk-libxcrypt"
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:EXTRA_OECMAKE_append_class-nativesdk = "\
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:EXTRA_OECMAKE_append_powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:do_install_append () {
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:#PROVIDES_append_class-target = "\
+recipes-devtools/clang/compiler-rt-sanitizers_git.bb:SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+recipes-devtools/clang/compiler-rt_git.bb:DEPENDS_append_class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc gcc-runtime"
+recipes-devtools/clang/compiler-rt_git.bb:DEPENDS_append_class-nativesdk = " clang-native"
+recipes-devtools/clang/compiler-rt_git.bb:DEPENDS_append_class-native = " clang-native"
+recipes-devtools/clang/compiler-rt_git.bb:EXTRA_OECMAKE_append_class-target = "\
+recipes-devtools/clang/compiler-rt_git.bb:EXTRA_OECMAKE_append_class-nativesdk = "\
+recipes-devtools/clang/compiler-rt_git.bb:EXTRA_OECMAKE_append_powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
+recipes-devtools/clang/compiler-rt_git.bb:do_install_append () {
+recipes-devtools/clang/compiler-rt_git.bb:#PROVIDES_append_class-target = "\
+recipes-devtools/clang/compiler-rt_git.bb:SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+recipes-devtools/clang/llvm-project-source.inc:            vendors_to_add.append(vendor)
+recipes-devtools/castxml/castxml_git.bb:LDFLAGS_append_class-nativesdk = " -fuse-ld=gold"
+recipes-devtools/rpm/rpm_%.bbappend:DEPENDS_append_toolchain-clang = " openmp"
+recipes-graphics/mesa/mesa_%.bbappend:SRC_URI_append_toolchain-clang = " file://clang13.patch "
+recipes-graphics/mesa/mesa_%.bbappend:LDFLAGS_append_toolchain-clang = " -latomic -lm"
+recipes-graphics/mesa/mesa_%.bbappend:DEPENDS_append_toolchain-clang = " libatomic-ops"
+recipes-graphics/mesa/mesa_%.bbappend:EXTRA_OEMASON_append_toolchain-clang:x86 = " -Dasm=false"
+recipes-graphics/mesa/mesa_%.bbappend:EXTRA_OEMASON_append_toolchain-clang:x86-64 = " -Dasm=false"
+Binary file .git/index matches

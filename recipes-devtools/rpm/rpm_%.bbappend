@@ -1,9 +1,9 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-DEPENDS_append_toolchain-clang = " openmp"
-DEPENDS_remove_toolchain-clang_riscv32 = "openmp"
-DEPENDS_remove_toolchain-clang_mipsarch = "openmp"
+DEPENDS:append:toolchain-clang = " openmp"
+DEPENDS:remove:toolchain-clang:riscv32 = "openmp"
+DEPENDS:remove:toolchain-clang:mipsarch = "openmp"
 
 # rpm needs OMP
-TOOLCHAIN_riscv32 = "gcc"
-TOOLCHAIN_mipsarch = "gcc"
+TOOLCHAIN:riscv32 = "gcc"
+TOOLCHAIN:mipsarch = "gcc"

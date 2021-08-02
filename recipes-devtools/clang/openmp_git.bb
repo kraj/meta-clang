@@ -27,9 +27,9 @@ OECMAKE_SOURCEPATH = "${S}/openmp"
 
 PACKAGECONFIG ?= "ompt-tools offloading-plugin"
 
-PACKAGECONFIG_remove_arm = "ompt-tools offloading-plugin"
-PACKAGECONFIG_remove_mipsarch = "ompt-tools offloading-plugin"
-PACKAGECONFIG_remove_powerpc = "ompt-tools offloading-plugin"
+PACKAGECONFIG:remove:arm = "ompt-tools offloading-plugin"
+PACKAGECONFIG:remove:mipsarch = "ompt-tools offloading-plugin"
+PACKAGECONFIG:remove:powerpc = "ompt-tools offloading-plugin"
 
 PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_TOOLS=OFF,"
 PACKAGECONFIG[aliases] = "-DLIBOMP_INSTALL_ALIASES=ON,-DLIBOMP_INSTALL_ALIASES=OFF,"
@@ -37,11 +37,11 @@ PACKAGECONFIG[offloading-plugin] = ",,elfutils libffi,libelf libffi"
 
 PACKAGES += "${PN}-libomptarget-amdgcn"
 FILES_SOLIBSDEV = ""
-FILES_${PN} += "${libdir}/lib*${SOLIBSDEV}"
-FILES_${PN}-libomptarget-amdgcn = "${libdir}/libomptarget-amdgcn-*.bc"
-INSANE_SKIP_${PN} = "dev-so"
+FILES:${PN} += "${libdir}/lib*${SOLIBSDEV}"
+FILES:${PN}-libomptarget-amdgcn = "${libdir}/libomptarget-amdgcn-*.bc"
+INSANE_SKIP:${PN} = "dev-so"
 
-COMPATIBLE_HOST_mips64 = "null"
-COMPATIBLE_HOST_riscv32 = "null"
+COMPATIBLE_HOST:mips64 = "null"
+COMPATIBLE_HOST:riscv32 = "null"
 
 BBCLASSEXTEND = "native nativesdk"
