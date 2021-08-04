@@ -91,15 +91,16 @@ def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
             ret = " clang-cross-${TARGET_ARCH} virtual/libc "
+            if (d.getVar('RUNTIME').find('android') != -1):
+                ret += " libcxx"
+                return ret
             if (d.getVar('RUNTIME').find('llvm') != -1):
                 ret += " compiler-rt libcxx"
             elif (d.getVar('COMPILER_RT').find('-rtlib=compiler-rt') != -1):
                 ret += " compiler-rt "
             else:
                 ret += " libgcc "
-            if (d.getVar('RUNTIME').find('llvm') != -1):
-                ret += " libcxx"
-            elif (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
+            if (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
                 ret += " libcxx "
             elif (d.getVar('LIBCPLUSPLUS').find('-stdlib=libc++') != -1):
                 ret += " libcxx "
