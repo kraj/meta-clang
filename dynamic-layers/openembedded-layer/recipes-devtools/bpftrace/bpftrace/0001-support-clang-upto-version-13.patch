@@ -1,0 +1,27 @@
+From 4cffb745dabde63f6f9c67a95265f5fc670dc1d7 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 5 Aug 2021 22:15:27 -0700
+Subject: [PATCH] support clang upto version 13
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 86daa195..73744207 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -162,7 +162,7 @@ else()
+     find_package(LLVM REQUIRED)
+   endif()
+ 
+-  if((${LLVM_VERSION_MAJOR} VERSION_LESS 6) OR (${LLVM_VERSION_MAJOR} VERSION_GREATER 12))
++  if((${LLVM_VERSION_MAJOR} VERSION_LESS 6) OR (${LLVM_VERSION_MAJOR} VERSION_GREATER 13))
+     message(SEND_ERROR "Unsupported LLVM version found: ${LLVM_INCLUDE_DIRS}")
+     message(SEND_ERROR "Specify an LLVM major version using LLVM_REQUESTED_VERSION=<major version>")
+   endif()
+-- 
+2.32.0
+
