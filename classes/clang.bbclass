@@ -16,7 +16,7 @@ COMPILER_RT ??= ""
 COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:powerpc = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:armeb = "-rtlib=libgcc ${UNWINDLIB}"
-COMPILER_RT_libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
+COMPILER_RT:libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= ""
 UNWINDLIB:class-native = "--unwindlib=libgcc"
