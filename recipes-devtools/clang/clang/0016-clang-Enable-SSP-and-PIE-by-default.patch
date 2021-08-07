@@ -1,4 +1,4 @@
-From 9c4e9d50d952f3282718846bb87067bf0352fd90 Mon Sep 17 00:00:00 2001
+From d1badac1289907fb193477c96c073a964bae71dd Mon Sep 17 00:00:00 2001
 From: Evangelos Foutras <evangelos@foutrelis.com>
 Date: Thu, 26 Dec 2019 15:46:19 -0800
 Subject: [PATCH] clang: Enable SSP and PIE by default
@@ -37,7 +37,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  13 files changed, 42 insertions(+), 30 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 50cd166231c9..af1f7a6e5c48 100644
+index 9daf35aefc4e..8c6102f47192 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -668,8 +668,14 @@ void Linux::AddIAMCUIncludeArgs(const ArgList &DriverArgs,
@@ -134,10 +134,10 @@ index e9b86cbcf428..47f304c0420d 100644
  // CHECK-LD-32: "-L[[SYSROOT]]/usr/lib/gcc/i386-unknown-linux/10.2.0/../../../../i386-unknown-linux/lib"
  // CHECK-LD-32: "-L[[SYSROOT]]/lib"
 diff --git a/clang/test/Driver/fsanitize.c b/clang/test/Driver/fsanitize.c
-index baa37b5fd79d..a6aeb09f6cd8 100644
+index b7d61abe7ec5..461b69b0ac15 100644
 --- a/clang/test/Driver/fsanitize.c
 +++ b/clang/test/Driver/fsanitize.c
-@@ -330,15 +330,15 @@
+@@ -344,15 +344,15 @@
  // RUN: %clang -target x86_64-linux-gnu -fsanitize=vptr -fno-sanitize=vptr -fsanitize=undefined,address %s -### 2>&1
  // OK
  
@@ -157,7 +157,7 @@ index baa37b5fd79d..a6aeb09f6cd8 100644
  
  // CHECK-NO-PIE-NOT: "-pie"
  // CHECK-NO-PIE: "-mrelocation-model" "static"
-@@ -673,12 +673,12 @@
+@@ -687,12 +687,12 @@
  // RUN: %clang -fno-sanitize=safe-stack -### %s 2>&1 | FileCheck %s -check-prefix=NOSP
  // NOSP-NOT: "-fsanitize=safe-stack"
  

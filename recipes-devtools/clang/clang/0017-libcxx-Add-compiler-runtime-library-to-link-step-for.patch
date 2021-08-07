@@ -1,4 +1,4 @@
-From a53559aff7c59b120377bca6a2ecd8ced5e3ae22 Mon Sep 17 00:00:00 2001
+From 0bc6d20c623b55ce93b64942c96422433ca2741a Mon Sep 17 00:00:00 2001
 From: Jeremy Puhlman <jpuhlman@mvista.com>
 Date: Thu, 16 Jan 2020 21:16:10 +0000
 Subject: [PATCH] libcxx: Add compiler runtime library to link step for libcxx
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/libcxx/src/CMakeLists.txt b/libcxx/src/CMakeLists.txt
-index 87b71f7ba334..412374e8820e 100644
+index 496429f3841e..99ca892533b1 100644
 --- a/libcxx/src/CMakeLists.txt
 +++ b/libcxx/src/CMakeLists.txt
-@@ -189,7 +189,7 @@ split_list(LIBCXX_LINK_FLAGS)
+@@ -194,7 +194,7 @@ split_list(LIBCXX_LINK_FLAGS)
  if (LIBCXX_ENABLE_SHARED)
    add_library(cxx_shared SHARED ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_link_libraries(cxx_shared PUBLIC cxx-headers
@@ -26,7 +26,7 @@ index 87b71f7ba334..412374e8820e 100644
    set_target_properties(cxx_shared
      PROPERTIES
        COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
-@@ -266,7 +266,7 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
+@@ -272,7 +272,7 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
  if (LIBCXX_ENABLE_STATIC)
    add_library(cxx_static STATIC ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_link_libraries(cxx_static PUBLIC cxx-headers
