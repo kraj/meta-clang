@@ -1,4 +1,4 @@
-From 2bfe2ac2e914bf1447d0b2dbf8a4fd504e24c5ec Mon Sep 17 00:00:00 2001
+From 343bc6290910a3dd468116d8f08eb6596193011c Mon Sep 17 00:00:00 2001
 From: Dan McGregor <dan.mcgregor@usask.ca>
 Date: Wed, 26 Apr 2017 20:29:41 -0600
 Subject: [PATCH] clang: driver: Check sysroot for ldso path
@@ -14,7 +14,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 16 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 886e0b35ece8..5f40847f77a3 100644
+index c9360fc67165..4b1d6bff7231 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -476,11 +476,19 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {

@@ -1,4 +1,4 @@
-From 98cd2a87a8018e93d91635eef5cb3d60db125973 Mon Sep 17 00:00:00 2001
+From 71efce5c969be5ccc88b6355972e34e5ea7017d3 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 20 Mar 2021 16:09:16 -0700
 Subject: [PATCH] clang: Define / releative gcc installation dir
@@ -14,7 +14,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 2208e3db3f40..813f693db2b5 100644
+index 9103b153d461..4f12262bbf47 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
 @@ -2529,19 +2529,19 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
