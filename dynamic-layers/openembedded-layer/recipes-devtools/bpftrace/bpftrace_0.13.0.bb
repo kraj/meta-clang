@@ -10,6 +10,7 @@ DEPENDS += "bison-native \
             bcc \
             systemtap \
             libcereal \
+            libbpf \
             "
 
 PV .= "+git${SRCREV}"
@@ -17,8 +18,9 @@ RDEPENDS:${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master \
            file://0001-support-clang-upto-version-13.patch \
+           file://0002-ast-Add-missing-standard-header-includes.patch \
            "
-SRCREV = "18aa073ee86260878bc76227a5023171f6c29200"
+SRCREV = "24e1ca2f55591d2d284e0e80b77a22efd790e942"
 
 S = "${WORKDIR}/git"
 
