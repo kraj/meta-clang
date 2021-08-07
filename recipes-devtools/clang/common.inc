@@ -45,9 +45,10 @@ SRC_URI = "\
     file://0033-compiler-rt-Use-uintptr_t-instead-of-_Unwind_Word.patch \
     file://0034-compiler-rt-Do-not-force-thumb-mode-directive.patch \
     file://0035-Drop-the-git-suffix-from-various-version-variables.patch \
+    file://0036-clang-Do-not-use-install-relative-libc-headers.patch \
     file://0034-CMake-Installable-find-modules-for-terminfo-and-libf.patch \
     file://0035-llvm-Do-not-use-standard-search-paths-in-find_librar.patch \
-"
+    "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
 

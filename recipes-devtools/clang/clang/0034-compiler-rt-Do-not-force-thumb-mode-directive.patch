@@ -1,7 +1,7 @@
-From 5acbaaaec447b9083328cef452b4d7d1c542985d Mon Sep 17 00:00:00 2001
+From 971ac96cbedb42f318f86c6b6baccf58b4a03740 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 12 Jun 2021 08:42:36 -0700
-Subject: [PATCH] [compiler-rt] Do not force thumb mode directive
+Subject: [PATCH] compiler-rt: Do not force thumb mode directive
 
 .thumb_func was not switching mode until [1]
 so it did not show up but now that .thumb_func (without argument) is

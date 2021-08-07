@@ -1,4 +1,4 @@
-From e0bae776f771953f8fcf42104379b27de771fa30 Mon Sep 17 00:00:00 2001
+From 289ea0614e9e1febca27761c7e189bd9a4fa144d Mon Sep 17 00:00:00 2001
 From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 Date: Wed, 15 Apr 2020 00:08:39 +0300
 Subject: [PATCH] clang: driver: Add dyld-prefix when checking sysroot for ldso
@@ -18,7 +18,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index af1f7a6e5c48..0b3bbdeab5f3 100644
+index 8c6102f47192..4b39c2bdf14d 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -476,8 +476,8 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
