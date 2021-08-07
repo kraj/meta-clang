@@ -1,4 +1,4 @@
-From 517fd1ccf607e843eb87466e595a312eff302dd2 Mon Sep 17 00:00:00 2001
+From 0888ddfdc7d6c07ebc9edd74207066718fff2f7b Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
@@ -52,10 +52,10 @@ index 5752f4277444..f40ea35faf46 100644
  endmacro()
  
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 7e91b77adcab..6b46f03f0e2c 100644
+index 3e009f5061d3..1d40ad3e7ecc 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
-@@ -1229,7 +1229,6 @@ macro(add_llvm_tool name)
+@@ -1232,7 +1232,6 @@ macro(add_llvm_tool name)
      if( LLVM_BUILD_TOOLS )
        get_target_export_arg(${name} LLVM export_to_llvmexports)
        install(TARGETS ${name}
@@ -63,7 +63,7 @@ index 7e91b77adcab..6b46f03f0e2c 100644
                RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1240,9 +1239,6 @@ macro(add_llvm_tool name)
+@@ -1243,9 +1242,6 @@ macro(add_llvm_tool name)
        endif()
      endif()
    endif()
@@ -73,7 +73,7 @@ index 7e91b77adcab..6b46f03f0e2c 100644
    set_target_properties(${name} PROPERTIES FOLDER "Tools")
  endmacro(add_llvm_tool name)
  
-@@ -1282,7 +1278,6 @@ macro(add_llvm_utility name)
+@@ -1285,7 +1281,6 @@ macro(add_llvm_utility name)
      if (LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS)
        get_target_export_arg(${name} LLVM export_to_llvmexports)
        install(TARGETS ${name}
@@ -81,7 +81,7 @@ index 7e91b77adcab..6b46f03f0e2c 100644
                RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1291,7 +1286,6 @@ macro(add_llvm_utility name)
+@@ -1294,7 +1289,6 @@ macro(add_llvm_utility name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
@@ -90,10 +90,10 @@ index 7e91b77adcab..6b46f03f0e2c 100644
        set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS_BUILDTREE_ONLY ${name})
      endif()
 diff --git a/llvm/cmake/modules/TableGen.cmake b/llvm/cmake/modules/TableGen.cmake
-index 5f07acc1f692..47fe887e083b 100644
+index 5e9e2674405e..3c72df35b308 100644
 --- a/llvm/cmake/modules/TableGen.cmake
 +++ b/llvm/cmake/modules/TableGen.cmake
-@@ -177,14 +177,8 @@ macro(add_tablegen target project)
+@@ -179,14 +179,8 @@ macro(add_tablegen target project)
    endif()
  
    if ((${project} STREQUAL LLVM OR ${project} STREQUAL MLIR) AND NOT LLVM_INSTALL_TOOLCHAIN_ONLY AND LLVM_BUILD_UTILS)
@@ -108,7 +108,7 @@ index 5f07acc1f692..47fe887e083b 100644
              COMPONENT ${target}
              RUNTIME DESTINATION ${LLVM_TOOLS_INSTALL_DIR})
      if(NOT LLVM_ENABLE_IDE)
-@@ -193,5 +187,4 @@ macro(add_tablegen target project)
+@@ -195,5 +189,4 @@ macro(add_tablegen target project)
                                 COMPONENT ${target})
      endif()
    endif()

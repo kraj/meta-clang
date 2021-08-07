@@ -1,4 +1,4 @@
-From 2231e5c5715a97cdc3711a5052e53fd055f16f12 Mon Sep 17 00:00:00 2001
+From ab7a9baf7df82b79d7239bb188a5c814f3083210 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 14 Oct 2020 22:19:57 -0700
 Subject: [PATCH] clang: Use python3 in python scripts
@@ -60,7 +60,7 @@ index 6bd05531333b..9e134123ef44 100755
  #===- clang-tidy-diff.py - ClangTidy Diff Checker -----------*- python -*--===#
  #
 diff --git a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
-index de810230b285..200b7c6eb652 100755
+index acd1ed6979c0..12bd7f9c7dc3 100755
 --- a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
 +++ b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
 @@ -1,4 +1,4 @@

@@ -1,4 +1,4 @@
-From 70009eade931cc3ed7a93bdd8df57f7b9f10c9fc Mon Sep 17 00:00:00 2001
+From d4c741812da36bf80caf294485cbb89e0ff4e656 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 00:33:20 +0000
 Subject: [PATCH] llvm: TargetLibraryInfo: Undefine libc functions if they are
@@ -13,7 +13,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 21 insertions(+)
 
 diff --git a/llvm/include/llvm/Analysis/TargetLibraryInfo.def b/llvm/include/llvm/Analysis/TargetLibraryInfo.def
-index 66fe96419549..fff073360d50 100644
+index ded53617b304..da612e9b4352 100644
 --- a/llvm/include/llvm/Analysis/TargetLibraryInfo.def
 +++ b/llvm/include/llvm/Analysis/TargetLibraryInfo.def
 @@ -815,6 +815,9 @@ TLI_DEFINE_STRING_INTERNAL("fmodl")

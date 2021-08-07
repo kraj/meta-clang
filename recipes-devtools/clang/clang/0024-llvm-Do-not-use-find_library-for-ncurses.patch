@@ -1,4 +1,4 @@
-From 45322a3c5e8948ff4d88f49857489fb35fad9959 Mon Sep 17 00:00:00 2001
+From 9511c156c10538e702bedb06b711ee419d2a530d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 7 Feb 2021 23:58:41 -0800
 Subject: [PATCH] llvm: Do not use find_library for ncurses
@@ -17,7 +17,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/compiler-rt/cmake/config-ix.cmake b/compiler-rt/cmake/config-ix.cmake
-index 39e0a4b662c7..a186ac60986d 100644
+index 6f13acfa2757..0f269835fd17 100644
 --- a/compiler-rt/cmake/config-ix.cmake
 +++ b/compiler-rt/cmake/config-ix.cmake
 @@ -140,7 +140,7 @@ else()
@@ -30,10 +30,10 @@ index 39e0a4b662c7..a186ac60986d 100644
  if(COMPILER_RT_TERMINFO_LIB)
    set(LLVM_ENABLE_TERMINFO 1)
 diff --git a/llvm/cmake/config-ix.cmake b/llvm/cmake/config-ix.cmake
-index d4cbf37d19a2..a320cf97b306 100644
+index dd0aaadb47c7..66a50cf01230 100644
 --- a/llvm/cmake/config-ix.cmake
 +++ b/llvm/cmake/config-ix.cmake
-@@ -175,7 +175,7 @@ if(NOT LLVM_USE_SANITIZER MATCHES "Memory.*")
+@@ -176,7 +176,7 @@ if(NOT LLVM_USE_SANITIZER MATCHES "Memory.*")
        set(MAYBE_REQUIRED)
      endif()
      if(LLVM_ENABLE_TERMINFO)
