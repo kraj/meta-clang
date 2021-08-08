@@ -1,0 +1,60 @@
+patching libbacktrace.mk to build in yocto environment.
+
+Changes include:
+Introduced an output folder which will keep all the outputs from the
+android-tools.
+
+Adding an include file that is setting the common flags.
+Changed the cppflag to include the headers from other components
+of android-tools
+
+Modified LDflags so that the libraries that are coming from other android-tools
+are searched in the output folder.
+
+Modified the build rule so that it outputs the binary to the OUT_DIR
+
+Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
+
+Upstream-Status: Pending
+
+--- git/system/core/debian/libbacktrace.mk	2021-05-21 23:51:55.022408433 +0000
++++ git/system/core/debian/libbacktrace.mk	2021-05-21 23:53:07.487543521 +0000
+@@ -1,5 +1,6 @@
+-
+-include /usr/share/dpkg/architecture.mk
++include ../../rules_yocto.mk
++#pass architecture specific info to makefile
++DEB_HOST_ARCH=${deb_host_arch}
+ 
+ NAME = libbacktrace
+ 
+@@ -88,11 +89,11 @@
+             -Ilibprocinfo/include \
+             -Ilibunwindstack/include \
+             -I/usr/include/android/lzma \
+-            -I/usr/include/android/unwind
++            -I$(OUT_DIR)/usr/include/android/libunwind
+ LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 \
+            -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+-           -L/usr/lib/$(DEB_HOST_MULTIARCH)/android -lunwind \
+-           -L. -lbase -llog -lpthread -l7z
++           -L$(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android -lunwind \
++           -lbase -llog -lpthread -l7z
+ 
+ # -latomic should be the last library specified
+ # https://github.com/android/ndk/issues/589
+@@ -104,11 +105,11 @@
+ endif
+ 
+ build: $(COBJECTS) $(CXXOBJECTS) $(OBJECTS_ASSEMBLY)
+-	$(CXX) $^ -o $(NAME).so.0 $(LDFLAGS)
+-	ln -s $(NAME).so.0 $(NAME).so
++	$(CXX) $^ -o $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so.0 $(LDFLAGS)
++	ln -s $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so.0 $(NAME).so
+ 
+ clean:
+-	$(RM) $(COBJECTS) $(CXXOBJECTS) $(NAME).so*
++	$(RM) $(COBJECTS) $(CXXOBJECTS) $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so*
+ 
+ $(CXXOBJECTS): %.o: %.cpp
+ 	$(CXX) $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
