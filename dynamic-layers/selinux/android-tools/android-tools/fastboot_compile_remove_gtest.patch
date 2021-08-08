@@ -1,0 +1,51 @@
+socket.h: removing dependency of gtest
+
+Removed the dependency of gtest on the build of fastboot binary.
+Fixes below error
+
+In file included from fastboot/fastboot.cpp:70:
+| In file included from fastboot/tcp.h:36:
+| fastboot/socket.h:43:10: fatal error: 'gtest/gtest_prod.h' file not found
+| #include <gtest/gtest_prod.h>
+|          ^~~~~~~~~~~~~~~~~~~~
+| 1 error generated.
+| In file included from fastboot/socket.cpp:29:
+| fastboot/socket.h:43:10: fatal error: 'gtest/gtest_prod.h' file not found
+| #include <gtest/gtest_prod.h>
+|          ^~~~~~~~~~~~~~~~~~~~
+| 1 error generated.
+| In file included from fastboot/tcp.cpp:29:
+| In file included from fastboot/tcp.h:36:
+| fastboot/socket.h:43:10: fatal error: 'gtest/gtest_prod.h' file not found
+| #include <gtest/gtest_prod.h>
+|          ^~~~~~~~~~~~~~~~~~~~
+| 1 error generated.
+| In file included from fastboot/udp.cpp:31:
+| In file included from fastboot/udp.h:34:
+| fastboot/socket.h:43:10: fatal error: 'gtest/gtest_prod.h' file not found
+| #include <gtest/gtest_prod.h>
+|          ^~~~~~~~~~~~~~~~~~~~
+| 1 error generated.
+
+
+Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
+
+--- a/system/core/fastboot/socket.h       2021-04-14 21:14:00.355973915 +0000
++++ b/system/core/fastboot/socket.h   2021-04-14 21:14:21.879680699 +0000
+@@ -40,7 +40,6 @@
+
+ #include <android-base/macros.h>
+ #include <cutils/sockets.h>
+-#include <gtest/gtest_prod.h>
+
+ // Socket interface to be implemented for each platform.
+ class Socket {
+@@ -119,8 +118,6 @@
+             socket_send_buffers_function_ = &socket_send_buffers;
+
+   private:
+-    FRIEND_TEST(SocketTest, TestTcpSendBuffers);
+-    FRIEND_TEST(SocketTest, TestUdpSendBuffers);
+
+     DISALLOW_COPY_AND_ASSIGN(Socket);
+ };
