@@ -295,7 +295,7 @@ FILES:${PN}:remove = "${libdir}/${BPN}/*"
 
 
 INSANE_SKIP:${PN} += "already-stripped"
-#INSANE_SKIP_${PN}-dev += "dev-elf"
+#INSANE_SKIP:${PN}-dev += "dev-elf"
 INSANE_SKIP:${PN}-lldb-python += "dev-so dev-deps"
 INSANE_SKIP:liblldb = "dev-so"
 
