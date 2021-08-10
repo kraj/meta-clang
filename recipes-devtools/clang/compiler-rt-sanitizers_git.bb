@@ -76,7 +76,7 @@ FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}
 INSANE_SKIP:${PN} = "dev-so libdir"
 INSANE_SKIP:${PN}-dbg = "libdir"
 
-#PROVIDES_append_class-target = "\
+#PROVIDES:append:class-target = "\
 #        virtual/${TARGET_PREFIX}compilerlibs \
 #        libgcc \
 #        libgcc-initial \
