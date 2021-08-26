@@ -1,4 +1,4 @@
-From 9511c156c10538e702bedb06b711ee419d2a530d Mon Sep 17 00:00:00 2001
+From 46cf43ff4f206adaeeb7022c598bd7a5eef2fd86 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 7 Feb 2021 23:58:41 -0800
 Subject: [PATCH] llvm: Do not use find_library for ncurses
