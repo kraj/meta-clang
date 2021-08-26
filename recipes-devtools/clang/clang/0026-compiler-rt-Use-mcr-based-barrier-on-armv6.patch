@@ -1,4 +1,4 @@
-From 60c000d2bd8045f818359983b45996db1dbcccac Mon Sep 17 00:00:00 2001
+From f55aaf7648c036e0206da45254ff9698c4c5e12c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 24 Mar 2021 00:32:09 -0700
 Subject: [PATCH] compiler-rt: Use mcr based barrier on armv6
