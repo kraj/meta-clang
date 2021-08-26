@@ -1,4 +1,4 @@
-From 7268d68a37b65365a5e864c774004c18fc314a78 Mon Sep 17 00:00:00 2001
+From 7370800ae29490b222cf35d6c1fb294d1f280be5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 10 May 2016 02:00:11 -0700
 Subject: [PATCH] clang: musl/ppc does not support 128-bit long double
