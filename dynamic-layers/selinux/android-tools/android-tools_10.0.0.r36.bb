@@ -82,7 +82,7 @@ DEPENDS += "\
     clang-cross-${TARGET_ARCH} \
 "
 
-SYSTEMD_SERVICE_${PN} = "android-tools-adbd.service"
+SYSTEMD_SERVICE:${PN} = "android-tools-adbd.service"
 
 # Find libbsd headers during native builds
 CC:append_class-native = " -I${STAGING_INCDIR}"
@@ -190,7 +190,7 @@ PACKAGES += "${PN}-fstools"
 
 RDEPENDS_${BPN} = "${BPN}-conf p7zip"
 
-FILES_${PN}-fstools = "\
+FILES:${PN}-fstools = "\
     ${bindir}/ext2simg \
     ${bindir}/ext4fixup \
     ${bindir}/img2simg \
