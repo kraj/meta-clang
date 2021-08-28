@@ -1,0 +1,47 @@
+Backported from https://reviews.llvm.org/D108868
+
+--- a/llvm/runtimes/CMakeLists.txt
++++ b/llvm/runtimes/CMakeLists.txt
+@@ -350,9 +350,14 @@ if(runtimes)
+   # Create a runtimes target that uses this file as its top-level CMake file.
+   # The runtimes target is a configuration of all the runtime libraries
+   # together in a single CMake invocaiton.
++  set(extra_deps "")
+   if("openmp" IN_LIST LLVM_ENABLE_RUNTIMES)
+-    message(STATUS "Adding dependencies opt llvm-link")
+-    set(extra_deps opt llvm-link)
++    if(TARGET opt)
++      list(APPEND extra_deps opt)
++    endif()
++    if(TARGET llvm-link)
++      list(APPEND extra_deps llvm-link)
++    endif()
+   endif()
+   if(NOT LLVM_RUNTIME_TARGETS)
+     runtime_default_target(
+--- a/openmp/libomptarget/deviceRTLs/amdgcn/CMakeLists.txt
++++ b/openmp/libomptarget/deviceRTLs/amdgcn/CMakeLists.txt
+@@ -149,6 +149,14 @@ endmacro()
+ 
+ set(libname "omptarget-amdgcn")
+ 
++set(toolchain_deps "")
++if(TARGET llvm-link)
++  list(APPEND toolchain_deps llvm-link)
++endif()
++if(TARGET opt)
++  list(APPEND toolchain_deps opt)
++endif()
++
+ foreach(mcpu ${mcpus})
+   set(bc_files)
+   add_cuda_bc_library(${cuda_sources})
+@@ -157,7 +165,7 @@ foreach(mcpu ${mcpus})
+   add_custom_command(
+     OUTPUT ${bc_libname}
+     COMMAND ${LINK_TOOL} ${bc_files} | ${OPT_TOOL} --always-inline -o ${OUTPUTDIR}/${bc_libname}
+-    DEPENDS ${bc_files} llvm-link opt)
++    DEPENDS ${bc_files} ${toolchain_deps})
+ 
+   add_custom_target(lib${libname}-${mcpu} ALL DEPENDS ${bc_libname})
+ 
