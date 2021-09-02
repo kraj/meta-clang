@@ -1,12 +1,14 @@
 LICENSE = "NCSA"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=47e311aa9caedd1b3abf098bd7814d1d"
 
-BRANCH = "master"
+BRANCH = "llvm_release_130"
 SRC_URI = "git://github.com/KhronosGroup/SPIRV-LLVM-Translator;protocol=https;branch=${BRANCH} \
+            git://github.com/KhronosGroup/SPIRV-Headers.git;protocol=https;destsuffix=git/SPIRV-Headers;name=headers \
           "
 
 PV = "13.0.0"
-SRCREV = "ddb5c962f0a11dc3dcc03e1e1840d2d826b95af9"
+SRCREV = "7d3a83f6e81be9e13254e73edd4272fa96ed0d44"
+SRCREV_headers = "ddf3230c14c71e81fc0eae9b781cc4bcc2d1f0f5"
 
 S = "${WORKDIR}/git"
 
@@ -27,6 +29,7 @@ EXTRA_OECMAKE = "\
         -DLLVM_INCLUDE_TESTS=ON \
         -Wno-dev \
         -DCCACHE_ALLOWED=FALSE \
+        -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=${S}/SPIRV-Headers \
 "
 
 do_compile:append() {
