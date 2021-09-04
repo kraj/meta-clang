@@ -18,9 +18,8 @@ RDEPENDS:${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master \
            file://0001-support-clang-upto-version-13.patch \
-           file://0002-ast-Add-missing-standard-header-includes.patch \
            "
-SRCREV = "24e1ca2f55591d2d284e0e80b77a22efd790e942"
+SRCREV = "283fe526dfc262fdecddec4beb921835ea0cc89e"
 
 S = "${WORKDIR}/git"
 
