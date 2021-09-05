@@ -18,6 +18,7 @@ RDEPENDS:${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master \
            file://0001-support-clang-upto-version-13.patch \
+           file://0002-orc-Fix-build-with-clang-13.patch \
            "
 SRCREV = "283fe526dfc262fdecddec4beb921835ea0cc89e"
 
