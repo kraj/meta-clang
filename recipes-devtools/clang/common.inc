@@ -46,8 +46,6 @@ SRC_URI = "\
     file://0034-compiler-rt-Do-not-force-thumb-mode-directive.patch \
     file://0035-Drop-the-git-suffix-from-various-version-variables.patch \
     file://0036-clang-Do-not-use-install-relative-libc-headers.patch \
-    file://D108404.diff \
-    file://D108868.diff \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
