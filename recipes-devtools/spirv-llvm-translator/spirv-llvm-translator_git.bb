@@ -10,6 +10,8 @@ PV = "13.0.0"
 SRCREV = "7d3a83f6e81be9e13254e73edd4272fa96ed0d44"
 SRCREV_headers = "ddf3230c14c71e81fc0eae9b781cc4bcc2d1f0f5"
 
+SRCREV_FORMAT = "default_headers"
+
 S = "${WORKDIR}/git"
 
 DEPENDS = "spirv-tools clang"
