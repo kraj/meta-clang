@@ -20,7 +20,7 @@ SRC_URI = "git://github.com/iovisor/bpftrace;branch=master \
            file://0001-support-clang-upto-version-13.patch \
            file://0002-orc-Fix-build-with-clang-13.patch \
            "
-SRCREV = "283fe526dfc262fdecddec4beb921835ea0cc89e"
+SRCREV = "9b929db174be11888f60d16b1b090e4603bc3a51"
 
 S = "${WORKDIR}/git"
 
