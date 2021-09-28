@@ -305,6 +305,8 @@ SSTATE_SCAN_FILES:remove = "*-config"
 TOOLCHAIN = "clang"
 TOOLCHAIN:class-native = "gcc"
 TOOLCHAIN:class-nativesdk = "clang"
+COMPILER_RT:class-nativesdk:toolchain-clang:runtime-llvm = "-rtlib=libgcc --unwindlib=libgcc"
+LIBCPLUSPLUS:class-nativesdk:toolchain-clang:runtime-llvm = "-stdlib=libstdc++"
 
 SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
 
