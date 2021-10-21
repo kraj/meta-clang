@@ -1,0 +1,100 @@
+From aafdcb50517464cc915da3108e1d7422610a4fde Mon Sep 17 00:00:00 2001
+From: David Abdurachmanov <david.abdurachmanov@sifive.com>
+Date: Wed, 20 Oct 2021 17:30:36 -0700
+Subject: [PATCH 37/37] clang: Fix how driver finds GCC installation path on
+ OpenEmbedded
+
+Fix how Clang Driver finds GCC installation path on OpenEmbedded
+
+- For RISCV (riscv{32,64}) we define new two multi-lib options without any
+  subdirectories (e.g., lib32/ilp32d or lib64/lp64d). OpenEmbedded GCC
+  builds don't use them.
+- Modify how Clang Driver finds GCC installation path. This is important
+  because GCC files on OpenEmbedded are in two different directories:
+   (1) /usr/bin/../lib/gcc/riscv64-oe-linux/9.2.0
+   (2) /usr/lib/riscv64-oe-linux/9.2.0
+
+Clang Driver will check (1) first. The directory exist, but will produce
+no valid multi-libs and there will be no multi-lib selected. (2) contains
+actual GCC run-time objects/libraries, but because the path has exact
+same GCC version (9.2.0) it will be skipped.
+
+We modify the approach by allowing to check other directories with the same
+GCC version. We also avoid picking GCC installation path if it results in
+an empty multi-lib list.
+
+Upstream-Status: Pending
+Signed-off-by: David Abdurachmanov <david.abdurachmanov@sifive.com>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/Gnu.cpp | 39 +++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 11 deletions(-)
+
+diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
+index 553cb985737f..355c7798a7aa 100644
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -1652,18 +1652,29 @@ static void findRISCVMultilibs(const Driver &D,
+     return findRISCVBareMetalMultilibs(D, TargetTriple, Path, Args, Result);
+ 
+   FilterNonExistent NonExistent(Path, "/crtbegin.o", D.getVFS());
+-  Multilib Ilp32 = makeMultilib("lib32/ilp32").flag("+m32").flag("+mabi=ilp32");
+-  Multilib Ilp32f =
++  MultilibSet RISCVMultilibs;
++
++  if (TargetTriple.getVendor() == llvm::Triple::OpenEmbedded) {
++    Multilib OpenEmbeddedIlp32d = makeMultilib("").flag("+m32").flag("+mabi=ilp32d");
++    Multilib OpenEmbeddedLp64d = makeMultilib("").flag("+m64").flag("+mabi=lp64d");
++    RISCVMultilibs =
++        MultilibSet()
++            .Either({OpenEmbeddedIlp32d, OpenEmbeddedLp64d})
++            .FilterOut(NonExistent);
++  } else {
++    Multilib Ilp32 = makeMultilib("lib32/ilp32").flag("+m32").flag("+mabi=ilp32");
++    Multilib Ilp32f =
+       makeMultilib("lib32/ilp32f").flag("+m32").flag("+mabi=ilp32f");
+-  Multilib Ilp32d =
++    Multilib Ilp32d =
+       makeMultilib("lib32/ilp32d").flag("+m32").flag("+mabi=ilp32d");
+-  Multilib Lp64 = makeMultilib("lib64/lp64").flag("+m64").flag("+mabi=lp64");
+-  Multilib Lp64f = makeMultilib("lib64/lp64f").flag("+m64").flag("+mabi=lp64f");
+-  Multilib Lp64d = makeMultilib("lib64/lp64d").flag("+m64").flag("+mabi=lp64d");
+-  MultilibSet RISCVMultilibs =
+-      MultilibSet()
+-          .Either({Ilp32, Ilp32f, Ilp32d, Lp64, Lp64f, Lp64d})
+-          .FilterOut(NonExistent);
++    Multilib Lp64 = makeMultilib("lib64/lp64").flag("+m64").flag("+mabi=lp64");
++    Multilib Lp64f = makeMultilib("lib64/lp64f").flag("+m64").flag("+mabi=lp64f");
++    Multilib Lp64d = makeMultilib("lib64/lp64d").flag("+m64").flag("+mabi=lp64d");
++    RISCVMultilibs =
++        MultilibSet()
++            .Either({Ilp32, Ilp32f, Ilp32d, Lp64, Lp64f, Lp64d})
++            .FilterOut(NonExistent);
++  }
+ 
+   Multilib::flags_list Flags;
+   bool IsRV64 = TargetTriple.getArch() == llvm::Triple::riscv64;
+@@ -2561,13 +2572,19 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+           continue; // Saw this path before; no need to look at it again.
+       if (CandidateVersion.isOlderThan(4, 1, 1))
+         continue;
+-      if (CandidateVersion <= Version)
++      if (CandidateVersion < Version)
+         continue;
+ 
+       if (!ScanGCCForMultilibs(TargetTriple, Args, LI->path(),
+                                NeedsBiarchSuffix))
+         continue;
+ 
++      // We might have found existing directory with GCCVersion, but it
++      // might not have GCC libraries we are looking for (i.e. return an
++      // empty Mulilibs)
++      if (Multilibs.size() == 0)
++        continue;
++
+       Version = CandidateVersion;
+       GCCTriple.setTriple(CandidateTriple);
+       // FIXME: We hack together the directory name here instead of
+-- 
+2.33.1
+
