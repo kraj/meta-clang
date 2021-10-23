@@ -1,7 +1,5 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI:append:toolchain-clang = " file://clang13.patch "
-
 LDFLAGS:append:toolchain-clang = " -latomic -lm"
 DEPENDS:append:toolchain-clang = " libatomic-ops"
 
