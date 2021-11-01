@@ -35,6 +35,7 @@ SRC_URI = "\
     file://0025-clang-driver-Add-dyld-prefix-when-checking-sysroot-f.patch \
     file://0026-OpenCL-Fix-support-for-cl_khr_mipmap_image_writes.patch \
     file://0027-InstCombine-visitBitCast-do-not-crash-on-weird-bitca.patch;patchdir=llvm \
+    file://0028-nfc-Fix-missing-include.patch \
 "
 
 # Fallback to no-PIE if not set
