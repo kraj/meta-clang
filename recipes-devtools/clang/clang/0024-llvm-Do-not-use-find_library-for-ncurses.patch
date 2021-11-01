@@ -1,4 +1,4 @@
-From 46cf43ff4f206adaeeb7022c598bd7a5eef2fd86 Mon Sep 17 00:00:00 2001
+From 5d9680264c351bc98b1ae385f129deef48ed12a1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 7 Feb 2021 23:58:41 -0800
 Subject: [PATCH] llvm: Do not use find_library for ncurses
@@ -17,10 +17,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/compiler-rt/cmake/config-ix.cmake b/compiler-rt/cmake/config-ix.cmake
-index 6f13acfa2757..0f269835fd17 100644
+index 39b9120f00ad..8ac28303b8ad 100644
 --- a/compiler-rt/cmake/config-ix.cmake
 +++ b/compiler-rt/cmake/config-ix.cmake
-@@ -140,7 +140,7 @@ else()
+@@ -141,7 +141,7 @@ else()
    set(MAYBE_REQUIRED)
  endif()
  if(LLVM_ENABLE_TERMINFO)

@@ -1,4 +1,4 @@
-From eda78e4ad137cd8e27f3a22faa22dc43f408e000 Mon Sep 17 00:00:00 2001
+From 4b2b4a51abcc347176f8c1c6bdfa28e1a2c9e57b Mon Sep 17 00:00:00 2001
 From: Anuj Mittal <anuj.mittal@intel.com>
 Date: Fri, 3 Apr 2020 15:10:37 +0800
 Subject: [PATCH] fix path to libffi

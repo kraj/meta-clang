@@ -1,4 +1,4 @@
-From 2c3bdfd798dbf7de310252d3af93162784affa49 Mon Sep 17 00:00:00 2001
+From 3bb1761c3685792ccbcb96a9106dab6595ea11d2 Mon Sep 17 00:00:00 2001
 From: Jim Broadus <jbroadus@xevo.com>
 Date: Thu, 26 Mar 2020 16:05:53 -0700
 Subject: [PATCH] clang: Fix resource dir location for cross toolchains
@@ -19,7 +19,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/Driver.cpp b/clang/lib/Driver/Driver.cpp
-index 5c323cb6ea23..c3ae820c06ab 100644
+index 94a7553e273b..5b353e6670f0 100644
 --- a/clang/lib/Driver/Driver.cpp
 +++ b/clang/lib/Driver/Driver.cpp
 @@ -122,7 +122,13 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
