@@ -1,4 +1,4 @@
-From 1634a9346565ff133cdc74141cfa6c2460ec86a3 Mon Sep 17 00:00:00 2001
+From f033f7183eb509f3b99d8f197eb5d5159f961c0b Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 31 Jul 2019 22:51:39 -0700
 Subject: [PATCH] clang: Add -lpthread and -ldl along with -lunwind for static
@@ -20,10 +20,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-index 83cab3ac00cb..367e8603ff70 100644
+index 0ffe95795381..358eb98cf528 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-@@ -1449,6 +1449,8 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
+@@ -1450,6 +1450,8 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
          CmdArgs.push_back("-lunwind");
      } else if (LGT == LibGccType::StaticLibGcc) {
        CmdArgs.push_back("-l:libunwind.a");
