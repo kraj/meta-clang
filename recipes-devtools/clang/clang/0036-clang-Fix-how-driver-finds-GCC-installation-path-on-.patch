@@ -1,7 +1,7 @@
-From aafdcb50517464cc915da3108e1d7422610a4fde Mon Sep 17 00:00:00 2001
+From 46b27761196036bc0d076bfe31636bdb43f4df6b Mon Sep 17 00:00:00 2001
 From: David Abdurachmanov <david.abdurachmanov@sifive.com>
 Date: Wed, 20 Oct 2021 17:30:36 -0700
-Subject: [PATCH 37/37] clang: Fix how driver finds GCC installation path on
+Subject: [PATCH] clang: Fix how driver finds GCC installation path on
  OpenEmbedded
 
 Fix how Clang Driver finds GCC installation path on OpenEmbedded
@@ -95,6 +95,3 @@ index 553cb985737f..355c7798a7aa 100644
        Version = CandidateVersion;
        GCCTriple.setTriple(CandidateTriple);
        // FIXME: We hack together the directory name here instead of
--- 
-2.33.1
-

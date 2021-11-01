@@ -1,4 +1,4 @@
-From 705f0ac6e987b1c9776012fd933a94b61a25eacd Mon Sep 17 00:00:00 2001
+From 2d6e13dbd89ab50125e86ef8f240e50d0c8dd576 Mon Sep 17 00:00:00 2001
 From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 Date: Wed, 15 Apr 2020 00:08:39 +0300
 Subject: [PATCH] clang: driver: Add dyld-prefix when checking sysroot for ldso
