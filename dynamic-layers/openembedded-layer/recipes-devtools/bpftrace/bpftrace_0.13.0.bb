@@ -16,7 +16,7 @@ DEPENDS += "bison-native \
 PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
 
-SRC_URI = "git://github.com/iovisor/bpftrace;branch=master \
+SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://0001-support-clang-upto-version-13.patch \
            file://0002-orc-Fix-build-with-clang-13.patch \
            "
