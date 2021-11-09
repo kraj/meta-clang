@@ -4,9 +4,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
 SRC_URI = "git://github.com/CastXML/CastXML;protocol=https;branch=master"
 
-# 0.3.6 is the release for LLVM/Clang v11.0.0
-SRCREV = "902ac163f0291fcfc459f58691481e88c9f91dea"
-PV = "0.3.6"
+# 0.4.4 is the release for LLVM/Clang v13.0.0
+SRCREV = "2095c10a25610a8ccf6c7ef819440bdac6b13c59"
+PV = "0.4.4"
 
 S = "${WORKDIR}/git"
 
