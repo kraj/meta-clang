@@ -4,7 +4,7 @@
 
 This layer provides [clang/llvm](http://clang.llvm.org/) as alternative to system
 C/C++ compiler for OpenEmbedded/Yocto Project based distributions. This can cohabit
-with GNU Compiler and can be used for specific recipes or full system Compiler
+with GNU compiler and can be used for specific recipes or full system compiler.
 
 # Getting Started
 
@@ -49,30 +49,30 @@ you can select clang per recipe too by writing bbappends for them containing
 TOOLCHAIN = "clang"
 ```
 also look at `conf/nonclangable.conf` for list of recipes which do not yet fully
-build with clang
+build with clang.
 
 # Default Compiler Runtime
 
 Default is to use GNU runtime `RUNTIME = "gnu"` which consists of libgcc, libstdc++ to provide C/C++
-runtime support. However its possible to use LLVM runtime to replace it where
+runtime support. However it's possible to use LLVM runtime to replace it where
 compile-rt, llvm libunwind, and libc++ are used to provide C/C++ runtime, while
 GNU runtime works with both GCC and Clang, LLVM runtime is only tested with Clang
-compiler, Switching to use LLVM runtime is done via a config metadata knob
+compiler, switching to use LLVM runtime is done via a config metadata knob
 
 ```shell
 RUNTIME = "llvm"
 ```
 
-RUNTIME variable influences individual runtime elements and can be set explcitly as well
-e.g. `LIBCPLUSPLUS` `COMPILER_RT` and `UNWINDLIB`
+RUNTIME variable influences individual runtime elements and can be set explicitly as well
+e.g. `LIBCPLUSPLUS` `COMPILER_RT` and `UNWINDLIB`.
 
 Please note that this will still use crt files from GNU compiler always, while llvm now
-do provide crt files, they have not been yet intergrated into toolchain
+do provide crt files, they have not been yet integrated into the toolchain.
 
 # Default C++ Standard Library Switch
 
-Using RUNTIME bariable will select which C++ runtime is used, however it can be overridden
-if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `RUNTIME` is
+Using RUNTIME variable will select which C++ runtime is used, however it can be overridden
+if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `RUNTIME` are
 best fit. e.g. below we select LLVM C++ as default C++ runtime.
 
 ```shell
@@ -85,14 +85,14 @@ You can select libstdc++ per package too by writing bbappends for them containin
 ```shell
 LIBCPLUSPLUS:toolchain-clang:pn-<recipe> = "-stdlibc=libc++"
 ```
-Defaults are chosen to be GNU for maximum compatibility with existing GNU systems. Its always
+Defaults are chosen to be GNU for maximum compatibility with existing GNU systems. It's always
 good to use single runtime on a system, mixing runtimes can cause complications during
-compilation as well as runtime. However, its upto distribution policies to decide which runtime
+compilation as well as runtime. However, it's up to distribution policies to decide which runtime
 to use.
 
 # Adding clang in generated SDK toolchain
 
-clang based cross compiler is not included into the generated SDK using `bitbake meta-toolchain` or
+Clang based cross compiler is not included into the generated SDK using `bitbake meta-toolchain` or
 `bitbake -cpopulate_sdk <image>` if clang is expected to be part of SDK, add `CLANGSDK = "1"`
 in `local.conf`
 
@@ -124,7 +124,7 @@ TOOLCHAIN:pn-<recipe> = "gcc"
 
 and OE will start using gcc to cross compile that recipe.
 
-if a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
+If a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
 
 ```shell
 CXX:remove:pn-<recipe>:toolchain-clang = " -stdlib=libc++ "
@@ -179,6 +179,6 @@ revision: HEAD
 # Contributing
 
 You are encouraged to follow Github Pull request workflow
-to share changes and following commit message guidelines are recommended [OE patch guidelines](https://www.openembedded.org/wiki/Commit_Patch_Message_Guidelines)
+to share changes and following commit message guidelines are recommended: [OE patch guidelines](https://www.openembedded.org/wiki/Commit_Patch_Message_Guidelines).
 
 Layer Maintainer: [Khem Raj](<mailto:raj.khem@gmail.com>)
