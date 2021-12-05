@@ -25,6 +25,8 @@ UNWINDLIB:armeb = "--unwindlib=libgcc"
 UNWINDLIB_libc-klibc = "--unwindlib=libgcc"
 
 LIBCPLUSPLUS ??= ""
+LIBCPLUSPLUS:powerpc = "-stdlib=libstdc++"
+LIBCPLUSPLUS:armv5 = "-stdlib=libstdc++"
 
 CXXFLAGS:append:toolchain-clang = " ${LIBCPLUSPLUS}"
 LDFLAGS:append:toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
@@ -73,6 +75,8 @@ TOOLCHAIN ??= "gcc"
 RUNTIME ??= "gnu"
 #RUNTIME:toolchain-gcc = "gnu"
 RUNTIME:armeb = "gnu"
+RUNTIME:armv5 = "gnu"
+RUNTIME:powerpc = "gnu"
 
 TOOLCHAIN:class-native = "gcc"
 TOOLCHAIN:class-nativesdk = "gcc"
