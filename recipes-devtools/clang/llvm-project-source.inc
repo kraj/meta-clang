@@ -22,6 +22,10 @@ PACKAGES = ""
 # space separated list of additional distro vendor values we want to support e.g.
 # "yoe webos" or "-yoe -webos" '-' is optional
 CLANG_EXTRA_OE_VENDORS ?= "${TARGET_VENDOR} ${SDK_VENDOR}"
+# Extra OE DISTRO that want to support as build host. space separated list of additional distro.
+# ":" separated the ID in "/etc/os-release" and the triple for finding gcc on this OE DISTRO.
+# eg: "poky:poky wrlinux:wrs"
+CLANG_EXTRA_OE_DISTRO ?= "poky:poky"
 
 python add_distro_vendor() {
     import subprocess
@@ -50,6 +54,33 @@ python add_distro_vendor() {
     cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_TRIPLES#%s#g' ${S}/clang/lib/Driver/ToolChains/Gnu.cpp" % (triple))
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
     cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_CASES#%s#g' -i ${S}/llvm/lib/Support/Triple.cpp" % (case))
+    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+
+
+    case = ""
+    triple = ""
+    name = ""
+    check = ""
+    oe_names = ""
+    distros = d.getVar('CLANG_EXTRA_OE_DISTRO')
+    for distro in distros.split():
+        distro_id = distro.split(":")[0].replace('-','_')
+        distro_triple = distro.split(":")[1]
+        case += '\\n    .Case("' + distro_id + '", Distro::' + distro_id.upper() + ')'
+        triple += '\\n   if (Distro.Is' + distro_id.upper() + '())\\n     return "x86_64-' + distro_triple + '-linux",'
+        name += '\\n    '+ distro_id.upper() + ','
+        check += '\\nbool Is' + distro_id.upper() + '() const { return DistroVal == ' + distro_id.upper() + '; }'
+        oe_names +=  distro_id.upper() + ' ||'
+
+    check += '\\nbool IsOpenEmbedded() const { return DistroVal == ' + oe_names[0:-3] + '; }'
+
+    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_DISTRO_NAME#%s#g' ${S}/clang/include/clang/Driver/Distro.h" % (name))
+    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_DISTRO_CHECK#%s#g' ${S}/clang/include/clang/Driver/Distro.h" % (check))
+    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_DISTRO_TRIPLES#%s#g' ${S}/clang/lib/Driver/ToolChains/Linux.cpp" % (triple))
+    subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
+    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_DISTRO_CASES#%s#g' -i ${S}/clang/lib/Driver/Distro.cpp" % (case))
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 
