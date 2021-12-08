@@ -7,6 +7,7 @@ inherit cmake python3native manpages
 
 DEPENDS += "bison-native \
             flex-native \
+            flex \
             elfutils \
             ${LUAJIT} \
             clang \
