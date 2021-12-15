@@ -206,7 +206,8 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
         ln -rs ${D}${nonarch_libdir}/clang ${D}${libdir}/clang
         rmdir --ignore-fail-on-non-empty ${D}${libdir}
     fi
-    for t in clang clang++ llvm-nm llvm-ar llvm-as llvm-ranlib llvm-strip; do
+    for t in clang clang++ llvm-nm llvm-ar llvm-as llvm-ranlib llvm-strip llvm-objcopy llvm-objdump llvm-readelf \
+        llvm-addr2line llvm-dwp llvm-size llvm-strings llvm-cov; do
         ln -sf $t ${D}${bindir}/${TARGET_PREFIX}$t
     done
 }
