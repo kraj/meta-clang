@@ -113,3 +113,39 @@ ALLOW_EMPTY:${PN}-dev = "1"
 
 TOOLCHAIN:forcevariable = "clang"
 SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
+
+python() {
+    if d.getVar('PN') != "compiler-rt-native":
+        return
+
+    is_centos7=False
+    id = ""
+    version_id = ""
+    with open("/etc/os-release", 'r') as f:
+         lines=f.readlines()
+         for line in lines:
+             if line.startswith('ID='):
+                 id = line.split('=')[1].strip()
+             elif line.startswith('VERSION_ID='):
+                 version_id = line.split('=')[1].strip()
+             if id != "" and version_id != "":
+                 break
+             else:
+                 continue
+    if id == '"centos"' and version_id == '"7"':
+        is_centos7=True
+
+    if not is_centos7:
+        return
+
+    import glob
+    import re
+    is_devtoolset_installed=False
+    devtoolsets = glob.glob("/opt/rh/devtoolset-*")
+    for devtoolset in devtoolsets:
+        if re.match(r"/opt/rh/devtoolset-(7|8|9|10)$", devtoolset):
+            is_devtoolset_installed=True
+
+    if not is_devtoolset_installed:
+        bb.fatal("compilert-native require at least verson 5.1 for libstdc++, please install devtoolset-[7+]-gcc-c++, see https://centos.pkgs.org/7/centos-sclo-rh-x86_64/")
+}
