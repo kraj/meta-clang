@@ -141,6 +141,7 @@ EXTRA_OECMAKE += "-DLLVM_ENABLE_ASSERTIONS=OFF \
 
 EXTRA_OECMAKE:append:class-native = "\
                   -DPYTHON_EXECUTABLE='${PYTHON}' \
+                  -DENV_GCC_INSTALL_PREFIX=OECORE_HOST_GCC_INSTALL_PREFIX \
 "
 EXTRA_OECMAKE:append:class-nativesdk = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
