@@ -1,0 +1,80 @@
+From 07cb445f09cd75293c19006526e5a77d83ea6c68 Mon Sep 17 00:00:00 2001
+From: Hongxu Jia <hongxu.jia@windriver.com>
+Date: Fri, 24 Dec 2021 10:33:07 +0800
+Subject: [PATCH 3/3] support to search Yocto include and library dir
+
+Since [support to compile with out of system-wide GCC] applied,
+in order to build compiler-rt-native on CentOS7 which has an
+outdated GCC, install a buildtools-extended to provide newer
+Yocto GCC.
+
+In this situation, Clang also needs to search include and library
+in buildtools-extended sysroot. If ENV_GCC_INSTALL_PREFIX is set,
+add Yocto specific include and library dir to Clang
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hongxu Jia <hongxu.jia@windriver.com>
+---
+ clang/lib/Driver/ToolChains/Clang.cpp |  9 +++++++++
+ clang/lib/Driver/ToolChains/Linux.cpp | 10 ++++++++++
+ 2 files changed, 19 insertions(+)
+
+diff --git a/clang/lib/Driver/ToolChains/Clang.cpp b/clang/lib/Driver/ToolChains/Clang.cpp
+index 58ae08a3879c..5572a51e556c 100644
+--- a/clang/lib/Driver/ToolChains/Clang.cpp
++++ b/clang/lib/Driver/ToolChains/Clang.cpp
+@@ -45,6 +45,8 @@
+ #include "llvm/Support/Process.h"
+ #include "llvm/Support/TargetParser.h"
+ #include "llvm/Support/YAMLParser.h"
++#include "clang/Config/config.h" // ENV_GCC_INSTALL_PREFIX
++#include <cstdlib> // ::getenv
+ 
+ using namespace clang::driver;
+ using namespace clang::driver::tools;
+@@ -1418,6 +1420,13 @@ void Clang::AddPreprocessingOptions(Compilation &C, const JobAction &JA,
+         });
+   }
+ 
++  if (const char *GccInstallPrefix = ::getenv(ENV_GCC_INSTALL_PREFIX)) {
++    if (!StringRef(GccInstallPrefix).empty()) {
++      CmdArgs.push_back("-internal-externc-isystem");
++      CmdArgs.push_back(Args.MakeArgString(StringRef(GccInstallPrefix) + "/usr/include"));
++    }
++  }
++
+   // Add system include arguments for all targets but IAMCU.
+   if (!IsIAMCU)
+     forAllAssociatedToolChains(C, JA, getToolChain(),
+diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
+index c9360fc67165..a4ac688ba854 100644
+--- a/clang/lib/Driver/ToolChains/Linux.cpp
++++ b/clang/lib/Driver/ToolChains/Linux.cpp
+@@ -23,6 +23,7 @@
+ #include "llvm/Support/ScopedPrinter.h"
+ #include "llvm/Support/VirtualFileSystem.h"
+ #include <system_error>
++#include <cstdlib> // ::getenv
+ 
+ using namespace clang::driver;
+ using namespace clang::driver::toolchains;
+@@ -308,6 +309,15 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
+ 
+   addPathIfExists(D, SysRoot + "/lib", Paths);
+   addPathIfExists(D, SysRoot + "/usr/lib", Paths);
++
++  if (const char *GccInstallPrefix = ::getenv(ENV_GCC_INSTALL_PREFIX)) {
++    if (!StringRef(GccInstallPrefix).empty()) {
++      addPathIfExists(D, StringRef(GccInstallPrefix) + "/usr/lib64", Paths);
++      addPathIfExists(D, StringRef(GccInstallPrefix) + "/usr/lib", Paths);
++      addPathIfExists(D, StringRef(GccInstallPrefix) + "/lib64", Paths);
++      addPathIfExists(D, StringRef(GccInstallPrefix) + "/lib", Paths);
++    }
++  }
+ }
+ 
+ ToolChain::RuntimeLibType Linux::GetDefaultRuntimeLibType() const {
+-- 
+2.27.0
+
