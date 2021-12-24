@@ -1,0 +1,91 @@
+From f800b258a0ba40b5253077702fa6befce4b1b4c0 Mon Sep 17 00:00:00 2001
+From: Hongxu Jia <hongxu.jia@windriver.com>
+Date: Fri, 24 Dec 2021 10:07:52 +0800
+Subject: [PATCH 1/3] support to compile with out of system-wide GCC
+
+If your system-wide GCC installation is too old (such as gcc 4.8 on CentOS7)
+to build LLVM and you would like to use a newer GCC, set the CMake variable
+ENV_GCC_INSTALL_PREFIX to specify an environment name, then it will inform
+clang where the GCC installation
+
+It refers GCC_INSTALL_PREFIX [1], the differ is GCC_INSTALL_PREFIX is set at
+build time which could not be changed; ENV_GCC_INSTALL_PREFIX specifies an
+environment name at build time, and Clang get value by the name of the
+environment. It allows user to modify it by environment assignment
+
+[1] https://openmp.llvm.org//SupportAndFAQ.html#q-how-to-build-an-openmp-offload-capable-compiler-with-an-outdated-host-compiler
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hongxu Jia <hongxu.jia@windriver.com>
+---
+ clang/CMakeLists.txt                      |  2 ++
+ clang/include/clang/Config/config.h.cmake |  3 +++
+ clang/lib/Driver/ToolChains/Gnu.cpp       | 13 +++++++++++--
+ 3 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/clang/CMakeLists.txt b/clang/CMakeLists.txt
+index 95cdbd8f6663..cbaceab51807 100644
+--- a/clang/CMakeLists.txt
++++ b/clang/CMakeLists.txt
+@@ -220,6 +220,8 @@ set(CLANG_RESOURCE_DIR "" CACHE STRING
+ set(C_INCLUDE_DIRS "" CACHE STRING
+   "Colon separated list of directories clang will search for headers.")
+ 
++set(ENV_GCC_INSTALL_PREFIX "" CACHE STRING "Name of Environment to have directory where gcc is installed." )
++
+ set(GCC_INSTALL_PREFIX "" CACHE PATH "Directory where gcc is installed." )
+ set(DEFAULT_SYSROOT "" CACHE STRING
+   "Default <path> to all compiler invocations for --sysroot=<path>." )
+diff --git a/clang/include/clang/Config/config.h.cmake b/clang/include/clang/Config/config.h.cmake
+index a240862c5289..0bf479741dce 100644
+--- a/clang/include/clang/Config/config.h.cmake
++++ b/clang/include/clang/Config/config.h.cmake
+@@ -57,6 +57,9 @@
+ /* Directory where gcc is installed. */
+ #define GCC_INSTALL_PREFIX "${GCC_INSTALL_PREFIX}"
+ 
++/* Name of Environment to have directory where gcc is installed */
++#define ENV_GCC_INSTALL_PREFIX "${ENV_GCC_INSTALL_PREFIX}"
++
+ /* Define if we have libxml2 */
+ #cmakedefine CLANG_HAVE_LIBXML ${CLANG_HAVE_LIBXML}
+ 
+diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
+index da39f29e4619..c8cc5b0025a6 100644
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -28,6 +28,7 @@
+ #include "llvm/Support/TargetParser.h"
+ #include "llvm/Support/VirtualFileSystem.h"
+ #include <system_error>
++#include <cstdlib> // ::getenv
+ 
+ using namespace clang::driver;
+ using namespace clang::driver::toolchains;
+@@ -1875,12 +1876,20 @@ static llvm::StringRef getGCCToolchainDir(const ArgList &Args,
+   if (A)
+     return A->getValue();
+ 
+-  // If we have a SysRoot, ignore GCC_INSTALL_PREFIX.
+-  // GCC_INSTALL_PREFIX specifies the gcc installation for the default
++  // If we have a SysRoot, ignore ENV_GCC_INSTALL_PREFIX.
++  // ENV_GCC_INSTALL_PREFIX specifies the gcc installation for the default
+   // sysroot and is likely not valid with a different sysroot.
+   if (!SysRoot.empty())
+     return "";
+ 
++  // If we have environment ENV_GCC_INSTALL_PREFIX set,
++  // ignore GCC_INSTALL_PREFIX
++  if (const char *GccInstallPrefix = ::getenv(ENV_GCC_INSTALL_PREFIX)) {
++    if (!StringRef(GccInstallPrefix).empty()) {
++      return GccInstallPrefix;
++    }
++  }
++
+   return GCC_INSTALL_PREFIX;
+ }
+ 
+-- 
+2.27.0
+
