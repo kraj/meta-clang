@@ -1,0 +1,48 @@
+From f3c30a07185dfb9e35512d58b642d33b7aff1b36 Mon Sep 17 00:00:00 2001
+From: Hongxu Jia <hongxu.jia@windriver.com>
+Date: Fri, 24 Dec 2021 10:22:47 +0800
+Subject: [PATCH 2/3] support to search Yocto gcc
+
+Set prefix /usr to search Yocto GCC
+
+Since [support to compile with out of system-wide GCC] applied,
+in order to build compiler-rt-native on CentOS7 which has an
+outdated GCC, install a buildtools-extended to provide newer
+Yocto GCC, specify ENV_GCC_INSTALL_PREFIX to tell clang-native
+where the newer GCC(nativesdk-gcc) installed, such as:
+...
+$ bitbake compiler-rt-native
+$ bitbake compiler-rt-native -cdevshell
+$ clang -v
+clang version 13.0.1 (https://github.com/llvm/llvm-project 19b8368225dc9ec5a0da547eae48c10dae13522d)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: path-to/tmp-glibc/work/x86_64-linux/compiler-rt-native/13.0.1-r0/recipe-sysroot-native/usr/bin
+Found candidate GCC installation: path-to/bin/buildtools.buildtools-extended-standalone-10.21.44.0/sysroots/x86_64-wrlinuxsdk-linux/usr/lib/gcc/x86_64-wrlinuxsdk-linux/11.2.0
+Found candidate GCC installation: path-to/bin/buildtools.buildtools-extended-standalone-10.21.44.0/sysroots/x86_64-wrlinuxsdk-linux/usr/lib/x86_64-wrlinuxsdk-linux/11.2.0
+Selected GCC installation: path-to/bin/buildtools.buildtools-extended-standalone-10.21.44.0/sysroots/x86_64-wrlinuxsdk-linux/usr/lib/x86_64-wrlinuxsdk-linux/11.2.0
+...
+
+Upstream-Status: Inappropriate [oe specific]
+
+Signed-off-by: Hongxu Jia <hongxu.jia@windriver.com>
+---
+ clang/lib/Driver/ToolChains/Gnu.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
+index c8cc5b0025a6..29f93f251af9 100644
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -2107,7 +2107,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
+   static const char *const AVRLibDirs[] = {"/lib"};
+   static const char *const AVRTriples[] = {"avr"};
+ 
+-  static const char *const X86_64LibDirs[] = {"/lib64", "/lib"};
++  static const char *const X86_64LibDirs[] = {"/lib64", "/lib", "/usr/lib", "/usr/lib64"};
+   static const char *const X86_64Triples[] = {
+       "x86_64-linux-gnu",       "x86_64-unknown-linux-gnu",
+       "x86_64-pc-linux-gnu",    "x86_64-redhat-linux6E",
+-- 
+2.27.0
+

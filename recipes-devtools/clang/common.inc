@@ -49,6 +49,7 @@ SRC_URI = "\
     file://0037-Fix-lib-paths-for-OpenEmbedded-Host.patch \
     file://0038-Correct-library-search-path-for-OpenEmbedded-Host.patch \
     file://0039-support-to-compile-with-out-of-system-wide-GCC.patch \
+    file://0040-support-to-compile-with-out-of-system-wide-GCC.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
