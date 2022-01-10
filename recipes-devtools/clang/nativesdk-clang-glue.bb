@@ -31,3 +31,5 @@ deltask do_compile
 deltask do_patch
 deltask do_fetch
 deltask do_unpack
+deltask do_create_spdx
+deltask do_create_runtime_spdx
