@@ -1,9 +1,7 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
-SRC_URI:append:toolchain-clang = "\
-    file://0001-Turn-ptr_to_globals-and-bb_errno-to-be-non-const.patch \
-"
-
 # networking/tls_pstm_sqr_comba.c:514:4: error: inline assembly requires more registers than available
 #                        SQRADD2(*tmpx++, *tmpy--);
 #                        ^
 TOOLCHAIN:x86 = "gcc"
+
+# Disable the 'const trick' on clang (see busybox 1f925038a)
+CFLAGS:append:toolchain-clang = " -DBB_GLOBAL_CONST=''"
