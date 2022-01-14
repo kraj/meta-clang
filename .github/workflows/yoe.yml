@@ -2,13 +2,13 @@ name: Yoe Distro CI
 
 on:
   # Trigger the workflow on push or pull request,
-  # but only for the master branch
+  # but only for the honister branch
   push:
     branches:
-      - master
+      - honister
   pull_request:
     branches:
-      - master
+      - honister
 jobs:
   build:
     name: Yoe Build
@@ -22,9 +22,9 @@ jobs:
           submodules: recursive
       - name: checkout yoe
         run: |
-          git clone --recurse-submodules -j8 -b master git://github.com/YoeDistro/yoe-distro.git yoe
+          git clone --recurse-submodules -j8 -b honister git://github.com/YoeDistro/yoe-distro.git yoe
           cd yoe
-          git checkout master
+          git checkout honister
           git pull
           git submodule update --recursive --init
           rm -rf sources/meta-clang
