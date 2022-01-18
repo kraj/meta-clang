@@ -104,7 +104,9 @@ def clang_base_deps(d):
                 ret += " compiler-rt "
             else:
                 ret += " libgcc "
-            if (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
+            if (d.getVar('RUNTIME').find('llvm') != -1):
+                ret += " libcxx"
+            elif (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
                 ret += " libcxx "
             elif (d.getVar('LIBCPLUSPLUS').find('-stdlib=libc++') != -1):
                 ret += " libcxx "
