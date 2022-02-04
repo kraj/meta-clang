@@ -20,12 +20,10 @@ Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
  src/python/CMakeLists.txt | 4 ----
  1 file changed, 4 deletions(-)
 
-diff --git a/src/python/CMakeLists.txt b/src/python/CMakeLists.txt
-index fa602397..797e0d14 100644
 --- a/src/python/CMakeLists.txt
 +++ b/src/python/CMakeLists.txt
 @@ -5,10 +5,6 @@ if(NOT PYTHON_CMD)
-   set(PYTHON_CMD "python")
+   set(PYTHON_CMD "python3")
  endif()
  
 -if(EXISTS "/etc/debian_version")
@@ -35,6 +33,3 @@ index fa602397..797e0d14 100644
  file(GLOB_RECURSE PYTHON_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
    ${CMAKE_CURRENT_SOURCE_DIR}/*.py)
  file(GLOB_RECURSE PYTHON_INCLUDES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
--- 
-2.17.1
-

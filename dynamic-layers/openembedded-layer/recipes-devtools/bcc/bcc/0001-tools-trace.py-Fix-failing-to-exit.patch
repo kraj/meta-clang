@@ -28,19 +28,14 @@ Signed-off-by: He Zhe <zhe.he@windriver.com>
  tools/trace.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/trace.py b/tools/trace.py
-index 7a61594f..d09dd2a8 100755
 --- a/tools/trace.py
 +++ b/tools/trace.py
-@@ -627,7 +627,7 @@ BPF_PERF_OUTPUT(%s);
-                 Probe.event_count += 1
-                 if Probe.max_events is not None and \
-                    Probe.event_count >= Probe.max_events:
--                        exit()
-+                        os._exit(0)
-                 sys.stdout.flush()
+@@ -671,7 +671,7 @@ BPF_PERF_OUTPUT(%s);
+                     if self.aggregate:
+                         self.print_aggregate_events()
+                     sys.stdout.flush()
+-                    exit()
++                    os._exit(0)
  
          def attach(self, bpf, verbose):
--- 
-2.17.1
-
+                 if len(self.library) == 0:
