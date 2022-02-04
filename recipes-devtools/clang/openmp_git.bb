@@ -35,10 +35,10 @@ PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_
 PACKAGECONFIG[aliases] = "-DLIBOMP_INSTALL_ALIASES=ON,-DLIBOMP_INSTALL_ALIASES=OFF,"
 PACKAGECONFIG[offloading-plugin] = ",,elfutils libffi,libelf libffi"
 
-PACKAGES += "${PN}-libomptarget-amdgcn"
+PACKAGES += "${PN}-libomptarget"
 FILES_SOLIBSDEV = ""
 FILES:${PN} += "${libdir}/lib*${SOLIBSDEV}"
-FILES:${PN}-libomptarget-amdgcn = "${libdir}/libomptarget-amdgcn-*.bc"
+FILES:${PN}-libomptarget = "${libdir}/libomptarget-*.bc"
 INSANE_SKIP:${PN} = "dev-so"
 
 COMPATIBLE_HOST:mips64 = "null"
