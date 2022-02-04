@@ -1,0 +1,46 @@
+From 8f44109cb3b837966d401233daf2887a0a0d579b Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sat, 20 Mar 2021 16:09:16 -0700
+Subject: [PATCH] clang: Define / releative gcc installation dir
+
+This is required for OE gcc installation to work.
+Without this its not able to find the paths for libgcc
+and other standard headers and libraries from gcc
+installation in OE
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/Gnu.cpp | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
+index 633daa58590d..d22eaf698eb8 100644
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -2517,19 +2517,19 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+     // Whether this library suffix is relevant for the triple.
+     bool Active;
+   } Suffixes[] = {
+-      // This is the normal place.
+-      {"gcc/" + CandidateTriple.str(), "../..", GCCDirExists},
+-
+-      // Debian puts cross-compilers in gcc-cross.
+-      {"gcc-cross/" + CandidateTriple.str(), "../..", GCCCrossDirExists},
+-
+       // The Freescale PPC SDK has the gcc libraries in
+       // <sysroot>/usr/lib/<triple>/x.y.z so have a look there as well. Only do
+       // this on Freescale triples, though, since some systems put a *lot* of
+       // files in that location, not just GCC installation data.
+       {CandidateTriple.str(), "..",
+        TargetTriple.getVendor() == llvm::Triple::Freescale ||
+-           TargetTriple.getVendor() == llvm::Triple::OpenEmbedded}};
++           TargetTriple.getVendor() == llvm::Triple::OpenEmbedded},
++
++      // This is the normal place.
++      {"gcc/" + CandidateTriple.str(), "../..", GCCDirExists},
++
++      // Debian puts cross-compilers in gcc-cross.
++      {"gcc-cross/" + CandidateTriple.str(), "../..", GCCCrossDirExists}};
+ 
+   for (auto &Suffix : Suffixes) {
+     if (!Suffix.Active)
