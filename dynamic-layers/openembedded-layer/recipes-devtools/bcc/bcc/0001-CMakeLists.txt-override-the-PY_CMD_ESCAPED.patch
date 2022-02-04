@@ -19,11 +19,9 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  src/python/CMakeLists.txt | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/python/CMakeLists.txt b/src/python/CMakeLists.txt
-index 797e0d14..8afa6ffa 100644
 --- a/src/python/CMakeLists.txt
 +++ b/src/python/CMakeLists.txt
-@@ -12,7 +12,7 @@ file(GLOB_RECURSE PYTHON_INCLUDES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+@@ -12,7 +12,7 @@ file(GLOB_RECURSE PYTHON_INCLUDES RELATI
  
  foreach(PY_CMD ${PYTHON_CMD})
    string(REPLACE "/" "-" PY_CMD_ESCAPED ${PY_CMD})
@@ -41,6 +39,3 @@ index 797e0d14..8afa6ffa 100644
  
    install(
      CODE "
--- 
-2.26.2
-
