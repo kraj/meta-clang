@@ -91,8 +91,10 @@ PROVIDES:append:runtime-llvm = " libunwind"
 do_install:append() {
     if ${@bb.utils.contains("RUNTIME", "llvm", "true", "false", d)}
     then
-        install -Dm 0644 ${S}/libunwind/include/libunwind.h ${S}/libunwind/include/__libunwind_config.h ${D}${includedir}
-        install -Dm 0644 ${S}/libunwind/include/unwind.h ${D}${includedir}/unwind.h
+        for f in libunwind.h __libunwind_config.h unwind.h unwind_itanium.h unwind_arm_ehabi.h
+        do
+            install -Dm 0644 ${S}/libunwind/include/$f ${D}${includedir}/$f
+        done
         install -d ${D}${libdir}/pkgconfig
         sed -e 's,@LIBDIR@,${libdir},g;s,@VERSION@,${PV},g' ${S}/../libunwind.pc.in > ${D}${libdir}/pkgconfig/libunwind.pc
     fi
