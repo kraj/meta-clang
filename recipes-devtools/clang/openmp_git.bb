@@ -12,10 +12,6 @@ TOOLCHAIN = "clang"
 
 LIC_FILES_CHKSUM = "file://openmp/LICENSE.txt;md5=d75288d1ce0450b28b8d58a284c09c79"
 
-SRC_URI += "\
-    file://0029-OpenMP-link-fix.patch \
-"
-
 inherit cmake pkgconfig perlnative
 
 DEPENDS += "elfutils libffi"
