@@ -25,6 +25,7 @@ SRC_URI = "\
     file://0014-clang-Fix-ldso-for-musl-on-x86-and-x32-architectures.patch \
     file://0015-clang-scan-view-needs-python-2.x.patch \
     file://0016-clang-Add-lpthread-and-ldl-along-with-lunwind-for-st.patch \
+    file://0017-Pass-PYTHON_EXECUTABLE-when-cross-compiling-for-nati.patch \
     file://0018-Check-for-atomic-double-intrinsics.patch \
     file://0019-clang-Enable-SSP-and-PIE-by-default.patch \
     file://0020-libcxx-Add-compiler-runtime-library-to-link-step-for.patch \
