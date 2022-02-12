@@ -15,6 +15,9 @@ jobs:
     runs-on: [self-hosted, Linux]
     timeout-minutes: 720
     steps:
+      - name: Fetch Repo Name
+        id: repo-name
+        run: echo "::set-output name=value::$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')"
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -27,8 +30,8 @@ jobs:
           git checkout master
           git pull
           git submodule update --recursive --init
-          rm -rf sources/meta-clang
-          rsync -av --progress --exclude="yoe" `pwd`/../ sources/meta-clang/
+          rm -rf sources/${{ steps.repo-name.outputs.value }}/*
+          rsync -av --progress --exclude="yoe" --exclude=".git"   `pwd`/../ sources/${{ steps.repo-name.outputs.value }}/
       - name: Setup
         run: |
           cd yoe
