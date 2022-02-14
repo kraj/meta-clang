@@ -13,23 +13,27 @@ DEPENDS += "bison-native \
             libbpf \
             "
 
-PV .= "+git${SRCREV}"
+#PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
 
-SRC_URI = "git://github.com/iovisor/bpftrace;branch=master \
-           file://0001-support-clang-upto-version-13.patch \
-           file://0002-orc-Fix-build-with-clang-13.patch \
+SRC_URI = "git://github.com/iovisor/bpftrace;branch=v0.14_release;protocol=https \
            "
-SRCREV = "9b929db174be11888f60d16b1b090e4603bc3a51"
+SRCREV = "20e48420ba3a5c6f3630ab25b6b5c28d950b5bb4"
 
 S = "${WORKDIR}/git"
 
 inherit cmake
 
+def llvm_major_version(d):
+    pvsplit = d.getVar('LLVMVERSION').split('.')
+    return pvsplit[0]
+
+LLVM_MAJOR_VERSION = "${@llvm_major_version(d)}"
+
 EXTRA_OECMAKE = " \
     -DCMAKE_ENABLE_EXPORTS=1 \
     -DCMAKE_BUILD_TYPE=Release \
-    -DLLVM_REQUESTED_VERSION=13 \
+    -DLLVM_REQUESTED_VERSION=${LLVM_MAJOR_VERSION} \
     -DBUILD_TESTING=OFF \
     -DENABLE_MAN=OFF \
 "
