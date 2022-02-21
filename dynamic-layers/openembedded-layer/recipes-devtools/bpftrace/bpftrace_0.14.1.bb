@@ -13,12 +13,12 @@ DEPENDS += "bison-native \
             libbpf \
             "
 
-#PV .= "+git${SRCREV}"
+PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
 
-SRC_URI = "git://github.com/iovisor/bpftrace;branch=v0.14_release;protocol=https \
+SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            "
-SRCREV = "20e48420ba3a5c6f3630ab25b6b5c28d950b5bb4"
+SRCREV = "0a318e53343aa51f811183534916a4be65a1871e"
 
 S = "${WORKDIR}/git"
 
@@ -38,5 +38,5 @@ EXTRA_OECMAKE = " \
     -DENABLE_MAN=OFF \
 "
 
-COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*)-linux"
+COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
 COMPATIBLE_HOST:libc-musl = "null"
