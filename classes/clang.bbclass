@@ -13,6 +13,9 @@ OBJCOPY:toolchain-clang = "${HOST_PREFIX}llvm-objcopy"
 STRIP:toolchain-clang = "${HOST_PREFIX}llvm-strip"
 STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
 READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
+# see https://github.com/llvm/llvm-project/issues/53996
+OBJDUMP:mips:toolchain-clang = "${HOST_PREFIX}objdump"
+OBJDUMP:mipsel:toolchain-clang = "${HOST_PREFIX}objdump"
 
 LTO:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
 PACKAGE_DEBUG_SPLIT_STYLE:toolchain-clang = "debug-without-src"
