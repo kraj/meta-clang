@@ -1,4 +1,4 @@
-From 026dc43875ab8c0c3a28ae4650c5685cd530bb37 Mon Sep 17 00:00:00 2001
+From ce1a02de2daedf9377fd825e0a0a7524794469bb Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 12 Jun 2021 08:42:36 -0700
 Subject: [PATCH] Do not force thumb mode directive

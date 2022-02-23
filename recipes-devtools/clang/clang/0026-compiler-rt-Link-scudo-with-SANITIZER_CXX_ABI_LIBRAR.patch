@@ -1,4 +1,4 @@
-From 1caf16b9a0a6d195bc66da996d6bcd3f66eeff07 Mon Sep 17 00:00:00 2001
+From c672d84ae78cd4baf447149a0fd6a5586445b1af Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 19 May 2021 21:49:18 -0700
 Subject: [PATCH] compiler-rt: Link scudo with SANITIZER_CXX_ABI_LIBRARIES

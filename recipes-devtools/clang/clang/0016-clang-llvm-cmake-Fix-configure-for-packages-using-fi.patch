@@ -1,4 +1,4 @@
-From ce947e2ae1759e393b387ac115d5540ec6f471f1 Mon Sep 17 00:00:00 2001
+From 4efe98f8c26712edee6b103be6a4279d7b47d251 Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
