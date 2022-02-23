@@ -124,6 +124,9 @@ BASE_DEFAULT_DEPS:toolchain-clang:class-target = "${@clang_base_deps(d)}"
 BASE_DEFAULT_DEPS:append:class-native:toolchain-clang:runtime-llvm = " libcxx-native compiler-rt-native"
 BASE_DEFAULT_DEPS:append:class-nativesdk:toolchain-clang:runtime-llvm = " clang-native nativesdk-libcxx nativesdk-compiler-rt"
 
+# do_populate_sysroot needs STRIP
+POPULATESYSROOTDEPS:toolchain-clang:class-target = "clang-cross-${TARGET_ARCH}:do_populate_sysroot"
+
 cmake_do_generate_toolchain_file:append:toolchain-clang () {
     cat >> ${WORKDIR}/toolchain.cmake <<EOF
 set( CMAKE_CLANG_TIDY ${HOST_PREFIX}clang-tidy )
