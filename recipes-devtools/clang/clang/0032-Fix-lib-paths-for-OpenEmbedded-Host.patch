@@ -1,4 +1,4 @@
-From cb561e04416a281222a0b8989ec95f4c9bca4d85 Mon Sep 17 00:00:00 2001
+From 10fd1fea36b270ac6a942b36b76f97e6a9b699b3 Mon Sep 17 00:00:00 2001
 From: Changqing Li <changqing.li@windriver.com>
 Date: Tue, 7 Dec 2021 04:08:22 +0000
 Subject: [PATCH] Fix lib paths for OpenEmbedded Host

@@ -1,4 +1,4 @@
-From a0bdadeaffa94de5b03de7896d04c36114994ffb Mon Sep 17 00:00:00 2001
+From ae279cdbcc87bdfa06beb3b5cb43075d8943822a Mon Sep 17 00:00:00 2001
 From: Changqing Li <changqing.li@windriver.com>
 Date: Tue, 7 Dec 2021 04:55:48 +0000
 Subject: [PATCH] Correct library search path for OpenEmbedded Host
