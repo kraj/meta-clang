@@ -45,7 +45,6 @@ SRC_URI = "\
     file://0033-Correct-library-search-path-for-OpenEmbedded-Host.patch \
     file://0034-lldb-Link-with-libatomic-on-x86.patch \
     file://0035-clang-exclude-openembedded-distributions-from-settin.patch \
-    file://0036-Avoid-infinite-loop-between-DAGCombiner-visitMUL-and.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
