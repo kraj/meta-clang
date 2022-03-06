@@ -16,6 +16,7 @@ DEPENDS += "bison-native \
 LUAJIT ?= "luajit"
 LUAJIT:powerpc64le = ""
 LUAJIT:powerpc64 = ""
+LUAJIT:riscv64 = ""
 
 RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
 
@@ -53,4 +54,4 @@ do_install:append() {
 FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}"
 FILES:${PN}-doc += "${datadir}/${PN}/man"
 
-COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*)-linux"
+COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
