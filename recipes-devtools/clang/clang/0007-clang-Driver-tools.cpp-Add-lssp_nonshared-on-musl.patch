@@ -1,4 +1,4 @@
-From b5b6e5e0cf456c99d18eb3dbe8e6a945e12c2ba6 Mon Sep 17 00:00:00 2001
+From c7774d37208517f25f60f6d78bdbbb4041ca1a9f Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
 Subject: [PATCH] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
