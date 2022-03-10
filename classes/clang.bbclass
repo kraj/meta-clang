@@ -22,18 +22,18 @@ PACKAGE_DEBUG_SPLIT_STYLE:toolchain-clang = "debug-without-src"
 
 COMPILER_RT ??= ""
 COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
-COMPILER_RT:powerpc = "-rtlib=libgcc ${UNWINDLIB}"
+#COMPILER_RT:powerpc = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:armeb = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= ""
 UNWINDLIB:class-native = "--unwindlib=libgcc"
-UNWINDLIB:powerpc = "--unwindlib=libgcc"
+#UNWINDLIB:powerpc = "--unwindlib=libgcc"
 UNWINDLIB:armeb = "--unwindlib=libgcc"
 UNWINDLIB_libc-klibc = "--unwindlib=libgcc"
 
 LIBCPLUSPLUS ??= ""
-LIBCPLUSPLUS:powerpc = "-stdlib=libstdc++"
+#LIBCPLUSPLUS:powerpc = "-stdlib=libstdc++"
 LIBCPLUSPLUS:armv5 = "-stdlib=libstdc++"
 
 CXXFLAGS:append:toolchain-clang = " ${LIBCPLUSPLUS}"
@@ -61,8 +61,9 @@ TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float"
 TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mno-spe"
 
 TUNE_CCARGS:append:toolchain-clang = " -Qunused-arguments"
-TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64"
-TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64le = " -mlong-double-64"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64 -fno-force-enable-int128"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64le = " -mlong-double-64 -fno-force-enable-int128"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc = " -mlong-double-64 -fno-force-enable-int128"
 # usrmerge workaround
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("DISTRO_FEATURES", "usrmerge", " --dyld-prefix=/usr", "", d)}"
 
@@ -84,7 +85,7 @@ RUNTIME ??= "gnu"
 #RUNTIME:toolchain-gcc = "gnu"
 RUNTIME:armeb = "gnu"
 RUNTIME:armv5 = "gnu"
-RUNTIME:powerpc = "gnu"
+#RUNTIME:powerpc = "gnu"
 
 TOOLCHAIN:class-native = "gcc"
 TOOLCHAIN:class-nativesdk = "gcc"
