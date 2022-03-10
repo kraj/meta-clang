@@ -115,6 +115,7 @@ LLDB:riscv32 = ""
 LLDB:riscv64 = ""
 LLDB:mips = ""
 LLDB:mipsel = ""
+LLDB:powerpc = ""
 
 # linux hosts (.so) on Windows .pyd
 SOLIBSDEV:mingw32 = ".pyd"
