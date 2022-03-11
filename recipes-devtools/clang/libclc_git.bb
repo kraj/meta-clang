@@ -21,7 +21,7 @@ EXTRA_OECMAKE += " \
 				-Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
 			"
 
-do_configure_prepend () {
+do_configure:prepend () {
 	# Write out a qemu wrapper that will be used by cmake
 	# so that it can run target helper binaries through that.
 	qemu_binary="${@qemu_wrapper_cmdline(d, d.getVar('STAGING_DIR_HOST'), [d.expand('${STAGING_DIR_HOST}${libdir}'),d.expand('${STAGING_DIR_HOST}${base_libdir}')])}"
@@ -32,6 +32,6 @@ EOF
 	chmod +x ${WORKDIR}/qemuwrapper
 }
 
-FILES_${PN} += "${datadir}/clc"
+FILES:${PN} += "${datadir}/clc"
 
 BBCLASSEXTEND = "native nativesdk"

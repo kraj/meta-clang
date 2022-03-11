@@ -3,4 +3,4 @@
 # |                                  &dev->size_low, &dev->size_high);
 # |                                                   ^~~~~~~~~~~~~~
 
-CFLAGS_append_toolchain-clang = " -Wno-error=address-of-packed-member"
+CFLAGS:append:toolchain-clang = " -Wno-error=address-of-packed-member"

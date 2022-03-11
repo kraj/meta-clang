@@ -1,3 +1,3 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-SRC_URI_append_toolchain-clang_riscv64 = " file://0001-gdb-Link-with-latomic-for-riscv-clang-alone.patch "
+SRC_URI:append:toolchain-clang:riscv64 = " file://0001-gdb-Link-with-latomic-for-riscv-clang-alone.patch "

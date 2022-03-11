@@ -50,7 +50,7 @@ jobs:
           echo BB_NUMBER_THREADS = \"16\" >> conf/local.conf
           echo PARALLEL_MAKE = \"-j 32\" >> conf/local.conf
           echo CLANGSDK = \"1\" >> conf/local.conf
-          echo IMAGE_INSTALL_append = \" clang \" >> conf/local.conf
+          echo IMAGE_INSTALL:append = \" clang \" >> conf/local.conf
           echo XZ_DEFAULTS = \"--threads=8\" >> conf/local.conf
           echo SDKMACHINE = \"aarch64\" >> conf/local.conf
           /bin/bash -c "sed -i -e 's/PACKAGE_FEED_URI.*$//' conf/site.conf"
@@ -67,7 +67,7 @@ jobs:
         run: |
           cd yoe
           export DISPLAY=":0"
-          echo TESTIMAGE_AUTO_qemuall = \"1\" >> conf/local.conf
+          echo TESTIMAGE_AUTO:qemuall = \"1\" >> conf/local.conf
           /bin/bash -c ". ./qemuarm64-envsetup.sh && bitbake yoe-sdk-image"
       - name: Prepare results
         run: |
