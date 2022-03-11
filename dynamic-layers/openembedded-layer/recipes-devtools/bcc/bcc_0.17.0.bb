@@ -13,10 +13,10 @@ DEPENDS += "bison-native \
             "
 
 LUAJIT ?= "luajit"
-LUAJIT_powerpc64le = ""
-LUAJIT_powerpc64 = ""
+LUAJIT:powerpc64le = ""
+LUAJIT:powerpc64 = ""
 
-RDEPENDS_${PN} += "bash python3 python3-core python3-setuptools xz"
+RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
 
 # Don't fetch submodules otherwise we fetch an older, vendored libbpf version
 # We use a dynamic libbpf library instead
@@ -50,12 +50,12 @@ EXTRA_OECMAKE = " \
     -DCMAKE_USE_LIBBPF_PACKAGE=ON \
 "
 
-do_install_append() {
+do_install:append() {
         sed -e 's@#!/usr/bin/python@#!/usr/bin/env python3@g' \
             -i $(find ${D}${datadir}/${PN} -type f)
 }
 
-FILES_${PN} += "${PYTHON_SITEPACKAGES_DIR}"
-FILES_${PN}-doc += "${datadir}/${PN}/man"
+FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}"
+FILES:${PN}-doc += "${datadir}/${PN}/man"
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*)-linux"
