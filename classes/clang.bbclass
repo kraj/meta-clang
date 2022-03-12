@@ -42,6 +42,10 @@ LDFLAGS:append:toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
 TUNE_CCARGS:remove:toolchain-clang = "-meb"
 TUNE_CCARGS:remove:toolchain-clang = "-mel"
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
+# Qemu uses 7400 but fails to emulate VSX/altivec instrs e.g. xor and fails with illegal instructions especially on musl/strspn.c
+# Workaround the qemu limitation by disable altivec in code generation, gcc does not use altivec, so code generated with clang is
+# superior but sadly qemu starts to puke :(, maybe it will work ok on real hardware !!
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "ppc7400", " -mno-altivec", "", d)}"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
 TUNE_CCARGS:remove:toolchain-clang = "-mtune=cortex-a57.cortex-a53 -mtune=cortex-a72.cortex-a53 -mtune=cortex-a15.cortex-a7 -mtune=cortex-a17.cortex-a7 -mtune=cortex-a72.cortex-a35 -mtune=cortex-a73.cortex-a53 -mtune=cortex-a75.cortex-a55 -mtune=cortex-a76.cortex-a55"
@@ -57,15 +61,15 @@ TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2"
 TUNE_CCARGS:append:toolchain-clang:riscv32 = " -mno-relax"
 TUNE_CCARGS:append:toolchain-clang:riscv64 = " -mno-relax"
 
-TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float"
-TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mno-spe"
-
-TUNE_CCARGS:append:toolchain-clang = " -Qunused-arguments"
-TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64 -fno-force-enable-int128"
-TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64le = " -mlong-double-64 -fno-force-enable-int128"
-TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc = " -mlong-double-64 -fno-force-enable-int128"
+# Reconcile some ppc anamolies
+TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float -mno-spe"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64le = " -mlong-double-64"
+TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc = " -mlong-double-64"
 # usrmerge workaround
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("DISTRO_FEATURES", "usrmerge", " --dyld-prefix=/usr", "", d)}"
+
+TUNE_CCARGS:append:toolchain-clang = " -Qunused-arguments"
 
 LDFLAGS:append:toolchain-clang:class-nativesdk:x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
 LDFLAGS:append:toolchain-clang:class-nativesdk:x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
