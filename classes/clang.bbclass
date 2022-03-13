@@ -22,18 +22,15 @@ PACKAGE_DEBUG_SPLIT_STYLE:toolchain-clang = "debug-without-src"
 
 COMPILER_RT ??= ""
 COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
-#COMPILER_RT:powerpc = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:armeb = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= ""
 UNWINDLIB:class-native = "--unwindlib=libgcc"
-#UNWINDLIB:powerpc = "--unwindlib=libgcc"
 UNWINDLIB:armeb = "--unwindlib=libgcc"
 UNWINDLIB_libc-klibc = "--unwindlib=libgcc"
 
 LIBCPLUSPLUS ??= ""
-#LIBCPLUSPLUS:powerpc = "-stdlib=libstdc++"
 LIBCPLUSPLUS:armv5 = "-stdlib=libstdc++"
 
 CXXFLAGS:append:toolchain-clang = " ${LIBCPLUSPLUS}"
@@ -89,7 +86,6 @@ RUNTIME ??= "gnu"
 #RUNTIME:toolchain-gcc = "gnu"
 RUNTIME:armeb = "gnu"
 RUNTIME:armv5 = "gnu"
-#RUNTIME:powerpc = "gnu"
 
 TOOLCHAIN:class-native = "gcc"
 TOOLCHAIN:class-nativesdk = "gcc"
