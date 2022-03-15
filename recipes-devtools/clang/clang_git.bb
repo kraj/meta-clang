@@ -190,7 +190,7 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
         mkdir -p ${D}${nonarch_libdir}
         mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
-        lnr ${D}${nonarch_libdir}/clang ${D}${libdir}/clang
+        ln -rs ${D}${nonarch_libdir}/clang ${D}${libdir}/clang
         rmdir --ignore-fail-on-non-empty ${D}${libdir}
     fi
     for t in clang clang++ llvm-nm llvm-ar llvm-as llvm-ranlib llvm-strip; do
