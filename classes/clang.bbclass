@@ -105,7 +105,7 @@ def clang_base_deps(d):
                 ret += " libcxx"
                 return ret
             if (d.getVar('RUNTIME').find('llvm') != -1):
-                ret += " compiler-rt libcxx"
+                ret += " compiler-rt"
             elif (d.getVar('COMPILER_RT').find('-rtlib=compiler-rt') != -1):
                 ret += " compiler-rt "
             else:
