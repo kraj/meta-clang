@@ -25,7 +25,7 @@ jobs:
           submodules: recursive
       - name: checkout yoe
         run: |
-          git clone --recurse-submodules -j8 -b master git://github.com/YoeDistro/yoe-distro.git yoe
+          git clone --recurse-submodules -j8 -b master https://github.com/YoeDistro/yoe-distro.git yoe
           cd yoe
           git checkout master
           git pull
