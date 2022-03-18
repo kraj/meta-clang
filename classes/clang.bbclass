@@ -100,7 +100,7 @@ OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
 def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
-            ret = " clang-cross-${TARGET_ARCH} virtual/libc "
+            ret = " ${MLPREFIX}clang-cross-${TARGET_ARCH} virtual/libc "
             if (d.getVar('RUNTIME').find('android') != -1):
                 ret += " libcxx"
                 return ret
@@ -126,7 +126,7 @@ BASE_DEFAULT_DEPS:append:class-native:toolchain-clang:runtime-llvm = " libcxx-na
 BASE_DEFAULT_DEPS:append:class-nativesdk:toolchain-clang:runtime-llvm = " clang-native nativesdk-libcxx nativesdk-compiler-rt"
 
 # do_populate_sysroot needs STRIP
-POPULATESYSROOTDEPS:toolchain-clang:class-target = "clang-cross-${TARGET_ARCH}:do_populate_sysroot"
+POPULATESYSROOTDEPS:toolchain-clang:class-target = "${MLPREFIX}clang-cross-${TARGET_ARCH}:do_populate_sysroot"
 
 cmake_do_generate_toolchain_file:append:toolchain-clang () {
     cat >> ${WORKDIR}/toolchain.cmake <<EOF
