@@ -26,13 +26,14 @@ CLANG_EXTRA_OE_VENDORS ?= "${TARGET_VENDOR} ${SDK_VENDOR}"
 # ":" separated the ID in "/etc/os-release" and the triple for finding gcc on this OE DISTRO.
 # eg: "poky:poky wrlinux:wrs"
 CLANG_EXTRA_OE_DISTRO ?= "poky:poky"
-
+# Match with MULTILIB_GLOBAL_VARIANTS
+MULTILIB_VARIANTS = "lib32 lib64 libx32"
 python add_distro_vendor() {
     import subprocess
     case = ""
     triple = ""
     vendors = d.getVar('CLANG_EXTRA_OE_VENDORS')
-    multilib_variants = (d.getVar("MULTILIB_GLOBAL_VARIANTS") or "").split()
+    multilib_variants = (d.getVar("MULTILIB_VARIANTS") or "").split()
     vendors_to_add = []
     for vendor in vendors.split():
         # convert -yoe into yoe
