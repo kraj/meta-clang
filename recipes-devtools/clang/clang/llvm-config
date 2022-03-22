@@ -5,11 +5,10 @@
 # is needed because arguments like --ldflags, --cxxflags, etc. are set by the
 # native compile rather than the target compile.
 #
-
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 NEXT_LLVM_CONFIG="$(which -a llvm-config | sed -n 2p)"
-export YOCTO_ALTERNATE_EXE_PATH="$(readlink -f "$SCRIPT_DIR/../llvm-config")"
-
+export YOCTO_ALTERNATE_EXE_PATH="${YOCTO_ALTERNATE_EXE_PATH:="$(readlink -f "$SCRIPT_DIR/../llvm-config")"}"
+export YOCTO_ALTERNATE_LIBDIR="${YOCTO_ALTERNATE_LIBDIR:="/lib"}"
 if [[ $# == 0 ]]; then
   exec "$NEXT_LLVM_CONFIG"
 fi
