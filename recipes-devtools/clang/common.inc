@@ -14,7 +14,7 @@ SRC_URI = "\
     file://0002-compiler-rt-support-a-new-embedded-linux-target.patch \
     file://0003-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch \
     file://0004-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
-    file://0005-llvm-allow-env-override-of-exe-path.patch \
+    file://0005-llvm-allow-env-override-of-exe-and-libdir-path.patch \
     file://0006-clang-driver-Check-sysroot-for-ldso-path.patch \
     file://0007-clang-Driver-tools.cpp-Add-lssp_nonshared-on-musl.patch \
     file://0008-clang-Prepend-trailing-to-sysroot.patch \
