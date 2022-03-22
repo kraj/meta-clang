@@ -42,8 +42,6 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
                     file://libunwind/LICENSE.TXT;md5=f66970035d12f196030658b11725e1a1 \
 "
 
-LLVM_LIBDIR_SUFFIX:powerpc64 = "64"
-
 OECMAKE_TARGET_COMPILE = "cxxabi cxx"
 OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi ${@bb.utils.contains("RUNTIME", "llvm", "install-unwind", "", d)}"
 
