@@ -94,6 +94,15 @@ OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES =. "${@['', 'runtime-${RUNTIME}:']['${RUNTIME}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
 
+YOCTO_ALTERNATE_EXE_PATH[export] = "0"
+YOCTO_ALTERNATE_LIBDIR[export] = "0"
+
+YOCTO_ALTERNATE_EXE_PATH:class-target = "${STAGING_BINDIR}/llvm-config"
+YOCTO_ALTERNATE_LIBDIR:class-target = "${base_libdir}"
+
+YOCTO_ALTERNATE_EXE_PATH:class-target[export] = "1"
+YOCTO_ALTERNATE_LIBDIR:class-target[export] = "1"
+
 #DEPENDS:append:toolchain-clang:class-target = " clang-cross-${TARGET_ARCH} "
 #DEPENDS:remove:toolchain-clang:allarch = "clang-cross-${TARGET_ARCH}"
 
