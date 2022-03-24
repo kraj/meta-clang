@@ -43,5 +43,6 @@ INSANE_SKIP:${PN} = "dev-so"
 
 COMPATIBLE_HOST:mips64 = "null"
 COMPATIBLE_HOST:riscv32 = "null"
+COMPATIBLE_HOST:powerpc = "null"
 
 BBCLASSEXTEND = "native nativesdk"
