@@ -1,0 +1,135 @@
+Upstream-Status: https://reviews.llvm.org/D122505
+
+diff --git a/llvm/lib/Object/ELF.cpp b/llvm/lib/Object/ELF.cpp
+--- a/llvm/lib/Object/ELF.cpp
++++ b/llvm/lib/Object/ELF.cpp
+@@ -568,11 +568,9 @@
+   }
+ 
+   if (Dyn.empty())
+-    // TODO: this error is untested.
+     return createError("invalid empty dynamic section");
+ 
+   if (Dyn.back().d_tag != ELF::DT_NULL)
+-    // TODO: this error is untested.
+     return createError("dynamic sections must be DT_NULL terminated");
+ 
+   return Dyn;
+diff --git a/llvm/test/tools/llvm-objdump/ELF/dynamic-malformed.test b/llvm/test/tools/llvm-objdump/ELF/dynamic-malformed.test
+new file mode 100644
+--- /dev/null
++++ b/llvm/test/tools/llvm-objdump/ELF/dynamic-malformed.test
+@@ -0,0 +1,39 @@
++## An empty dynamic section is invalid. Test we report a warning instead of an
++## error. objcopy --only-keep-debug may produce an empty dynamic section, it is
++## excessive to use an error.
++# RUN: yaml2obj %s --docnum=1 -o %t.empty
++# RUN: llvm-objdump -p %t.empty 2>&1 | FileCheck %s -DFILE=%t.empty --check-prefix=EMPTY
++
++# EMPTY:       Program Header:
++# EMPTY-NEXT:  warning: '[[FILE]]': invalid empty dynamic section
++# EMPTY-EMPTY:
++
++--- !ELF
++FileHeader:
++  Class:   ELFCLASS64
++  Data:    ELFDATA2LSB
++  Type:    ET_EXEC
++  Machine: EM_X86_64
++Sections:
++  - Name: .dynamic
++    Type: SHT_DYNAMIC
++
++# RUN: yaml2obj %s --docnum=2 -o %t.nonull
++# RUN: llvm-objdump -p %t.nonull 2>&1 | FileCheck %s -DFILE=%t.nonull --check-prefix=NONULL
++
++# NONULL:       Program Header:
++# NONULL-NEXT:  warning: '[[FILE]]': dynamic sections must be DT_NULL terminated
++# NONULL-EMPTY:
++
++--- !ELF
++FileHeader:
++  Class:   ELFCLASS64
++  Data:    ELFDATA2LSB
++  Type:    ET_EXEC
++  Machine: EM_X86_64
++Sections:
++  - Name: .dynamic
++    Type: SHT_DYNAMIC
++    Entries:
++      - Tag:   DT_SONAME
++        Value: 1
+diff --git a/llvm/test/tools/llvm-objdump/ELF/invalid-phdr.test b/llvm/test/tools/llvm-objdump/ELF/invalid-phdr.test
+--- a/llvm/test/tools/llvm-objdump/ELF/invalid-phdr.test
++++ b/llvm/test/tools/llvm-objdump/ELF/invalid-phdr.test
+@@ -1,11 +1,11 @@
+ ## Test how we handle the case when the e_phoff field is invalid.
+ # RUN: yaml2obj %s -o %t
+-# RUN: not llvm-objdump --private-headers %t 2>&1 | \
++# RUN: llvm-objdump --private-headers %t 2>&1 | \
+ # RUN:   FileCheck -DFILE=%t %s --check-prefix=INVALID-PHOFF
+ 
+ # INVALID-PHOFF:      Program Header:
+ # INVALID-PHOFF-NEXT: warning: '[[FILE]]': unable to read program headers: program headers are longer than binary of size 280: e_phoff = 0xffffff, e_phnum = 0, e_phentsize = 0
+-# INVALID-PHOFF-NEXT: error: '[[FILE]]': program headers are longer than binary of size 280: e_phoff = 0xffffff, e_phnum = 0, e_phentsize = 0
++# INVALID-PHOFF-NEXT: warning: '[[FILE]]': program headers are longer than binary of size 280: e_phoff = 0xffffff, e_phnum = 0, e_phentsize = 0
+ 
+ --- !ELF
+ FileHeader:
+diff --git a/llvm/test/tools/llvm-objdump/ELF/program-headers.test b/llvm/test/tools/llvm-objdump/ELF/program-headers.test
+--- a/llvm/test/tools/llvm-objdump/ELF/program-headers.test
++++ b/llvm/test/tools/llvm-objdump/ELF/program-headers.test
+@@ -278,12 +278,12 @@
+ ## Check we report an error / warning when we are unable to read program headers.
+ ## Case A: the e_phentsize field is invalid.
+ # RUN: yaml2obj --docnum=2 -DPHENTSIZE=1 %s -o %t.phdr.err
+-# RUN: not llvm-objdump --private-headers %t.phdr.err 2>&1 | \
++# RUN: llvm-objdump --private-headers %t.phdr.err 2>&1 | \
+ # RUN:   FileCheck %s -DFILE=%t.phdr.err --check-prefix=PHENTSIZE
+ 
+ # PHENTSIZE:      Program Header:
+ # PHENTSIZE-NEXT: warning: '[[FILE]]': unable to read program headers: invalid e_phentsize: 1
+-# PHENTSIZE-NEXT: error: '[[FILE]]': invalid e_phentsize: 1
++# PHENTSIZE-NEXT: warning: '[[FILE]]': invalid e_phentsize: 1
+ 
+ --- !ELF
+ FileHeader:
+@@ -309,16 +309,16 @@
+ 
+ ## Check we report a warning / error when e_phoff goes 1 byte past the end of the file.
+ # RUN: yaml2obj --docnum=2 -DPHOFF=0x161 %s -o %t.phdr.err2
+-# RUN: not llvm-objdump --private-headers %t.phdr.err2 2>&1 | \
++# RUN: llvm-objdump --private-headers %t.phdr.err2 2>&1 | \
+ # RUN:   FileCheck %s -DFILE=%t.phdr.err2 --check-prefix=PHOFF -DOFF=0x161
+ 
+ # PHOFF:      Program Header:
+ # PHOFF-NEXT: warning: '[[FILE]]': unable to read program headers: program headers are longer than binary of size 408: e_phoff = [[OFF]], e_phnum = 1, e_phentsize = 56
+-# PHOFF-NEXT: error: '[[FILE]]': program headers are longer than binary of size 408: e_phoff = [[OFF]], e_phnum = 1, e_phentsize = 56
++# PHOFF-NEXT: warning: '[[FILE]]': program headers are longer than binary of size 408: e_phoff = [[OFF]], e_phnum = 1, e_phentsize = 56
+ 
+ 
+ ## Check we report a warning / error when the value of e_phoff is so large that
+ ## e_phoff + e_phnum * e_phentsize > UINT64_MAX.
+ # RUN: yaml2obj --docnum=2 -DPHOFF=0xffffffffffffffff %s -o %t.phdr.err3
+-# RUN: not llvm-objdump --private-headers %t.phdr.err3 2>&1 | \
++# RUN: llvm-objdump --private-headers %t.phdr.err3 2>&1 | \
+ # RUN:   FileCheck %s -DFILE=%t.phdr.err3 --check-prefix=PHOFF -DOFF=0xffffffffffffffff
+diff --git a/llvm/tools/llvm-objdump/ELFDump.cpp b/llvm/tools/llvm-objdump/ELFDump.cpp
+--- a/llvm/tools/llvm-objdump/ELFDump.cpp
++++ b/llvm/tools/llvm-objdump/ELFDump.cpp
+@@ -171,8 +171,12 @@
+ 
+ template <class ELFT>
+ static void printDynamicSection(const ELFFile<ELFT> &Elf, StringRef Filename) {
+-  ArrayRef<typename ELFT::Dyn> DynamicEntries =
+-      unwrapOrError(Elf.dynamicEntries(), Filename);
++  auto DynamicEntriesOrErr = Elf.dynamicEntries();
++  if (!DynamicEntriesOrErr) {
++    reportWarning(toString(DynamicEntriesOrErr.takeError()), Filename);
++    return;
++  }
++  ArrayRef<typename ELFT::Dyn> DynamicEntries = *DynamicEntriesOrErr;
+ 
+   // Find the maximum tag name length to format the value column properly.
+   size_t MaxLen = 0;
+
