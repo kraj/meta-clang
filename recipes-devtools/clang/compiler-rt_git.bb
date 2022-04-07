@@ -22,8 +22,13 @@ INHIBIT_DEFAULT_DEPS = "1"
 
 DEPENDS += "ninja-native libgcc"
 DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc gcc-runtime"
-DEPENDS:append:class-nativesdk = " clang-native"
+DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_ARCH} nativesdk-gcc-runtime"
 DEPENDS:append:class-native = " clang-native"
+
+# Trick clang.bbclass into not creating circular dependencies
+UNWINDLIB:class-nativesdk = "--unwindlib=libgcc"
+COMPILER_RT:class-nativesdk:toolchain-clang:runtime-llvm = "-rtlib=libgcc --unwindlib=libgcc"
+LIBCPLUSPLUS:class-nativesdk:toolchain-clang:runtime-llvm = "-stdlib=libstdc++"
 
 CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
