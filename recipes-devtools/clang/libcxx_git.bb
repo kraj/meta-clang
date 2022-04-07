@@ -21,12 +21,19 @@ PACKAGECONFIG[unwind-shared] = "-DLIBUNWIND_ENABLE_SHARED=ON,-DLIBUNWIND_ENABLE_
 
 DEPENDS += "ninja-native"
 DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
+DEPENDS:append:class-nativesdk = " clang-crosssdk-${SDK_ARCH} nativesdk-compiler-rt"
 DEPENDS:append:class-native = " clang-native"
 
 LIBCPLUSPLUS = ""
 COMPILER_RT ?= "-rtlib=compiler-rt"
 
+# Trick clang.bbclass into not creating circular dependencies
+UNWINDLIB:class-nativesdk = "--unwindlib=libgcc"
+COMPILER_RT:class-nativesdk = "-rtlib=libgcc --unwindlib=libgcc"
+LIBCPLUSPLUS:class-nativesdk = "-stdlib=libstdc++"
+
 CC:append:toolchain-clang:class-native = " -unwindlib=libgcc -rtlib=libgcc"
+CC:append:toolchain-clang:class-nativesdk = " -unwindlib=libgcc -rtlib=libgcc"
 
 CXXFLAGS += "-stdlib=libstdc++"
 LDFLAGS += "-unwindlib=libgcc -stdlib=libstdc++"
