@@ -45,7 +45,6 @@ SRC_URI = "\
     file://0033-lldb-Link-with-libatomic-on-x86.patch \
     file://0034-clang-exclude-openembedded-distributions-from-settin.patch \
     file://0035-compiler-rt-Enable-__int128-for-ppc32.patch \
-    file://D122505.diff \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
