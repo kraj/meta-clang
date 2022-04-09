@@ -35,3 +35,6 @@ EOF
 FILES:${PN} += "${datadir}/clc"
 
 BBCLASSEXTEND = "native nativesdk"
+
+export YOCTO_ALTERNATE_EXE_PATH
+export YOCTO_ALTERNATE_LIBDIR
