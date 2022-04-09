@@ -1,4 +1,4 @@
-From 8ad10677d1bbf350992bd1354895afaac01977dc Mon Sep 17 00:00:00 2001
+From 5c0d026419a69d5b8722f1abb0000caa4c151885 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 11 Feb 2022 12:29:14 -0800
 Subject: [PATCH] clang: exclude openembedded distributions from setting rpath
