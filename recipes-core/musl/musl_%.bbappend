@@ -7,4 +7,3 @@ TOOLCHAIN:x86-x32 = "gcc"
 # => 0x3f7fc2e8 <+0>:     addis   r27,r20,-22264
 
 TOOLCHAIN:powerpc = "gcc"
-TOOLCHAIN:powerpc64 = "gcc"
