@@ -36,10 +36,6 @@ LDFLAGS:append:toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
 TUNE_CCARGS:remove:toolchain-clang = "-meb"
 TUNE_CCARGS:remove:toolchain-clang = "-mel"
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
-# Qemu uses 7400 but fails to emulate VSX/altivec instrs e.g. xor and fails with illegal instructions especially on musl/strspn.c
-# Workaround the qemu limitation by disable altivec in code generation, gcc does not use altivec, so code generated with clang is
-# superior but sadly qemu starts to puke :(, maybe it will work ok on real hardware !!
-TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "ppc7400", " -mno-altivec", "", d)}"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
 TUNE_CCARGS:remove:toolchain-clang = "-mcpu=cortex-a57.cortex-a53 -mcpu=cortex-a72.cortex-a53 -mcpu=cortex-a15.cortex-a7 -mcpu=cortex-a17.cortex-a7 -mcpu=cortex-a72.cortex-a35 -mcpu=cortex-a73.cortex-a53 -mcpu=cortex-a75.cortex-a55 -mcpu=cortex-a76.cortex-a55"
