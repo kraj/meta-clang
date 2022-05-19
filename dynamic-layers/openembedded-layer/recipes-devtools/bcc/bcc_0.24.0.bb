@@ -11,6 +11,7 @@ DEPENDS += "bison-native \
             elfutils \
             ${LUAJIT} \
             clang \
+            libbpf \
             "
 
 LUAJIT ?= "luajit"
@@ -40,6 +41,7 @@ PACKAGECONFIG[manpages] = "-DENABLE_MAN=ON,-DENABLE_MAN=OFF,"
 PACKAGECONFIG[examples] = "-DENABLE_EXAMPLES=ON,-DENABLE_EXAMPLES=OFF,"
 
 EXTRA_OECMAKE = " \
+    -DCMAKE_USE_LIBBPF_PACKAGE=ON \
     -DENABLE_LLVM_SHARED=ON \
     -DENABLE_CLANG_JIT=ON \
     -DLLVM_PACKAGE_VERSION=${LLVMVERSION} \
