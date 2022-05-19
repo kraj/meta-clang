@@ -24,6 +24,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://0001-python-CMakeLists.txt-Remove-check-for-host-etc-debi.patch \
            file://0001-tools-trace.py-Fix-failing-to-exit.patch \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
+           file://0001-Vendor-just-enough-extra-headers-to-allow-libbpf-to-.patch \
            "
 
 SRCREV = "8f40d6f57a8d94e7aee74ce358572d34d31b4ed4"
