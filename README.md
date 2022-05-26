@@ -100,6 +100,46 @@ in `local.conf`
 CLANGSDK = "1"
 ```
 
+# Kernel build with clang
+Newer kernels and Android kernels support clang compilation, and even support LTO, The following takes [rockchip](https://github.com/JeffyCN/meta-rockchip)'s kernel as an example to configure clang compilation. x86, arm and arm64 kernel supported full LLVM toolchain, other arch only support clang. more info https://docs.kernel.org/kbuild/llvm.html
+
+- linux-rockchip_%bbappend
+```shell
+TOOLCHAIN:forcevariable = "clang"
+
+DEPENDS:append:toolchain-clang = " clang-cross-${TARGET_ARCH}"
+KERNEL_CC:toolchain-clang = "${CCACHE}clang ${HOST_CC_KERNEL_ARCH} -fuse-ld=lld ${DEBUG_PREFIX_MAP} -fdebug-prefix-map=${STAGING_KERNEL_DIR}=${KERNEL_SRC_PATH}"
+KERNEL_LD:toolchain-clang = "${CCACHE}ld.lld"
+KERNEL_AR:toolchain-clang = "${CCACHE}llvm-ar"
+```
+if you want use LLVM integrated assembler for some older kernel, newer vesion is enabled default.
+```shell
+do_compile:prepend:toolchain-clang() {
+	export LLVM_IAS=1
+}
+
+do_compile_kernelmodules:prepend:toolchain-clang() {
+	export LLVM_IAS=1
+}
+```
+if you want enable LTO, append follow content.
+```
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+SRC_URI:append:toolchain-clang = "\
+	file://lto.cfg \
+"
+```
+
+`CONFIG_LTO_CLANG`is need for some android based kernel, mainline kernel will do auto detect.
+
+- lto.cfg
+```
+CONFIG_LTO_CLANG=y
+CONFIG_LTO=y
+CONFIG_LTO_CLANG_THIN=y
+```
+
+
 # Building
 
 Below we build for qemuarm machine as an example
