@@ -1,0 +1,65 @@
+From 1c9415806ba6d0d48a160637eea7d1b70efaae69 Mon Sep 17 00:00:00 2001
+From: Pengxuan Zheng <pzheng@quicinc.com>
+Date: Mon, 4 Apr 2022 18:17:03 -0700
+Subject: [PATCH] [compiler-rt][builtins] Move DMB definition to syn-ops.h
+
+Upstream-Status: Backported
+
+Compiler-rt cross-compile for ARMv5 fails because D99282 made it an error if DMB
+is used for any pre-ARMv6 targets. More specifically, the "#error only supported
+on ARMv6+" added in D99282 will cause compilation to fail when any source file
+which includes assembly.h are compiled for pre-ARMv6 targets. Since the only
+place where DMB is used is syn-ops.h (which is only included by
+arm/sync_fetch_and_* and these files are excluded from being built for older
+targets), this patch moves the definition there to avoid the issues described
+above.
+
+Reviewed By: efriedma
+
+Differential Revision: https://reviews.llvm.org/D123105
+---
+ compiler-rt/lib/builtins/arm/sync-ops.h | 8 ++++++++
+ compiler-rt/lib/builtins/assembly.h     | 8 --------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/compiler-rt/lib/builtins/arm/sync-ops.h b/compiler-rt/lib/builtins/arm/sync-ops.h
+index d914f9d3a109..dca201d8aef7 100644
+--- a/compiler-rt/lib/builtins/arm/sync-ops.h
++++ b/compiler-rt/lib/builtins/arm/sync-ops.h
+@@ -14,6 +14,14 @@
+ 
+ #include "../assembly.h"
+ 
++#if __ARM_ARCH >= 7
++#define DMB dmb
++#elif __ARM_ARCH >= 6
++#define DMB mcr p15, #0, r0, c7, c10, #5
++#else
++#error DMB is only supported on ARMv6+
++#endif
++
+ #define SYNC_OP_4(op)                                                          \
+   .p2align 2;                                                                  \
+   .syntax unified;                                                             \
+diff --git a/compiler-rt/lib/builtins/assembly.h b/compiler-rt/lib/builtins/assembly.h
+index 06aa18162e3b..69a3d8620f92 100644
+--- a/compiler-rt/lib/builtins/assembly.h
++++ b/compiler-rt/lib/builtins/assembly.h
+@@ -189,14 +189,6 @@
+   JMP(ip)
+ #endif
+ 
+-#if __ARM_ARCH >= 7
+-#define DMB dmb
+-#elif __ARM_ARCH >= 6
+-#define DMB mcr p15, #0, r0, c7, c10, #5
+-#else
+-#error Only use this with ARMv6+
+-#endif
+-
+ #if defined(USE_THUMB_2)
+ #define WIDE(op) op.w
+ #else
+-- 
+2.25.1
+
