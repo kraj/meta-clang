@@ -46,6 +46,7 @@ SRC_URI = "\
     file://0034-clang-exclude-openembedded-distributions-from-settin.patch \
     file://0035-compiler-rt-Enable-__int128-for-ppc32.patch \
     file://0036-compiler-rt-builtins-Move-DMB-definition-to-syn-opsh.patch \
+    file://0037-builtins-Build-float128-soft-float-builtins-for-x86_.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
