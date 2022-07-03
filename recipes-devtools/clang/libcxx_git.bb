@@ -51,16 +51,23 @@ EXTRA_OECMAKE += "\
                   -DLIBCXX_CXX_ABI=libcxxabi \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib${LLVM_LIBDIR_SUFFIX} \
-                  -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
-                  -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
-                  -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi;libunwind' \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
 "
 
+EXTRA_OECMAKE_append_class-target = " \
+                  -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
+                  -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
+                  -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
+"
+
 EXTRA_OECMAKE_append_class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
 
-EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF"
+EXTRA_OECMAKE_append_class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+                  -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
+                  -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
+                  -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
+"
 
 EXTRA_OECMAKE_append_libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 
