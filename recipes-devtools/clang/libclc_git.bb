@@ -16,6 +16,8 @@ DEPENDS += "qemu-native clang spirv-tools spirv-llvm-translator spirv-llvm-trans
 OECMAKE_SOURCEPATH = "${S}/libclc"
 
 EXTRA_OECMAKE += " \
+                                -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                                -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
 				-DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
 				-Dclc_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeCLCCompiler.cmake.in \
 				-Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
