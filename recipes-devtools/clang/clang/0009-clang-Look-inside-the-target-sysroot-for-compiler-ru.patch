@@ -1,4 +1,4 @@
-From da2647d56a98cc708a6b13e3586e7fb364ef77a0 Mon Sep 17 00:00:00 2001
+From f0a90c18f6f07b2f9c5b4c8178e48ab000f3be62 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
 Subject: [PATCH] clang: Look inside the target sysroot for compiler runtime
@@ -15,7 +15,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChain.cpp b/clang/lib/Driver/ToolChain.cpp
-index d657d21bfcdb..e83a556b708c 100644
+index 7a4319ea680f..3068d25dab75 100644
 --- a/clang/lib/Driver/ToolChain.cpp
 +++ b/clang/lib/Driver/ToolChain.cpp
 @@ -13,6 +13,7 @@
@@ -26,7 +26,7 @@ index d657d21bfcdb..e83a556b708c 100644
  #include "clang/Config/config.h"
  #include "clang/Driver/Action.h"
  #include "clang/Driver/Driver.h"
-@@ -419,7 +420,10 @@ StringRef ToolChain::getOSLibName() const {
+@@ -458,7 +459,10 @@ StringRef ToolChain::getOSLibName() const {
  }
  
  std::string ToolChain::getCompilerRTPath() const {

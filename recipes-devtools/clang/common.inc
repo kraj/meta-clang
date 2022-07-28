@@ -31,22 +31,19 @@ SRC_URI = "\
     file://0019-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
     file://0020-llvm-Do-not-use-find_library-for-ncurses.patch \
     file://0021-llvm-Insert-anchor-for-adding-OE-distro-vendor-names.patch \
-    file://0022-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
-    file://0023-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
-    file://0024-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
-    file://0025-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
-    file://0026-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch \
-    file://0027-libunwind-Added-unw_backtrace-method.patch \
-    file://0028-Do-not-force-thumb-mode-directive.patch \
-    file://0029-clang-Do-not-use-install-relative-libc-headers.patch \
-    file://0030-clang-Fix-how-driver-finds-GCC-installation-path-on-.patch \
-    file://0031-Fix-lib-paths-for-OpenEmbedded-Host.patch \
-    file://0032-Correct-library-search-path-for-OpenEmbedded-Host.patch \
-    file://0033-lldb-Link-with-libatomic-on-x86.patch \
-    file://0034-clang-exclude-openembedded-distributions-from-settin.patch \
-    file://0035-compiler-rt-Enable-__int128-for-ppc32.patch \
-    file://0036-compiler-rt-builtins-Move-DMB-definition-to-syn-opsh.patch \
-    file://0037-sanitizer-Remove-include-linux-fs.h-to-resolve-fscon.patch \
+    file://0022-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
+    file://0023-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
+    file://0024-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
+    file://0025-libunwind-Added-unw_backtrace-method.patch \
+    file://0026-Drop-the-git-suffix-from-various-version-variables.patch \
+    file://0027-clang-Do-not-use-install-relative-libc-headers.patch \
+    file://0028-clang-Fix-how-driver-finds-GCC-installation-path-on-.patch \
+    file://0029-Fix-lib-paths-for-OpenEmbedded-Host.patch \
+    file://0030-Correct-library-search-path-for-OpenEmbedded-Host.patch \
+    file://0031-lldb-Link-with-libatomic-on-x86.patch \
+    file://0032-clang-exclude-openembedded-distributions-from-settin.patch \
+    file://0033-compiler-rt-Enable-__int128-for-ppc32.patch \
+    file://0034-llvm-Do-not-use-cmake-infra-to-detect-libzstd.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""

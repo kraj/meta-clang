@@ -1,4 +1,4 @@
-From 8bee07de2d0078373f0f1a72e924d7808ddf03e0 Mon Sep 17 00:00:00 2001
+From 94e6043e68865806ecbde1d895d5ea724adcc7dc Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Nov 2019 17:00:29 -0800
 Subject: [PATCH] Check for atomic<double> intrinsics

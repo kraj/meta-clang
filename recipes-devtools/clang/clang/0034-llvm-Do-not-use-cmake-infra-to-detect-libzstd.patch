@@ -1,0 +1,44 @@
+From dfff33f748b0335ccc2df25c45f3841d459b6345 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 12 Aug 2022 11:50:57 -0700
+Subject: [PATCH] llvm: Do not use cmake infra to detect libzstd
+
+OE's version is build using plain make not cmake as a result we do not
+have the cmake support files and this probing method can get this info
+from build host and force linking with libzstd from /usr/lib which is
+not what we want when cross building.
+
+Fixes errors building llvm-config like
+/usr/lib/libzstd.so.1.5.2: error adding symbols: file in wrong
+format
+| clang-15: error: linker command failed with exit code 1 (use -v to see invocation)
+| ninja: build stopped: subcommand failed.
+
+Upstream-Status: Inappropriate [OE-Specific]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ llvm/lib/Support/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/llvm/lib/Support/CMakeLists.txt b/llvm/lib/Support/CMakeLists.txt
+index 5044b2639a0f..9bdd35c4eae4 100644
+--- a/llvm/lib/Support/CMakeLists.txt
++++ b/llvm/lib/Support/CMakeLists.txt
+@@ -26,7 +26,7 @@ if(LLVM_ENABLE_ZLIB)
+ endif()
+ 
+ if(LLVM_ENABLE_ZSTD)
+-  list(APPEND imported_libs zstd::libzstd_shared)
++  list(APPEND imported_libs zstd)
+ endif()
+ 
+ if( MSVC OR MINGW )
+@@ -305,7 +305,7 @@ if(LLVM_ENABLE_ZSTD)
+   if(NOT zstd_library)
+     get_property(zstd_library TARGET zstd::libzstd_shared PROPERTY LOCATION)
+   endif()
+-  set(llvm_system_libs ${llvm_system_libs} "${zstd_library}")
++  set(llvm_system_libs ${llvm_system_libs} "zstd")
+ endif()
+ 
+ if(LLVM_ENABLE_TERMINFO)

@@ -1,4 +1,4 @@
-From d7b262b22c16436c836de7f39591eaafd28a4e21 Mon Sep 17 00:00:00 2001
+From fe9ef041f4a5885d4ce4caf6569cda2869ceb7a7 Mon Sep 17 00:00:00 2001
 From: David Abdurachmanov <david.abdurachmanov@sifive.com>
 Date: Wed, 20 Oct 2021 17:30:36 -0700
 Subject: [PATCH] clang: Fix how driver finds GCC installation path on
@@ -31,10 +31,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 28 insertions(+), 11 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 0d04a199a7af..1e5a3cc2c1f1 100644
+index 107ab8d78598..b5ee01c566e3 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -1641,18 +1641,29 @@ static void findRISCVMultilibs(const Driver &D,
+@@ -1737,18 +1737,29 @@ static void findRISCVMultilibs(const Driver &D,
      return findRISCVBareMetalMultilibs(D, TargetTriple, Path, Args, Result);
  
    FilterNonExistent NonExistent(Path, "/crtbegin.o", D.getVFS());
@@ -74,7 +74,7 @@ index 0d04a199a7af..1e5a3cc2c1f1 100644
  
    Multilib::flags_list Flags;
    bool IsRV64 = TargetTriple.getArch() == llvm::Triple::riscv64;
-@@ -2549,13 +2560,19 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+@@ -2674,13 +2685,19 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
            continue; // Saw this path before; no need to look at it again.
        if (CandidateVersion.isOlderThan(4, 1, 1))
          continue;
