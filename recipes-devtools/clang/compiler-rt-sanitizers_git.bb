@@ -30,7 +30,9 @@ HF[vardepvalue] = "${HF}"
 OECMAKE_TARGET_COMPILE = "compiler-rt"
 OECMAKE_TARGET_INSTALL = "install-compiler-rt install-compiler-rt-headers"
 OECMAKE_SOURCEPATH = "${S}/llvm"
-EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
+EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                  -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
+                  -DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_BUILTINS=OFF \
                   -DSANITIZER_CXX_ABI_LIBNAME=${@bb.utils.contains("RUNTIME", "llvm", "libc++", "libstdc++", d)} \

@@ -16,7 +16,9 @@ inherit cmake pkgconfig perlnative
 
 DEPENDS += "elfutils libffi clang"
 
-EXTRA_OECMAKE += "-DOPENMP_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
+EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                  -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
+                  -DOPENMP_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
                   -DOPENMP_STANDALONE_BUILD=ON \
                   -DCLANG_TOOL=${STAGING_BINDIR_NATIVE}/clang \
                   -DLINK_TOOL=${STAGING_BINDIR_NATIVE}/llvm-link \
