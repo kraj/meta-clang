@@ -1,4 +1,4 @@
-From 734aaa66800b91abe42bdef1dd721c368fa17b07 Mon Sep 17 00:00:00 2001
+From 640b23ccdd2e8605a2cfa940f93619f02e2616f7 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 9 Mar 2022 16:28:16 -0800
 Subject: [PATCH] compiler-rt: Enable __int128 for ppc32
@@ -6,15 +6,15 @@ Subject: [PATCH] compiler-rt: Enable __int128 for ppc32
 Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- compiler-rt/lib/builtins/CMakeLists.txt | 7 +++----
- compiler-rt/lib/builtins/int_types.h    | 2 +-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ compiler-rt/lib/builtins/CMakeLists.txt | 15 +++++++--------
+ compiler-rt/lib/builtins/int_types.h    |  2 +-
+ 2 files changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
-index ea5ad9cdb864..4d1efc690d71 100644
+index ec668e294d6d..72556d2fc58e 100644
 --- a/compiler-rt/lib/builtins/CMakeLists.txt
 +++ b/compiler-rt/lib/builtins/CMakeLists.txt
-@@ -607,8 +607,6 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
+@@ -628,11 +628,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
  set(mips64el_SOURCES ${GENERIC_TF_SOURCES}
                       ${mips_SOURCES})
  
@@ -22,16 +22,31 @@ index ea5ad9cdb864..4d1efc690d71 100644
 -
  set(powerpcspe_SOURCES ${GENERIC_SOURCES})
  
- set(powerpc64_SOURCES
-@@ -634,6 +632,7 @@ if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "AIX")
+-set(powerpc64_SOURCES
++set(powerpc_SOURCES
+   ppc/divtc3.c
+   ppc/fixtfdi.c
+   ppc/fixunstfdi.c
+@@ -647,14 +645,15 @@ set(powerpc64_SOURCES
+ )
+ # These routines require __int128, which isn't supported on AIX.
+ if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "AIX")
+-  set(powerpc64_SOURCES
++  set(powerpc_SOURCES
+     ppc/floattitf.c
+     ppc/fixtfti.c
+     ppc/fixunstfti.c
+-    ${powerpc64_SOURCES}
++    ${powerpc_SOURCES}
    )
  endif()
- set(powerpc64le_SOURCES ${powerpc64_SOURCES})
-+set(powerpc_SOURCES ${powerpc64_SOURCES})
+-set(powerpc64le_SOURCES ${powerpc64_SOURCES})
++set(powerpc64le_SOURCES ${powerpc_SOURCES})
++set(powerpc64_SOURCES ${powerpc_SOURCES})
  
  set(riscv_SOURCES
    riscv/save.S
-@@ -740,9 +739,9 @@ else ()
+@@ -761,9 +760,9 @@ else ()
          list(APPEND BUILTIN_CFLAGS_${arch} -fomit-frame-pointer -DCOMPILER_RT_ARMHF_TARGET)
        endif()
  

@@ -1,4 +1,4 @@
-From 4bbb4ab9d4cd3ff1424bed6346dd8e47cd4bcb24 Mon Sep 17 00:00:00 2001
+From 071147ea1fa0f8cd9997b8ade9b33ae48831e9dd Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 19 May 2021 21:49:18 -0700
 Subject: [PATCH] compiler-rt: Link scudo with SANITIZER_CXX_ABI_LIBRARIES
@@ -15,7 +15,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/compiler-rt/lib/scudo/CMakeLists.txt b/compiler-rt/lib/scudo/CMakeLists.txt
-index 995e853e2a4d..25b79a8d17e8 100644
+index 31a6976960f7..8f3e291960b0 100644
 --- a/compiler-rt/lib/scudo/CMakeLists.txt
 +++ b/compiler-rt/lib/scudo/CMakeLists.txt
 @@ -15,6 +15,7 @@ append_list_if(COMPILER_RT_HAS_LIBDL dl SCUDO_MINIMAL_DYNAMIC_LIBS)

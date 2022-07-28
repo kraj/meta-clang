@@ -1,4 +1,4 @@
-From 71a195e5ed96e47a21fe3f55708046350ebabdfe Mon Sep 17 00:00:00 2001
+From 3b9c88e521e47f71ae888094537e7c6a039c9355 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 11 Aug 2021 18:37:11 -0700
 Subject: [PATCH] clang: Do not use install relative libc++ headers
@@ -16,10 +16,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 6fcd5abe7211..0d04a199a7af 100644
+index 5b4271b58337..107ab8d78598 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -2919,7 +2919,9 @@ Generic_GCC::addLibCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
+@@ -3049,7 +3049,9 @@ Generic_GCC::addLibCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
  
    // Android never uses the libc++ headers installed alongside the toolchain,
    // which are generally incompatible with the NDK libraries anyway.
