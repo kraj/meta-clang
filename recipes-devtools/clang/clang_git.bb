@@ -351,5 +351,12 @@ clang_sysroot_preprocess() {
 	ln -sf llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/llvm-config${PV}
 	# LLDTargets.cmake references the lld executable(!) that some modules/plugins link to
 	install -d ${SYSROOT_DESTDIR}${bindir}
-	install -m 755 ${D}${bindir}/lld ${SYSROOT_DESTDIR}${bindir}/
+	for f in lld diagtool clang-${MAJOR_VER} clang-format clang-offload-packager \
+            clang-offload-bundler clang-offload-wrapper clang-scan-deps clang-repl \
+            clang-rename clang-refactor clang-check clang-extdef-mapping clang-apply-replacements \
+            clang-reorder-fields clang-tidy clang-change-namespace clang-doc clang-include-fixer \
+            find-all-symbols clang-move clang-query pp-trace clang-pseudo clangd modularize
+	do
+		install -m 755 ${D}${bindir}/$f ${SYSROOT_DESTDIR}${bindir}/
+	done
 }
