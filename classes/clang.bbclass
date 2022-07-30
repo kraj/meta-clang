@@ -78,6 +78,7 @@ LDFLAGS:append:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is
 TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
 RUNTIME ??= "gnu"
+# Using gcc or llvm runtime is only available when using clang for compiler
 #RUNTIME:toolchain-gcc = "gnu"
 RUNTIME:armeb = "gnu"
 RUNTIME:armv5 = "gnu"
