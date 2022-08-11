@@ -60,6 +60,8 @@ TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc = " -mlong-double-64"
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("DISTRO_FEATURES", "usrmerge", " --dyld-prefix=/usr", "", d)}"
 
 TUNE_CCARGS:append:toolchain-clang = " -Qunused-arguments"
+# Get rid of absolute paths in .file asm directive
+TUNE_CCARGS:append:toolchain-clang = " -ffile-compilation-dir=."
 
 LDFLAGS:append:toolchain-clang:class-nativesdk:x86-64 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux-x86-64.so.2"
 LDFLAGS:append:toolchain-clang:class-nativesdk:x86 = " -Wl,-dynamic-linker,${base_libdir}/ld-linux.so.2"
