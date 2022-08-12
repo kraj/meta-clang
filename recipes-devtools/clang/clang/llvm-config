@@ -25,16 +25,16 @@ fi
 for arg in "$@"; do
   case "$arg" in
     --cppflags)
-      echo $TARGET_CPPFLAGS
+      echo $CPPFLAGS
       ;;
     --cflags)
-      echo $TARGET_CFLAGS
+      echo $CFLAGS
       ;;
     --cxxflags)
-      echo $TARGET_CXXFLAGS
+      echo $CXXFLAGS
       ;;
     --ldflags)
-      echo $TARGET_LDFLAGS
+      echo $LDFLAGS
       ;;
     *)
       echo "$("$NEXT_LLVM_CONFIG" "$arg")"
