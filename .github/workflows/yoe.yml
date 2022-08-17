@@ -79,4 +79,4 @@ jobs:
       - name: Clean shared state
         run: |
           cd yoe
-          /bin/bash -c ". ./qemuarm64-envsetup.sh && ./sources/openembedded-core/scripts/sstate-cache-management.sh -d -y"
+          /bin/bash -c ". ./qemuarm64-envsetup.sh && ./sources/poky/scripts/sstate-cache-management.sh -d -y"
