@@ -75,10 +75,8 @@ EXTRA_OECMAKE:append:class-target = " \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_SYS} \
 "
-EXTRA_OECMAKE:append:class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
-"
 
-EXTRA_OECMAKE:append:class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+EXTRA_OECMAKE:append:class-nativesdk = " \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
