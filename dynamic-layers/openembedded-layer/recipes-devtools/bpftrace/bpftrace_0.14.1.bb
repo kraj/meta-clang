@@ -18,6 +18,7 @@ RDEPENDS:${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://0001-Detect-new-BTF-api-btf_dump__new-btf_dump__new_v0_6_.patch \
+           file://0001-Fix-segfault-when-btf__type_by_id-returns-NULL.patch \
 "
 SRCREV = "0a318e53343aa51f811183534916a4be65a1871e"
 
