@@ -10,7 +10,7 @@ AR:toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM:toolchain-clang = "${HOST_PREFIX}llvm-nm"
 OBJDUMP:toolchain-clang = "${HOST_PREFIX}llvm-objdump"
 OBJCOPY:toolchain-clang = "${HOST_PREFIX}llvm-objcopy"
-STRIP:toolchain-clang = "${HOST_PREFIX}llvm-strip"
+#STRIP:toolchain-clang = "${HOST_PREFIX}llvm-strip"
 STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
 READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
 
