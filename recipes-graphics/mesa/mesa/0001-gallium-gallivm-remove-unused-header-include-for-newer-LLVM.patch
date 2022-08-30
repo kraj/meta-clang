@@ -1,4 +1,4 @@
-From 52aa730d07618513d6c055618069b2f4680974cc Mon Sep 17 00:00:00 2001
+From 29aa95dd535bfc361686107027901b5b72b32909 Mon Sep 17 00:00:00 2001
 From: Jan Zielinski <jan.zielinski@intel.com>
 Date: Mon, 27 Apr 2020 13:34:59 +0200
 Subject: [PATCH] gallium/gallivm: remove unused header include for newer LLVM
@@ -10,12 +10,13 @@ so I disable it only for the latest LLVM
 
 Reviewed-by: Roland Scheidegger <sroland@vmware.com>
 Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/4748>
+
 ---
  src/gallium/auxiliary/gallivm/lp_bld_misc.cpp | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp b/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
-index 40cc96824f3e..df7196190c5e 100644
+index 40cc968..df71961 100644
 --- a/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
 +++ b/src/gallium/auxiliary/gallivm/lp_bld_misc.cpp
 @@ -65,7 +65,9 @@
@@ -28,6 +29,3 @@ index 40cc96824f3e..df7196190c5e 100644
  #include <llvm/IR/IRBuilder.h>
  #include <llvm/IR/Module.h>
  #include <llvm/Support/CBindingWrapping.h>
--- 
-GitLab
-
