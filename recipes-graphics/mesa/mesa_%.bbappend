@@ -6,4 +6,12 @@ EXTRA_OEMASON_append_toolchain-clang_x86-64 = " -Dasm=false"
 
 export YOCTO_ALTERNATE_EXE_PATH = "${STAGING_LIBDIR}/llvm-config"
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}:"
+
+SRC_URI += "file://0001-gallium-add-missing-header-for-powf.patch \
+            file://0001-gallivm-fix-build-on-llvm-12-due-to-LLVMAddConstantPropagationPass-removal.patch \
+            file://0001-gallivm-add-InstSimplify-pass.patch \
+            file://0001-gallium-gallivm-remove-unused-header-include-for-newer-LLVM.patch \
+            "
+
 PACKAGECONFIG[gallium-llvm] = "-Dllvm=true -Dshared-llvm=true, -Dllvm=false, clang clang-native elfutils"

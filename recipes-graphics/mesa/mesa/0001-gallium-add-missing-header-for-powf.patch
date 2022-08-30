@@ -1,0 +1,41 @@
+From ff8daa013621019f1606dc0c188b16f1ce34fea7 Mon Sep 17 00:00:00 2001
+From: Vinson Lee <vlee@freedesktop.org>
+Date: Mon, 6 Apr 2020 18:21:54 -0700
+Subject: gallivm: Add missing header for powf.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix build error after llvm-11 commit 3a29393b4709 ("Remove
+math.h/cmath include from DataTypes.h").
+
+src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c: In function ‘lp_build_linear_to_srgb’:
+src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c:194:44: error: implicit declaration of function ‘powf’ [-Werror=implicit-function-declaration]
+  194 |                                  exp2f_c * powf(coeff_f, 1.0f / exp_f));
+      |                                            ^~~~
+src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c:194:44: warning: incompatible implicit declaration of built-in function ‘powf’
+src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c:78:1: note: include ‘<math.h>’ or provide a declaration of ‘powf’
+   77 | #include "lp_bld_format.h"
+  +++ |+#include <math.h>
+   78 |
+
+Signed-off-by: Vinson Lee <vlee@freedesktop.org>
+Reviewed-by: Roland Scheidegger <sroland@vmware.com>
+Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/4473>
+---
+ src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c b/src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c
+index d5cf698b060..5cd6ebe7149 100644
+--- a/src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c
++++ b/src/gallium/auxiliary/gallivm/lp_bld_format_srgb.c
+@@ -68,6 +68,7 @@
+ 
+ 
+ #include "util/u_debug.h"
++#include "util/u_math.h"
+ 
+ #include "lp_bld_type.h"
+ #include "lp_bld_const.h"
+-- 

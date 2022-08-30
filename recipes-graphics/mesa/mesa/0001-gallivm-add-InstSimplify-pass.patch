@@ -1,0 +1,29 @@
+From 1d018bc7fde744b5fc71108887a51e5bfaff8776 Mon Sep 17 00:00:00 2001
+From: Roland Scheidegger <sroland@vmware.com>
+Date: Wed, 2 Sep 2020 04:04:50 +0200
+Subject: [PATCH] gallivm: add InstSimplify pass
+
+This is the recommended replacement for the removed ConstantPropagation
+pass, and llvm now added c binding for it.
+
+Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/6585>
+---
+ src/gallium/auxiliary/gallivm/lp_bld_init.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/gallium/auxiliary/gallivm/lp_bld_init.c b/src/gallium/auxiliary/gallivm/lp_bld_init.c
+index 1eb4892a4a6c..fe3ef4a48df5 100644
+--- a/src/gallium/auxiliary/gallivm/lp_bld_init.c
++++ b/src/gallium/auxiliary/gallivm/lp_bld_init.c
+@@ -171,6 +171,8 @@ create_pass_manager(struct gallivm_state *gallivm)
+       LLVMAddPromoteMemoryToRegisterPass(gallivm->passmgr);
+ #if LLVM_VERSION_MAJOR <= 11
+       LLVMAddConstantPropagationPass(gallivm->passmgr);
++#else
++      LLVMAddInstructionSimplifyPass(gallivm->passmgr);
+ #endif
+       LLVMAddInstructionCombiningPass(gallivm->passmgr);
+       LLVMAddGVNPass(gallivm->passmgr);
+-- 
+GitLab
+
