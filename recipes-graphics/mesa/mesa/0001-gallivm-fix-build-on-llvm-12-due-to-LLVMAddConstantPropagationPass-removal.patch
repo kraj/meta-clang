@@ -1,22 +1,25 @@
-From 52cac068621a5998f486f8e44f9c2d9d045d1c31 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>
+From db4a83e137128582fcc2ec3ae726bdde995a7ad3 Mon Sep 17 00:00:00 2001
+From: OpenEmbedded <oe.patch@oe>
 Date: Mon, 31 Aug 2020 21:59:39 -0400
 Subject: [PATCH] gallivm: fix build on LLVM 12 due to
+
+From: =?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>
  LLVMAddConstantPropagationPass removal
 
 Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/3465
 Cc: 20.1 20.2 <mesa-stable@lists.freedesktop.org>
 Reviewed-by: Dave Airlie <airlied@redhat.com>
 Part-of: <https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/6531>
+
 ---
  src/gallium/auxiliary/gallivm/lp_bld_init.c | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/src/gallium/auxiliary/gallivm/lp_bld_init.c b/src/gallium/auxiliary/gallivm/lp_bld_init.c
-index 6ebc9ebf25a3..1eb4892a4a6c 100644
+index efc0096..31ebd8c 100644
 --- a/src/gallium/auxiliary/gallivm/lp_bld_init.c
 +++ b/src/gallium/auxiliary/gallivm/lp_bld_init.c
-@@ -169,7 +169,9 @@ create_pass_manager(struct gallivm_state *gallivm)
+@@ -168,7 +168,9 @@ create_pass_manager(struct gallivm_state *gallivm)
         */
        LLVMAddReassociatePass(gallivm->passmgr);
        LLVMAddPromoteMemoryToRegisterPass(gallivm->passmgr);
@@ -25,7 +28,4 @@ index 6ebc9ebf25a3..1eb4892a4a6c 100644
 +#endif
        LLVMAddInstructionCombiningPass(gallivm->passmgr);
        LLVMAddGVNPass(gallivm->passmgr);
-    }
--- 
-GitLab
-
+ #if GALLIVM_HAVE_CORO
