@@ -17,7 +17,7 @@ TUNE_CCARGS:remove = "-no-integrated-as"
 
 DEPENDS += "ninja-native virtual/crypt"
 DEPENDS:append:class-native = " clang-native libxcrypt-native"
-DEPENDS:append:class-nativesdk = " clang-native nativesdk-libxcrypt"
+DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_ARCH} nativesdk-libxcrypt"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
