@@ -47,10 +47,6 @@ TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", 
 # Clang does not support octeontx2 processor
 TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2"
 
-# LLD does not yet support relaxation for RISCV e.g. https://reviews.freebsd.org/D25210
-TUNE_CCARGS:append:toolchain-clang:riscv32 = " -mno-relax"
-TUNE_CCARGS:append:toolchain-clang:riscv64 = " -mno-relax"
-
 # Reconcile some ppc anamolies
 TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float -mno-spe"
 TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64"
