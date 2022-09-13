@@ -45,6 +45,7 @@ SRC_URI = "\
     file://0033-compiler-rt-Enable-__int128-for-ppc32.patch \
     file://0034-llvm-Do-not-use-cmake-infra-to-detect-libzstd.patch \
     file://0035-Revert-MIPS-compiler-rt-Fix-stat-struct-s-size-for-O.patch \
+    file://0001-llvm-objdump-Change-printSymbolVersionDependency-to-.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
