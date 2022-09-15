@@ -1,4 +1,4 @@
-From 640b23ccdd2e8605a2cfa940f93619f02e2616f7 Mon Sep 17 00:00:00 2001
+From 4467235fed310d0c78cc71307ebd270136ed47d6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 9 Mar 2022 16:28:16 -0800
 Subject: [PATCH] compiler-rt: Enable __int128 for ppc32

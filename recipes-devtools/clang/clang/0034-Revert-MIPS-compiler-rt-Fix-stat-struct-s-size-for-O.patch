@@ -1,4 +1,4 @@
-From 2d3ac2fb6e291cd11ca482fa4843565c04d414f4 Mon Sep 17 00:00:00 2001
+From 61d5f470438c780f3456a98d4d3da28e0174f450 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 11 Sep 2022 16:15:36 -0700
 Subject: [PATCH] Revert "[MIPS][compiler-rt] Fix stat struct's size for O32
