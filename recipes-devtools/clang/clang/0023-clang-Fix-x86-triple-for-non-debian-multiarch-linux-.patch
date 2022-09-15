@@ -1,4 +1,4 @@
-From a9a28d1133089b29761a8a77910f5c5326be054c Mon Sep 17 00:00:00 2001
+From f076c8268225f64e4f4b988bd98009ad65b826a4 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 19 May 2021 17:56:03 -0700
 Subject: [PATCH] clang: Fix x86 triple for non-debian multiarch linux distros
