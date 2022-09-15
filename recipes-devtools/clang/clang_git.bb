@@ -273,7 +273,7 @@ PROVIDES:append:class-native = " llvm-native"
 
 BBCLASSEXTEND = "native nativesdk"
 
-RDEPENDS:lldb += "${PN}-lldb-python"
+RDEPENDS:lldb += "${PN}-lldb-python lldb-server"
 
 FILES:${PN}-lldb-python = "${libdir}/python*/site-packages/lldb/*"
 
