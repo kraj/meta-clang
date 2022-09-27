@@ -41,6 +41,9 @@ SRC_URI = "\
     file://0030-AsmMatcherEmitter-sort-ClassInfo-lists-by-name-as-we.patch \
     file://0031-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
     file://0032-clang-Switch-defaults-to-dwarf-5-debug-info-on-Linux.patch \
+    file://0033-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
+    file://0034-CMake-Installable-find-modules-for-terminfo-and-libf.patch \
+    file://0035-llvm-Do-not-use-standard-search-paths-in-find_librar.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
