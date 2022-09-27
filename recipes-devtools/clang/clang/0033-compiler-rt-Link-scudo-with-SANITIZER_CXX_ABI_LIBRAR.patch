@@ -1,0 +1,28 @@
+From 08c592b1850c9b0c17a9f4163e93682a9f83d7f7 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 19 May 2021 21:49:18 -0700
+Subject: [PATCH] compiler-rt: Link scudo with SANITIZER_CXX_ABI_LIBRARIES
+
+If SANITIZER_CXX_ABI_LIBRARIES is set then link scudo with it, this
+fixes build time errors like
+
+projects/compiler-rt/lib/sanitizer_common/CMakeFiles/RTSanitizerCommonLibc.armhf.dir/sanitizer_posix_libcdep.cpp.o: in function `__sanitizer::UnsetAlternateSignalStack()':
+| sanitizer_posix_libcdep.cpp:(.text+0x3d2): undefined reference to `__cxa_guard_acquire'
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ compiler-rt/lib/scudo/CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/compiler-rt/lib/scudo/CMakeLists.txt b/compiler-rt/lib/scudo/CMakeLists.txt
+index c50ea0233fae..ddc1128b8ed8 100644
+--- a/compiler-rt/lib/scudo/CMakeLists.txt
++++ b/compiler-rt/lib/scudo/CMakeLists.txt
+@@ -12,6 +12,7 @@ append_list_if(COMPILER_RT_HAS_LIBDL dl SCUDO_MINIMAL_DYNAMIC_LIBS)
+ append_list_if(COMPILER_RT_HAS_LIBRT rt SCUDO_MINIMAL_DYNAMIC_LIBS)
+ append_list_if(COMPILER_RT_HAS_LIBPTHREAD pthread SCUDO_MINIMAL_DYNAMIC_LIBS)
+ append_list_if(COMPILER_RT_HAS_LIBLOG log SCUDO_MINIMAL_DYNAMIC_LIBS)
++append_list_if(SANITIZER_CXX_ABI_LIBRARIES ${SANITIZER_CXX_ABI_LIBRARIES} SCUDO_MINIMAL_DYNAMIC_LIBS)
+ append_list_if(COMPILER_RT_HAS_OMIT_FRAME_POINTER_FLAG -fno-omit-frame-pointer
+                SCUDO_CFLAGS)
+ 

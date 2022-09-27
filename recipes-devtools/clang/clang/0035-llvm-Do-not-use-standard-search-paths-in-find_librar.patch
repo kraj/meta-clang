@@ -1,0 +1,27 @@
+From 78560720a00c1a9b9e8ab416c4cae0eb1f2d1352 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 27 Sep 2022 12:03:15 -0700
+Subject: [PATCH] llvm: Do not use standard search paths in find_library for
+ ncurses
+
+This helps it find it in yocto sysroots
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ llvm/cmake/modules/FindTerminfo.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/llvm/cmake/modules/FindTerminfo.cmake b/llvm/cmake/modules/FindTerminfo.cmake
+index 65edb80fa69a..a58180be8926 100644
+--- a/llvm/cmake/modules/FindTerminfo.cmake
++++ b/llvm/cmake/modules/FindTerminfo.cmake
+@@ -11,7 +11,7 @@
+ # Additionally, the following import target will be defined:
+ # Terminfo::terminfo
+ 
+-find_library(Terminfo_LIBRARIES NAMES terminfo tinfo curses ncurses ncursesw)
++find_library(Terminfo_LIBRARIES NAMES terminfo tinfo curses ncurses ncursesw NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
+ 
+ if(Terminfo_LIBRARIES)
+   include(CMakePushCheckState)
