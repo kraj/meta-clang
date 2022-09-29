@@ -17,7 +17,7 @@ PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https"
-SRCREV = "475ad59c48ba3a85bb58283ea24d41f94d8d8ed6"
+SRCREV = "a277ec42102c463d656df8f64eb2f7e87e322210"
 
 S = "${WORKDIR}/git"
 
