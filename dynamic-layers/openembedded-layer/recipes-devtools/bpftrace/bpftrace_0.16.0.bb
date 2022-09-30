@@ -13,15 +13,26 @@ DEPENDS += "bison-native \
             libbpf \
             "
 
+DEPENDS += "${@bb.utils.contains('PTEST_ENABLED', '1', 'gtest xxd-native', '', d)}"
 PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
+RDEPENDS:${PN}-ptest += "bash"
 
-SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https"
+SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
+           file://run-ptest \
+"
 SRCREV = "a277ec42102c463d656df8f64eb2f7e87e322210"
 
 S = "${WORKDIR}/git"
 
-inherit cmake
+inherit cmake ptest
+
+do_install_ptest() {
+    install -d ${D}${PTEST_PATH}/tests
+    install -m 755 ${B}/tests/bpftrace_test ${D}${PTEST_PATH}/tests
+    cp -rf ${B}/tests/runtime* ${D}${PTEST_PATH}/tests
+    cp -rf ${B}/tests/test* ${D}${PTEST_PATH}/tests
+}
 
 def llvm_major_version(d):
     pvsplit = d.getVar('LLVMVERSION').split('.')
@@ -33,9 +44,9 @@ EXTRA_OECMAKE = " \
     -DCMAKE_ENABLE_EXPORTS=1 \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_REQUESTED_VERSION=${LLVM_MAJOR_VERSION} \
-    -DBUILD_TESTING=OFF \
     -DENABLE_MAN=OFF \
 "
+EXTRA_OECMAKE += "${@bb.utils.contains('PTEST_ENABLED', '1', '-DBUILD_TESTING=ON', '-DBUILD_TESTING=OFF', d)}"
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
 COMPATIBLE_HOST:libc-musl = "null"
