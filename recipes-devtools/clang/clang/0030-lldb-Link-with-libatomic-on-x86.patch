@@ -1,4 +1,4 @@
-From ab07c6a2b3c301560fc57d517db4b05eb11b672f Mon Sep 17 00:00:00 2001
+From d63ad7dc689b4c6e7d30614bc70ab43f4c50c62c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 8 Feb 2022 01:31:26 -0800
 Subject: [PATCH] lldb: Link with libatomic on x86

@@ -1,4 +1,4 @@
-From cecc6038935ef72e2b7a934af4a44f58946e40b2 Mon Sep 17 00:00:00 2001
+From e83ac76ea900deb1b12ad97e1241f67c305a9c04 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 19 May 2021 17:32:13 -0700
 Subject: [PATCH] compiler-rt: Do not use backtrace APIs on non-glibc linux

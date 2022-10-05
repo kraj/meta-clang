@@ -1,4 +1,4 @@
-From 84b97ef7de5f051286d6fe8715eab16cff42206e Mon Sep 17 00:00:00 2001
+From c9b225aeeb3d2b1d98d823c9a6c8afc613fc932b Mon Sep 17 00:00:00 2001
 From: Hongxu Jia <hongxu.jia@windriver.com>
 Date: Mon, 25 Jan 2021 16:14:35 +0800
 Subject: [PATCH] For x86_64, set Yocto based GCC install search path
