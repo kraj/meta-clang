@@ -266,7 +266,8 @@ do_install:append:class-nativesdk () {
     rm -rf ${D}${datadir}/llvm
 }
 
-PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python libclang lldb lldb-server liblldb"
+PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python ${PN}-libclang-cpp ${PN}-tidy ${PN}-format ${PN}-tools \
+             libclang lldb lldb-server liblldb llvm-linker-tools"
 
 PROVIDES += "llvm llvm${PV}"
 PROVIDES:append:class-native = " llvm-native"
@@ -275,7 +276,64 @@ BBCLASSEXTEND = "native nativesdk"
 
 RDEPENDS:lldb += "${PN}-lldb-python lldb-server"
 
+RRECOMMENDS:${PN}-tidy += "${PN}-tools"
+
+FILES:llvm-linker-tools = "${libdir}/LLVMgold* ${libdir}/libLTO.so.* ${libdir}/LLVMPolly*"
+
+FILES:${PN}-libclang-cpp = "${libdir}/libclang-cpp.so.*"
+
 FILES:${PN}-lldb-python = "${libdir}/python*/site-packages/lldb/*"
+
+FILES:${PN}-tidy = "${bindir}/*clang-tidy*"
+FILES:${PN}-format = "${bindir}/*clang-format*"
+
+FILES:${PN}-tools = "${bindir}/analyze-build \
+  ${bindir}/c-index-test \
+  ${bindir}/clang-apply-replacements \
+  ${bindir}/clang-change-namespace \
+  ${bindir}/clang-check \
+  ${bindir}/clang-cl \
+  ${bindir}/clang-doc \
+  ${bindir}/clang-extdef-mapping \
+  ${bindir}/clang-include-fixer \
+  ${bindir}/clang-linker-wrapper \
+  ${bindir}/clang-move \
+  ${bindir}/clang-nvlink-wrapper \
+  ${bindir}/clang-offload-bundler \
+  ${bindir}/clang-offload-packager \
+  ${bindir}/clang-offload-wrapper \
+  ${bindir}/clang-pseudo \
+  ${bindir}/clang-query \
+  ${bindir}/clang-refactor \
+  ${bindir}/clang-rename \
+  ${bindir}/clang-reorder-fields \
+  ${bindir}/clang-repl \
+  ${bindir}/clang-scan-deps \
+  ${bindir}/diagtool \
+  ${bindir}/find-all-symbols \
+  ${bindir}/hmaptool \
+  ${bindir}/hwasan_symbolize \
+  ${bindir}/intercept-build \
+  ${bindir}/modularize \
+  ${bindir}/pp-trace \
+  ${bindir}/sancov \
+  ${bindir}/scan-build \
+  ${bindir}/scan-build-py \
+  ${bindir}/scan-view \
+  ${bindir}/split-file \
+  ${libdir}/libscanbuild/* \
+  ${libdir}/libear/* \
+  ${libexecdir}/analyze-c++ \
+  ${libexecdir}/analyze-cc \
+  ${libexecdir}/c++-analyzer \
+  ${libexecdir}/ccc-analyzer \
+  ${libexecdir}/intercept-c++ \
+  ${libexecdir}/intercept-cc \
+  ${datadir}/scan-build/* \
+  ${datadir}/scan-view/* \
+  ${datadir}/opt-viewer/* \
+  ${datadir}/clang/* \
+"
 
 FILES:${PN} += "\
   ${libdir}/BugpointPasses.so \
@@ -291,6 +349,9 @@ FILES:${PN} += "\
 
 FILES:lldb = "\
   ${bindir}/lldb \
+  ${bindir}/lldb-argdumper \
+  ${bindir}/lldb-instr \
+  ${bindir}/lldb-vscode \
 "
 
 FILES:lldb-server = "\
@@ -307,6 +368,7 @@ FILES:${PN}-libllvm =+ "\
   ${libdir}/libLLVM-${MAJOR_VER}.so \
   ${libdir}/libLLVM-${MAJOR_VER}git.so \
   ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}git.so \
+  ${libdir}/libRemarks.so.* \
 "
 
 FILES:libclang = "\
