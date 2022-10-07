@@ -15,7 +15,6 @@ STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
 READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
 
 LTO:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
-PACKAGE_DEBUG_SPLIT_STYLE:toolchain-clang = "debug-without-src"
 
 COMPILER_RT ??= ""
 COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
