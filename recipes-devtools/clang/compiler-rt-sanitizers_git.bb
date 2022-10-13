@@ -15,11 +15,17 @@ LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee
 
 TUNE_CCARGS_remove = "-no-integrated-as"
 
-RUNTIME = "llvm"
+#compiler-rt-sanitizers will not compile for arm32 or arm64 based platforms without adding -fPIC
+CXXFLAGS:append = " -fPIC"
+
+#set RUNTIME variable according to documention to gnu as default value
+RUNTIME ?= "gnu"
 
 DEPENDS += "ninja-native clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc virtual/${TARGET_PREFIX}compilerlibs"
 DEPENDS_append_libc-glibc = " libxcrypt"
 DEPENDS_append_class-nativesdk = " clang-native nativesdk-libxcrypt"
+
+
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
@@ -95,3 +101,5 @@ ALLOW_EMPTY_${PN}-dev = "1"
 
 TOOLCHAIN_forcevariable = "clang"
 SYSROOT_DIRS_append_class-target = " ${nonarch_libdir}"
+
+INSANE_SKIP += "${@ bb.utils.contains('CXXFLAGS', '-fPIC', 'textrel', '', d)}"
