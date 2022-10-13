@@ -71,7 +71,7 @@ do provide crt files, they have not been yet intergrated into toolchain
 
 # Default C++ Standard Library Switch
 
-Using RUNTIME bariable will select which C++ runtime is used, however it can be overridden
+Using RUNTIME variable will select which C++ runtime is used, however it can be overridden
 if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `RUNTIME` is
 best fit. e.g. below we select LLVM C++ as default C++ runtime.
 
