@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/iovisor/bcc"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=e3fc50a88d0a364313df4b21ef20c29e"
 
-inherit cmake python3native manpages
+inherit cmake python3native manpages ptest
 
 DEPENDS += "bison-native \
             flex-native \
@@ -20,12 +20,15 @@ LUAJIT:powerpc64 = ""
 LUAJIT:riscv64 = ""
 
 RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
+RDEPENDS:${PN}-ptest = "cmake python3 python3-distutils python3-netaddr python3-pyroute2"
 
 SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://0001-python-CMakeLists.txt-Remove-check-for-host-etc-debi.patch \
            file://0001-tools-trace.py-Fix-failing-to-exit.patch \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
            file://0001-Vendor-just-enough-extra-headers-to-allow-libbpf-to-.patch \
+           file://run-ptest \
+           file://ptest_wrapper.sh \
            "
 
 SRCREV = "711f03024d776d174874b1f833dac0597f22a49a"
@@ -52,6 +55,14 @@ EXTRA_OECMAKE = " \
 do_install:append() {
         sed -e 's@#!/usr/bin/python@#!/usr/bin/env python3@g' \
             -i $(find ${D}${datadir}/${PN} -type f)
+}
+
+do_install_ptest() {
+    install -d ${D}${PTEST_PATH}/tests/cc
+    install ${B}/tests/cc/test_libbcc_no_libbpf ${B}/tests/cc/libusdt_test_lib.so ${D}${PTEST_PATH}/tests/cc
+    cp -rf ${S}/tests/python ${D}${PTEST_PATH}/tests/python
+    install ${WORKDIR}/ptest_wrapper.sh ${D}${PTEST_PATH}/tests
+    install ${S}/examples/networking/simulation.py ${D}${PTEST_PATH}/tests/python
 }
 
 FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}"
