@@ -15,7 +15,6 @@ DEPENDS += "bison-native \
 
 PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
-RDEPENDS:${PN}-ptest += "bash"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://0001-Detect-new-BTF-api-btf_dump__new-btf_dump__new_v0_6_.patch \
@@ -39,7 +38,7 @@ PACKAGECONFIG[tests] = "-DBUILD_TESTING=ON,-DBUILD_TESTING=OFF,gtest xxd-native"
 do_install_ptest() {
     if [ -e ${B}/tests/bpftrace_test ]; then
         install -Dm 755 ${B}/tests/bpftrace_test ${D}${PTEST_PATH}/tests/bpftrace_test
-        cp -rf ${B}/tests/runtime* ${D}${PTEST_PATH}/tests
+        cp -rf ${B}/tests/runtime ${D}${PTEST_PATH}/tests
         cp -rf ${B}/tests/test* ${D}${PTEST_PATH}/tests
     fi
 }
