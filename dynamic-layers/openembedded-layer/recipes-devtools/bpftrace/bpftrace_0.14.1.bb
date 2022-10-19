@@ -12,7 +12,6 @@ DEPENDS += "bison-native \
             libcereal \
             libbpf \
             "
-DEPENDS += "${@bb.utils.contains('PTEST_ENABLED', '1', 'gtest xxd-native', '', d)}"
 
 PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
@@ -29,11 +28,20 @@ S = "${WORKDIR}/git"
 
 inherit cmake ptest
 
+PACKAGECONFIG ?= "${@bb.utils.contains('PTEST_ENABLED', '1', 'tests', '', d)}"
+
+# Clang-15.x crashes compiling some usdt tests
+# see https://github.com/llvm/llvm-project/issues/58477
+PACKAGECONFIG:remove:riscv64 = "tests"
+
+PACKAGECONFIG[tests] = "-DBUILD_TESTING=ON,-DBUILD_TESTING=OFF,gtest xxd-native"
+
 do_install_ptest() {
-    install -d ${D}${PTEST_PATH}/tests
-    install -m 755 ${B}/tests/bpftrace_test ${D}${PTEST_PATH}/tests
-    cp -rf ${B}/tests/runtime* ${D}${PTEST_PATH}/tests
-    cp -rf ${B}/tests/test* ${D}${PTEST_PATH}/tests
+    if [ -e ${B}/tests/bpftrace_test ]; then
+        install -Dm 755 ${B}/tests/bpftrace_test ${D}${PTEST_PATH}/tests/bpftrace_test
+        cp -rf ${B}/tests/runtime* ${D}${PTEST_PATH}/tests
+        cp -rf ${B}/tests/test* ${D}${PTEST_PATH}/tests
+    fi
 }
 
 def llvm_major_version(d):
@@ -48,7 +56,6 @@ EXTRA_OECMAKE = " \
     -DLLVM_REQUESTED_VERSION=${LLVM_MAJOR_VERSION} \
     -DENABLE_MAN=OFF \
 "
-EXTRA_OECMAKE += "${@bb.utils.contains('PTEST_ENABLED', '1', '-DBUILD_TESTING=ON', '-DBUILD_TESTING=OFF', d)}"
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
 COMPATIBLE_HOST:libc-musl = "null"
