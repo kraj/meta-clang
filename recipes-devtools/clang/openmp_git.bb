@@ -12,6 +12,8 @@ TOOLCHAIN = "clang"
 
 LIC_FILES_CHKSUM = "file://openmp/LICENSE.TXT;md5=d75288d1ce0450b28b8d58a284c09c79"
 
+LDFLAGS:append = " -fuse-ld=lld"
+
 inherit cmake pkgconfig perlnative
 
 DEPENDS += "elfutils libffi clang"
