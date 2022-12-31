@@ -45,6 +45,7 @@ SRC_URI = "\
     file://0033-llvm-Do-not-use-cmake-infra-to-detect-libzstd.patch \
     file://0034-Revert-MIPS-compiler-rt-Fix-stat-struct-s-size-for-O.patch \
     file://0035-cmake-Enable-64bit-off_t-on-32bit-glibc-systems.patch \
+    file://0036-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
