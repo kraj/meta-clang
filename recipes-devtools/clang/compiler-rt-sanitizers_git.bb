@@ -27,6 +27,8 @@ HF = ""
 HF:class-target = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
 
+CXXFLAGS:append:libc-musl = " -D_LARGEFILE64_SOURCE"
+
 OECMAKE_TARGET_COMPILE = "compiler-rt"
 OECMAKE_TARGET_INSTALL = "install-compiler-rt install-compiler-rt-headers"
 OECMAKE_SOURCEPATH = "${S}/llvm"
