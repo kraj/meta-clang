@@ -43,7 +43,7 @@ SRC_URI = "\
     file://0031-clang-exclude-openembedded-distributions-from-settin.patch \
     file://0032-compiler-rt-Enable-__int128-for-ppc32.patch \
     file://0033-llvm-Do-not-use-cmake-infra-to-detect-libzstd.patch \
-    file://0034-Revert-MIPS-compiler-rt-Fix-stat-struct-s-size-for-O.patch \
+    file://0034-compiler-rt-Fix-stat-struct-s-size-for-O32-ABI.patch \
     file://0035-cmake-Enable-64bit-off_t-on-32bit-glibc-systems.patch \
     file://0036-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
     "
