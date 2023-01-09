@@ -44,6 +44,8 @@ FILES_SOLIBSDEV = ""
 FILES:${PN} += "${libdir}/lib*${SOLIBSDEV}"
 FILES:${PN}-libomptarget = "${libdir}/libomptarget-*.bc"
 INSANE_SKIP:${PN} = "dev-so"
+# Currently the static libraries contain buildpaths
+INSANE_SKIP:${PN}-staticdev += "buildpaths"
 
 COMPATIBLE_HOST:mips64 = "null"
 COMPATIBLE_HOST:riscv32 = "null"
