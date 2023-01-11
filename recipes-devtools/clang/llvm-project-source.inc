@@ -8,7 +8,6 @@ RM_WORK_EXCLUDE += "${PN}"
 inherit nopackages
 
 PN = "llvm-project-source-${PV}"
-
 WORKDIR = "${TMPDIR}/work-shared/llvm-project-source-${PV}-${PR}"
 SSTATE_SWSPEC = "sstate:llvm-project-source::${PV}:${PR}::${SSTATE_VERSION}:"
 
@@ -18,6 +17,13 @@ STAMPCLEAN = "${STAMPS_DIR}/work-shared/llvm-project-source-${PV}-*"
 INHIBIT_DEFAULT_DEPS = "1"
 DEPENDS = ""
 PACKAGES = ""
+TARGET_ARCH = "allarch"
+TARGET_AS_ARCH = "none"
+TARGET_CC_ARCH = "none"
+TARGET_LD_ARCH = "none"
+TARGET_OS = "linux"
+baselib = "lib"
+PACKAGE_ARCH = "all"
 
 # space separated list of additional distro vendor values we want to support e.g.
 # "yoe webos" or "-yoe -webos" '-' is optional
