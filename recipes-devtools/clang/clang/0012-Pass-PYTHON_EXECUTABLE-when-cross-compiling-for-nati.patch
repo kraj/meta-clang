@@ -1,4 +1,4 @@
-From e47a0db499655d06965e517f2aca297fb9c7ef8d Mon Sep 17 00:00:00 2001
+From 443b2d8bad07bd3404a591c58e8ae65b26127bbd Mon Sep 17 00:00:00 2001
 From: Anuj Mittal <anuj.mittal@intel.com>
 Date: Thu, 26 Dec 2019 12:56:16 -0800
 Subject: [PATCH] Pass PYTHON_EXECUTABLE when cross compiling for native build
@@ -10,14 +10,14 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/llvm/cmake/modules/CrossCompile.cmake b/llvm/cmake/modules/CrossCompile.cmake
-index 52b893dd0214..4399cec3e19a 100644
+index a46a0fd630b0..55f6dba2901a 100644
 --- a/llvm/cmake/modules/CrossCompile.cmake
 +++ b/llvm/cmake/modules/CrossCompile.cmake
-@@ -84,6 +84,7 @@ function(llvm_create_cross_target project_name target_name toolchain buildtype)
-         -DLLVM_ENABLE_RUNTIMES="${llvm_enable_runtimes_arg}"
-         ${external_project_source_dirs}
+@@ -86,6 +86,7 @@ function(llvm_create_cross_target project_name target_name toolchain buildtype)
          -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN="${LLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN}"
-+	-DPYTHON_EXECUTABLE="${PYTHON_EXECUTABLE}"
+         -DLLVM_INCLUDE_BENCHMARKS=OFF
+         -DLLVM_INCLUDE_TESTS=OFF
++        -DPYTHON_EXECUTABLE="${PYTHON_EXECUTABLE}"
          ${build_type_flags} ${linker_flag} ${external_clang_dir}
          ${ARGN}
      WORKING_DIRECTORY ${${project_name}_${target_name}_BUILD}
