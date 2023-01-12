@@ -309,7 +309,6 @@ FILES:${PN}-tools = "${bindir}/analyze-build \
   ${bindir}/clang-nvlink-wrapper \
   ${bindir}/clang-offload-bundler \
   ${bindir}/clang-offload-packager \
-  ${bindir}/clang-offload-wrapper \
   ${bindir}/clang-pseudo \
   ${bindir}/clang-query \
   ${bindir}/clang-refactor \
@@ -422,7 +421,7 @@ clang_sysroot_preprocess() {
 	# LLDTargets.cmake references the lld executable(!) that some modules/plugins link to
 	install -d ${SYSROOT_DESTDIR}${bindir}
 	for f in lld diagtool clang-${MAJOR_VER} clang-format clang-offload-packager \
-            clang-offload-bundler clang-offload-wrapper clang-scan-deps clang-repl \
+            clang-offload-bundler clang-scan-deps clang-repl \
             clang-rename clang-refactor clang-check clang-extdef-mapping clang-apply-replacements \
             clang-reorder-fields clang-tidy clang-change-namespace clang-doc clang-include-fixer \
             find-all-symbols clang-move clang-query pp-trace clang-pseudo clangd modularize
