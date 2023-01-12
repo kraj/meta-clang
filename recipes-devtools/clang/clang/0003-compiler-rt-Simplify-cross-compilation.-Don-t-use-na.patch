@@ -1,4 +1,4 @@
-From 0980511a0eba734da6112c4416a8a086a13c8c82 Mon Sep 17 00:00:00 2001
+From 422ca329c7174d89bcc896e6434dcaf4cf195c64 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:11:45 -0700
 Subject: [PATCH] compiler-rt: Simplify cross-compilation. Don't use
@@ -20,24 +20,24 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/compiler-rt/CMakeLists.txt b/compiler-rt/CMakeLists.txt
-index 62737735695f..a2c7c3a786ab 100644
+index 8a13508fcb98..2c2bda5befa5 100644
 --- a/compiler-rt/CMakeLists.txt
 +++ b/compiler-rt/CMakeLists.txt
-@@ -68,7 +68,16 @@ set(COMPILER_RT_BAREMETAL_BUILD OFF CACHE BOOL
-   "Build for a bare-metal target.")
+@@ -89,7 +89,16 @@ if (COMPILER_RT_STANDALONE_BUILD)
+   set(CMAKE_CXX_EXTENSIONS NO)
  
- if (COMPILER_RT_STANDALONE_BUILD)
--  load_llvm_config()
-+  find_package(LLVM REQUIRED)
-+  list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+   if (NOT LLVM_RUNTIMES_BUILD)
+-    load_llvm_config()
++    find_package(LLVM REQUIRED)
++    list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 +
-+  # Variables that AddLLVM.cmake depends on (included by AddCompilerRT)
-+  set(LLVM_TOOLS_BINARY_DIR "${LLVM_INSTALL_PREFIX}/bin")
-+  set(LLVM_LIBRARY_DIR "${LLVM_INSTALL_PREFIX}/lib")
++    # Variables that AddLLVM.cmake depends on (included by AddCompilerRT)
++    set(LLVM_TOOLS_BINARY_DIR "${LLVM_INSTALL_PREFIX}/bin")
++    set(LLVM_LIBRARY_DIR "${LLVM_INSTALL_PREFIX}/lib")
 +
-+  set(LLVM_LIBRARY_OUTPUT_INTDIR
-+    ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${LLVM_LIBDIR_SUFFIX})
++    set(LLVM_LIBRARY_OUTPUT_INTDIR
++      ${CMAKE_BINARY_DIR}/${CMAKE_CFG_INTDIR}/lib${LLVM_LIBDIR_SUFFIX})
 +
+   endif()
    if (TARGET intrinsics_gen)
      # Loading the llvm config causes this target to be imported so place it
-     # under the appropriate folder in an IDE.

@@ -1,4 +1,4 @@
-From 85855552afe94097eaaa0adf904d016af66b3424 Mon Sep 17 00:00:00 2001
+From b75d3ed8f09ee013809a4321ff21b3bfb7e4a467 Mon Sep 17 00:00:00 2001
 From: Maksim Kita <maksim-kita@yandex-team.ru>
 Date: Sun, 23 May 2021 10:27:29 +0000
 Subject: [PATCH] libunwind: Added unw_backtrace method
@@ -12,7 +12,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 19 insertions(+)
 
 diff --git a/libunwind/include/libunwind.h b/libunwind/include/libunwind.h
-index f878b46f0348..d922f84011ee 100644
+index d2ad5ab87122..d735d955aee2 100644
 --- a/libunwind/include/libunwind.h
 +++ b/libunwind/include/libunwind.h
 @@ -130,6 +130,7 @@ extern int unw_is_fpreg(unw_cursor_t *, unw_regnum_t) LIBUNWIND_AVAIL;
@@ -24,10 +24,10 @@ index f878b46f0348..d922f84011ee 100644
  extern unw_addr_space_t unw_local_addr_space;
  
 diff --git a/libunwind/src/libunwind.cpp b/libunwind/src/libunwind.cpp
-index b8b41ff25e54..ca7d9a01e631 100644
+index 0faea2b78570..14bf07d8f470 100644
 --- a/libunwind/src/libunwind.cpp
 +++ b/libunwind/src/libunwind.cpp
-@@ -338,7 +338,25 @@ void __unw_remove_dynamic_eh_frame_section(unw_word_t eh_frame_start) {
+@@ -349,7 +349,25 @@ void __unw_remove_dynamic_eh_frame_section(unw_word_t eh_frame_start) {
  #endif // defined(_LIBUNWIND_SUPPORT_DWARF_UNWIND)
  #endif // !defined(__USING_SJLJ_EXCEPTIONS__)
  

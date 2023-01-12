@@ -1,4 +1,4 @@
-From 0004f72d90c276ee934f39706bb101d6d738333f Mon Sep 17 00:00:00 2001
+From 1fb955d17bdc04aec9ac93e620dea87ede4718c6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 09:02:13 -0700
 Subject: [PATCH] clang: Prepend trailing '/' to sysroot
@@ -24,10 +24,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 69f5a4662732..7555466e7e2b 100644
+index 2a58f876a68d..c68a842b45e0 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -183,7 +183,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
+@@ -184,7 +184,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
    Multilibs = GCCInstallation.getMultilibs();
    SelectedMultilib = GCCInstallation.getMultilib();
    llvm::Triple::ArchType Arch = Triple.getArch();

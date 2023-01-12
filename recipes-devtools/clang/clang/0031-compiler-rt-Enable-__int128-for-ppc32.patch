@@ -1,4 +1,4 @@
-From c9784a9dff18bce24e68f8d5654c57c2345babff Mon Sep 17 00:00:00 2001
+From 14b9c872b5c07039a1638c299c916b3c0eeebf55 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 9 Mar 2022 16:28:16 -0800
 Subject: [PATCH] compiler-rt: Enable __int128 for ppc32
@@ -11,10 +11,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
-index ec668e294d6d..72556d2fc58e 100644
+index 5e2274d52256..70cd43c69fd3 100644
 --- a/compiler-rt/lib/builtins/CMakeLists.txt
 +++ b/compiler-rt/lib/builtins/CMakeLists.txt
-@@ -628,11 +628,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
+@@ -670,11 +670,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
  set(mips64el_SOURCES ${GENERIC_TF_SOURCES}
                       ${mips_SOURCES})
  
@@ -27,7 +27,7 @@ index ec668e294d6d..72556d2fc58e 100644
    ppc/divtc3.c
    ppc/fixtfdi.c
    ppc/fixunstfdi.c
-@@ -647,14 +645,15 @@ set(powerpc64_SOURCES
+@@ -689,14 +687,15 @@ set(powerpc64_SOURCES
  )
  # These routines require __int128, which isn't supported on AIX.
  if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "AIX")
@@ -45,8 +45,8 @@ index ec668e294d6d..72556d2fc58e 100644
 +set(powerpc64_SOURCES ${powerpc_SOURCES})
  
  set(riscv_SOURCES
-   riscv/save.S
-@@ -761,9 +760,9 @@ else ()
+   riscv/fp_mode.c
+@@ -809,9 +808,9 @@ else ()
          list(APPEND BUILTIN_CFLAGS_${arch} -fomit-frame-pointer -DCOMPILER_RT_ARMHF_TARGET)
        endif()
  
@@ -59,15 +59,15 @@ index ec668e294d6d..72556d2fc58e 100644
        endif()
  
 diff --git a/compiler-rt/lib/builtins/int_types.h b/compiler-rt/lib/builtins/int_types.h
-index 7a72de480676..9ee5a327b28a 100644
+index e94d3154c6d4..37b2cb43f932 100644
 --- a/compiler-rt/lib/builtins/int_types.h
 +++ b/compiler-rt/lib/builtins/int_types.h
 @@ -64,7 +64,7 @@ typedef union {
  } udwords;
  
  #if defined(__LP64__) || defined(__wasm__) || defined(__mips64) ||             \
--    defined(__riscv) || defined(_WIN64)
-+    defined(__riscv) || defined(_WIN64) || defined(__powerpc__)
+-    defined(__SIZEOF_INT128__) || defined(_WIN64)
++    defined(__SIZEOF_INT128__) || defined(_WIN64) || defined(__powerpc__)
  #define CRT_HAS_128BIT
  #endif
  

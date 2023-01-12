@@ -1,4 +1,4 @@
-From fde148342b7475a1d83cf270db1c912a22d950f7 Mon Sep 17 00:00:00 2001
+From a333802272d875cc580b4f67e28205dfb0d40d3f Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 12 Aug 2022 11:50:57 -0700
 Subject: [PATCH] llvm: Do not use cmake infra to detect libzstd
@@ -17,9 +17,11 @@ format
 Upstream-Status: Inappropriate [OE-Specific]
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- llvm/lib/Support/CMakeLists.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ llvm/lib/Support/CMakeLists.txt | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/llvm/lib/Support/CMakeLists.txt b/llvm/lib/Support/CMakeLists.txt
+index 4cbc3b79f3bb..08c4bfd5efc1 100644
 --- a/llvm/lib/Support/CMakeLists.txt
 +++ b/llvm/lib/Support/CMakeLists.txt
 @@ -22,7 +22,7 @@ if (HAS_WERROR_GLOBAL_CTORS)
@@ -40,7 +42,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  endif()
  
  if( MSVC OR MINGW )
-@@ -301,7 +301,7 @@ if(LLVM_ENABLE_ZLIB)
+@@ -292,7 +292,7 @@ if(LLVM_ENABLE_ZLIB)
      get_property(zlib_library TARGET ZLIB::ZLIB PROPERTY LOCATION)
    endif()
    get_library_name(${zlib_library} zlib_library)
@@ -49,7 +51,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  endif()
  
  if(LLVM_ENABLE_ZSTD)
-@@ -314,7 +314,7 @@ if(LLVM_ENABLE_ZSTD)
+@@ -305,7 +305,7 @@ if(LLVM_ENABLE_ZSTD)
      get_property(zstd_library TARGET ${zstd_target} PROPERTY LOCATION)
    endif()
    get_library_name(${zstd_library} zstd_library)

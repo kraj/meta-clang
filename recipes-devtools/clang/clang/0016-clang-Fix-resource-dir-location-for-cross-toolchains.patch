@@ -1,4 +1,4 @@
-From 96c42b814881a7548d3d6a74423bf47b85482ca9 Mon Sep 17 00:00:00 2001
+From 5e8f81f47c4e7f944c22900c7f388ec0e57a678e Mon Sep 17 00:00:00 2001
 From: Jim Broadus <jbroadus@xevo.com>
 Date: Thu, 26 Mar 2020 16:05:53 -0700
 Subject: [PATCH] clang: Fix resource dir location for cross toolchains
@@ -19,10 +19,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/Driver.cpp b/clang/lib/Driver/Driver.cpp
-index 3f29afd35971..45f2e0bede97 100644
+index a268f2fa8fc5..ab813044dc8c 100644
 --- a/clang/lib/Driver/Driver.cpp
 +++ b/clang/lib/Driver/Driver.cpp
-@@ -179,7 +179,13 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
+@@ -181,7 +181,13 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
      // With a static-library build of libclang, LibClangPath will contain the
      // path of the embedding binary, which for LLVM binaries will be in bin/.
      // ../lib gets us to lib/ in both cases.
@@ -34,6 +34,6 @@ index 3f29afd35971..45f2e0bede97 100644
 +      Dir = std::string(llvm::sys::path::parent_path(Dir));
 +    }
 +    P = Dir;
-     llvm::sys::path::append(P, Twine("lib") + CLANG_LIBDIR_SUFFIX, "clang",
-                             CLANG_VERSION_STRING);
+     llvm::sys::path::append(P, CLANG_INSTALL_LIBDIR_BASENAME, "clang",
+                             CLANG_VERSION_MAJOR_STRING);
    }
