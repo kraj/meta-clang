@@ -205,6 +205,15 @@ DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} python3 compiler-rt l
 RRECOMMENDS:${PN} = "binutils"
 RRECOMMENDS:${PN}:append:class-target = " libcxx-dev"
 
+# patch out build host paths for reproducibility
+do_compile:prepend:class-target() {
+    sed -i -e "s,${STAGING_DIR_NATIVE},,g" \
+        -e "s,${STAGING_DIR_TARGET},,g" \
+        -e "s,${S},,g"  \
+        -e "s,${B},,g" \
+        ${B}/tools/llvm-config/BuildVariables.inc
+}
+
 do_install:append() {
     rm -rf ${D}${libdir}/python*/site-packages/six.py
 }
@@ -231,6 +240,9 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
         llvm-addr2line llvm-dwp llvm-size llvm-strings llvm-cov; do
         ln -sf $t ${D}${bindir}/${TARGET_PREFIX}$t
     done
+
+    # reproducibility
+    sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
 }
 
 do_install:append:class-native () {
