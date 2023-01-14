@@ -31,7 +31,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://ptest_wrapper.sh \
            "
 
-SRCREV = "711f03024d776d174874b1f833dac0597f22a49a"
+SRCREV = "504180036f2e928181bc946572908f0d3aa25fa6"
 
 PV .= "+git${SRCPV}"
 
