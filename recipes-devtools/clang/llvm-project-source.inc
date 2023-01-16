@@ -86,3 +86,5 @@ python add_distro_vendor() {
 }
 
 do_patch[postfuncs] += "add_distro_vendor"
+do_create_spdx[depends] += "${PN}:do_patch"
+
