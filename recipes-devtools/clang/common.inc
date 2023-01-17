@@ -44,6 +44,7 @@ SRC_URI = "\
     file://0033-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
     file://0034-CMake-Installable-find-modules-for-terminfo-and-libf.patch \
     file://0035-llvm-Do-not-use-standard-search-paths-in-find_librar.patch \
+    file://0036-libc-LWG2993-reference_wrapper-T-conversion-from-U.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
