@@ -22,7 +22,7 @@ This is due to the fact that currently the cmake scripts look for target
 binaries in sysroot. Work around this by not exporting the target binaries in
 Exports-* cmake files.
 
-Upstream-Status: Innapropriate [oe-specific]
+Upstream-Status: Inappropriate [oe-specific]
 
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 ---
