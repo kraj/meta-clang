@@ -26,7 +26,7 @@ Test: flash blueline factory image with assertions enabled in
 Change-Id: I0283be33563a3301ce5b09bde41105a20f91086c
 
 https://android.googlesource.com/platform/system/core/+/fbb9535aaea5ae4011f3c3edf4c00b27452f57ec
-Upstream-Status: Backport(commit fbb9535aaea5ae4011f3c3edf4c00b27452f57ec)
+Upstream-Status: Backport [commit fbb9535aaea5ae4011f3c3edf4c00b27452f57ec]
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 
 --- git/system/core/fastboot/fastboot.cpp	2021-05-28 09:24:15.583963227 +0000
