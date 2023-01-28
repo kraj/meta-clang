@@ -60,6 +60,7 @@ EXTRA_OECMAKE += "\
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
                   -DLLVM_ENABLE_RTTI=ON \
                   -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON \
+                  -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON \
                   -DLIBCXXABI_INCLUDE_TESTS=OFF \
                   -DLIBCXXABI_ENABLE_SHARED=ON \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
