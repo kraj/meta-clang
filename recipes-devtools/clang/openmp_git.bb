@@ -32,7 +32,7 @@ PACKAGECONFIG ?= "ompt-tools offloading-plugin"
 PACKAGECONFIG:remove:arm = "ompt-tools offloading-plugin"
 PACKAGECONFIG:remove:powerpc = "ompt-tools offloading-plugin"
 
-PACKAGECONFIG:append:mips = " no-atomics"
+PACKAGECONFIG:append:mipsarcho32 = " no-atomics"
 
 PACKAGECONFIG[ompt-tools] = "-DOPENMP_ENABLE_OMPT_TOOLS=ON,-DOPENMP_ENABLE_OMPT_TOOLS=OFF,"
 PACKAGECONFIG[aliases] = "-DLIBOMP_INSTALL_ALIASES=ON,-DLIBOMP_INSTALL_ALIASES=OFF,"
