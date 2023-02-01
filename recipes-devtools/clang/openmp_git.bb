@@ -2,7 +2,7 @@
 # Released under the MIT license (see COPYING.MIT for the terms)
 
 DESCRIPTION = "LLVM based C/C++ compiler Runtime"
-HOMEPAGE = "http://openmp.llvm.org/"
+HOMEPAGE = "https://openmp.llvm.org/"
 SECTION = "libs"
 
 require clang.inc
