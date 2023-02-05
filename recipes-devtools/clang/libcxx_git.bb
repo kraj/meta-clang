@@ -77,6 +77,7 @@ EXTRA_OECMAKE:append:class-target = " \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_SYS} \
+                  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
 "
 
 EXTRA_OECMAKE:append:class-nativesdk = " \

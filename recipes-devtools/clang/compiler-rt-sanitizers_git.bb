@@ -57,6 +57,10 @@ EXTRA_OECMAKE:append:class-nativesdk = "\
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
 
+EXTRA_OECMAKE:append:class-target = "\
+               -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+"
+
 EXTRA_OECMAKE:append:libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 

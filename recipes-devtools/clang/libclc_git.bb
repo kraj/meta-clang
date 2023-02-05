@@ -21,6 +21,7 @@ EXTRA_OECMAKE += " \
 				-DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
 				-Dclc_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeCLCCompiler.cmake.in \
 				-Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
+				-DCMAKE_POSITION_INDEPENDENT_CODE=ON \
 			"
 
 do_configure:prepend () {
