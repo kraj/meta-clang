@@ -23,6 +23,7 @@ EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
                   -DCLANG_TOOL=${STAGING_BINDIR_NATIVE}/clang \
                   -DLINK_TOOL=${STAGING_BINDIR_NATIVE}/llvm-link \
                   -DOPT_TOOL=${STAGING_BINDIR_NATIVE}/opt \
+                  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
                   "
 
 OECMAKE_SOURCEPATH = "${S}/openmp"
