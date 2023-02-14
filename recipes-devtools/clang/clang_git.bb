@@ -283,8 +283,8 @@ FILES:lldb-server = "\
 "
 
 FILES:liblldb = "\
-  ${libdir}/liblldbIntelFeatures.so* \
-  ${libdir}/liblldb.so* \
+  ${libdir}/liblldbIntelFeatures.so.* \
+  ${libdir}/liblldb.so.* \
 "
 
 FILES:${PN}-libllvm =+ "\
