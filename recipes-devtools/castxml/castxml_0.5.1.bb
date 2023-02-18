@@ -4,7 +4,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=3b83ef96387f14655fc854ddc3c6bd57"
 
 SRC_URI = "git://github.com/CastXML/CastXML;protocol=https;branch=master"
 
-SRCREV = "7ef4b1e35480a09c18b0c4afc230b558a0f53bc0"
+SRCREV = "6d5a3c62ce28fa930456d64c0cfe338e9e3ae08e"
+
+PV .= "+0.5.2+${SRCPV}"
 
 S = "${WORKDIR}/git"
 
