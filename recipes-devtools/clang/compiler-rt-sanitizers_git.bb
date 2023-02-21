@@ -39,6 +39,7 @@ EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
                   -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON \
                   -DCMAKE_C_COMPILER_TARGET=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
                   -DCOMPILER_RT_BUILD_BUILTINS=OFF \
+                  -DCOMPILER_RT_INCLUDE_TESTS=OFF \
                   -DSANITIZER_CXX_ABI_LIBNAME=${@bb.utils.contains("RUNTIME", "llvm", "libc++", "libstdc++", d)} \
                   -DCOMPILER_RT_BUILD_XRAY=ON \
                   -DCOMPILER_RT_BUILD_SANITIZERS=ON \
@@ -66,9 +67,11 @@ EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
 do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
-        mkdir -p ${D}${nonarch_libdir}
-        mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
+        mkdir -p ${D}${nonarch_libdir}/clang
+        mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
         rmdir --ignore-fail-on-non-empty ${D}${libdir}
+    else
+        mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
     fi
     # Already shipped with compile-rt Orc support
     rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.orc-*.a
@@ -83,8 +86,7 @@ FILES:${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PA
 FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include \
                     ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
-                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.asan-preinit*.a \
-                   "
+                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.asan-preinit*.a"
 INSANE_SKIP:${PN} = "dev-so libdir"
 INSANE_SKIP:${PN}-dbg = "libdir"
 
