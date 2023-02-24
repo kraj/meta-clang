@@ -1,0 +1,40 @@
+From 591e8f449e81ae5cb69575eb2e09787b5e0e25cf Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 23 Feb 2023 14:23:28 -0800
+Subject: [PATCH] Ignore clang warning for function signature match
+
+vala generated code emits GTestDataFunc with gpointer and not
+gconstpointer and newer compilers e.g. clang16 can now find out
+incompatible-function-pointer-types, which makes code not compile
+
+Fixes
+test-vala-lang.c:1166:51: error: incompatible function pointer types passing 'void (gpointer)' (aka 'void (void *)') to parameter of type 'GTestDataFunc' (aka 'v
+oid (*)(const void *)') [-Wincompatible-function-pointer-types]
+|         g_test_add_data_func ("/vala/lookup/sync", NULL, _test_lookup_sync_gtest_data_func);
+|                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ glib/gtestutils.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/glib/gtestutils.h b/glib/gtestutils.h
+index 86ee4e521..cc237b3f0 100644
+--- a/glib/gtestutils.h
++++ b/glib/gtestutils.h
+@@ -34,7 +34,10 @@
+ #include <string.h>
+ 
+ G_BEGIN_DECLS
+-
++// TODO: This should really be fixed in vala perhaps see
++// https://gitlab.gnome.org/GNOME/vala/-/issues/1413
++// but it impacts almost 20 packages so workaround it here for now
++#pragma clang diagnostic ignored "-Wincompatible-function-pointer-types"
+ typedef struct GTestCase  GTestCase;
+ typedef struct GTestSuite GTestSuite;
+ typedef void (*GTestFunc)        (void);
+-- 
+2.39.2
+
