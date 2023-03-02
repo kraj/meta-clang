@@ -38,7 +38,7 @@ Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 -	$(CXX) $^ -o $(NAME).so.0 $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
 -	ln -s $(NAME).so.0 $(NAME).so
 +	$(CXX) $^ -o $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so.0 $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)
-+	ln -s $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
++	ln -sf $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
  
  transport_mdns_unsupported.cpp:
  	echo 'void init_mdns_transport_discovery(void) {}' > transport_mdns_unsupported.cpp
