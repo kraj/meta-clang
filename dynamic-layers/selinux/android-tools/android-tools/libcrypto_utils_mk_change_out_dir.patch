@@ -23,8 +23,9 @@ Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
  LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 \
  	-Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
 -	-L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+-	-lcrypto -Wl,-z,defs
 +	-L$(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android \
- 	-lcrypto -Wl,-z,defs
++	-l:libcrypto.so.0 -Wl,-z,defs
  
  build: $(SOURCES)
 -	$(CC) $^ -o $(NAME).so.0  $(CPPFLAGS) $(LDFLAGS)
