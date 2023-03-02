@@ -42,6 +42,6 @@ Upstream-Status: Pending
 +	mkdir --parents $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/ 
 +	mkdir --parents $(OUT_DIR)/usr/include/android/libunwind
 +	$(CC) $^ -o $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so.0 $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -Wno-header-guard -Wno-absolute-value
-+	ln -s $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
++	ln -sf $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
 +	cp -r include/* debian/include/* $(OUT_DIR)/usr/include/android/libunwind/
 +

@@ -37,7 +37,7 @@ Upstream-Status: Pending
 -	$(CXX) $^ -o $(NAME).so.0 $(LDFLAGS)
 -	ln -s $(NAME).so.0 $(NAME).so
 +	$(CXX) $^ -o $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so.0 $(LDFLAGS)
-+	ln -s $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so	
++	ln -sf $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so	
  
  clean:
 -	$(RM) $(CXXOBJECTS) $(COBJECTS) $(NAME).so*
