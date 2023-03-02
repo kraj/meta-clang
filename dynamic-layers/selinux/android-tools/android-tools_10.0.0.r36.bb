@@ -78,9 +78,11 @@ COMPATIBLE_HOST:powerpc64le = "(null)"
 inherit systemd clang
 
 TOOLCHAIN = "clang"
-DEPENDS += "\
+TOOLCHAIN:class-native = "clang"
+DEPENDS:append:class-target = "\
     clang-cross-${TARGET_ARCH} \
 "
+DEPENDS:append:class-native = " clang-native"
 
 SYSTEMD_SERVICE:${PN} = "android-tools-adbd.service"
 
