@@ -30,7 +30,7 @@ Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 -	$(CC) $^ -o $(NAME).so.0  $(CPPFLAGS) $(LDFLAGS)
 -	ln -s $(NAME).so.0 $(NAME).so
 +	$(CC) $^ -o $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so.0  $(CPPFLAGS) $(LDFLAGS)
-+	ln -s $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
++	ln -sf $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
 +	cp -r libcrypto_utils/include/* $(OUT_DIR)/usr/include/
  
  clean:

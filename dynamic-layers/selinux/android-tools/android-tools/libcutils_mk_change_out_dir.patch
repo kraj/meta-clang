@@ -16,7 +16,7 @@
 -	$(CXX) $^ -o $(NAME).so.0 $(LDFLAGS)
 -	ln -s $(NAME).so.0 $(NAME).so
 +	$(CXX) $^ -o $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so.0 $(LDFLAGS)	
-+	ln -s $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
++	ln -sf $(NAME).so.0 $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so
 +	cp -r libcutils/include/cutils $(OUT_DIR)/usr/include/	
  
  clean:
