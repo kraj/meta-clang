@@ -43,7 +43,7 @@ do_install_ptest() {
 }
 
 def llvm_major_version(d):
-    pvsplit = d.getVar('LLVMVERSION').split('.')
+    pvsplit = d.getVar('CLANGLLVMVERSION').split('.')
     return pvsplit[0]
 
 LLVM_MAJOR_VERSION = "${@llvm_major_version(d)}"
