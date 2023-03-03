@@ -1,4 +1,8 @@
-libbase.mk: modifications to make it build in yocto environment
+From 22c7140dc170ecb26bde33fed4c9249b164f8d3c Mon Sep 17 00:00:00 2001
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Fri, 3 Mar 2023 13:19:08 +0100
+Subject: [PATCH 06/15] libbase.mk: modifications to make it build in yocto
+ environment
 
 Adding an include file that is setting the common flags.
 Changed the cppflag to include the headers from other components
@@ -10,15 +14,20 @@ are searched in the output folder.
 Modified the build rule so that it outputs the binary to the OUT_DIR
 
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
+---
+ debian/libbase.mk | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- git/system/core/debian/libbase.mk	2021-04-29 22:01:13.664181133 +0200
-+++ git/system/core/debian/libbase.mk	2021-04-29 22:04:52.328123833 +0200
+diff --git a/debian/libbase.mk b/debian/libbase.mk
+index 80da48f3..e6c3e365 100644
+--- a/debian/libbase.mk
++++ b/debian/libbase.mk
 @@ -1,3 +1,4 @@
 +include ../../rules_yocto.mk
  NAME = libbase
  SOURCES = \
            chrono_utils.cpp \
-@@ -20,8 +21,9 @@
+@@ -20,8 +21,9 @@ CPPFLAGS += -Iinclude -Ibase/include
  LDFLAGS += -shared -Wl,-soname,$(NAME).so.0
  
  build: $(SOURCES)
@@ -31,3 +40,6 @@ Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
  clean:
 -	$(RM) $(NAME).so*
 +	$(RM) $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/$(NAME).so*
+-- 
+2.36.1.vfs.0.0
+

@@ -1,4 +1,7 @@
-socket.h: removing dependency of gtest
+From 4fdd086c2e9c85bc5a367a861696191e190cebc9 Mon Sep 17 00:00:00 2001
+From: Nisha Parrakat <Nisha.Parrakat@kpit.com>
+Date: Thu, 2 Mar 2023 17:20:48 +0100
+Subject: [PATCH 03/15] socket.h: removing dependency of gtest
 
 Removed the dependency of gtest on the build of fastboot binary.
 Fixes below error
@@ -27,25 +30,32 @@ In file included from fastboot/fastboot.cpp:70:
 |          ^~~~~~~~~~~~~~~~~~~~
 | 1 error generated.
 
-
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
+---
+ fastboot/socket.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/system/core/fastboot/socket.h       2021-04-14 21:14:00.355973915 +0000
-+++ b/system/core/fastboot/socket.h   2021-04-14 21:14:21.879680699 +0000
+diff --git a/fastboot/socket.h b/fastboot/socket.h
+index e791f2c8..671fc115 100644
+--- a/fastboot/socket.h
++++ b/fastboot/socket.h
 @@ -40,7 +40,6 @@
-
+ 
  #include <android-base/macros.h>
  #include <cutils/sockets.h>
 -#include <gtest/gtest_prod.h>
-
+ 
  // Socket interface to be implemented for each platform.
  class Socket {
-@@ -119,8 +118,6 @@
+@@ -119,8 +118,6 @@ class Socket {
              socket_send_buffers_function_ = &socket_send_buffers;
-
+ 
    private:
 -    FRIEND_TEST(SocketTest, TestTcpSendBuffers);
 -    FRIEND_TEST(SocketTest, TestUdpSendBuffers);
-
+ 
      DISALLOW_COPY_AND_ASSIGN(Socket);
  };
+-- 
+2.36.1.vfs.0.0
+
