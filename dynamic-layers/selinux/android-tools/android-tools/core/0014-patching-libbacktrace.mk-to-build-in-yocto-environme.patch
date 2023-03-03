@@ -1,4 +1,7 @@
-patching libbacktrace.mk to build in yocto environment.
+From a99b74f25c7f786e26b5400218090d86596d4541 Mon Sep 17 00:00:00 2001
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Fri, 3 Mar 2023 13:40:32 +0100
+Subject: [PATCH 14/15] patching libbacktrace.mk to build in yocto environment.
 
 Changes include:
 Introduced an output folder which will keep all the outputs from the
@@ -16,17 +19,22 @@ Modified the build rule so that it outputs the binary to the OUT_DIR
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 
 Upstream-Status: Pending
+---
+ debian/libbacktrace.mk | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- git/system/core/debian/libbacktrace.mk	2021-05-21 23:51:55.022408433 +0000
-+++ git/system/core/debian/libbacktrace.mk	2021-05-21 23:53:07.487543521 +0000
+diff --git a/debian/libbacktrace.mk b/debian/libbacktrace.mk
+index 330d211c..229b39d9 100644
+--- a/debian/libbacktrace.mk
++++ b/debian/libbacktrace.mk
 @@ -1,5 +1,5 @@
-
+ 
 -include /usr/share/dpkg/architecture.mk
 +include ../../rules_yocto.mk
  
  NAME = libbacktrace
  
-@@ -88,11 +89,11 @@
+@@ -88,11 +88,11 @@ CPPFLAGS += \
              -Ilibprocinfo/include \
              -Ilibunwindstack/include \
              -I/usr/include/android/lzma \
@@ -41,7 +49,7 @@ Upstream-Status: Pending
  
  # -latomic should be the last library specified
  # https://github.com/android/ndk/issues/589
-@@ -104,11 +105,11 @@
+@@ -104,11 +104,11 @@ ifeq ($(DEB_HOST_ARCH), mipsel)
  endif
  
  build: $(COBJECTS) $(CXXOBJECTS) $(OBJECTS_ASSEMBLY)
@@ -56,3 +64,6 @@ Upstream-Status: Pending
  
  $(CXXOBJECTS): %.o: %.cpp
  	$(CXX) $< -o $@ $(CXXFLAGS) $(CPPFLAGS)
+-- 
+2.36.1.vfs.0.0
+
