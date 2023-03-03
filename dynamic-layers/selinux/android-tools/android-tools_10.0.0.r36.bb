@@ -26,46 +26,65 @@ SRC_URI = " \
     git://${ANDROID_MIRROR}/platform/hardware/libhardware;name=libhardware;protocol=https;nobranch=1;destsuffix=git/hardware/libhardware \
     git://salsa.debian.org/android-tools-team/android-platform-build.git;name=build;protocol=https;nobranch=1;destsuffix=git/build \
     git://salsa.debian.org/android-tools-team/android-platform-external-libunwind.git;protocol=https;name=libunwind;nobranch=1;destsuffix=git/external/libunwind \
-    file://adb_mk_change_out_dir.patch \
-    file://libadb_mk_change_out_dir.patch \
-    file://fastboot_compile_remove_gtest.patch \
-    file://fastboot_mk_change_out_dir.patch \
-    file://fastboot_dont_use_sparse_file_import_auto_in_load_buf_fd.patch \
-    file://libbase_mk_change_out_dir.patch \
-    file://libext4_utils_mk_change_out_dir.patch \
-    file://libcrypto_mk_change_out_dir.patch \
-    file://libcrypto_utils_mk_change_out_dir.patch \
-    file://libcutils_mk_change_out_dir.patch \
-    file://libfec_mk_change_out_dir.patch \
-    file://img2simg_change_out_dir.patch \
-    file://simg2img_change_out_dir.patch \
-    file://liblog_mk_change_out_dir.patch \
-    file://libsparse_mk_change_out_dir.patch \
-    file://libziparchive_mk_change_out_dir.patch \
-    file://libbacktrace_mk_change_out_dir.patch \
-    file://libunwind_mk_change_out_dir.patch \
-    file://use_name_space_std_to_compile_libbacktrace.patch \
+"
+
+# Patches copied from android-platform-system-core/debian/patches
+# and applied in the order defined by the "series" file
+SRC_URI += " \
+    file://core-debian/move-log-file-to-proper-dir.patch;patchdir=system/core \
+    file://core-debian/Added-missing-headers.patch;patchdir=system/core \
+    file://core-debian/libusb-header-path.patch;patchdir=system/core \
+    file://core-debian/stdatomic.patch;patchdir=system/core \
+    file://core-debian/Nonnull.patch;patchdir=system/core \
+    file://core-debian/Vector-cast.patch;patchdir=system/core \
+    file://core-debian/use-Python-3-for-mkbootimg.patch;patchdir=system/core \
+    file://core-debian/throw-exception-on-unknown-os.patch;patchdir=system/core \
+    file://core-debian/simg_dump-python3.patch;patchdir=system/core \
+    file://core-debian/fix-attribute-issue-with-gcc.patch;patchdir=system/core \
+    file://core-debian/workaround-error-expected-primary-expression-before-.-token.patch;patchdir=system/core \
+    file://core-debian/fix-gettid-exception-declaration.patch;patchdir=system/core \
+    file://core-debian/fix-build-on-non-x86.patch;patchdir=system/core \
+    file://core-debian/add-missing-headers.patch;patchdir=system/core \
+    file://core-debian/hard-code-build-number.patch;patchdir=system/core \
+    file://core-debian/fix-gcc-11-ftbfs.patch;patchdir=system/core \
+    file://core-debian/fix-gnu-hurd.patch;patchdir=system/core \
+"
+
+# Patches copied from android-platform-external-libunwind/debian/patches
+# and applied in the order defined by the "series" file
+SRC_URI += " \
+    file://libunwind-debian/user_pt_regs.patch;patchdir=external/libunwind \
+    file://libunwind-debian/legacy_built-in_sync_functions.patch;patchdir=external/libunwind \
+    file://libunwind-debian/20150704-CVE-2015-3239_dwarf_i.h.patch;patchdir=external/libunwind \
+"
+
+# meta-clang specific patches + files:
+SRC_URI += " \
+    file://core/0001-patching-adb.mk-to-build-in-yocto-environment.patch;patchdir=system/core \
+    file://core/0002-libadb.mk-modifications-to-make-it-build-in-yocto-en.patch;patchdir=system/core \
+    file://core/0003-socket.h-removing-dependency-of-gtest.patch;patchdir=system/core \
+    file://core/0004-patching-fastboot.mk-to-build-in-yocto-environment.patch;patchdir=system/core \
+    file://core/0005-fastboot-don-t-use-sparse_file_import_auto-in-load_b.patch;patchdir=system/core \
+    file://core/0006-libbase.mk-modifications-to-make-it-build-in-yocto-e.patch;patchdir=system/core \
+    file://core/0007-libcrypto_utils.mk-modifications-to-make-it-build-in.patch;patchdir=system/core \
+    file://core/0008-libcutils-modifications-to-make-it-build-in-yocto-en.patch;patchdir=system/core \
+    file://core/0009-patching-img2simg.mk-to-build-in-yocto-environment.patch;patchdir=system/core \
+    file://core/0010-patching-simg2img.mk-to-build-in-yocto-environment.patch;patchdir=system/core \
+    file://core/0011-patching-liblog.mk-to-build-in-yocto-environment.patch;patchdir=system/core \
+    file://core/0012-patching-libsparse.mk-to-build-in-yocto-environment.patch;patchdir=system/core \
+    file://core/0013-patching-libziparchive.mk-to-build-in-yocto-environm.patch;patchdir=system/core \
+    file://core/0014-patching-libbacktrace.mk-to-build-in-yocto-environme.patch;patchdir=system/core \
+    file://core/0015-Use-namespace-std-to-compile-libbacktrace.patch;patchdir=system/core \
+    file://0001-libcrypto.mk-modifications-to-make-it-build-in-yocto.patch;patchdir=external/boringssl \
+    file://0001-patching-libundwind-to-build-in-yocto-environment.patch;patchdir=external/libunwind \
+    file://0001-libext4_utils.mk-modifications-to-make-it-build-in-y.patch;patchdir=system/extras \
+    file://0002-libfec-change-out_dir-in-makefile.patch;patchdir=system/extras \
     file://rules_yocto.mk;subdir=git \
     file://android-tools-adbd.service \
 "
 
 S = "${WORKDIR}/git"
 B = "${WORKDIR}/${BPN}"
-
-#apply all the patches maintained in the debian version.
-do_unpack_and_patch_debian() {
-    cd ${S}/system/core
-    for i in `find ${S}/system/core/debian/patches -name "*.patch"`; do
-        patch -p1 < $i
-    done
-    #a patch with no .patch extention, lets apply that
-    patch -p1 < ${S}/system/core/debian/patches/Added-missing-headers
-    cd ${S}/external/libunwind
-    for i in `find ${S}/external/libunwind/debian/patches -name "*.patch"`; do
-        patch -p1 < $i
-    done
-}
-addtask unpack_and_patch_debian after do_unpack before do_patch
 
 # http://errors.yoctoproject.org/Errors/Details/1debian881/
 ARM_INSTRUCTION_SET:armv4 = "arm"

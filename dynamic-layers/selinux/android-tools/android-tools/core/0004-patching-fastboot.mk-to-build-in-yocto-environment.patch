@@ -1,4 +1,7 @@
-patching fastboot.mk to build in yocto environment.
+From e826f68c68e05b0f5cc3b3c10d7d9e4deb135114 Mon Sep 17 00:00:00 2001
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Fri, 3 Mar 2023 13:14:15 +0100
+Subject: [PATCH 04/15] patching fastboot.mk to build in yocto environment.
 
 Changes include:
 Introduced an output folder which will keep all the outputs from the
@@ -16,20 +19,25 @@ Modified the build rule so that it outputs the binary to the OUT_DIR
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 
 Upstream-Status: Pending
+---
+ debian/fastboot.mk | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- git/system/core/debian/fastboot.mk	2021-05-17 07:47:56.800224043 +0000
-+++ git/system/core/debian/fastboot.mk	2021-05-17 07:49:40.130383096 +0000
+diff --git a/debian/fastboot.mk b/debian/fastboot.mk
+index d1aba626..e75fa87c 100644
+--- a/debian/fastboot.mk
++++ b/debian/fastboot.mk
 @@ -1,3 +1,4 @@
 +include ../../rules_yocto.mk
  NAME = fastboot
  fastboot_SOURCES = \
            bootimg_utils.cpp \
-@@ -38,11 +39,11 @@
+@@ -38,11 +39,11 @@ CPPFLAGS += \
              -Ifs_mgr/liblp/include \
              -I/usr/include/android/openssl \
              -Ilibsparse/include \
 -            -Ilibziparchive/include
-+            -Ilibziparchive/include -I$(OUT_DIR)/usr/include/ 
++            -Ilibziparchive/include -I$(OUT_DIR)/usr/include/
  LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
             -fuse-ld=gold \
 -           -Wl,-rpath-link=. \
@@ -39,7 +47,7 @@ Upstream-Status: Pending
             -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
             -l7z \
  
-@@ -53,7 +54,8 @@
+@@ -53,7 +54,8 @@ ifneq ($(filter armel mipsel,$(DEB_HOST_ARCH)),)
  endif
  
  build: $(SOURCES)
@@ -50,3 +58,6 @@ Upstream-Status: Pending
  clean:
 -	$(RM) fastboot/$(NAME)
 +	$(RM) $(OUT_DIR)/usr/bin/fastboot/$(NAME)
+-- 
+2.36.1.vfs.0.0
+

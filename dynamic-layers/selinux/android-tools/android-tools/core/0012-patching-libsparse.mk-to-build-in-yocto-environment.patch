@@ -1,4 +1,7 @@
-patching libsparse.mk to build in yocto environment.
+From 65ddf7ea7daae721b2d331164155542820ed3e33 Mon Sep 17 00:00:00 2001
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Fri, 3 Mar 2023 13:36:58 +0100
+Subject: [PATCH 12/15] patching libsparse.mk to build in yocto environment.
 
 Changes include:
 Introduced an output folder which will keep all the outputs from the
@@ -16,15 +19,20 @@ Modified the build rule so that it outputs the binary to the OUT_DIR
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 
 Upstream-Status: Pending
+---
+ debian/libsparse.mk | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- git/system/core/debian/libsparse.mk	2021-05-17 08:13:34.764584388 +0000
-+++ git/system/core/debian/libsparse.mk	2021-05-17 08:15:34.850492654 +0000
+diff --git a/debian/libsparse.mk b/debian/libsparse.mk
+index de280def..64caa45f 100644
+--- a/debian/libsparse.mk
++++ b/debian/libsparse.mk
 @@ -1,3 +1,4 @@
 +include ../../rules_yocto.mk
  NAME = libsparse
  SOURCES = \
          backed_block.cpp \
-@@ -18,16 +19,16 @@
+@@ -18,16 +19,16 @@ LDFLAGS += \
    -shared -Wl,-soname,$(NAME).so.0 \
    -lz \
    -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
@@ -45,3 +53,6 @@ Upstream-Status: Pending
  
  $(COBJECTS): %.o: %.c
  	$(CC) $< -o $@ $(CFLAGS) $(CPPFLAGS)
+-- 
+2.36.1.vfs.0.0
+
