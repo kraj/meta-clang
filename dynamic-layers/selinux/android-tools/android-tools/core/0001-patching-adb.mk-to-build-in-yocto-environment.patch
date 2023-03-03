@@ -1,4 +1,7 @@
-patching adb.mk to build in yocto environment.
+From d133fc2c71fb6b0358af453b03bcb6d1874e902a Mon Sep 17 00:00:00 2001
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Fri, 3 Mar 2023 12:25:40 +0100
+Subject: [PATCH 01/15] patching adb.mk to build in yocto environment.
 
 Changes include:
 Introduced an output folder which will keep all the outputs from the
@@ -15,15 +18,21 @@ Modified the build rule so that it outputs the binary to the OUT_DIR
 
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 
-Upstream-Status: Pending 
---- git/system/core/debian/adb.mk	2021-04-29 21:11:00.617892503 +0200
-+++ git/system/core/debian/adb.mk	2021-04-29 21:17:33.256016600 +0200
+Upstream-Status: Pending
+---
+ debian/adb.mk | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/debian/adb.mk b/debian/adb.mk
+index 8dbacf9a..97c9d6ca 100644
+--- a/debian/adb.mk
++++ b/debian/adb.mk
 @@ -1,3 +1,4 @@
 +include ../../rules_yocto.mk
  NAME = adb
  
  SOURCES = client/adb_client.cpp \
-@@ -12,10 +13,10 @@
+@@ -12,10 +13,10 @@ SOURCES = client/adb_client.cpp \
  
  SOURCES := $(foreach source, $(SOURCES), adb/$(source))
  CXXFLAGS += -std=gnu++2a
@@ -37,7 +46,7 @@ Upstream-Status: Pending
  
  # -latomic should be the last library specified
  # https://github.com/android/ndk/issues/589
-@@ -24,7 +25,8 @@
+@@ -24,7 +25,8 @@ ifneq ($(filter armel mipsel,$(DEB_HOST_ARCH)),)
  endif
  
  build: $(SOURCES)
@@ -48,3 +57,6 @@ Upstream-Status: Pending
  clean:
 -	$(RM) adb/$(NAME)
 +	$(RM) $(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/adb/$(NAME)
+-- 
+2.36.1.vfs.0.0
+

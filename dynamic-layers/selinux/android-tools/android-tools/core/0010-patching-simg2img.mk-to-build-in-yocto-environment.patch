@@ -1,4 +1,7 @@
-patching simg2img.mk to build in yocto environment.
+From 08441cf4334b911dba8c493dca3b1e2166c7d322 Mon Sep 17 00:00:00 2001
+From: Etienne Cordonnier <ecordonnier@snap.com>
+Date: Fri, 3 Mar 2023 13:34:34 +0100
+Subject: [PATCH 10/15] patching simg2img.mk to build in yocto environment.
 
 Changes include:
 Introduced an output folder which will keep all the outputs from the
@@ -16,9 +19,14 @@ Modified the build rule so that it outputs the binary to the OUT_DIR
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
 
 Upstream-Status: Pending
+---
+ debian/simg2img.mk | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- git/system/core/debian/simg2img.mk	2021-05-12 09:47:52.577840520 +0000
-+++ git/system/core/debian/simg2img.mk	2021-05-12 09:51:43.525678276 +0000
+diff --git a/debian/simg2img.mk b/debian/simg2img.mk
+index 07fb56b4..d319c87e 100644
+--- a/debian/simg2img.mk
++++ b/debian/simg2img.mk
 @@ -1,13 +1,14 @@
 +include ../../rules_yocto.mk
  NAME = simg2img
@@ -39,3 +47,6 @@ Upstream-Status: Pending
  clean:
 -	$(RM) libsparse/$(NAME)
 +	$(RM) $(OUT_DIR)/usr/bin/$(NAME)
+-- 
+2.36.1.vfs.0.0
+
