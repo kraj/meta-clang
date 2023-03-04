@@ -52,31 +52,33 @@ jobs:
           echo TOOLCHAIN = \"clang\" >> conf/local.conf
           echo BB_NUMBER_THREADS = \"16\" >> conf/local.conf
           echo PARALLEL_MAKE = \"-j 32\" >> conf/local.conf
+          echo ZSTD_THREADS = \"8\" >> conf/local.conf
+          echo XZ_THREADS = \"8\" >> conf/local.conf
+          echo XZ_MEMLIMIT = \"20%\" >> conf/local.conf
           echo CLANGSDK = \"1\" >> conf/local.conf
           echo IMAGE_INSTALL:append = \" clang \" >> conf/local.conf
-          echo XZ_DEFAULTS = \"--threads=8\" >> conf/local.conf
           echo SDKMACHINE = \"aarch64\" >> conf/local.conf
           /bin/bash -c "sed -i -e 's/PACKAGE_FEED_URI.*$//' conf/site.conf"
           /bin/bash -c "sed -i -e 's/SDK_UPDATE_URL.*$//' conf/site.conf"
       - name: Build Image
         run: |
           cd yoe
-          /bin/bash -c ". ./qemuarm64-envsetup.sh && bitbake yoe-qt5-image yoe-sdk-image yoe-debug-image"
+          /bin/bash -c ". ./envsetup.sh qemuarm64 && bitbake yoe-qt5-image yoe-sdk-image yoe-debug-image"
       - name: Build SDK
         run: |
           cd yoe
-          /bin/bash -c ". ./qemuarm64-envsetup.sh && bitbake yoe-debug-image -cpopulate_sdk_ext"
+          /bin/bash -c ". ./envsetup.sh qemuarm64 && bitbake yoe-debug-image -cpopulate_sdk_ext"
       - name: Test Image
         run: |
           cd yoe
           export DISPLAY=":0"
           echo TESTIMAGE_AUTO:qemuall = \"1\" >> conf/local.conf
-          /bin/bash -c ". ./qemuarm64-envsetup.sh && bitbake yoe-sdk-image"
+          /bin/bash -c ". ./envsetup.sh qemuarm64 && bitbake yoe-sdk-image"
       - name: Prepare results
         run: |
           cd yoe
-          /bin/bash -c ". ./qemuarm64-envsetup.sh && resulttool report build/tmp/log/oeqa"
+          /bin/bash -c ". ./envsetup.sh qemuarm64 && resulttool report build/tmp/log/oeqa"
       - name: Clean shared state
         run: |
           cd yoe
-          /bin/bash -c ". ./qemuarm64-envsetup.sh && ./sources/poky/scripts/sstate-cache-management.sh -d -y"
+          /bin/bash -c ". ./envsetup.sh qemuarm64 && ./sources/poky/scripts/sstate-cache-management.sh -d -y"
