@@ -1,0 +1,34 @@
+From 9f45e12ad4689ca2c41844b77c6d789d21509a13 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 6 Mar 2023 13:26:11 -0800
+Subject: [PATCH] tests/cc: Use c++14 standard
+
+default c++ standard was bumped to c++17 when using clang16+ compiler
+via 907b89cc9, however, tests which use check tool is not yet ported
+to work with c++17 standard, therefore use c++14 on tests
+
+Upstream-Status: Submitted [https://github.com/iovisor/bcc/pull/4506]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Cc: Hengqi Chen <chenhengqi@outlook.com>
+---
+ tests/cc/CMakeLists.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tests/cc/CMakeLists.txt b/tests/cc/CMakeLists.txt
+index bc870b07..b45f2369 100644
+--- a/tests/cc/CMakeLists.txt
++++ b/tests/cc/CMakeLists.txt
+@@ -23,6 +23,10 @@ add_compile_options(-DCMAKE_CURRENT_BINARY_DIR="${CMAKE_CURRENT_BINARY_DIR}")
+ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-result -fPIC")
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-result -fPIC")
+ 
++if(${LLVM_PACKAGE_VERSION} VERSION_EQUAL 16 OR ${LLVM_PACKAGE_VERSION} VERSION_GREATER 16)
++set(CMAKE_CXX_STANDARD 14)
++endif()
++
+ if(ENABLE_USDT)
+ set(TEST_LIBBCC_SOURCES
+ 	test_libbcc.cc
+-- 
+2.39.2
+
