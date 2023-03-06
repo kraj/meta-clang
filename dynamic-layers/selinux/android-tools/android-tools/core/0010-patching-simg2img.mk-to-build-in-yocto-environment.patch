@@ -27,7 +27,7 @@ diff --git a/debian/simg2img.mk b/debian/simg2img.mk
 index 07fb56b4..d319c87e 100644
 --- a/debian/simg2img.mk
 +++ b/debian/simg2img.mk
-@@ -1,13 +1,14 @@
+@@ -1,13 +1,15 @@
 +include ../../rules_yocto.mk
  NAME = simg2img
  SOURCES = simg2img.cpp sparse_crc32.cpp
@@ -42,6 +42,7 @@ index 07fb56b4..d319c87e 100644
  
  build: $(SOURCES)
 -	$(CXX) $^ -o libsparse/$(NAME) $(CPPFLAGS) $(LDFLAGS)
++	mkdir --parents $(OUT_DIR)/usr/bin
 +	$(CXX) $^ -o $(OUT_DIR)/usr/bin/$(NAME) $(CPPFLAGS) $(LDFLAGS)
  
  clean:
