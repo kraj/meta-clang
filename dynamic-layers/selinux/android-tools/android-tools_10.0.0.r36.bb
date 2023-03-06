@@ -75,12 +75,14 @@ SRC_URI += " \
     file://core/0013-patching-libziparchive.mk-to-build-in-yocto-environm.patch;patchdir=system/core \
     file://core/0014-patching-libbacktrace.mk-to-build-in-yocto-environme.patch;patchdir=system/core \
     file://core/0015-Use-namespace-std-to-compile-libbacktrace.patch;patchdir=system/core \
+    file://core/0016-Adapt-adbd-to-work-with-yocto.patch;patchdir=system/core \
     file://0001-libcrypto.mk-modifications-to-make-it-build-in-yocto.patch;patchdir=external/boringssl \
     file://0001-patching-libundwind-to-build-in-yocto-environment.patch;patchdir=external/libunwind \
     file://0001-libext4_utils.mk-modifications-to-make-it-build-in-y.patch;patchdir=system/extras \
     file://0002-libfec-change-out_dir-in-makefile.patch;patchdir=system/extras \
     file://rules_yocto.mk;subdir=git \
     file://android-tools-adbd.service \
+    file://adbd.mk;subdir=git/system/core/debian \
 "
 
 S = "${WORKDIR}/git"
@@ -111,6 +113,7 @@ CC:append:class-nativesdk = " -I${STAGING_INCDIR}"
 
 PREREQUISITE_core = "libbase libsparse liblog libcutils"
 TOOLS_TO_BUILD = "libcrypto_utils libadb libziparchive fastboot adb img2simg simg2img libbacktrace"
+TOOLS_TO_BUILD:append:class-target = " adbd"
 
 # Adb needs sys/capability.h, which is not available for native*
 TOOLS:class-native = "boringssl fastboot ext4_utils mkbootimg"
