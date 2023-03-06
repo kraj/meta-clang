@@ -7,6 +7,7 @@ inherit cmake python3native manpages ptest
 
 DEPENDS += "bison-native \
             flex-native \
+            zip-native \
             flex \
             elfutils \
             ${LUAJIT} \
