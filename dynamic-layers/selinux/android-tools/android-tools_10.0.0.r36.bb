@@ -166,7 +166,7 @@ do_compile() {
     done
 
     for tool in ${TOOLS_TO_BUILD}; do
-        if [ "$tool" == "libbacktrace" ]; then
+        if [ "$tool" = "libbacktrace" ]; then
             oe_runmake -f ${S}/system/core/debian/${tool}.mk -C ${S}/system/core DEB_HOST_ARCH=${deb_host_arch}
         else
             oe_runmake -f ${S}/system/core/debian/${tool}.mk -C ${S}/system/core
