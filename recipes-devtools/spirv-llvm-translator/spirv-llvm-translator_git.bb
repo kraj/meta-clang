@@ -19,9 +19,10 @@ DEPENDS = "spirv-tools clang"
 inherit cmake pkgconfig python3native
 
 # Specify any options you want to pass to cmake using EXTRA_OECMAKE:
+# for CMAKE_SHARED_LIBS=OFF see https://github.com/KhronosGroup/SPIRV-LLVM-Translator/issues/1868
 EXTRA_OECMAKE = "\
         -DBASE_LLVM_VERSION=${LLVMVERSION} \
-        -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_SHARED_LIBS=OFF \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
         -DCMAKE_SKIP_RPATH=ON \
@@ -31,13 +32,5 @@ EXTRA_OECMAKE = "\
         -DCCACHE_ALLOWED=FALSE \
         -DLLVM_EXTERNAL_SPIRV_HEADERS_SOURCE_DIR=${S}/SPIRV-Headers \
 "
-
-do_compile:append() {
-    oe_runmake llvm-spirv
-}
-
-do_install:append() {
-    install -Dm755 ${B}/tools/llvm-spirv/llvm-spirv ${D}${bindir}/llvm-spirv
-}
 
 BBCLASSEXTEND = "native nativesdk"
