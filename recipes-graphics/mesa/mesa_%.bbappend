@@ -1,6 +1,3 @@
-LDFLAGS:append:toolchain-clang = " -latomic -lm"
-DEPENDS:append:toolchain-clang = " libatomic-ops"
-
 EXTRA_OEMASON:append:toolchain-clang:x86 = " -Dasm=false"
 EXTRA_OEMASON:append:toolchain-clang:x86-64 = " -Dasm=false"
 
