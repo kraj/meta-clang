@@ -1,5 +1,3 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
-
 LDFLAGS:append:toolchain-clang = " -latomic -lm"
 DEPENDS:append:toolchain-clang = " libatomic-ops"
 
