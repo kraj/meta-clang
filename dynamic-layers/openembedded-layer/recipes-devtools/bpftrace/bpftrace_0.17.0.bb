@@ -19,7 +19,7 @@ RDEPENDS:${PN} += "bash python3 xz"
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://run-ptest \
 "
-SRCREV = "a277ec42102c463d656df8f64eb2f7e87e322210"
+SRCREV = "1326f040a0f88287ccbc8c18fe8956bca4cc225d"
 
 S = "${WORKDIR}/git"
 
@@ -51,6 +51,7 @@ EXTRA_OECMAKE = " \
     -DCMAKE_ENABLE_EXPORTS=1 \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_REQUESTED_VERSION=${LLVM_MAJOR_VERSION} \
+    -DUSE_SYSTEM_BPF_BCC=ON \
     -DENABLE_MAN=OFF \
 "
 
