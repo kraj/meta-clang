@@ -17,6 +17,11 @@ OECMAKE_SOURCEPATH = "${S}/libclc"
 
 EXTRA_OECMAKE += " \
 				-DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
+				-DLLVM_CLANG=${STAGING_BINDIR_NATIVE}/clang \
+				-DLLVM_AS=${STAGING_BINDIR_NATIVE}/llvm-as \
+				-DLLVM_LINK=${STAGING_BINDIR_NATIVE}/llvm-link \
+				-DLLVM_OPT=${STAGING_BINDIR_NATIVE}/opt \
+				-DLLVM_SPIRV=${STAGING_BINDIR_NATIVE}/llvm-spirv \
 				-Dclc_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeCLCCompiler.cmake.in \
 				-Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
 			"
