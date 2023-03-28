@@ -89,7 +89,7 @@ do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
         mkdir -p ${D}${nonarch_libdir}/clang
         mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
-        rmdir --ignore-fail-on-non-empty ${D}${libdir}
+        rmdir --ignore-fail-on-non-empty ${D}${libdir}/clang ${D}${libdir}
     else
         mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
     fi
