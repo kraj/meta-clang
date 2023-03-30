@@ -1,3 +1,7 @@
+Do not match pdb init files
+
+Upstream-Status: Inappropriate [ Clang Specific ]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 --- a/source3/wscript_build	2019-03-14 09:03:29.498617250 +0100
 +++ b/source3/wscript_build	2019-03-14 09:06:19.824949694 +0100
 @@ -124,7 +124,6 @@

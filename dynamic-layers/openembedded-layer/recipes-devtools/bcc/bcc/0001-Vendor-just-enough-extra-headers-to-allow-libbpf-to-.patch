@@ -17,7 +17,7 @@ solution is probably to update the system UAPI headers but I am committing
 this for now simply so I can easily show why we must de-vendor libbpf in
 the first place!
 
-Upstream-status: Inappropriate [other]
+Upstream-Status: Inappropriate [other]
 
 Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 ---
