@@ -303,7 +303,6 @@ FILES:${PN}-tools = "${bindir}/analyze-build \
   ${bindir}/clang-apply-replacements \
   ${bindir}/clang-change-namespace \
   ${bindir}/clang-check \
-  ${bindir}/clang-cl \
   ${bindir}/clang-doc \
   ${bindir}/clang-extdef-mapping \
   ${bindir}/clang-include-fixer \
@@ -346,15 +345,12 @@ FILES:${PN}-tools = "${bindir}/analyze-build \
 "
 
 FILES:${PN} += "\
+  ${bindir}/clang-cl \
   ${libdir}/BugpointPasses.so \
   ${libdir}/LLVMHello.so \
-  ${libdir}/LLVMgold.so \
   ${libdir}/*Plugin.so \
   ${libdir}/${BPN} \
   ${nonarch_libdir}/${BPN}/*/include/ \
-  ${datadir}/scan-* \
-  ${nonarch_libdir}/libscanbuild \
-  ${datadir}/opt-viewer/ \
 "
 
 FILES:lldb = "\
