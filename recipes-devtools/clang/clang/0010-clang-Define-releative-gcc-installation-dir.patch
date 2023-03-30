@@ -1,4 +1,4 @@
-From edd7ad1bf15cb949dd3826054e7b14f010cf6e7d Mon Sep 17 00:00:00 2001
+From d1fdcd76fc759e644d697c967ddfbeae279aa7ac Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 20 Mar 2021 16:09:16 -0700
 Subject: [PATCH] clang: Define / releative gcc installation dir
@@ -7,6 +7,8 @@ This is required for OE gcc installation to work.
 Without this its not able to find the paths for libgcc
 and other standard headers and libraries from gcc
 installation in OE
+
+Upstream-Status: Pending
 
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---

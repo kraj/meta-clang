@@ -1,4 +1,4 @@
-From a48171a40390b970d3162f0ce90d5a71aacca841 Mon Sep 17 00:00:00 2001
+From 16ec16d11424040b83b360199ab785650bd1fb65 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 31 Jul 2019 22:51:39 -0700
 Subject: [PATCH] clang: Add -lpthread and -ldl along with -lunwind for static
@@ -14,6 +14,7 @@ libunwind/src/AddressSpace.hpp:597: undefined reference to `dladdr'
 
 therefore we need to link in libpthread and libdl to fill these symbols
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  clang/lib/Driver/ToolChains/CommonArgs.cpp | 2 ++

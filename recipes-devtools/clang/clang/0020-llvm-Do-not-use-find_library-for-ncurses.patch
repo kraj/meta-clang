@@ -1,4 +1,4 @@
-From e8560dd482e3b7f89a5fd1ab7b53738dace4b126 Mon Sep 17 00:00:00 2001
+From 20208fe7aaaf65837d06bd00a5550134075a2b22 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 7 Feb 2021 23:58:41 -0800
 Subject: [PATCH] llvm: Do not use find_library for ncurses
@@ -10,6 +10,7 @@ horribly with native and target libs when build clang for target
 TOPDIR/build/tmp/work/cortexa57-yoe-linux-musl/clang/12.0.0-r0/recipe-sysroot-native/usr/lib/libtinfo.so: error adding symbols: file in wrong format
 clang-12: error: linker command failed with exit code 1 (use -v to see invocation)
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  compiler-rt/cmake/config-ix.cmake     | 2 +-

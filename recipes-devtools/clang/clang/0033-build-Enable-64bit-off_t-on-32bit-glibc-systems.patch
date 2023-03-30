@@ -1,4 +1,4 @@
-From 617dc83077d725f33ae3c30f6a5de84edb8ed9f8 Mon Sep 17 00:00:00 2001
+From 48cf70c06ae6085ff3d1f8b28e323f153cff23c6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 25 Dec 2022 15:13:41 -0800
 Subject: [PATCH] build: Enable 64bit off_t on 32bit glibc systems
@@ -18,6 +18,7 @@ Using the *64 function was transitional anyways so use
 [1] https://github.com/llvm/llvm-project/commit/8db7e5e4eed4c4e697dc3164f2c9351d8c3e942b
 [2] https://git.musl-libc.org/cgit/musl/commit/?id=25e6fee27f4a293728dd15b659170e7b9c7db9bc
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  utils/bazel/llvm-project-overlay/llvm/config.bzl               | 1 -

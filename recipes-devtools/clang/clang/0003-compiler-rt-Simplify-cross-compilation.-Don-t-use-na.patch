@@ -1,4 +1,4 @@
-From 422ca329c7174d89bcc896e6434dcaf4cf195c64 Mon Sep 17 00:00:00 2001
+From e1031fdbe63c6065b89e1e15f9bbc62cd36cd898 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:11:45 -0700
 Subject: [PATCH] compiler-rt: Simplify cross-compilation. Don't use
@@ -13,6 +13,7 @@ Subject: [PATCH] compiler-rt: Simplify cross-compilation. Don't use
 
 https://us.codeaurora.org/patches/quic/llvm/50683/compiler-rt-cross-compilation.patch
 
+Upstream-Status: Pending
 Signed-off-by: Greg Fitzgerald <gregf@codeaurora.org>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
