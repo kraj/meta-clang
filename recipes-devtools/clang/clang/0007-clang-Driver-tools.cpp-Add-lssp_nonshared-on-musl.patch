@@ -1,4 +1,4 @@
-From dae3dcb6e1ac2e81dfd7fb9c2459e6041c73c3bb Mon Sep 17 00:00:00 2001
+From c35e16f856192a090696b033bc5a32af18f592ac Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
 Subject: [PATCH] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
@@ -7,6 +7,7 @@ musl driver will need to add ssp_nonshared for stack_check_local
 on the linker cmdline when using stack protector commands on
 compiler cmdline
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  clang/lib/Driver/ToolChains/Gnu.cpp | 6 ++++++

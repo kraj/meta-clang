@@ -1,4 +1,4 @@
-From 18cb0737f26205ee004470a7dc4182d1a205db82 Mon Sep 17 00:00:00 2001
+From a9127817f4ceb0f19e99c89c08ffb1d9d256d1a2 Mon Sep 17 00:00:00 2001
 From: Oleksandr Ocheretnyi <oocheret@cisco.com>
 Date: Wed, 15 Apr 2020 00:08:39 +0300
 Subject: [PATCH] clang: driver: Add dyld-prefix when checking sysroot for ldso
@@ -11,6 +11,7 @@ Subject: [PATCH] clang: driver: Add dyld-prefix when checking sysroot for ldso
    'clang: driver: Check sysroot for ldso path' which includes
    the usrmerge scenario.
 
+Upstream-Status: Pending
 Signed-off-by: Oleksandr Ocheretnyi <oocheret@cisco.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---

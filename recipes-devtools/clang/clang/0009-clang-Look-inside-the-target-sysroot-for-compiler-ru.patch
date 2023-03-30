@@ -1,4 +1,4 @@
-From 79ba8f02b706ae8ffb794b0a46844d3726c4e54a Mon Sep 17 00:00:00 2001
+From 243f40f492fbbbc3104de0fc77eef3122a4a42c4 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
 Subject: [PATCH] clang: Look inside the target sysroot for compiler runtime
@@ -9,6 +9,7 @@ driver installation where the libraries are not instlled
 
 Specific to cross compiling the way yocto/OE works
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  clang/lib/Driver/ToolChain.cpp | 6 +++++-

@@ -1,4 +1,4 @@
-From 8340042f1213d72fde9c8545de2ba47d1729d865 Mon Sep 17 00:00:00 2001
+From f16083f3436f1286941547b3036787f128c9d8a4 Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
@@ -22,7 +22,7 @@ This is due to the fact that currently the cmake scripts look for target
 binaries in sysroot. Work around this by not exporting the target binaries in
 Exports-* cmake files.
 
-Upstream-Status: Innapropriate [oe-specific]
+Upstream-Status: Inappropriate [oe-specific]
 
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 ---
@@ -52,7 +52,7 @@ index 75b0080f6715..ddf446a13eca 100644
    endif()
  endmacro()
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 9eef4eb7e35d..5bde133cdceb 100644
+index 94fc83db9344..5155b0222d87 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
 @@ -1335,7 +1335,6 @@ macro(llvm_add_tool project name)

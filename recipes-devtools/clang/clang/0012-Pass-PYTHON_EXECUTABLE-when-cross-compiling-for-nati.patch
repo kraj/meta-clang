@@ -1,8 +1,9 @@
-From 443b2d8bad07bd3404a591c58e8ae65b26127bbd Mon Sep 17 00:00:00 2001
+From e9e65cc455973c05ae3502b84bc90b3f8b70b438 Mon Sep 17 00:00:00 2001
 From: Anuj Mittal <anuj.mittal@intel.com>
 Date: Thu, 26 Dec 2019 12:56:16 -0800
 Subject: [PATCH] Pass PYTHON_EXECUTABLE when cross compiling for native build
 
+Upstream-Status: Pending
 Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---

@@ -1,4 +1,4 @@
-From f6e903f6ff980ca29cd5556c8dd188ebf8b13e5c Mon Sep 17 00:00:00 2001
+From 577a70fd39778fb7e3bcd22b6c6713fcb516c365 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 3 Jan 2023 18:44:34 -0800
 Subject: [PATCH] compiler-rt: Fix stat struct's size for O32 ABI
@@ -7,6 +7,7 @@ stat struct size differs on glibc based on ABI choices e.g. 64bit off_t
 and/or 64bit time_t will make this size different. Therefore separate
 out the O32 case out, makes it more readable.
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  .../sanitizer_platform_limits_posix.h               | 13 +++++++++++++

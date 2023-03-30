@@ -1,4 +1,4 @@
-From 5e8f81f47c4e7f944c22900c7f388ec0e57a678e Mon Sep 17 00:00:00 2001
+From 3b58bf71bf2908d1c7361e420b13330366402ea6 Mon Sep 17 00:00:00 2001
 From: Jim Broadus <jbroadus@xevo.com>
 Date: Thu, 26 Mar 2020 16:05:53 -0700
 Subject: [PATCH] clang: Fix resource dir location for cross toolchains
@@ -12,6 +12,7 @@ This causes clang to form a path that looks like /usr/bin/lib/clang/...
 As a fix for this, check the parent directory name. If that is "bin", then
 use that directory's parent.
 
+Upstream-Status: Pending
 Signed-off-by: Jim Broadus <jbroadus@xevo.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---

@@ -1,4 +1,4 @@
-From 8fc118eafbba4013390751a0e74785e3cddfbf7d Mon Sep 17 00:00:00 2001
+From 1279fd32e3809fe9b8f0bddab69042a92637282b Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 00:33:20 +0000
 Subject: [PATCH] llvm: TargetLibraryInfo: Undefine libc functions if they are
@@ -7,6 +7,7 @@ Subject: [PATCH] llvm: TargetLibraryInfo: Undefine libc functions if they are
 musl defines some functions as macros and not inline functions
 if this is the case then make sure to undefine them
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  .../llvm/Analysis/TargetLibraryInfo.def       | 22 ++++++++++++++++++-

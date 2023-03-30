@@ -1,4 +1,4 @@
-From b9b3041b7bbadef16b3572187b8b5c7b3f4986c9 Mon Sep 17 00:00:00 2001
+From b0310dcff11cade76add2b84f9d694fc626284ee Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Mon, 18 Nov 2019 17:00:29 -0800
 Subject: [PATCH] Check for atomic<double> intrinsics
@@ -9,6 +9,7 @@ therefore detect if clang can use built-ins for atomic<double> if not
 then link libatomic, this helps building clangd for x86 on linux systems
 with gcc runtime
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  llvm/cmake/modules/CheckAtomic.cmake | 3 ++-
