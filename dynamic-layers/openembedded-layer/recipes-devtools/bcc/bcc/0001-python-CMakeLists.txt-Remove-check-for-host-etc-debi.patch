@@ -13,7 +13,7 @@ usage: setup.py [global_opts] cmd1 [cmd1_opts] [cmd2 [cmd2_opts] ...]
 
 error: option --install-layout not recognized
 
-Upstream-status: Innapropriate [oe-specific]
+Upstream-Status: Inappropriate [oe-specific]
 
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 ---
