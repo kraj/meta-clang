@@ -6,8 +6,10 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=0b9a98cb3dcdefcceb145324693fda9b"
 
 inherit rust cargo cargo-update-recipe-crates
 
-SRC_URI = "crate://crates.io/${BPN}/${PV}"
-SRC_URI[bindgen-cli.sha256sum] = "ae0d083ff9e4484d9a6a3f8e39bfc08f984e69c5981896123518b9a1e31d3307"
+SRCREV = "ae6817256ac557981906e93a1f866349db85053e"
+SRC_URI = "git://github.com/rust-lang/rust-bindgen;protocol=https;branch=main"
+
+S = "${WORKDIR}/git"
 
 require ${BPN}-crates.inc
 
