@@ -287,6 +287,18 @@ BBCLASSEXTEND = "native nativesdk"
 
 RDEPENDS:lldb += "${PN}-lldb-python lldb-server"
 
+RDEPENDS:${PN}-tools += "\
+  perl-module-digest-md5 \
+  perl-module-file-basename \
+  perl-module-file-copy \
+  perl-module-file-find \
+  perl-module-file-path \
+  perl-module-findbin \
+  perl-module-hash-util \
+  perl-module-sys-hostname \
+  perl-module-term-ansicolor \
+"
+
 RRECOMMENDS:${PN}-tidy += "${PN}-tools"
 
 FILES:llvm-linker-tools = "${libdir}/LLVMgold* ${libdir}/libLTO.so.* ${libdir}/LLVMPolly*"
