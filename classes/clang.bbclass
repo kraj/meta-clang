@@ -67,6 +67,10 @@ LDFLAGS:toolchain-clang:class-nativesdk = "${BUILDSDK_LDFLAGS} \
 # Enable lld globally"
 LDFLAGS:append:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
 
+# Remove gcc specific -fcanon-prefix-map option, added in gcc-13+
+# clang does not support it yet
+DEBUG_PREFIX_MAP:remove:toolchain-clang = "-fcanon-prefix-map"
+
 # choose between 'gcc' 'clang' an empty '' can be used as well
 TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
@@ -85,7 +89,6 @@ TOOLCHAIN:class-cross = "gcc"
 OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES =. "${@['', 'runtime-${RUNTIME}:']['${RUNTIME}' != '']}"
 OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
-
 
 YOCTO_ALTERNATE_EXE_PATH:toolchain-clang:class-target = "${STAGING_BINDIR}/llvm-config"
 YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target = "/${BASELIB}"
