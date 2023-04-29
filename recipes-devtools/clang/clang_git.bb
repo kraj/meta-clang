@@ -20,7 +20,7 @@ LDFLAGS:remove:class-nativesdk = "-fuse-ld=lld"
 LDFLAGS:append:class-target:riscv32 = " -Wl,--no-as-needed -latomic -Wl,--as-needed"
 LDFLAGS:append:class-target:mips = " -Wl,--no-as-needed -latomic -Wl,--as-needed"
 
-inherit cmake cmake-native pkgconfig python3native python3targetconfig
+inherit cmake cmake-native pkgconfig python3native
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
@@ -177,6 +177,9 @@ EXTRA_OECMAKE:append:class-nativesdk = "\
 "
 EXTRA_OECMAKE:append:class-target = "\
                   -DCMAKE_CROSSCOMPILING:BOOL=ON \
+                  -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} \
+                                                  -DLLDB_PYTHON_EXT_SUFFIX=${SOLIBSDEV} \
+                                                  -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON}' \
                   -DLLVM_USE_HOST_TOOLS=OFF \
                   -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                   -DLLDB_TABLEGEN=${STAGING_BINDIR_NATIVE}/lldb-tblgen \
@@ -190,12 +193,13 @@ EXTRA_OECMAKE:append:class-target = "\
                   -DLLVM_TARGET_ARCH=${@get_clang_target_arch(bb, d)} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${TARGET_SYS}${HF} \
                   -DLLVM_HOST_TRIPLE=${TARGET_SYS}${HF} \
+                  -DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} \
+                  -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON} \
+                  -DLLDB_PYTHON_EXT_SUFFIX=${SOLIBSDEV} \
                   -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
                   -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
                   -DLLVM_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
-                  -DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} \
-                  -DLLDB_PYTHON_EXE_RELATIVE_PATH=${bindir} \
-                  -DLLDB_PYTHON_EXT_SUFFIX=${SOLIBSDEV} \
+                  -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
 
 DEPENDS = "binutils zlib zstd libffi libxml2 libxml2-native ninja-native swig-native"
