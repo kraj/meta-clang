@@ -12,7 +12,7 @@ require clang.inc
 require common-source.inc
 inherit cross-canadian
 
-DEPENDS += "nativesdk-clang binutils-cross-canadian-${TRANSLATED_TARGET_ARCH} virtual/${HOST_PREFIX}binutils-crosssdk virtual/nativesdk-libc"
+DEPENDS += "nativesdk-clang binutils-cross-canadian-${TRANSLATED_TARGET_ARCH} virtual/${HOST_PREFIX}binutils virtual/nativesdk-libc"
 # We have to point gcc at a sysroot but we don't need to rebuild if this changes
 # e.g. we switch between different machines with different tunes.
 EXTRA_OECONF_PATHS[vardepsexclude] = "TUNE_PKGARCH"
