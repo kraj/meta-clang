@@ -172,15 +172,15 @@ CXX:remove:pn-<recipe>:toolchain-clang = " -stdlib=libc++ "
 
 # compiler-rt failing in do_configure with custom TARGET_VENDOR
 
-If your DISTRO sets own value of TARGET_VENDOR, then it's need to be added in
+If your DISTRO sets its own value of TARGET_VENDOR, then it needs to be added in
 CLANG_EXTRA_OE_VENDORS, it should be done automatically, but if compiler-rt fails
 like bellow, then check the end of work-shared/llvm-project-source-12.0.0-r0/temp/log.do_patch
-is should have line like:
+it should have a line like:
 NOTE: Adding support following TARGET_VENDOR values: foo in
   /OE/build/oe-core/tmp-glibc/work-shared/llvm-project-source-12.0.0-r0/git/llvm/lib/Support/Triple.cpp and
   /OE/build/oe-core/tmp-glibc/work-shared/llvm-project-source-12.0.0-r0/git/clang/lib/Driver/ToolChains/Gnu.cpp
 and check these files if //CLANG_EXTRA_OE_VENDORS* strings were replaced correctly.
-Read add_more_target_vendors function in recipes-devtools/clang/llvm-project-source.inc for more details.
+Read add_distro_vendor function in recipes-devtools/clang/llvm-project-source.inc for more details.
 
 http://errors.yoctoproject.org/Errors/Details/574365/
 ```shell
