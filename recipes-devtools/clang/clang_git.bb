@@ -41,6 +41,7 @@ def get_clang_arch(bb, d, arch_var):
     elif re.match('riscv32$', a):                      return 'riscv32'
     elif re.match('riscv64$', a):                      return 'riscv64'
     elif re.match('p(pc|owerpc)(|64)', a):             return 'PowerPC'
+    elif re.match('loongarch64$', a):                  return 'loongarch64'
     else:
         bb.note("'%s' is not a primary llvm architecture" % a)
     return ""
@@ -104,7 +105,7 @@ LLVM_BUILD_TOOLS;LLVM_USE_HOST_TOOLS;LLVM_CONFIG_PATH;\
 # Gennerally setting LLVM_TARGETS_TO_BUILD = "" in local.conf is ok in most simple situations
 # where only one target architecture is needed along with just one build arch (usually X86)
 #
-LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86"
+LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86;LoongArch"
 
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD:append = ";${@get_clang_experimental_target_arch(bb, d)}"
