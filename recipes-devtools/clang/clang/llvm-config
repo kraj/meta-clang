@@ -22,6 +22,11 @@ if [[ $1 == "--bindir" ]]; then
   exec "$NEXT_LLVM_CONFIG" $@
 fi
 
+if [[ $1 == "--libfiles" ]]; then
+  exec "$NEXT_LLVM_CONFIG" $@
+fi
+
+
 for arg in "$@"; do
   case "$arg" in
     --cppflags)
