@@ -9,7 +9,7 @@ affected by path remapping.
 
 Differential Revision: https://reviews.llvm.org/D149272
 
-Upstream-Status: pending
+Upstream-Status: Pending
 ---
  clang/lib/AST/Decl.cpp                  |  4 ++--
  clang/lib/AST/DeclarationName.cpp       |  4 ++--
