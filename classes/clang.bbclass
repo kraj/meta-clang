@@ -137,6 +137,16 @@ set( CMAKE_CLANG_TIDY ${HOST_PREFIX}clang-tidy )
 EOF
     sed -i 's/ -mmusl / /g' ${WORKDIR}/toolchain.cmake
 }
+
+RECIPESYSROOTFUNCS = ""
+RECIPESYSROOTFUNCS:toolchain-clang = "recipe_sysroot_check_ld_is_lld"
+
+recipe_sysroot_check_ld_is_lld () {
+    if "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', 'true', 'false', d)}"; then
+        ln -srf ${RECIPE_SYSROOT_NATIVE}${bindir}/${TARGET_SYS}/${TARGET_PREFIX}ld.lld ${RECIPE_SYSROOT_NATIVE}${bindir}/${TARGET_SYS}/${TARGET_PREFIX}ld
+    fi
+}
+do_prepare_recipe_sysroot[postfuncs] += "${RECIPESYSROOTFUNCS}"
 #
 # dump recipes which still use gcc
 #python __anonymous() {
