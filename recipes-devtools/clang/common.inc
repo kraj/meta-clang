@@ -13,7 +13,6 @@ SRC_URI = "\
     file://0002-libcxxabi-Find-libunwind-headers-when-LIBCXXABI_LIBU.patch \
     file://0003-compiler-rt-support-a-new-embedded-linux-target.patch \
     file://0004-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch \
-    file://0005-compiler-rt-Disable-tsan-on-OE-glibc.patch \
     file://0006-llvm-TargetLibraryInfo-Undefine-libc-functions-if-th.patch \
     file://0007-llvm-allow-env-override-of-exe-path.patch \
     file://0008-clang-driver-Check-sysroot-for-ldso-path.patch \
