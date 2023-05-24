@@ -51,6 +51,20 @@ TOOLCHAIN = "clang"
 also look at `conf/nonclangable.conf` for list of recipes which do not yet fully
 build with clang.
 
+# Providing LLVM
+
+clang recipes can provide llvm and related packages too, it might be worth using single
+provider for llvm and clang to save some compile time and space, select the knobs
+to point to clang, default is to use the version provided by core layer.
+
+```shell
+PREFERRED_PROVIDER_llvm = "clang"
+PREFERRED_PROVIDER_llvm-native = "clang-native"
+PREFERRED_PROVIDER_nativesdk-llvm = "nativesdk-clang"
+PROVIDES:pn-clang = "llvm"
+PROVIDES:pn-clang-native = "llvm-native"
+PROVIDES:pn-nativesdk-clang = "nativesdk-llvm"
+```
 # Default Compiler Runtime
 
 Default is to use GNU runtime `RUNTIME = "gnu"` which consists of libgcc, libstdc++ to provide C/C++
