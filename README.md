@@ -9,10 +9,10 @@ with GNU compiler and can be used for specific recipes or full system compiler.
 # Getting Started
 
 ```shell
-git clone git://github.com/openembedded/openembedded-core.git
+git clone https://github.com/openembedded/openembedded-core.git
 cd openembedded-core
-git clone git://github.com/openembedded/bitbake.git
-git clone git://github.com/kraj/meta-clang.git
+git clone https://github.com/openembedded/bitbake.git
+git clone https://github.com/kraj/meta-clang.git
 
 $ . ./oe-init-build-env
 ```
@@ -21,7 +21,7 @@ If using poky ( Yocto project reference Distribution )
 ```shell
 git clone https://git.yoctoproject.org/git/poky
 cd poky
-git clone git://github.com/kraj/meta-clang.git
+git clone https://github.com/kraj/meta-clang.git
 
 $ . ./oe-init-build-env
 ```
@@ -42,7 +42,7 @@ clang to be the default compiler then set
 TOOLCHAIN ?= "clang"
 ```
 
-in `local.conf`, this would now switch default cross-compiler to be clang 
+in `local.conf`, this would now switch default cross-compiler to be clang
 you can select clang per recipe too by writing bbappends for them containing
 
 ```shell
@@ -207,11 +207,11 @@ CMake Error at TOPDIR/tmp-glibc/work/core2-64-foo-linux/compiler-rt/12.0.0-r0/re
 # Dependencies
 
 ```shell
-URI: git://github.com/openembedded/openembedded-core.git
+URI: https://github.com/openembedded/openembedded-core.git
 branch: master
 revision: HEAD
 
-URI: git://github.com/openembedded/bitbake.git
+URI: ghttps://github.com/openembedded/bitbake.git
 branch: master
 revision: HEAD
 ```
