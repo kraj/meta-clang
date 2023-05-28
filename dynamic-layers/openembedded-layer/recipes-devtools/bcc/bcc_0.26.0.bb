@@ -55,6 +55,8 @@ EXTRA_OECMAKE = " \
 "
 
 do_install:append() {
+        sed -e 's@#!/usr/bin/env python@#!/usr/bin/env python3@g' \
+            -i $(find ${D}${datadir}/${PN} -type f)
         sed -e 's@#!/usr/bin/python@#!/usr/bin/env python3@g' \
             -i $(find ${D}${datadir}/${PN} -type f)
 }
