@@ -1,4 +1,4 @@
-From 48cf70c06ae6085ff3d1f8b28e323f153cff23c6 Mon Sep 17 00:00:00 2001
+From 81298058cd344f695fe22da4a367db08709a85e1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 25 Dec 2022 15:13:41 -0800
 Subject: [PATCH] build: Enable 64bit off_t on 32bit glibc systems

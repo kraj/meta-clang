@@ -1,8 +1,8 @@
-From 98a5709ff5a34a2906536e110d227f83898f550b Mon Sep 17 00:00:00 2001
+From 648ef1a807d27d51b7cddbf2df7499984c857ba4 Mon Sep 17 00:00:00 2001
 From: Dan McGregor <dan.mcgregor@usask.ca>
 Date: Fri, 16 Jun 2023 08:47:00 -0700
-Subject: [PATCH] [clang] Apply -fmacro-prefix-map to anonymous tags in
- template arguments
+Subject: [PATCH] Apply -fmacro-prefix-map to anonymous tags in template
+ arguments
 
 When expanding template arguments for pretty function printing,
 such as for __PRETTY_FUNCTION__, make TypePrinter apply
@@ -14,7 +14,8 @@ Reviewed By: MaskRay, aaron.ballman
 
 Differential Revision: https://reviews.llvm.org/D152570
 
-Upstream-Status: Backport
+Upstream-Status: Backport [https://reviews.llvm.org/D152570]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  clang/docs/ReleaseNotes.rst                       |  2 ++
  clang/lib/AST/Expr.cpp                            | 14 ++++++++++++++
@@ -81,6 +82,3 @@ index 000000000000..e87f0ab484dc
 +
 +  return 0;
 +}
--- 
-2.40.1
-
