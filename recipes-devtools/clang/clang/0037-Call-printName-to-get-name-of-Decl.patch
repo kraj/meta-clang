@@ -1,7 +1,7 @@
-From d33d6a8c4f43907cb53130730a2bc48624a34b74 Mon Sep 17 00:00:00 2001
+From ab8b6331592fb92a2dc1c689483a4772d51aed8b Mon Sep 17 00:00:00 2001
 From: Dan McGregor <dan.mcgregor@usask.ca>
 Date: Tue, 21 Mar 2023 13:04:51 -0600
-Subject: [PATCH] [clang] Call printName to get name of Decl
+Subject: [PATCH] Call printName to get name of Decl
 
 Rather than sending a name directly to the stream, use printName
 to preserve any PrintingPolicy. This ensures that names are properly
@@ -53,7 +53,7 @@ index c1219041a466..da8b3886c340 100644
    }
 diff --git a/clang/test/CodeGen/debug-prefix-map.cpp b/clang/test/CodeGen/debug-prefix-map.cpp
 new file mode 100644
-index 000000000000..7ddaee531282
+index 000000000000..5e90aedd8ed7
 --- /dev/null
 +++ b/clang/test/CodeGen/debug-prefix-map.cpp
 @@ -0,0 +1,11 @@

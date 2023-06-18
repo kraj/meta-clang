@@ -46,8 +46,9 @@ SRC_URI = "\
     file://0034-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
     file://0035-compiler-rt-Fix-stat-struct-s-size-for-O32-ABI.patch \
     file://0036-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
-    file://0037-clang-Call-printName-to-get-name-of-Decl.patch \
-    file://0038-clang-Apply-fmacro-prefix-map-to-anonymous-tags-in-t.patch \
+    file://0037-Call-printName-to-get-name-of-Decl.patch \
+    file://0038-Apply-fmacro-prefix-map-to-anonymous-tags-in-templat.patch \
+    file://0039-lld-RISCV-Handle-relaxation-reductions-of-more-than-.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""

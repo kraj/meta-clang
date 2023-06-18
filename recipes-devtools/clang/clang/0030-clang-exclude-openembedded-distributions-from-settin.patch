@@ -1,4 +1,4 @@
-From b34b67256aa36ceb6bce1b6f657ad129ecf90313 Mon Sep 17 00:00:00 2001
+From 43418cfdfc19953e43c5e1f62fd0720f160de1a2 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 11 Feb 2022 12:29:14 -0800
 Subject: [PATCH] clang: exclude openembedded distributions from setting rpath
@@ -18,10 +18,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-index dfab4075e03e..14c6f0a3b21d 100644
+index 580d326935c0..412218f04df5 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-@@ -794,6 +794,11 @@ void tools::addLTOOptions(const ToolChain &ToolChain, const ArgList &Args,
+@@ -801,6 +801,11 @@ void tools::addLTOOptions(const ToolChain &ToolChain, const ArgList &Args,
  void tools::addOpenMPRuntimeSpecificRPath(const ToolChain &TC,
                                            const ArgList &Args,
                                            ArgStringList &CmdArgs) {
