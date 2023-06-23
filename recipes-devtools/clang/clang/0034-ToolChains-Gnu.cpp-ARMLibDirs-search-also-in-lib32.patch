@@ -1,4 +1,4 @@
-From 0f5f2e8e84d37e94aad0a6bf90bb3406e289b5e5 Mon Sep 17 00:00:00 2001
+From 9fa41e535f7b95005e4aa2c764aebe674feeea69 Mon Sep 17 00:00:00 2001
 From: Martin Jansa <Martin.Jansa@gmail.com>
 Date: Thu, 31 Aug 2023 18:14:47 +0200
 Subject: [PATCH] ToolChains/Gnu.cpp: ARMLibDirs search also in lib32
@@ -50,14 +50,15 @@ CMake Error at TOPDIR/BUILD/work/raspberrypi4_64-oemllib32-linux-gnueabi/lib32-c
 Upstream-Status: Pending
 Signed-off-by: Martin Jansa <Martin.Jansa@gmail.com>
 ---
- clang/lib/Driver/ToolChains/Gnu.cpp | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ clang/lib/Driver/ToolChains/Gnu.cpp   | 2 +-
+ clang/lib/Driver/ToolChains/Linux.cpp | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 0ec2dadafc05..a67e87365a7a 100644
+index 020fd106a629..358c0ade7b27 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -2241,7 +2241,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
+@@ -2325,7 +2325,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
    static const char *const AArch64beTriples[] = {"aarch64_be-none-linux-gnu",
                                                   "aarch64_be-linux-gnu"};
  
@@ -67,10 +68,10 @@ index 0ec2dadafc05..a67e87365a7a 100644
    static const char *const ARMHFTriples[] = {"arm-linux-gnueabihf",
                                               "armv7hl-redhat-linux-gnueabi",
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index c6fb290ffdb4..82acaf8a4bfd 100644
+index 8bd21eebfed3..2492db058cf9 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -166,6 +166,7 @@ static StringRef getOSLibDir(const llvm::Triple &Triple, const ArgList &Args) {
+@@ -198,6 +198,7 @@ static StringRef getOSLibDir(const llvm::Triple &Triple, const ArgList &Args) {
    // reasoning about oslibdir spellings with the lib dir spellings in the
    // GCCInstallationDetector, but that is a more significant refactoring.
    if (Triple.getArch() == llvm::Triple::x86 || Triple.isPPC32() ||

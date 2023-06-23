@@ -1,4 +1,4 @@
-From 46643a33c0889bc6cb4034337b02962c673e0ac4 Mon Sep 17 00:00:00 2001
+From e8ecd192495c092dcee4fdb1ee5514222a8aa0c1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 21 Feb 2023 12:46:10 -0800
 Subject: [PATCH] compiler-rt: Undef _TIME_BITS along with _FILE_OFFSET_BITS in
@@ -22,7 +22,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 9 insertions(+)
 
 diff --git a/compiler-rt/lib/sanitizer_common/sanitizer_platform.h b/compiler-rt/lib/sanitizer_common/sanitizer_platform.h
-index 764996e57355..df3d165ecdb6 100644
+index 764996e57355..99024169f925 100644
 --- a/compiler-rt/lib/sanitizer_common/sanitizer_platform.h
 +++ b/compiler-rt/lib/sanitizer_common/sanitizer_platform.h
 @@ -22,6 +22,15 @@
@@ -34,7 +34,7 @@ index 764996e57355..df3d165ecdb6 100644
 +// 32-bit architectures using 64-bit time_t and users passing _TIME_BITS=64
 +// from build environment, therefore both _FILE_OFFSET_BITS and _TIME_BITS
 +// need to be undefined together since features.h will check for both being 64
-+// if one is set to 64
++// if one is set to 64.
 +#  if !defined(_FILE_OFFSET_BITS)
 +#    undef _TIME_BITS
 +#  endif
