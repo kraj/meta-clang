@@ -1,4 +1,4 @@
-From cd16176a1b45061623ec0219a12a0a7a407fa738 Mon Sep 17 00:00:00 2001
+From d8e81541adf603ae232f2ef740bf1eaea7417346 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 9 Mar 2022 16:28:16 -0800
 Subject: [PATCH] compiler-rt: Enable __int128 for ppc32
@@ -11,10 +11,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
-index 2fc70522895f..55f0ecb20a1f 100644
+index 7f00391d1dce..b062923c0a4e 100644
 --- a/compiler-rt/lib/builtins/CMakeLists.txt
 +++ b/compiler-rt/lib/builtins/CMakeLists.txt
-@@ -668,11 +668,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
+@@ -669,11 +669,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
  set(mips64el_SOURCES ${GENERIC_TF_SOURCES}
                       ${mips_SOURCES})
  
@@ -27,10 +27,10 @@ index 2fc70522895f..55f0ecb20a1f 100644
    ppc/divtc3.c
    ppc/fixtfdi.c
    ppc/fixunstfdi.c
-@@ -687,14 +685,15 @@ set(powerpc64_SOURCES
+@@ -688,14 +686,15 @@ set(powerpc64_SOURCES
  )
  # These routines require __int128, which isn't supported on AIX.
- if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "AIX")
+ if (NOT OS_NAME MATCHES "AIX")
 -  set(powerpc64_SOURCES
 +  set(powerpc_SOURCES
      ppc/floattitf.c
@@ -46,15 +46,15 @@ index 2fc70522895f..55f0ecb20a1f 100644
  
  set(riscv_SOURCES
    riscv/fp_mode.c
-@@ -818,9 +817,9 @@ else ()
+@@ -823,9 +822,9 @@ else ()
          list(APPEND BUILTIN_CFLAGS_${arch} -fomit-frame-pointer -DCOMPILER_RT_ARMHF_TARGET)
        endif()
  
 -      # For RISCV32, we must force enable int128 for compiling long
 +      # For RISCV32/PPC32, we must force enable int128 for compiling long
        # double routines.
--      if("${arch}" STREQUAL "riscv32")
-+      if("${arch}" STREQUAL "riscv32" OR "${arch}" STREQUAL "powerpc" )
+-      if(COMPILER_RT_ENABLE_SOFTWARE_INT128 OR "${arch}" STREQUAL "riscv32")
++      if(COMPILER_RT_ENABLE_SOFTWARE_INT128 OR "${arch}" STREQUAL "riscv32" OR "${arch}" STREQUAL "powerpc")
          list(APPEND BUILTIN_CFLAGS_${arch} -fforce-enable-int128)
        endif()
  

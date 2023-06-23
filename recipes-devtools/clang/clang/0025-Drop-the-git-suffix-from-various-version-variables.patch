@@ -1,0 +1,26 @@
+From 2ffb7b8d0129a305630adf487c7ef29c9c18e447 Mon Sep 17 00:00:00 2001
+From: Changqing Li <changqing.li@windriver.com>
+Date: Wed, 23 Jun 2021 16:25:06 +0800
+Subject: [PATCH] Drop the 'git' suffix from various version variables
+
+Upstream-Status: Backport [cherry-picked from release branch]
+
+Signed-off-by: Changqing Li <changqing.li@windriver.com>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ llvm/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/llvm/CMakeLists.txt b/llvm/CMakeLists.txt
+index 3a591b112f55..ea714cbd2608 100644
+--- a/llvm/CMakeLists.txt
++++ b/llvm/CMakeLists.txt
+@@ -18,7 +18,7 @@ if(NOT DEFINED LLVM_VERSION_PATCH)
+   set(LLVM_VERSION_PATCH 0)
+ endif()
+ if(NOT DEFINED LLVM_VERSION_SUFFIX)
+-  set(LLVM_VERSION_SUFFIX rc)
++  set(LLVM_VERSION_SUFFIX "")
+ endif()
+ 
+ if (NOT PACKAGE_VERSION)

@@ -1,4 +1,4 @@
-From 67c2f3e7f44144a98ce0fb09809d5759405874eb Mon Sep 17 00:00:00 2001
+From d74bbb0a56a091fd24f7f350c4ba81c0dbb8e56d Mon Sep 17 00:00:00 2001
 From: Martin Kelly <mkelly@xevo.com>
 Date: Fri, 19 May 2017 00:22:57 -0700
 Subject: [PATCH] llvm: allow env override of exe and libdir path
@@ -19,7 +19,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/llvm/tools/llvm-config/llvm-config.cpp b/llvm/tools/llvm-config/llvm-config.cpp
-index b1d795a0a349..dbeddeb2152e 100644
+index e86eb2b44b10..7b2abf318dbe 100644
 --- a/llvm/tools/llvm-config/llvm-config.cpp
 +++ b/llvm/tools/llvm-config/llvm-config.cpp
 @@ -246,6 +246,13 @@ Typical components:\n\

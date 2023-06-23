@@ -1,4 +1,4 @@
-From 9c415718a3b38bd19d82b624fa0f564ad0f7a1fa Mon Sep 17 00:00:00 2001
+From b5af23bbe9f591c3b3cf626a9d25618fede6e281 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 14 Oct 2020 22:19:57 -0700
 Subject: [PATCH] clang: Use python3 in python scripts
@@ -10,32 +10,21 @@ Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  .../find-all-symbols/tool/run-find-all-symbols.py               | 2 +-
- clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py            | 2 +-
  clang/tools/scan-view/bin/scan-view                             | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py b/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
-index a0fa64592e62..27aa97a35571 100755
+index 471dbf8c110b..f98385dc6651 100755
 --- a/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 +++ b/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python3
  #
- #=- run-find-all-symbols.py - Parallel find-all-symbols runner -*- python  -*-=#
- #
-diff --git a/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py b/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
-index a26d2144b7f9..396a201b667e 100755
---- a/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
-+++ b/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- #
- #===- clang-tidy-diff.py - ClangTidy Diff Checker -----------*- python -*--===#
+ # =- run-find-all-symbols.py - Parallel find-all-symbols runner -*- python  -*-=#
  #
 diff --git a/clang/tools/scan-view/bin/scan-view b/clang/tools/scan-view/bin/scan-view
-index 6165432e7af8..07effbca5969 100755
+index d01aebb4029a..f3375804654d 100755
 --- a/clang/tools/scan-view/bin/scan-view
 +++ b/clang/tools/scan-view/bin/scan-view
 @@ -1,4 +1,4 @@

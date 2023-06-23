@@ -1,4 +1,4 @@
-From eb6c2fe33206567b6a658d74bfd2a906f61893ed Mon Sep 17 00:00:00 2001
+From b39210619bb32e1e59442665e54ace2dff689dca Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 3 Jan 2023 18:44:34 -0800
 Subject: [PATCH] compiler-rt: Fix stat struct's size for O32 ABI
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 13 insertions(+)
 
 diff --git a/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h b/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h
-index fdc69b8a5fba..d2246893f8a5 100644
+index 58244c9944a0..70daaf279f4a 100644
 --- a/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h
 +++ b/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h
-@@ -97,11 +97,24 @@ const unsigned struct_kernel_stat64_sz = 104;
+@@ -98,11 +98,24 @@ const unsigned struct_kernel_stat64_sz = 104;
  const unsigned struct_kernel_stat_sz = 144;
  const unsigned struct_kernel_stat64_sz = 104;
  #elif defined(__mips__)

@@ -1,4 +1,4 @@
-From 6f1ddaf3cfca94d3c3d00d0e7e9486eaf98f8b44 Mon Sep 17 00:00:00 2001
+From 4b154d30367d4dfea6ff6cace9b0cdd8b41aabea Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 12 Aug 2022 11:50:57 -0700
 Subject: [PATCH] llvm: Do not use cmake infra to detect libzstd
@@ -21,7 +21,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/llvm/lib/Support/CMakeLists.txt b/llvm/lib/Support/CMakeLists.txt
-index 4cbc3b79f3bb..08c4bfd5efc1 100644
+index 87fe7bebf688..e12e292fdfbf 100644
 --- a/llvm/lib/Support/CMakeLists.txt
 +++ b/llvm/lib/Support/CMakeLists.txt
 @@ -22,7 +22,7 @@ if (HAS_WERROR_GLOBAL_CTORS)

@@ -1,4 +1,4 @@
-From 4cf32ee02831483cc999d1e60d401cb301f85bfc Mon Sep 17 00:00:00 2001
+From 419805a462fc48cca710f9795dbdad3bdaa635c7 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 09:02:13 -0700
 Subject: [PATCH] clang: Prepend trailing '/' to sysroot
@@ -25,12 +25,12 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 2a58f876a68d..c68a842b45e0 100644
+index f7d52230203e..8256d351d316 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -184,7 +184,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
+@@ -215,7 +215,7 @@ Linux::Linux(const Driver &D, const llvm::Triple &Triple, const ArgList &Args)
    Multilibs = GCCInstallation.getMultilibs();
-   SelectedMultilib = GCCInstallation.getMultilib();
+   SelectedMultilibs.assign({GCCInstallation.getMultilib()});
    llvm::Triple::ArchType Arch = Triple.getArch();
 -  std::string SysRoot = computeSysRoot();
 +  std::string SysRoot = computeSysRoot() + "/";

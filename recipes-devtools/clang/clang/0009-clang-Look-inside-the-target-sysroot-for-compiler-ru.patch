@@ -1,4 +1,4 @@
-From c865d5064247bfc985bc92409869cd21ca5c74e9 Mon Sep 17 00:00:00 2001
+From e82de99380f048f08dc326cf86ee96d6926df325 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
 Subject: [PATCH] clang: Look inside the target sysroot for compiler runtime
@@ -16,10 +16,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChain.cpp b/clang/lib/Driver/ToolChain.cpp
-index bc70205a6c01..527efd421e01 100644
+index d60fdbc17968..c637123ff59f 100644
 --- a/clang/lib/Driver/ToolChain.cpp
 +++ b/clang/lib/Driver/ToolChain.cpp
-@@ -13,6 +13,7 @@
+@@ -15,6 +15,7 @@
  #include "ToolChains/InterfaceStubs.h"
  #include "clang/Basic/ObjCRuntime.h"
  #include "clang/Basic/Sanitizers.h"
@@ -27,7 +27,7 @@ index bc70205a6c01..527efd421e01 100644
  #include "clang/Config/config.h"
  #include "clang/Driver/Action.h"
  #include "clang/Driver/Driver.h"
-@@ -488,7 +489,10 @@ StringRef ToolChain::getOSLibName() const {
+@@ -589,7 +590,10 @@ StringRef ToolChain::getOSLibName() const {
  }
  
  std::string ToolChain::getCompilerRTPath() const {
@@ -38,4 +38,4 @@ index bc70205a6c01..527efd421e01 100644
 +                            CLANG_VERSION_STRING);
    if (isBareMetal()) {
      llvm::sys::path::append(Path, "lib", getOSLibName());
-     Path += SelectedMultilib.gccSuffix();
+     if (!SelectedMultilibs.empty()) {

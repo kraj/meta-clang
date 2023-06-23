@@ -1,4 +1,4 @@
-From 4afad7aec9a18b35e934d50b2f99dc464d6ead0e Mon Sep 17 00:00:00 2001
+From 14bb010d68be3aecf7906eccb856626c663833ab Mon Sep 17 00:00:00 2001
 From: Jim Broadus <jbroadus@xevo.com>
 Date: Thu, 26 Mar 2020 16:05:53 -0700
 Subject: [PATCH] clang: Fix resource dir location for cross toolchains
@@ -20,15 +20,17 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/Driver.cpp b/clang/lib/Driver/Driver.cpp
-index a268f2fa8fc5..ab813044dc8c 100644
+index 488350169efa..e4b8ef307f60 100644
 --- a/clang/lib/Driver/Driver.cpp
 +++ b/clang/lib/Driver/Driver.cpp
-@@ -181,7 +181,13 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
+@@ -183,9 +183,15 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
      // With a static-library build of libclang, LibClangPath will contain the
      // path of the embedding binary, which for LLVM binaries will be in bin/.
      // ../lib gets us to lib/ in both cases.
 -    P = llvm::sys::path::parent_path(Dir);
 +    Dir = std::string(llvm::sys::path::parent_path(Dir));
+     // This search path is also created in the COFF driver of lld, so any
+     // changes here also needs to happen in lld/COFF/Driver.cpp
 +
 +    // OE cross toolchains are installed, by default, in a subdir of bin.
 +    if (llvm::sys::path::filename(Dir) == "bin") {

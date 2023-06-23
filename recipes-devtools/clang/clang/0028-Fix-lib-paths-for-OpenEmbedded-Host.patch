@@ -1,4 +1,4 @@
-From a7b8523a9f649ca3bdc2759e2bb500bc7f957b48 Mon Sep 17 00:00:00 2001
+From 85fd4df8781b853102260b5988a3d118671d1725 Mon Sep 17 00:00:00 2001
 From: Changqing Li <changqing.li@windriver.com>
 Date: Tue, 7 Dec 2021 04:08:22 +0000
 Subject: [PATCH] Fix lib paths for OpenEmbedded Host
@@ -48,18 +48,18 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 77f5c3f58a8b..0ec2dadafc05 100644
+index 3133dfd37e6c..b0c1340b60c8 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -18,6 +18,7 @@
+@@ -19,6 +19,7 @@
  #include "Linux.h"
  #include "clang/Config/config.h" // for GCC_INSTALL_PREFIX
  #include "clang/Driver/Compilation.h"
 +#include "clang/Driver/Distro.h"
  #include "clang/Driver/Driver.h"
  #include "clang/Driver/DriverDiagnostic.h"
- #include "clang/Driver/Options.h"
-@@ -2682,6 +2683,7 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+ #include "clang/Driver/MultilibBuilder.h"
+@@ -2743,6 +2744,7 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
      const llvm::Triple &TargetTriple, const ArgList &Args,
      const std::string &LibDir, StringRef CandidateTriple,
      bool NeedsBiarchSuffix, bool GCCDirExists, bool GCCCrossDirExists) {
@@ -67,7 +67,7 @@ index 77f5c3f58a8b..0ec2dadafc05 100644
    // Locations relative to the system lib directory where GCC's triple-specific
    // directories might reside.
    struct GCCLibSuffix {
-@@ -2699,7 +2701,8 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+@@ -2760,7 +2762,8 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
        // files in that location, not just GCC installation data.
        {CandidateTriple.str(), "..",
         TargetTriple.getVendor() == llvm::Triple::Freescale ||

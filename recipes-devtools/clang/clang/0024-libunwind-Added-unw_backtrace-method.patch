@@ -1,4 +1,4 @@
-From 841592392822de2d39c0a208b0a2f9fc7e9b184d Mon Sep 17 00:00:00 2001
+From 823e8d8a5fa110c9abb89a46eccfcd980c12ebd4 Mon Sep 17 00:00:00 2001
 From: Maksim Kita <maksim-kita@yandex-team.ru>
 Date: Sun, 23 May 2021 10:27:29 +0000
 Subject: [PATCH] libunwind: Added unw_backtrace method
@@ -8,8 +8,8 @@ Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  libunwind/include/libunwind.h |  1 +
- libunwind/src/libunwind.cpp   | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+)
+ libunwind/src/libunwind.cpp   | 20 ++++++++++++++++++++
+ 2 files changed, 21 insertions(+)
 
 diff --git a/libunwind/include/libunwind.h b/libunwind/include/libunwind.h
 index d2ad5ab87122..d735d955aee2 100644
@@ -24,12 +24,12 @@ index d2ad5ab87122..d735d955aee2 100644
  extern unw_addr_space_t unw_local_addr_space;
  
 diff --git a/libunwind/src/libunwind.cpp b/libunwind/src/libunwind.cpp
-index 0faea2b78570..14bf07d8f470 100644
+index 1bd18659b786..64819826cfea 100644
 --- a/libunwind/src/libunwind.cpp
 +++ b/libunwind/src/libunwind.cpp
-@@ -349,7 +349,25 @@ void __unw_remove_dynamic_eh_frame_section(unw_word_t eh_frame_start) {
- #endif // defined(_LIBUNWIND_SUPPORT_DWARF_UNWIND)
- #endif // !defined(__USING_SJLJ_EXCEPTIONS__)
+@@ -431,6 +431,26 @@ int __unw_remove_find_dynamic_unwind_sections(
+ 
+ #endif // __APPLE__
  
 +int unw_backtrace(void **buffer, int size) {
 +  unw_context_t context;
@@ -44,12 +44,13 @@ index 0faea2b78570..14bf07d8f470 100644
 +    if (current >= size || unw_get_reg(&cursor, UNW_REG_IP, &ip)) {
 +      break;
 +    }
- 
++
 +    buffer[current++] = reinterpret_cast<void *>(static_cast<uintptr_t>(ip));
 +  }
 +
 +  return current;
 +}
- 
++
  // Add logging hooks in Debug builds only
  #ifndef NDEBUG
+ #include <stdlib.h>
