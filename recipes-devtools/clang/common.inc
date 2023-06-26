@@ -36,7 +36,6 @@ SRC_URI = "\
     file://0024-libunwind-Added-unw_backtrace-method.patch \
     file://0025-Drop-the-git-suffix-from-various-version-variables.patch \
     file://0026-clang-Do-not-use-install-relative-libc-headers.patch \
-    file://0027-clang-Fix-how-driver-finds-GCC-installation-path-on-.patch \
     file://0028-Fix-lib-paths-for-OpenEmbedded-Host.patch \
     file://0029-Correct-library-search-path-for-OpenEmbedded-Host.patch \
     file://0030-lldb-Link-with-libatomic-on-x86.patch \
