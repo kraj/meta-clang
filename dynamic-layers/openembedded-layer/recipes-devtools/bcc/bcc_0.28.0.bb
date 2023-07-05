@@ -13,6 +13,7 @@ DEPENDS += "bison-native \
             ${LUAJIT} \
             clang \
             libbpf \
+            python3-setuptools-native \
             "
 
 LUAJIT ?= "luajit"
@@ -33,7 +34,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://ptest_wrapper.sh \
            "
 
-SRCREV = "9b5af1b0c140c8dbcbd9b821dccf2f7fceb6429c"
+SRCREV = "8422cd449ad2e60414a4508aa4a150a9db39c4a3"
 
 PV .= "+git${SRCPV}"
 
