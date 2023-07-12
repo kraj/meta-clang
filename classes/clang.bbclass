@@ -10,7 +10,8 @@ AR:toolchain-clang = "${HOST_PREFIX}llvm-ar"
 NM:toolchain-clang = "${HOST_PREFIX}llvm-nm"
 OBJDUMP:toolchain-clang = "${HOST_PREFIX}llvm-objdump"
 OBJCOPY:toolchain-clang = "${HOST_PREFIX}llvm-objcopy"
-#STRIP:toolchain-clang = "${HOST_PREFIX}llvm-strip"
+STRIP:riscv64:toolchain-clang = "${HOST_PREFIX}llvm-strip"
+STRIP:riscv32:toolchain-clang = "${HOST_PREFIX}llvm-strip"
 STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
 READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
 
@@ -141,8 +142,9 @@ RECIPESYSROOTFUNCS = ""
 RECIPESYSROOTFUNCS:toolchain-clang = "recipe_sysroot_check_ld_is_lld"
 
 recipe_sysroot_check_ld_is_lld () {
-    if "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', 'true', 'false', d)}"; then
-        ln -srf ${RECIPE_SYSROOT_NATIVE}${bindir}/${TARGET_SYS}/${TARGET_PREFIX}ld.lld ${RECIPE_SYSROOT_NATIVE}${bindir}/${TARGET_SYS}/${TARGET_PREFIX}ld
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', 'true', 'false', d)} &&  \
+        ${@bb.utils.contains('INHIBIT_DEFAULT_DEPS', '1', 'false', 'true', d)}; then
+        ln -srf ${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}ld.lld ${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}ld
     fi
 }
 do_prepare_recipe_sysroot[postfuncs] += "${RECIPESYSROOTFUNCS}"

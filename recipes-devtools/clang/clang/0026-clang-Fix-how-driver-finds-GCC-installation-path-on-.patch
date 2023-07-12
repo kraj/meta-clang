@@ -1,4 +1,4 @@
-From 1801fad99e1dedbe8d40931b18c37d326a1d532c Mon Sep 17 00:00:00 2001
+From 96a3194262a641ac20e1bf19f9db7f657e03785f Mon Sep 17 00:00:00 2001
 From: David Abdurachmanov <david.abdurachmanov@sifive.com>
 Date: Wed, 20 Oct 2021 17:30:36 -0700
 Subject: [PATCH] clang: Fix how driver finds GCC installation path on

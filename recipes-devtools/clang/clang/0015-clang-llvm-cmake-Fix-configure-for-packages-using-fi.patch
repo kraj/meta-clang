@@ -1,4 +1,4 @@
-From f16083f3436f1286941547b3036787f128c9d8a4 Mon Sep 17 00:00:00 2001
+From aafbba9f341d5e6d5293371fad130472bee85c5c Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] clang,llvm: cmake: Fix configure for packages using
@@ -52,7 +52,7 @@ index 75b0080f6715..ddf446a13eca 100644
    endif()
  endmacro()
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 94fc83db9344..5155b0222d87 100644
+index 93e6d67551de..d8123389957b 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
 @@ -1335,7 +1335,6 @@ macro(llvm_add_tool project name)

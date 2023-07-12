@@ -18,9 +18,10 @@ RDEPENDS:${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://0001-cmake-Raise-max-llvm-major-version-to-16.patch \
+           file://0001-Adjust-to-build-with-llvm-17.patch \
            file://run-ptest \
 "
-SRCREV = "70ee22cb14e2eedc5df17e53965824d7381f8e6f"
+SRCREV = "e199c7e73da84bff9fe744d1e3402c2b505aa5a2"
 
 S = "${WORKDIR}/git"
 
