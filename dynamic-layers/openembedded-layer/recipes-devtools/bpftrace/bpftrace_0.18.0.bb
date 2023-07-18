@@ -12,6 +12,7 @@ DEPENDS += "bison-native \
             libcereal \
             libbpf \
             "
+DEPENDS += "${@bb.utils.contains('PTEST_ENABLED', '1', 'pahole-native llvm-native', '', d)}"
 
 PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
