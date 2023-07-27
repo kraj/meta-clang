@@ -1,0 +1,50 @@
+Upstream-status: Backport
+
+Fixes the following build error:
+
+| ../../harfbuzz-2.6.4/src/hb-subset-cff1.cc:472:33: error: variable 'supp_size' set but not used [-Werror,-Wunused-but-set-variable]
+|     unsigned int  size0, size1, supp_size;
+|                                 ^
+| 1 error generated.
+
+Signed-off-by: Raphael Kubo da Costa <raphael.kubo.da.costa@intel.com>
+---
+From 243d056ff1c2af583ceb67e5dfbfaac51dc96e63 Mon Sep 17 00:00:00 2001
+From: Andi-Bogdan Postelnicu <abpostelnicu@me.com>
+Date: Wed, 2 Jun 2021 14:08:11 +0300
+Subject: [PATCH] Removed unused variable `supp_size` from
+ plan_subset_encoding(...).
+
+---
+ src/hb-subset-cff1.cc | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/src/hb-subset-cff1.cc b/src/hb-subset-cff1.cc
+index df322f845..35dae7b1f 100644
+--- a/src/hb-subset-cff1.cc
++++ b/src/hb-subset-cff1.cc
+@@ -469,12 +469,11 @@ struct cff_subset_plan {
+   unsigned int plan_subset_encoding (const OT::cff1::accelerator_subset_t &acc, hb_subset_plan_t *plan)
+   {
+     const Encoding *encoding = acc.encoding;
+-    unsigned int  size0, size1, supp_size;
++    unsigned int  size0, size1;
+     hb_codepoint_t  code, last_code = CFF_UNDEF_CODE;
+     hb_vector_t<hb_codepoint_t> supp_codes;
+ 
+     subset_enc_code_ranges.resize (0);
+-    supp_size = 0;
+     supp_codes.init ();
+ 
+     subset_enc_num_codes = plan->num_output_glyphs () - 1;
+@@ -510,7 +509,6 @@ struct cff_subset_plan {
+ 	  code_pair_t pair = { supp_codes[i], sid };
+ 	  subset_enc_supp_codes.push (pair);
+ 	}
+-	supp_size += SuppEncoding::static_size * supp_codes.length;
+       }
+     }
+     supp_codes.fini ();
+-- 
+2.41.0
+
