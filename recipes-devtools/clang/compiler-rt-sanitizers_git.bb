@@ -37,7 +37,7 @@ EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
                   -DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
                   -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON \
-                  -DCMAKE_C_COMPILER_TARGET=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
+                  -DCMAKE_C_COMPILER_TARGET=${HOST_ARCH}${HOST_VENDOR}-${HOST_OS}${HF} \
                   -DCOMPILER_RT_BUILD_BUILTINS=OFF \
                   -DCOMPILER_RT_INCLUDE_TESTS=OFF \
                   -DSANITIZER_CXX_ABI_LIBNAME=${@bb.utils.contains("RUNTIME", "llvm", "libc++", "libstdc++", d)} \
