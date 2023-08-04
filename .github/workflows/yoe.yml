@@ -63,7 +63,7 @@ jobs:
       - name: Build Image
         run: |
           cd yoe
-          /bin/bash -c ". ./envsetup.sh qemuarm64 && bitbake yoe-qt5-image yoe-sdk-image yoe-debug-image"
+          /bin/bash -c ". ./envsetup.sh qemuarm64 && bitbake yoe-kiosk-image yoe-sdk-image yoe-debug-image"
       - name: Build SDK
         run: |
           cd yoe
