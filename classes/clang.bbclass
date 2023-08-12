@@ -143,6 +143,7 @@ RECIPESYSROOTFUNCS:toolchain-clang = "recipe_sysroot_check_ld_is_lld"
 
 recipe_sysroot_check_ld_is_lld () {
     if ${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', 'true', 'false', d)} &&  \
+        ${@bb.utils.contains('PACKAGE_ARCH', 'all', 'false', 'true', d)}   &&  \
         ${@bb.utils.contains('INHIBIT_DEFAULT_DEPS', '1', 'false', 'true', d)}; then
         ln -srf ${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}ld.lld ${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}ld
     fi
