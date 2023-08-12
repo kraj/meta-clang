@@ -10,8 +10,7 @@ SCAN_BUILD:class-cross = ""
 SCAN_BUILD:class-crosssdk = ""
 SCAN_BUILD:class-cross-canadian = ""
 
-#CLANG_SCAN_SERVER_IP ??= "127.0.0.1"
-CLANG_SCAN_SERVER_IP ??= "10.0.0.10"
+CLANG_SCAN_SERVER_IP ??= "0.0.0.0"
 CLANG_SCAN_PORT ??= "8181"
 SCAN_RESULTS_DIR ?= "${TMPDIR}/static-scan/${PN}"
 
