@@ -91,6 +91,6 @@ python add_distro_vendor() {
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 
+do_patch[vardepsexclude] = "MULTILIBS"
 do_patch[postfuncs] += "add_distro_vendor"
 do_create_spdx[depends] += "${PN}:do_patch"
-
