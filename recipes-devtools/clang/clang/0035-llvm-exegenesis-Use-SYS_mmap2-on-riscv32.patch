@@ -1,0 +1,60 @@
+From 4ac692f074388e0cb360eeb18da6f81b9cc0d29b Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sun, 20 Aug 2023 13:49:19 -0700
+Subject: [PATCH] llvm-exegenesis: Use SYS_mmap2 on riscv32
+
+RISCV32 does not provide SYS_mmap instead it only implements mmap2
+therefore adjust the SYS_mmap to be an alias for SYS_mmap2
+
+Upstream-Status: Submitted [https://reviews.llvm.org/D158375]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ llvm/tools/llvm-exegesis/lib/X86/Target.cpp           | 10 +++++-----
+ llvm/unittests/tools/llvm-exegesis/X86/TargetTest.cpp | 10 +++++-----
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/llvm/tools/llvm-exegesis/lib/X86/Target.cpp b/llvm/tools/llvm-exegesis/lib/X86/Target.cpp
+index d41fa44f9258..549a5d1ecf27 100644
+--- a/llvm/tools/llvm-exegesis/lib/X86/Target.cpp
++++ b/llvm/tools/llvm-exegesis/lib/X86/Target.cpp
+@@ -1087,11 +1087,11 @@ ExegesisX86Target::generateExitSyscall(unsigned ExitCode) const {
+ #define MAP_FIXED_NOREPLACE MAP_FIXED
+ #endif
+ 
+-// 32 bit ARM doesn't have mmap and uses mmap2 instead. The only difference
+-// between the two syscalls is that mmap2's offset parameter is in terms 4096
+-// byte offsets rather than individual bytes, so for our purposes they are
+-// effectively the same as all ofsets here are set to 0.
+-#ifdef __arm__
++// 32 bit ARM and RISCV doesn't have mmap and uses mmap2 instead. The only
++// difference between the two syscalls is that mmap2's offset parameter is in
++// terms 4096 byte offsets rather than individual bytes, so for our purposes
++// they are effectively the same as all ofsets here are set to 0.
++#if defined(__arm__) || (defined(__riscv) && (__riscv_xlen == 32))
+ #define SYS_mmap SYS_mmap2
+ #endif
+ 
+diff --git a/llvm/unittests/tools/llvm-exegesis/X86/TargetTest.cpp b/llvm/unittests/tools/llvm-exegesis/X86/TargetTest.cpp
+index aa5d525f24eb..8d36d154bc15 100644
+--- a/llvm/unittests/tools/llvm-exegesis/X86/TargetTest.cpp
++++ b/llvm/unittests/tools/llvm-exegesis/X86/TargetTest.cpp
+@@ -635,11 +635,11 @@ TEST_F(X86Core2TargetTest, GenerateExitSyscallTest) {
+ #define MAP_FIXED_NOREPLACE MAP_FIXED
+ #endif
+ 
+-// 32 bit ARM doesn't have mmap and uses mmap2 instead. The only difference
+-// between the two syscalls is that mmap2's offset parameter is in terms 4096
+-// byte offsets rather than individual bytes, so for our purposes they are
+-// effectively the same as all ofsets here are set to 0.
+-#ifdef __arm__
++// 32 bit ARM and RISCV doesn't have mmap and uses mmap2 instead. The only
++// difference between the two syscalls is that mmap2's offset parameter is in
++// terms 4096 byte offsets rather than individual bytes, so for our purposes
++// they are effectively the same as all ofsets here are set to 0.
++#if defined(__arm__) || (defined(__riscv) && (__riscv_xlen == 32))
+ #define SYS_mmap SYS_mmap2
+ #endif
+ 
+-- 
+2.41.0
+
