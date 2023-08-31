@@ -49,6 +49,7 @@ SRC_URI = "\
     file://0037-Call-printName-to-get-name-of-Decl.patch \
     file://0038-Apply-fmacro-prefix-map-to-anonymous-tags-in-templat.patch \
     file://0039-lld-RISCV-Handle-relaxation-reductions-of-more-than-.patch \
+    file://0040-ToolChains-Gnu.cpp-ARMLibDirs-search-also-in-lib32.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
