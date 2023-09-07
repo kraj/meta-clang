@@ -30,6 +30,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
            file://0001-Vendor-just-enough-extra-headers-to-allow-libbpf-to-.patch \
            file://0001-tests-cc-Use-c-14-standard.patch \
+           file://0001-CMakeLists.txt-don-t-modify-.gitconfig-on-build-host.patch \
            file://run-ptest \
            file://ptest_wrapper.sh \
            "
