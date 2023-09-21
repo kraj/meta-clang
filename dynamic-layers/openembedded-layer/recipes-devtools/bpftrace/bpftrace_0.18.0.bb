@@ -30,10 +30,6 @@ inherit cmake ptest
 
 PACKAGECONFIG ?= "${@bb.utils.contains('PTEST_ENABLED', '1', 'tests', '', d)}"
 
-# Clang-15.x crashes compiling some usdt tests
-# see https://github.com/llvm/llvm-project/issues/58477
-PACKAGECONFIG:remove:riscv64 = "tests"
-
 PACKAGECONFIG[tests] = "-DBUILD_TESTING=ON,-DBUILD_TESTING=OFF,gtest xxd-native"
 
 do_install_ptest() {
