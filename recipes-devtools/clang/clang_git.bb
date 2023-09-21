@@ -155,7 +155,6 @@ EXTRA_OECMAKE:append:class-native = "\
                   -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
 EXTRA_OECMAKE:append:class-nativesdk = "\
-                  -DCMAKE_CROSSCOMPILING:BOOL=ON \
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} \
                                                   -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON} \
                                                   -DLLDB_PYTHON_EXT_SUFFIX=${SOLIBSDEV} \
@@ -164,13 +163,7 @@ EXTRA_OECMAKE:append:class-nativesdk = "\
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                   -DCMAKE_STRIP=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-strip \
-                  -DLLVM_USE_HOST_TOOLS=OFF \
-                  -DLLVM_CONFIG_PATH=${STAGING_BINDIR_NATIVE}/llvm-config \
-                  -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
-                  -DLLDB_TABLEGEN_EXE=${STAGING_BINDIR_NATIVE}/lldb-tblgen \
-                  -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-                  -DCLANG_TIDY_CONFUSABLE_CHARS_GEN=${STAGING_BINDIR_NATIVE}/clang-tidy-confusable-chars-gen \
-                  -DCLANG_PSEUDO_GEN=${STAGING_BINDIR_NATIVE}/clang-pseudo-gen \
+                  -DLLVM_NATIVE_TOOL_DIR=${STAGING_BINDIR_NATIVE} \
                   -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
                   -DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} \
                   -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON} \
@@ -179,14 +172,7 @@ EXTRA_OECMAKE:append:class-nativesdk = "\
                   -DPYTHON_EXECUTABLE='${PYTHON}' \
 "
 EXTRA_OECMAKE:append:class-target = "\
-                  -DCMAKE_CROSSCOMPILING:BOOL=ON \
-                  -DLLVM_USE_HOST_TOOLS=OFF \
-                  -DLLVM_CONFIG_PATH=${STAGING_BINDIR_NATIVE}/llvm-config \
-                  -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
-                  -DLLDB_TABLEGEN_EXE=${STAGING_BINDIR_NATIVE}/lldb-tblgen \
-                  -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-                  -DCLANG_TIDY_CONFUSABLE_CHARS_GEN=${STAGING_BINDIR_NATIVE}/clang-tidy-confusable-chars-gen \
-                  -DCLANG_PSEUDO_GEN=${STAGING_BINDIR_NATIVE}/clang-pseudo-gen \
+                  -DLLVM_NATIVE_TOOL_DIR=${STAGING_BINDIR_NATIVE} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
@@ -266,7 +252,6 @@ do_install:append:class-native () {
 do_install:append:class-nativesdk () {
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-pseudo-gen ${D}${bindir}/clang-pseudo-gen
-    install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tidy-confusable-chars-gen ${D}${bindir}/clang-tidy-confusable-chars-gen
     for f in `find ${D}${bindir} -executable -type f -not -type l`; do
         test -n "`file -b $f|grep -i ELF`" && ${STRIP} $f
