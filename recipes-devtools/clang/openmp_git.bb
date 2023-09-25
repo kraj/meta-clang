@@ -61,5 +61,4 @@ COMPATIBLE_HOST:powerpc = "null"
 
 BBCLASSEXTEND = "native nativesdk"
 
-# This appears to be specific to the Intel distribution before 2022.1
-CVE_CHECK_IGNORE += "CVE-2022-26345"
+CVE_STATUS[CVE-2022-26345] = "cpe-incorrect: specific to the Intel distribution before 2022.1"
