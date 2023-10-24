@@ -10,7 +10,7 @@ require common-source.inc
 
 inherit cmake cmake-native python3native
 
-PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
+PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
 PACKAGECONFIG:append:armv5 = " no-atomics"
 PACKAGECONFIG:remove:class-native = "compiler-rt"
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"
@@ -50,7 +50,7 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
 "
 
 OECMAKE_TARGET_COMPILE = "cxxabi cxx"
-OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi ${@bb.utils.contains("RUNTIME", "llvm", "install-unwind", "", d)}"
+OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi ${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "install-unwind", "", d)}"
 
 OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "\
@@ -97,7 +97,7 @@ ALLOW_EMPTY:${PN} = "1"
 PROVIDES:append:runtime-llvm = " libunwind"
 
 do_install:append() {
-    if ${@bb.utils.contains("RUNTIME", "llvm", "true", "false", d)}
+    if ${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "true", "false", d)}
     then
         for f in libunwind.h __libunwind_config.h unwind.h unwind_itanium.h unwind_arm_ehabi.h
         do

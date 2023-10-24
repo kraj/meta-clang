@@ -75,11 +75,11 @@ DEBUG_PREFIX_MAP:remove:toolchain-clang = "-fcanon-prefix-map"
 # choose between 'gcc' 'clang' an empty '' can be used as well
 TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
-RUNTIME ??= "gnu"
+TC_CXX_RUNTIME ??= "gnu"
 # Using gcc or llvm runtime is only available when using clang for compiler
-#RUNTIME:toolchain-gcc = "gnu"
-RUNTIME:armeb = "gnu"
-RUNTIME:armv5 = "gnu"
+#TC_CXX_RUNTIME:toolchain-gcc = "gnu"
+TC_CXX_RUNTIME:armeb = "gnu"
+TC_CXX_RUNTIME:armv5 = "gnu"
 
 TOOLCHAIN:class-native = "gcc"
 TOOLCHAIN:class-nativesdk = "gcc"
@@ -88,8 +88,8 @@ TOOLCHAIN:class-crosssdk = "gcc"
 TOOLCHAIN:class-cross = "gcc"
 
 OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
-OVERRIDES =. "${@['', 'runtime-${RUNTIME}:']['${RUNTIME}' != '']}"
-OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
+OVERRIDES =. "${@['', 'runtime-${TC_CXX_RUNTIME}:']['${TC_CXX_RUNTIME}' != '']}"
+OVERRIDES[vardepsexclude] += "TOOLCHAIN TC_CXX_RUNTIME"
 
 YOCTO_ALTERNATE_EXE_PATH:toolchain-clang:class-target = "${STAGING_BINDIR}/llvm-config"
 YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target = "/${BASELIB}"
@@ -104,16 +104,16 @@ def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
             ret = " ${MLPREFIX}clang-cross-${TARGET_ARCH} virtual/libc "
-            if (d.getVar('RUNTIME').find('android') != -1):
+            if (d.getVar('TC_CXX_RUNTIME').find('android') != -1):
                 ret += " libcxx"
                 return ret
-            if (d.getVar('RUNTIME').find('llvm') != -1):
+            if (d.getVar('TC_CXX_RUNTIME').find('llvm') != -1):
                 ret += " compiler-rt"
             elif (d.getVar('COMPILER_RT').find('-rtlib=compiler-rt') != -1):
                 ret += " compiler-rt "
             else:
                 ret += " libgcc "
-            if (d.getVar('RUNTIME').find('llvm') != -1):
+            if (d.getVar('TC_CXX_RUNTIME').find('llvm') != -1):
                 ret += " libcxx"
             elif (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
                 ret += " libcxx "

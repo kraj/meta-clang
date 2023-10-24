@@ -67,17 +67,17 @@ PROVIDES:pn-nativesdk-clang = "nativesdk-llvm"
 ```
 # Default Compiler Runtime
 
-Default is to use GNU runtime `RUNTIME = "gnu"` which consists of libgcc, libstdc++ to provide C/C++
+Default is to use GNU runtime `TC_CXX_RUNTIME = "gnu"` which consists of libgcc, libstdc++ to provide C/C++
 runtime support. However it's possible to use LLVM runtime to replace it where
 compile-rt, llvm libunwind, and libc++ are used to provide C/C++ runtime, while
 GNU runtime works with both GCC and Clang, LLVM runtime is only tested with Clang
 compiler, switching to use LLVM runtime is done via a config metadata knob
 
 ```shell
-RUNTIME = "llvm"
+TC_CXX_RUNTIME = "llvm"
 ```
 
-RUNTIME variable influences individual runtime elements and can be set explicitly as well
+TC_CXX_RUNTIME variable influences individual runtime elements and can be set explicitly as well
 e.g. `LIBCPLUSPLUS` `COMPILER_RT` and `UNWINDLIB`.
 
 Please note that this will still use crt files from GNU compiler always, while llvm now
@@ -85,8 +85,8 @@ do provide crt files, they have not been yet integrated into the toolchain.
 
 # Default C++ Standard Library Switch
 
-Using RUNTIME variable will select which C++ runtime is used, however it can be overridden
-if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `RUNTIME` are
+Using TC_CXX_RUNTIME variable will select which C++ runtime is used, however it can be overridden
+if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `TC_CXX_RUNTIME` are
 best fit. e.g. below we select LLVM C++ as default C++ runtime.
 
 ```shell
