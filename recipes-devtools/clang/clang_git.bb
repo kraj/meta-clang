@@ -307,7 +307,7 @@ FILES:${PN}-libllvm =+ "\
 "
 
 FILES:libclang = "\
-  ${libdir}/libclang.so.${MAJOR_VER} \
+  ${libdir}/libclang.so.13 \
 "
 
 FILES:${PN}-dev += "\
