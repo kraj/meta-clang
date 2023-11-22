@@ -53,4 +53,6 @@ list(APPEND CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES ${STAGING_INCDIR_NATIVE})
 EOF
 }
 
+do_generate_native_toolchain_file[vardepsexclude] += "MKUBIFS_ARGS_128kbpeb MKUBIFS_ARGS_256kbpeb UBINIZE_ARGS_128kbpeb UBINIZE_ARGS_256kbpeb"
+
 addtask generate_native_toolchain_file after do_patch before do_configure
