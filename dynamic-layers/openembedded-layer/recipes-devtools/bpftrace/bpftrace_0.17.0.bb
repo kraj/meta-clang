@@ -17,6 +17,7 @@ PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
 
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
+           file://0001-replace-python-with-python3-in-the-test.patch \
            file://run-ptest \
 "
 SRCREV = "1326f040a0f88287ccbc8c18fe8956bca4cc225d"
