@@ -17,36 +17,36 @@ if [[ $# == 0 ]]; then
   exec "$NEXT_LLVM_CONFIG"
 fi
 
-if [[ $1 == "--libs" ]]; then
-  exec "$NEXT_LLVM_CONFIG" $@
-fi
-
-if [[ $1 == "--bindir" ]]; then
-  unset YOCTO_ALTERNATE_EXE_PATH
-  exec "$NEXT_LLVM_CONFIG" $@
-fi
-
-if [[ $1 == "--libfiles" ]]; then
-  exec "$NEXT_LLVM_CONFIG" $@
-fi
-
-
+remain=""
+output=""
 for arg in "$@"; do
   case "$arg" in
     --cppflags)
-      echo $CPPFLAGS
+      output="${output} ${CPPFLAGS}"
       ;;
     --cflags)
-      echo $CFLAGS
+      output="${output} ${CFLAGS}"
       ;;
     --cxxflags)
-      echo $CXXFLAGS
+      output="${output} ${CXXFLAGS}"
       ;;
     --ldflags)
-      echo $LDFLAGS
+      output="${output} ${LDFLAGS}"
+      ;;
+    --shared-mode)
+      output="${output} shared"
+      ;;
+    --link-shared)
+      break
       ;;
     *)
-      echo "$("$NEXT_LLVM_CONFIG" "$arg")"
+      remain="${remain} ${arg}"
       ;;
   esac
 done
+
+if [ "${remain}" != "" ]; then
+      output="${output} "$("$NEXT_LLVM_CONFIG" ${remain})
+fi
+
+echo "${output}"
