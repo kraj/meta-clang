@@ -57,3 +57,7 @@ EXTRA_OECMAKE = " \
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
 COMPATIBLE_HOST:libc-musl = "null"
+
+INHIBIT_PACKAGE_STRIP_FILES += "\
+    ${PKGD}${PTEST_PATH}/tests/testprogs/uprobe_test \
+"
