@@ -1,4 +1,4 @@
-From 6fd8342c1b41a5d3f2aad1e8b215d1d9c70df800 Mon Sep 17 00:00:00 2001
+From 75fba7350f0b161254994279d26ba720dde270ee Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 11 Aug 2021 18:37:11 -0700
 Subject: [PATCH] clang: Do not use install relative libc++ headers
@@ -12,21 +12,23 @@ libcxx e.g. chromium
 Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- clang/lib/Driver/ToolChains/Gnu.cpp | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ clang/lib/Driver/ToolChains/Gnu.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 0b355d9a3f4b..f228bd14e8a8 100644
+index 185ea3df16f5..d883dc3e7558 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -3128,7 +3128,9 @@ Generic_GCC::addLibCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
- 
-   // Android never uses the libc++ headers installed alongside the toolchain,
-   // which are generally incompatible with the NDK libraries anyway.
--  if (!getTriple().isAndroid())
-+  // And also do not add it when --sysroot is specified, since it would expect
-+  // libc++ headers from sysroot
-+  if (!getTriple().isAndroid() && SysRoot.empty())
-     if (AddIncludePath(getDriver().Dir + "/../include"))
-       return;
+@@ -3313,8 +3313,11 @@ Generic_GCC::addLibCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
+   // incompatible with the NDK libraries.
+   SmallString<128> DriverIncludeDir(getDriver().Dir);
+   llvm::sys::path::append(DriverIncludeDir, "..", "include");
++
++  // do not add it when --sysroot is specified, since it would expect
++  // libc++ headers from sysroot and not relative to compiler install location
+   if (AddIncludePath(DriverIncludeDir,
+-                     /*TargetDirRequired=*/getTriple().isAndroid()))
++                     /*TargetDirRequired=*/getTriple().isAndroid() | !computeSysRoot().empty()))
+     return;
    // If this is a development, non-installed, clang, libcxx will
+   // not be found at ../include/c++ but it likely to be found at

@@ -1,4 +1,4 @@
-From 588a8694c6540e31140c7e242bfb5e279d6ca08c Mon Sep 17 00:00:00 2001
+From 6543b333f413bc906c8a3577266f1ff6561b2e05 Mon Sep 17 00:00:00 2001
 From: Martin Kelly <mkelly@xevo.com>
 Date: Fri, 19 May 2017 00:22:57 -0700
 Subject: [PATCH] llvm: allow env override of exe and libdir path
@@ -19,7 +19,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/llvm/tools/llvm-config/llvm-config.cpp b/llvm/tools/llvm-config/llvm-config.cpp
-index e86eb2b44b10..7b2abf318dbe 100644
+index d5b76b1bb6c1..a739f0d8dbea 100644
 --- a/llvm/tools/llvm-config/llvm-config.cpp
 +++ b/llvm/tools/llvm-config/llvm-config.cpp
 @@ -246,6 +246,13 @@ Typical components:\n\
@@ -47,13 +47,13 @@ index e86eb2b44b10..7b2abf318dbe 100644
      ActiveIncludeDir = std::string(LLVM_SRC_ROOT) + "/include";
 @@ -366,12 +373,18 @@ int main(int argc, char **argv) {
        sys::fs::make_absolute(ActivePrefix, Path);
-       ActiveBinDir = std::string(Path.str());
+       ActiveBinDir = std::string(Path);
      }
 -    ActiveLibDir = ActivePrefix + "/lib" + LLVM_LIBDIR_SUFFIX;
 -    {
 -      SmallString<256> Path(LLVM_INSTALL_PACKAGE_DIR);
 -      sys::fs::make_absolute(ActivePrefix, Path);
--      ActiveCMakeDir = std::string(Path.str());
+-      ActiveCMakeDir = std::string(Path);
 +    // Hack for Yocto: we need to override the lib path when we are using
 +    // llvm-config from within a target sysroot since LLVM_LIBDIR_SUFFIX
 +    // maybe different for host llvm vs target e.g. ppc64 Libdir=lib64 but

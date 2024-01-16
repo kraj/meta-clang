@@ -1,4 +1,4 @@
-From fc268457a7ef1a8481a1d563550cc8e9a8a5afcb Mon Sep 17 00:00:00 2001
+From bfadfbccf990c2768d18dc8d7fc756aa59e4964c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 12 Aug 2022 11:50:57 -0700
 Subject: [PATCH] llvm: Do not use cmake infra to detect libzstd
@@ -21,7 +21,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/llvm/lib/Support/CMakeLists.txt b/llvm/lib/Support/CMakeLists.txt
-index 87fe7bebf688..e12e292fdfbf 100644
+index e19223fdef4f..9c8af2404545 100644
 --- a/llvm/lib/Support/CMakeLists.txt
 +++ b/llvm/lib/Support/CMakeLists.txt
 @@ -22,7 +22,7 @@ if (HAS_WERROR_GLOBAL_CTORS)
@@ -42,7 +42,7 @@ index 87fe7bebf688..e12e292fdfbf 100644
  endif()
  
  if( MSVC OR MINGW )
-@@ -292,7 +292,7 @@ if(LLVM_ENABLE_ZLIB)
+@@ -306,7 +306,7 @@ if(LLVM_ENABLE_ZLIB)
      get_property(zlib_library TARGET ZLIB::ZLIB PROPERTY LOCATION)
    endif()
    get_library_name(${zlib_library} zlib_library)
@@ -51,7 +51,7 @@ index 87fe7bebf688..e12e292fdfbf 100644
  endif()
  
  if(LLVM_ENABLE_ZSTD)
-@@ -305,7 +305,7 @@ if(LLVM_ENABLE_ZSTD)
+@@ -319,7 +319,7 @@ if(LLVM_ENABLE_ZSTD)
      get_property(zstd_library TARGET ${zstd_target} PROPERTY LOCATION)
    endif()
    get_library_name(${zstd_library} zstd_library)

@@ -1,4 +1,4 @@
-From e8ecd192495c092dcee4fdb1ee5514222a8aa0c1 Mon Sep 17 00:00:00 2001
+From a6132924c06b4662eaed9820a13b63131ff8d4ff Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 21 Feb 2023 12:46:10 -0800
 Subject: [PATCH] compiler-rt: Undef _TIME_BITS along with _FILE_OFFSET_BITS in
@@ -22,7 +22,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 9 insertions(+)
 
 diff --git a/compiler-rt/lib/sanitizer_common/sanitizer_platform.h b/compiler-rt/lib/sanitizer_common/sanitizer_platform.h
-index 764996e57355..99024169f925 100644
+index 596528155505..8f54ad70999c 100644
 --- a/compiler-rt/lib/sanitizer_common/sanitizer_platform.h
 +++ b/compiler-rt/lib/sanitizer_common/sanitizer_platform.h
 @@ -22,6 +22,15 @@

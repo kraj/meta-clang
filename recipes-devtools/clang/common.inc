@@ -43,7 +43,7 @@ SRC_URI = "\
     file://0032-compiler-rt-Fix-stat-struct-s-size-for-O32-ABI.patch \
     file://0033-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
     file://0034-ToolChains-Gnu.cpp-ARMLibDirs-search-also-in-lib32.patch \
-    file://0035-libcxx-Implement-LWG3545-std-pointer_traits-should-be-.patch \
+    file://0035-compiler-rt-Fix-cmake-check-for-_Float16-and-__bf16.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
