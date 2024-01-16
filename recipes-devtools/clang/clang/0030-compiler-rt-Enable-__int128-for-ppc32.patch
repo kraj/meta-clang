@@ -1,4 +1,4 @@
-From b907dbdce5520eaf841ae041fcca6941a8529456 Mon Sep 17 00:00:00 2001
+From 1ad63559b4fb7cc3f85760352fe9e92c66b33c2e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 9 Mar 2022 16:28:16 -0800
 Subject: [PATCH] compiler-rt: Enable __int128 for ppc32
@@ -11,10 +11,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
-index d62fa0432e2a..126505bd8921 100644
+index 28ded8766f25..08495c491f08 100644
 --- a/compiler-rt/lib/builtins/CMakeLists.txt
 +++ b/compiler-rt/lib/builtins/CMakeLists.txt
-@@ -669,11 +669,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
+@@ -686,11 +686,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
  set(mips64el_SOURCES ${GENERIC_TF_SOURCES}
                       ${mips_SOURCES})
  
@@ -27,7 +27,7 @@ index d62fa0432e2a..126505bd8921 100644
    ppc/divtc3.c
    ppc/fixtfdi.c
    ppc/fixunstfdi.c
-@@ -688,14 +686,15 @@ set(powerpc64_SOURCES
+@@ -705,14 +703,15 @@ set(powerpc64_SOURCES
  )
  # These routines require __int128, which isn't supported on AIX.
  if (NOT OS_NAME MATCHES "AIX")
@@ -46,7 +46,7 @@ index d62fa0432e2a..126505bd8921 100644
  
  set(riscv_SOURCES
    riscv/fp_mode.c
-@@ -823,9 +822,9 @@ else ()
+@@ -847,9 +846,9 @@ else ()
          list(APPEND BUILTIN_CFLAGS_${arch} -fomit-frame-pointer -DCOMPILER_RT_ARMHF_TARGET)
        endif()
  
@@ -59,7 +59,7 @@ index d62fa0432e2a..126505bd8921 100644
        endif()
  
 diff --git a/compiler-rt/lib/builtins/int_types.h b/compiler-rt/lib/builtins/int_types.h
-index e94d3154c6d4..37b2cb43f932 100644
+index 7624c7280615..a45bf13f770e 100644
 --- a/compiler-rt/lib/builtins/int_types.h
 +++ b/compiler-rt/lib/builtins/int_types.h
 @@ -64,7 +64,7 @@ typedef union {

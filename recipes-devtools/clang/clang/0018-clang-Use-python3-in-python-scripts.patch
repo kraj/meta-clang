@@ -1,4 +1,4 @@
-From 61de53f94868705c7a0379c3f20e6b9de76c6198 Mon Sep 17 00:00:00 2001
+From 3f64441dbd1d668d61db129cd7773234a156d56b Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 14 Oct 2020 22:19:57 -0700
 Subject: [PATCH] clang: Use python3 in python scripts

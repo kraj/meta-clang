@@ -1,4 +1,4 @@
-From 9ed567b3fcce1759947621765199f13261c615a4 Mon Sep 17 00:00:00 2001
+From 5bd0d0f36f2e528cf1753c411038c7bb0c1638cd Mon Sep 17 00:00:00 2001
 From: Changqing Li <changqing.li@windriver.com>
 Date: Tue, 7 Dec 2021 04:55:48 +0000
 Subject: [PATCH] Correct library search path for OpenEmbedded Host
@@ -39,7 +39,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  3 files changed, 4 insertions(+)
 
 diff --git a/clang/include/clang/Driver/Distro.h b/clang/include/clang/Driver/Distro.h
-index 8291f6575a71..7ce64b9a2c25 100644
+index a8de94163e8b..847d6a3f9d1a 100644
 --- a/clang/include/clang/Driver/Distro.h
 +++ b/clang/include/clang/Driver/Distro.h
 @@ -45,6 +45,7 @@ public:
@@ -50,7 +50,7 @@ index 8291f6575a71..7ce64b9a2c25 100644
      OpenSUSE,
      UbuntuHardy,
      UbuntuIntrepid,
-@@ -136,6 +137,7 @@ public:
+@@ -137,6 +138,7 @@ public:
  
    bool IsGentoo() const { return DistroVal == Gentoo; }
  
@@ -59,7 +59,7 @@ index 8291f6575a71..7ce64b9a2c25 100644
  };
  
 diff --git a/clang/lib/Driver/Distro.cpp b/clang/lib/Driver/Distro.cpp
-index 6e0087565941..13e45b1ea088 100644
+index a7e7f169dc14..48d4e15196da 100644
 --- a/clang/lib/Driver/Distro.cpp
 +++ b/clang/lib/Driver/Distro.cpp
 @@ -44,6 +44,7 @@ static Distro::DistroType DetectOsRelease(llvm::vfs::FileSystem &VFS) {
@@ -71,10 +71,10 @@ index 6e0087565941..13e45b1ea088 100644
    return Version;
  }
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index ef8435385130..8bd21eebfed3 100644
+index cf549331d255..699ff18b1240 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -78,6 +78,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,
+@@ -82,6 +82,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,
        return "x86_64-linux-android";
      if (TargetEnvironment == llvm::Triple::GNUX32)
        return "x86_64-linux-gnux32";
