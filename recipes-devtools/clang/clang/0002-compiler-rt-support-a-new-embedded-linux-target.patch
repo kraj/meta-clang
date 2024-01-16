@@ -1,4 +1,4 @@
-From 25b8166b829bc987832a7c7b41581f193a4fabe9 Mon Sep 17 00:00:00 2001
+From 7ca2a8c8590e99cb9edb36e378db39df21c3b0ed Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 19 Apr 2015 15:16:23 -0700
 Subject: [PATCH] compiler-rt: support a new embedded linux target

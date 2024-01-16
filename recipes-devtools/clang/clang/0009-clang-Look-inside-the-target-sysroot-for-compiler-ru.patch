@@ -1,4 +1,4 @@
-From 9069a7f709cdb5392c9e0ecd863d62176d080a91 Mon Sep 17 00:00:00 2001
+From 5a2e2c7600e855782be747d28b16377f7d3354a8 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
 Subject: [PATCH] clang: Look inside the target sysroot for compiler runtime
@@ -16,7 +16,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChain.cpp b/clang/lib/Driver/ToolChain.cpp
-index 8dafc3d481c2..3e0f7b64b0db 100644
+index 388030592b48..c59700b4a7ab 100644
 --- a/clang/lib/Driver/ToolChain.cpp
 +++ b/clang/lib/Driver/ToolChain.cpp
 @@ -15,6 +15,7 @@
