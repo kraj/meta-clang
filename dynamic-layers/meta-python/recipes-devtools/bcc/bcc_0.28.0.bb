@@ -22,7 +22,7 @@ LUAJIT:powerpc64 = ""
 LUAJIT:riscv64 = ""
 
 RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
-RDEPENDS:${PN}-ptest = "cmake python3 python3-distutils python3-netaddr python3-pyroute2"
+RDEPENDS:${PN}-ptest = "cmake python3 python3-netaddr python3-pyroute2"
 
 SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://0001-python-CMakeLists.txt-Remove-check-for-host-etc-debi.patch \
