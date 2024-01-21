@@ -21,7 +21,7 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
 
 --- a/src/python/CMakeLists.txt
 +++ b/src/python/CMakeLists.txt
-@@ -12,7 +12,7 @@ file(GLOB_RECURSE PYTHON_INCLUDES RELATI
+@@ -16,7 +16,7 @@ file(GLOB_RECURSE PYTHON_INCLUDES RELATI
  
  foreach(PY_CMD ${PYTHON_CMD})
    string(REPLACE "/" "-" PY_CMD_ESCAPED ${PY_CMD})
@@ -30,12 +30,12 @@ Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
  
    foreach(PY_SRC ${PYTHON_SOURCES})
      configure_file(${PY_SRC} ${PY_DIRECTORY}/${PY_SRC} COPYONLY)
-@@ -31,7 +31,7 @@ foreach(PY_CMD ${PYTHON_CMD})
+@@ -35,7 +35,7 @@ foreach(PY_CMD ${PYTHON_CMD})
      DEPENDS ${PYTHON_SOURCES} ${PYTHON_INCLUDES}
      COMMENT "Building sdist for ${PY_CMD}"
    )
 -  add_custom_target(bcc_py_${PY_CMD_ESCAPED} ALL DEPENDS ${PIP_INSTALLABLE})
 +  add_custom_target(bcc_py_python3 ALL DEPENDS ${PIP_INSTALLABLE})
  
-   install(
-     CODE "
+   if(NOT PYTHON_PREFIX)
+      set(PYTHON_PREFIX ${CMAKE_INSTALL_PREFIX})

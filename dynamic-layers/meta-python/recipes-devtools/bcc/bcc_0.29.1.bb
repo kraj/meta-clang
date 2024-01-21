@@ -25,8 +25,6 @@ RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
 RDEPENDS:${PN}-ptest = "cmake python3 python3-netaddr python3-pyroute2"
 
 SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
-           file://0001-python-CMakeLists.txt-Remove-check-for-host-etc-debi.patch \
-           file://0001-tools-trace.py-Fix-failing-to-exit.patch \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
            file://0001-Vendor-just-enough-extra-headers-to-allow-libbpf-to-.patch \
            file://0001-tests-cc-Use-c-14-standard.patch \
@@ -35,9 +33,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://ptest_wrapper.sh \
            "
 
-SRCREV = "8422cd449ad2e60414a4508aa4a150a9db39c4a3"
-
-PV .= "+git${SRCPV}"
+SRCREV = "eb8ede2d70b17350757f2570ef76ea4c2e1dbff8"
 
 S = "${WORKDIR}/git"
 
@@ -51,6 +47,7 @@ EXTRA_OECMAKE = " \
     -DCMAKE_USE_LIBBPF_PACKAGE=ON \
     -DENABLE_LLVM_SHARED=ON \
     -DENABLE_CLANG_JIT=ON \
+    -DPY_SKIP_DEB_LAYOUT=ON \
     -DLLVM_PACKAGE_VERSION=${LLVMVERSION} \
     -DPYTHON_CMD=${PYTHON} \
     -DPYTHON_FLAGS=--install-lib=${PYTHON_SITEPACKAGES_DIR} \
