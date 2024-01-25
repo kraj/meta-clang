@@ -69,6 +69,7 @@ EXTRA_OECMAKE += "\
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib${LLVM_LIBDIR_SUFFIX} \
                   -S ${S}/runtimes \
                   -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi;libunwind' \
+                  -DLLVM_RUNTIME_TARGETS=${HOST_SYS} \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
                   -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
 "
