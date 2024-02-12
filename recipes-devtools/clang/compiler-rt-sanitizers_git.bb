@@ -15,7 +15,7 @@ LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee
 
 TUNE_CCARGS:remove = "-no-integrated-as"
 
-DEPENDS += "ninja-native virtual/crypt"
+DEPENDS += "ninja-native virtual/crypt compiler-rt"
 DEPENDS:append:class-native = " clang-native libxcrypt-native"
 DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_ARCH} nativesdk-libxcrypt"
 
