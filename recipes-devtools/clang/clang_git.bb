@@ -63,12 +63,16 @@ PACKAGECONFIG ??= "compiler-rt libcplusplus lldb-wchar terminfo \
                    ${PACKAGECONFIG_CLANG_COMMON} \
                    ${@bb.utils.filter('DISTRO_FEATURES', 'lto thin-lto', d)} \
                    "
-PACKAGECONFIG:class-native = "${PACKAGECONFIG_CLANG_COMMON}"
-PACKAGECONFIG:class-nativesdk = "${PACKAGECONFIG_CLANG_COMMON} \
+PACKAGECONFIG:class-native = "clangd \
+                              ${PACKAGECONFIG_CLANG_COMMON} \
+                              "
+PACKAGECONFIG:class-nativesdk = "clangd \
+                                 ${PACKAGECONFIG_CLANG_COMMON} \
                                  ${@bb.utils.filter('DISTRO_FEATURES', 'lto thin-lto', d)} \
                                  "
 
 PACKAGECONFIG[bootstrap] = "-DCLANG_ENABLE_BOOTSTRAP=On -DCLANG_BOOTSTRAP_PASSTHROUGH='${PASSTHROUGH}' -DBOOTSTRAP_LLVM_ENABLE_LTO=Thin -DBOOTSTRAP_LLVM_ENABLE_LLD=ON,,,"
+PACKAGECONFIG[clangd] = "-DCLANG_ENABLE_CLANGD=ON,-DCLANG_ENABLE_CLANGD=OFF,,"
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,"
 PACKAGECONFIG[eh] = "-DLLVM_ENABLE_EH=ON,-DLLVM_ENABLE_EH=OFF,,"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,"
@@ -243,7 +247,9 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
 }
 
 do_install:append:class-native () {
-    install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clangd-indexer ${D}${bindir}/clangd-indexer
+    if ${@bb.utils.contains('PACKAGECONFIG', 'clangd', 'true', 'false', d)}; then
+        install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clangd-indexer ${D}${bindir}/clangd-indexer
+    fi
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-pseudo-gen ${D}${bindir}/clang-pseudo-gen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tidy-confusable-chars-gen ${D}${bindir}/clang-tidy-confusable-chars-gen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
@@ -260,7 +266,9 @@ do_install:append:class-native () {
 
 do_install:append:class-nativesdk () {
     sed -i -e "s|${B}/./bin/||g" ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
-    install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clangd-indexer ${D}${bindir}/clangd-indexer
+    if ${@bb.utils.contains('PACKAGECONFIG', 'clangd', 'true', 'false', d)}; then
+        install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clangd-indexer ${D}${bindir}/clangd-indexer
+    fi
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-pseudo-gen ${D}${bindir}/clang-pseudo-gen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tidy-confusable-chars-gen ${D}${bindir}/clang-tidy-confusable-chars-gen
@@ -425,11 +433,18 @@ clang_sysroot_preprocess() {
 	ln -sf llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/llvm-config${PV}
 	# LLDTargets.cmake references the lld executable(!) that some modules/plugins link to
 	install -d ${SYSROOT_DESTDIR}${bindir}
-	for f in lld diagtool clang-${MAJOR_VER} clang-format clang-offload-packager \
-            clang-offload-bundler clang-scan-deps clang-repl \
-            clang-rename clang-refactor clang-check clang-extdef-mapping clang-apply-replacements \
-            clang-reorder-fields clang-tidy clang-change-namespace clang-doc clang-include-fixer \
-            find-all-symbols clang-move clang-query pp-trace clang-pseudo clangd modularize
+
+	binaries="lld diagtool clang-${MAJOR_VER} clang-format clang-offload-packager
+	                clang-offload-bundler clang-scan-deps clang-repl
+	                clang-rename clang-refactor clang-check clang-extdef-mapping clang-apply-replacements
+	                clang-reorder-fields clang-tidy clang-change-namespace clang-doc clang-include-fixer
+	                find-all-symbols clang-move clang-query pp-trace clang-pseudo modularize"
+
+	if ${@bb.utils.contains('PACKAGECONFIG', 'clangd', 'true', 'false', d)}; then
+	        binaries="${binaries} clangd"
+	fi
+
+	for f in ${binaries}
 	do
 		install -m 755 ${D}${bindir}/$f ${SYSROOT_DESTDIR}${bindir}/
 	done
