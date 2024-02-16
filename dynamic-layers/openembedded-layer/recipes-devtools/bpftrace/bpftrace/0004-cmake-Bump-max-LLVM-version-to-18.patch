@@ -1,0 +1,27 @@
+From 16186113346c268a0bb45424ba1c41768b7e94cf Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 16 Feb 2024 10:14:41 -0800
+Subject: [PATCH 4/4] cmake: Bump max LLVM version to 18+
+
+Upstream-Status: Submitted [https://github.com/bpftrace/bpftrace/pull/3009]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7983ee17..7d0433de 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -139,7 +139,7 @@ else()
+ endif()
+ 
+ set(MIN_LLVM_MAJOR 6)
+-set(MAX_LLVM_MAJOR 17)
++set(MAX_LLVM_MAJOR 18)
+ 
+ if((${LLVM_VERSION_MAJOR} VERSION_LESS ${MIN_LLVM_MAJOR}) OR (${LLVM_VERSION_MAJOR} VERSION_GREATER ${MAX_LLVM_MAJOR}))
+   message(SEND_ERROR "Unsupported LLVM version found via ${LLVM_INCLUDE_DIRS}: ${LLVM_VERSION_MAJOR}")
+-- 
+2.43.2
+
