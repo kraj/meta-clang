@@ -14,16 +14,18 @@ DEPENDS += "bison-native \
             "
 DEPENDS += "${@bb.utils.contains('PTEST_ENABLED', '1', 'pahole-native llvm-native', '', d)}"
 
-PV .= "+git${SRCREV}"
 RDEPENDS:${PN} += "bash python3 xz"
 
+PV .= "+git"
+
 SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
-           file://0001-cmake-Raise-max-llvm-major-version-to-16.patch \
-           file://0001-Adjust-to-build-with-llvm-17.patch \
            file://0001-replace-python-with-python3-in-the-test.patch \
+           file://0002-ast-Repace-getInt8PtrTy-with-getPtrTy.patch \
+           file://0003-ast-Adjust-to-enum-changes-in-llvm-18.patch \
+           file://0004-cmake-Bump-max-LLVM-version-to-18.patch \
            file://run-ptest \
 "
-SRCREV = "e199c7e73da84bff9fe744d1e3402c2b505aa5a2"
+SRCREV = "fe6362b4e2c1b9d0833c7d3f308c1d4006b54723"
 
 S = "${WORKDIR}/git"
 
@@ -50,7 +52,6 @@ LLVM_MAJOR_VERSION = "${@llvm_major_version(d)}"
 EXTRA_OECMAKE = " \
     -DCMAKE_ENABLE_EXPORTS=1 \
     -DCMAKE_BUILD_TYPE=Release \
-    -DLLVM_REQUESTED_VERSION=${LLVM_MAJOR_VERSION} \
     -DUSE_SYSTEM_BPF_BCC=ON \
     -DENABLE_MAN=OFF \
 "
