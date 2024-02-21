@@ -384,10 +384,8 @@ FILES:liblldb = "\
 "
 
 FILES:${PN}-libllvm =+ "\
-  ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}.so \
+  ${libdir}/libLLVM.so.${MAJOR_VER}.${MINOR_VER} \
   ${libdir}/libLLVM-${MAJOR_VER}.so \
-  ${libdir}/libLLVM-${MAJOR_VER}git.so \
-  ${libdir}/libLLVM-${MAJOR_VER}.${MINOR_VER}git.so \
   ${libdir}/libRemarks.so.* \
 "
 
@@ -413,6 +411,7 @@ INSANE_SKIP:${PN} += "already-stripped"
 #INSANE_SKIP:${PN}-dev += "dev-elf"
 INSANE_SKIP:${PN}-lldb-python += "dev-so dev-deps"
 INSANE_SKIP:${MLPREFIX}liblldb = "dev-so"
+INSANE_SKIP:${PN}-libllvm = "dev-so"
 
 #Avoid SSTATE_SCAN_COMMAND running sed over llvm-config.
 SSTATE_SCAN_FILES:remove = "*-config"
