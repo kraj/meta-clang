@@ -9,7 +9,7 @@ src="images/Yocto_Project™_Badge_Compatible_Web_RGB.png"></td>
 # meta-clang (C/C++ frontend and LLVM compiler backend)
 
 This layer provides [clang/llvm](http://clang.llvm.org/) as alternative to system
-C/C++ compiler for OpenEmbedded/Yocto Project based distributions. This can cohabit
+C/C++/Rust compiler for OpenEmbedded/Yocto Project based distributions. This can cohabit
 with GNU compiler and can be used for specific recipes or full system compiler.
 
 # Getting Started
