@@ -10,16 +10,10 @@ DEPENDS += "bison-native \
             zip-native \
             flex \
             elfutils \
-            ${LUAJIT} \
             clang \
             libbpf \
             python3-setuptools-native \
             "
-
-LUAJIT ?= "luajit"
-LUAJIT:powerpc64le = ""
-LUAJIT:powerpc64 = ""
-LUAJIT:riscv64 = ""
 
 RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
 RDEPENDS:${PN}-ptest = "cmake python3 python3-netaddr python3-pyroute2"
@@ -57,6 +51,7 @@ do_install:append() {
             -i $(find ${D}${datadir}/${PN} -type f)
         sed -e 's@#!/usr/bin/python.*@#!/usr/bin/env python3@g' \
             -i $(find ${D}${datadir}/${PN} -type f)
+        rm -rf ${D}${datadir}/bcc/examples/lua
 }
 
 do_install_ptest() {
