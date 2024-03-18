@@ -1,4 +1,4 @@
-From bfadfbccf990c2768d18dc8d7fc756aa59e4964c Mon Sep 17 00:00:00 2001
+From 39e87eabd251d5086ef14305a36134053af09ae5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 12 Aug 2022 11:50:57 -0700
 Subject: [PATCH] llvm: Do not use cmake infra to detect libzstd

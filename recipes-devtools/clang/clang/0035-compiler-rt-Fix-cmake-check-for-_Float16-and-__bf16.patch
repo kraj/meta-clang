@@ -1,4 +1,4 @@
-From b44db6645cb65d060970b2535d372d6380d633f3 Mon Sep 17 00:00:00 2001
+From 34a65a1f0ff8bb2d41f32c229dc6b309a7566ecd Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 1 Mar 2024 16:47:46 -0800
 Subject: [PATCH] compiler-rt: Fix cmake check for _Float16 and __bf16

@@ -1,4 +1,4 @@
-From 762c7af55064261f061fcd5ce0bd2eb93cbd425b Mon Sep 17 00:00:00 2001
+From c0a66d4f358b24bf3acd89910e0f7fc780d16a11 Mon Sep 17 00:00:00 2001
 From: Jeremy Puhlman <jpuhlman@mvista.com>
 Date: Thu, 16 Jan 2020 21:16:10 +0000
 Subject: [PATCH] libcxx: Add compiler runtime library to link step for libcxx
@@ -14,7 +14,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/libcxx/src/CMakeLists.txt b/libcxx/src/CMakeLists.txt
-index 44a088663463..2a8546165f44 100644
+index 1b80625304a4..fe706c9e920f 100644
 --- a/libcxx/src/CMakeLists.txt
 +++ b/libcxx/src/CMakeLists.txt
 @@ -198,7 +198,7 @@ if (LIBCXX_ENABLE_SHARED)

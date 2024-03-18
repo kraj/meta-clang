@@ -1,4 +1,4 @@
-From 9decd876cd8352fac84aafe740a142f20b0f78fa Mon Sep 17 00:00:00 2001
+From 8ff4e362a824257f89cb77119fe8206667dd88ff Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 9 Mar 2022 16:28:16 -0800
 Subject: [PATCH] compiler-rt: Enable __int128 for ppc32
@@ -59,7 +59,7 @@ index 28ded8766f25..08495c491f08 100644
        endif()
  
 diff --git a/compiler-rt/lib/builtins/int_types.h b/compiler-rt/lib/builtins/int_types.h
-index 7624c7280615..a45bf13f770e 100644
+index ca97391fc284..6fa1dac2325f 100644
 --- a/compiler-rt/lib/builtins/int_types.h
 +++ b/compiler-rt/lib/builtins/int_types.h
 @@ -64,7 +64,7 @@ typedef union {

@@ -1,4 +1,4 @@
-From a6132924c06b4662eaed9820a13b63131ff8d4ff Mon Sep 17 00:00:00 2001
+From cfeae6f76bbfc62bffca278aa8d58db3981ca100 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 21 Feb 2023 12:46:10 -0800
 Subject: [PATCH] compiler-rt: Undef _TIME_BITS along with _FILE_OFFSET_BITS in
