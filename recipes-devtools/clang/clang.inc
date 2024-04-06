@@ -6,10 +6,10 @@ LLVM_GIT_PROTOCOL ?= "https"
 
 MAJOR_VER = "18"
 MINOR_VER = "1"
-PATCH_VER = "2"
+PATCH_VER = "3"
 # could be 'rcX' or 'git' or empty ( for release )
 VER_SUFFIX = ""
-SRCREV ?= "26a1d6601d727a96f4301d0d8647b5a42760ae0c"
+SRCREV ?= "c13b7485b87909fcf739f62cfa382b55407433c0"
 
 PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}${VER_SUFFIX}"
 BRANCH = "release/18.x"
