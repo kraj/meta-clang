@@ -4,7 +4,8 @@
 # parameter in ptest-runner is necessary to not kill it before completion
 
 cd tests || exit 1
-export BPFTRACE_RUNTIME_TEST_EXECUTABLE=/usr/bin
+export BPFTRACE_RUNTIME_TEST_EXECUTABLE=/usr/bin/bpftrace
+export BPFTRACE_AOT_RUNTIME_TEST_EXECUTABLE=/usr/bin/bpftrace-aotrt
 
 PASS_CNT=0
 FAIL_CNT=0
