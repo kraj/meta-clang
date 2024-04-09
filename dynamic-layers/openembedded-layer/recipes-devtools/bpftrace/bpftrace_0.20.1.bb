@@ -23,6 +23,7 @@ SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://0002-ast-Repace-getInt8PtrTy-with-getPtrTy.patch \
            file://0003-ast-Adjust-to-enum-changes-in-llvm-18.patch \
            file://0004-cmake-Bump-max-LLVM-version-to-18.patch \
+           file://0001-use-64bit-alignment-for-map-counter-atomic-add.patch \
            file://run-ptest \
 "
 SRCREV = "fe6362b4e2c1b9d0833c7d3f308c1d4006b54723"
