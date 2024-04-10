@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://llvm/LICENSE.TXT;md5=${LLVMMD5SUM} \
 "
 LICENSE = "Apache-2.0-with-LLVM-exception"
 
-BASEURI ??= "${LLVM_GIT}/llvm-project;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
+BASEURI ??= "${LLVM_GIT}/llvm-project.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
 SRC_URI = "\
     ${BASEURI} \
     file://llvm-config \
