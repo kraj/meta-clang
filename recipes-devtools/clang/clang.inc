@@ -1,8 +1,7 @@
 LLVM_RELEASE = ""
 LLVM_DIR = "llvm${LLVM_RELEASE}"
 
-LLVM_GIT ?= "git://github.com/llvm"
-LLVM_GIT_PROTOCOL ?= "https"
+LLVM_HTTP ?= "https://github.com/llvm"
 
 MAJOR_VER = "18"
 MINOR_VER = "1"
@@ -12,7 +11,6 @@ VER_SUFFIX = ""
 SRCREV ?= "617a15a9eac96088ae5e9134248d8236e34b91b1"
 
 PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}${VER_SUFFIX}"
-BRANCH = "release/18.x"
 
 LLVMMD5SUM = "8a15a0759ef07f2682d2ba4b893c9afe"
 CLANGMD5SUM = "ff42885ed2ab98f1ecb8c1fc41205343"
