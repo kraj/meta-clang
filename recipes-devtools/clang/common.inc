@@ -5,7 +5,9 @@ LIC_FILES_CHKSUM = "file://llvm/LICENSE.TXT;md5=${LLVMMD5SUM} \
 "
 LICENSE = "Apache-2.0-with-LLVM-exception"
 
-BASEURI ??= "${LLVM_GIT}/llvm-project.git;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
+BASEURI = "${LLVM_HTTP}/llvm-project/releases/download/llvmorg-${PV}/llvm-project-${PV}.src.tar.xz"
+SRC_URI[sha256sum] = "3591a52761a7d390ede51af01ea73abfecc4b1d16445f9d019b67a57edd7de56"
+
 SRC_URI = "\
     ${BASEURI} \
     file://llvm-config \
@@ -48,7 +50,7 @@ SRC_URI = "\
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
 
-S = "${TMPDIR}/work-shared/llvm-project-source-${PV}-${PR}/git"
+S = "${TMPDIR}/work-shared/llvm-project-source-${PV}-${PR}/llvm-project-${PV}.src"
 B = "${WORKDIR}/llvm-project-source-${PV}/build.${HOST_SYS}.${TARGET_SYS}"
 
 # We need to ensure that for the shared work directory, the do_patch signatures match
