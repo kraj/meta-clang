@@ -10,8 +10,6 @@ SRC_URI[sha256sum] = "3591a52761a7d390ede51af01ea73abfecc4b1d16445f9d019b67a57ed
 
 SRC_URI = "\
     ${BASEURI} \
-    file://llvm-config \
-    file://libunwind.pc.in \
     file://0001-libcxxabi-Find-libunwind-headers-when-LIBCXXABI_LIBU.patch \
     file://0002-compiler-rt-support-a-new-embedded-linux-target.patch \
     file://0003-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch \
@@ -46,6 +44,7 @@ SRC_URI = "\
     file://0033-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
     file://0034-ToolChains-Gnu.cpp-ARMLibDirs-search-also-in-lib32.patch \
     file://0035-compiler-rt-Fix-cmake-check-for-_Float16-and-__bf16.patch \
+    file://0036-llvm-Add-libunwind.pc.in-and-llvm-config-scripts.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
