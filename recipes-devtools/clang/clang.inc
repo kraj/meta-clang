@@ -5,10 +5,9 @@ LLVM_HTTP ?= "https://github.com/llvm"
 
 MAJOR_VER = "18"
 MINOR_VER = "1"
-PATCH_VER = "5"
+PATCH_VER = "6"
 # could be 'rcX' or 'git' or empty ( for release )
 VER_SUFFIX = ""
-SRCREV ?= "617a15a9eac96088ae5e9134248d8236e34b91b1"
 
 PV = "${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}${VER_SUFFIX}"
 
