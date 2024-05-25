@@ -7,9 +7,9 @@ deltask do_patch
 
 SRC_URI = ""
 
-do_configure[depends] += "llvm-project-source-${PV}:do_patch"
+do_configure[depends] += "llvm-project-source-${PV}:do_preconfigure"
 do_populate_lic[depends] += "llvm-project-source-${PV}:do_unpack"
-do_create_spdx[depends] += "llvm-project-source-${PV}:do_patch"
+do_create_spdx[depends] += "llvm-project-source-${PV}:do_preconfigure"
 
 # spdx shared workdir detection fails as not WORKDIR is altered but S and B
 # return always true to fix that
