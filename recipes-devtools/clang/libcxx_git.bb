@@ -111,6 +111,8 @@ do_install:append() {
 
 PACKAGES:append:runtime-llvm = " libunwind"
 FILES:libunwind:runtime-llvm = "${libdir}/libunwind.so.*"
+# Package library module manifest path
+FILES:${PN}-dev += "${datadir}/libc++/v1/ ${libdir}/libc++.modules.json"
 
 BBCLASSEXTEND = "native nativesdk"
 TOOLCHAIN:forcevariable = "clang"
