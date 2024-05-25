@@ -235,6 +235,29 @@ URI: ghttps://github.com/openembedded/bitbake.git
 branch: master
 revision: HEAD
 ```
+# Using Devtool and Upstream Development
+
+All LLVM based recipes use single llvm source directory, As a LLVM
+developer, you might want to work on your own repository to build
+related recipes, devtool can we useful in establishing such a workflow
+there is a script provided `scripts/devtool-clang.sh` which can assist
+in setting up all the recipes to use custom LLVM repository, in order
+to setup repository make sure that it has all the needed patches applied
+or else it will fail to build. Such a tree is already prepared and kept
+in sync at
+
+https://github.com/kraj/llvm-project
+
+There are branches under `oe` namespace which carry the needed OE patches
+
+```
+cd $TOPDIR/workspace/sources
+git clone https://github.com/kraj/llvm-project -b oe/main llvm-project
+```
+
+Once project is setup and meta-clang is added, run `devtool-clang.sh`
+script which will do the needed for setting up external sources for the
+yocto recipes, now yocto will use custom LLVM tree for its needs.
 
 # Contributing
 
