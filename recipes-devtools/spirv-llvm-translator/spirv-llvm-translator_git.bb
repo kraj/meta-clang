@@ -1,13 +1,13 @@
 LICENSE = "NCSA"
 LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=47e311aa9caedd1b3abf098bd7814d1d"
 
-BRANCH = "main"
+BRANCH = "llvm_release_180"
 SRC_URI = "git://github.com/KhronosGroup/SPIRV-LLVM-Translator;protocol=https;branch=${BRANCH} \
            git://github.com/KhronosGroup/SPIRV-Headers;protocol=https;destsuffix=git/SPIRV-Headers;name=headers;branch=main \
           "
 
-PV = "18.0.0+git"
-SRCREV = "0e87aefecf7c5006e315427189bff87878e392c1"
+PV = "18.1.0"
+SRCREV = "ad99707fd80189dca0ca76ed89946ae383e9a030"
 SRCREV_headers = "d3c2a6fa95ad463ca8044d7fc45557db381a6a64"
 
 SRCREV_FORMAT = "default_headers"
