@@ -25,6 +25,8 @@ TARGET_OS = "linux"
 baselib = "lib"
 PACKAGE_ARCH = "all"
 
+B = "${WORKDIR}/build"
+
 # space separated list of additional distro vendor values we want to support e.g.
 # "yoe webos" or "-yoe -webos" '-' is optional
 CLANG_EXTRA_OE_VENDORS ?= "${TARGET_VENDOR} ${SDK_VENDOR}"
