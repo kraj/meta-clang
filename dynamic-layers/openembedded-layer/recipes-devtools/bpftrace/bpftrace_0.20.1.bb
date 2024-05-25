@@ -44,12 +44,6 @@ do_install_ptest() {
     fi
 }
 
-def llvm_major_version(d):
-    pvsplit = d.getVar('LLVMVERSION').split('.')
-    return pvsplit[0]
-
-LLVM_MAJOR_VERSION = "${@llvm_major_version(d)}"
-
 EXTRA_OECMAKE = " \
     -DCMAKE_ENABLE_EXPORTS=1 \
     -DCMAKE_BUILD_TYPE=Release \
