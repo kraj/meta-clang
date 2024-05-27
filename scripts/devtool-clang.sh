@@ -8,6 +8,10 @@
 layerloc="$(dirname "$0")/../conf/layer.conf"
 workspace="$(dirname "$0")/../../../workspace"
 
+# Change target and SDK host as needed
+target=riscv64
+sdkhost=x86_64
+
 origver=$(grep "LLVMVERSION =" < "$layerloc" | awk '{print $3}' | tr -d '"')
 
 major=$(grep -e "set(LLVM_VERSION_MAJOR [0-9]" < "$workspace"/sources/llvm-project/cmake/Modules/LLVMVersion.cmake| cut -d ' ' -f 4 | sed "s/)//")
@@ -17,9 +21,9 @@ patch=$(grep -e "set(LLVM_VERSION_PATCH [0-9]" < "$workspace"/sources/llvm-proje
 recipes="\
 llvm-project-source-$origver \
 clang \
-clang-cross-riscv64 \
-clang-crosssdk-x86_64 \
-clang-cross-canadian-riscv64 \
+clang-cross-$target \
+clang-crosssdk-$sdkhost \
+clang-cross-canadian-$target \
 nativesdk-clang-glue \
 compiler-rt \
 compiler-rt-sanitizers \
@@ -39,3 +43,6 @@ for f in "$workspace"/appends/*.bbappend; do
 done
 
 sed -i -e "s/$origver/$major.$minor.$patch/g" "$workspace"/appends/llvm-project-source.bbappend
+sed -i -e "s/:pn-clang-cross-$target//g" "$workspace"/appends/clang-cross_git.bbappend
+sed -i -e "s/:pn-clang-cross-canadian-$target//g" "$workspace"/appends/clang-cross-canadian_git.bbappend
+sed -i -e "s/:pn-clang-crosssdk-$sdkhost//g" "$workspace"/appends/clang-crosssdk_git.bbappend
