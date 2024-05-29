@@ -6,8 +6,8 @@ SRC_URI = "git://github.com/KhronosGroup/SPIRV-LLVM-Translator;protocol=https;br
            git://github.com/KhronosGroup/SPIRV-Headers;protocol=https;destsuffix=git/SPIRV-Headers;name=headers;branch=main \
           "
 
-PV = "18.1.0"
-SRCREV = "ad99707fd80189dca0ca76ed89946ae383e9a030"
+PV = "18.1.0+git"
+SRCREV = "16b2900747a3cc7993eeb39d4a8442b432a3fda0"
 SRCREV_headers = "1c6bb2743599e6eb6f37b2969acc0aef812e32e3"
 
 SRCREV_FORMAT = "default_headers"
