@@ -16,10 +16,17 @@ DEPENDS += "qemu-native clang spirv-tools spirv-llvm-translator spirv-llvm-trans
 OECMAKE_SOURCEPATH = "${S}/libclc"
 
 EXTRA_OECMAKE += "\
-				-DLIBCLC_CUSTOM_LLVM_TOOLS_BINARY_DIR=${STAGING_BINDIR_NATIVE} \
-                -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-				-DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
-				-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+    -DLIBCLC_CUSTOM_LLVM_TOOLS_BINARY_DIR=${STAGING_BINDIR_NATIVE} \
+    -DLLVM_CLANG=${STAGING_BINDIR_NATIVE}/clang \
+    -DLLVM_AS=${STAGING_BINDIR_NATIVE}/llvm-as \
+    -DLLVM_LINK=${STAGING_BINDIR_NATIVE}/llvm-link \
+    -DLLVM_OPT=${STAGING_BINDIR_NATIVE}/opt \
+    -DLLVM_SPIRV=${STAGING_BINDIR_NATIVE}/llvm-spirv \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
+    -Dclc_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeCLCCompiler.cmake.in \
+    -Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON"
 
 do_configure:prepend () {
 	# Write out a qemu wrapper that will be used by cmake
