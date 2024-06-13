@@ -27,7 +27,9 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://ptest_wrapper.sh \
            "
 
-SRCREV = "eb8ede2d70b17350757f2570ef76ea4c2e1dbff8"
+SRCREV = "1d8daaa395f066b328a56a36fbd40a0de3a7b3c1"
+
+PV .= "+git"
 
 S = "${WORKDIR}/git"
 
