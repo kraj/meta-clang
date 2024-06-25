@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://llvm/LICENSE.TXT;md5=${LLVMMD5SUM} \
 LICENSE = "Apache-2.0-with-LLVM-exception"
 
 BASEURI = "${LLVM_HTTP}/llvm-project/releases/download/llvmorg-${PV}/llvm-project-${PV}.src.tar.xz"
-SRC_URI[sha256sum] = "74446ab6943f686391954cbda0d77ae92e8a60c432eff437b8666e121d748ec4"
+SRC_URI[sha256sum] = "0b58557a6d32ceee97c8d533a59b9212d87e0fc4d2833924eb6c611247db2f2a"
 
 SRC_URI = "\
     ${BASEURI} \
