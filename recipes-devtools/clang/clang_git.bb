@@ -403,6 +403,7 @@ FILES:${PN}-dev += "\
   ${nonarch_libdir}/libear \
   ${nonarch_libdir}/${BPN}/*.la \
 "
+FILES:${PN}-doc += "${datadir}/clang-doc"
 
 FILES:${PN}-staticdev += "${nonarch_libdir}/${BPN}/*.a"
 
