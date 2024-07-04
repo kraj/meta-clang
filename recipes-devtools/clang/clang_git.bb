@@ -55,7 +55,7 @@ def get_clang_target_arch(bb, d):
 def get_clang_experimental_target_arch(bb, d):
     return get_clang_experimental_arch(bb, d, 'TARGET_ARCH')
 
-PACKAGECONFIG_CLANG_COMMON = "eh libedit rtti shared-libs \
+PACKAGECONFIG_CLANG_COMMON = "build-id eh libedit rtti shared-libs \
                               ${@bb.utils.contains('TC_CXX_RUNTIME', 'llvm', 'compiler-rt libcplusplus libomp unwindlib', '', d)} \
                               "
 
@@ -72,6 +72,7 @@ PACKAGECONFIG:class-nativesdk = "clangd \
                                  "
 
 PACKAGECONFIG[bootstrap] = "-DCLANG_ENABLE_BOOTSTRAP=On -DCLANG_BOOTSTRAP_PASSTHROUGH='${PASSTHROUGH}' -DBOOTSTRAP_LLVM_ENABLE_LTO=Thin -DBOOTSTRAP_LLVM_ENABLE_LLD=ON,,,"
+PACKAGECONFIG[build-id] = "-DENABLE_LINKER_BUILD_ID=ON,-DENABLE_LINKER_BUILD_ID=OFF,,"
 PACKAGECONFIG[clangd] = "-DCLANG_ENABLE_CLANGD=ON,-DCLANG_ENABLE_CLANGD=OFF,,"
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,"
 PACKAGECONFIG[eh] = "-DLLVM_ENABLE_EH=ON,-DLLVM_ENABLE_EH=OFF,,"
