@@ -56,7 +56,7 @@ TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", 
 TUNE_CCARGS_MARCH_OPTS:append:toolchain-clang = "${@bb.utils.contains_any("DEFAULTTUNE", "cortexa72 cortexa53", "+nocrypto", "", d)}"
 
 # Clang does not support octeontx2 processor
-TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2"
+TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2${TUNE_CCARGS_MARCH_OPTS}"
 
 # Reconcile some ppc anamolies
 TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float -mno-spe"
