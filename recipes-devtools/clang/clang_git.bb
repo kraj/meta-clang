@@ -27,11 +27,6 @@ inherit cmake cmake-native pkgconfig python3native python3targetconfig
 
 OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
-def get_clang_experimental_arch(bb, d, arch_var):
-    import re
-    a = d.getVar(arch_var)
-    return ""
-
 def get_clang_arch(bb, d, arch_var):
     import re
     a = d.getVar(arch_var)
@@ -54,9 +49,6 @@ def get_clang_host_arch(bb, d):
 
 def get_clang_target_arch(bb, d):
     return get_clang_arch(bb, d, 'TARGET_ARCH')
-
-def get_clang_experimental_target_arch(bb, d):
-    return get_clang_experimental_arch(bb, d, 'TARGET_ARCH')
 
 PACKAGECONFIG_CLANG_COMMON = "build-id eh libedit rtti shared-libs \
                               ${@bb.utils.contains('TC_CXX_RUNTIME', 'llvm', 'compiler-rt libcplusplus libomp unwindlib', '', d)} \
@@ -121,7 +113,6 @@ LLVM_BUILD_TOOLS;LLVM_USE_HOST_TOOLS;LLVM_CONFIG_PATH;\
 LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86;LoongArch"
 
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
-LLVM_EXPERIMENTAL_TARGETS_TO_BUILD:append = ";${@get_clang_experimental_target_arch(bb, d)}"
 
 HF = ""
 HF:class-target = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
