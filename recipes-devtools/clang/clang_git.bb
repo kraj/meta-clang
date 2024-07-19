@@ -209,12 +209,21 @@ RRECOMMENDS:${PN} = "binutils"
 RRECOMMENDS:${PN}:append:class-target = " libcxx-dev"
 
 # patch out build host paths for reproducibility
-do_compile:prepend:class-target() {
-    sed -i -e "s,${STAGING_DIR_NATIVE},,g" \
-        -e "s,${STAGING_DIR_TARGET},,g" \
-        -e "s,${S},,g"  \
+reproducible_build_variables() {
+    sed -i -e "s,${DEBUG_PREFIX_MAP},,g" \
+        -e "s,--sysroot=${RECIPE_SYSROOT},,g" \
+        -e "s,${STAGING_DIR_HOST},,g" \
+        -e "s,${S}/llvm,,g"  \
         -e "s,${B},,g" \
         ${B}/tools/llvm-config/BuildVariables.inc
+}
+
+do_configure:append:class-target() {
+    reproducible_build_variables
+}
+
+do_configure:append:class-nativesdk() {
+    reproducible_build_variables
 }
 
 do_install:append() {
@@ -282,6 +291,9 @@ do_install:append:class-nativesdk () {
     ln -sf llvm-config ${D}${bindir}/llvm-config${PV}
     rm -rf ${D}${datadir}/llvm/cmake
     rm -rf ${D}${datadir}/llvm
+
+    #reproducibility
+    sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
 }
 
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python ${PN}-libclang-cpp ${PN}-tidy ${PN}-format ${PN}-tools \
