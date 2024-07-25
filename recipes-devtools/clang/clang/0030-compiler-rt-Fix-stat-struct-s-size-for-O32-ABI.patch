@@ -1,4 +1,4 @@
-From 7e735f7b956eca38c2d882f3630af9bfd215f652 Mon Sep 17 00:00:00 2001
+From b1641882908052dc4f66c3967b8c3e3f0b1e54bb Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 3 Jan 2023 18:44:34 -0800
 Subject: [PATCH] compiler-rt: Fix stat struct's size for O32 ABI

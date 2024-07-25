@@ -1,4 +1,4 @@
-From a3dbd6b6c8bfab6877632ec7a1e981aaa2883d90 Mon Sep 17 00:00:00 2001
+From b6c5146b473da03699ca79c170828f706508d3c0 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 11 Feb 2021 16:42:49 -0800
 Subject: [PATCH] llvm: Insert anchor for adding OE distro vendor names
@@ -18,10 +18,10 @@ Signed-off-by: Martin Jansa <martin.jansa@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/llvm/lib/TargetParser/Triple.cpp b/llvm/lib/TargetParser/Triple.cpp
-index 0bbe8a3cedfd..dbc1240703a0 100644
+index bf89aace65e5..fb9cbeb30351 100644
 --- a/llvm/lib/TargetParser/Triple.cpp
 +++ b/llvm/lib/TargetParser/Triple.cpp
-@@ -601,7 +601,7 @@ static Triple::VendorType parseVendor(StringRef VendorName) {
+@@ -636,7 +636,7 @@ static Triple::VendorType parseVendor(StringRef VendorName) {
      .Case("amd", Triple::AMD)
      .Case("mesa", Triple::Mesa)
      .Case("suse", Triple::SUSE)
