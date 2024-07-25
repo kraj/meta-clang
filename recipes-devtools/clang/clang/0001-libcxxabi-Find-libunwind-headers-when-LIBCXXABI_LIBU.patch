@@ -1,4 +1,4 @@
-From ec5bd3bfc9f682c90ceba06f2d76aa5234a9c846 Mon Sep 17 00:00:00 2001
+From 78c27664e7ffee1bc7a8beff604860ea194e27a5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 27 Aug 2017 10:37:49 -0700
 Subject: [PATCH] libcxxabi: Find libunwind headers when
@@ -14,14 +14,14 @@ LIBCXXABI_LIBUNWIND_INCLUDES if its there in environment
 Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- libcxxabi/CMakeLists.txt | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ libcxxabi/CMakeLists.txt | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/libcxxabi/CMakeLists.txt b/libcxxabi/CMakeLists.txt
-index da998d2221dc..936b78e4d6dd 100644
+index 43400c6e8d9a..cc0841112c0c 100644
 --- a/libcxxabi/CMakeLists.txt
 +++ b/libcxxabi/CMakeLists.txt
-@@ -422,7 +422,7 @@ set(LIBCXXABI_LIBUNWIND_PATH "${LIBCXXABI_LIBUNWIND_PATH}" CACHE PATH
+@@ -423,7 +423,7 @@ set(LIBCXXABI_LIBUNWIND_PATH "${LIBCXXABI_LIBUNWIND_PATH}" CACHE PATH
      "Specify path to libunwind source." FORCE)
  
  if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
@@ -30,7 +30,7 @@ index da998d2221dc..936b78e4d6dd 100644
      PATHS ${LIBCXXABI_LIBUNWIND_INCLUDES}
            ${LIBCXXABI_LIBUNWIND_PATH}/include
            ${CMAKE_BINARY_DIR}/${LIBCXXABI_LIBUNWIND_INCLUDES}
-@@ -433,15 +433,21 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
+@@ -434,18 +434,23 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
      NO_CMAKE_FIND_ROOT_PATH
    )
  
@@ -47,11 +47,13 @@ index da998d2221dc..936b78e4d6dd 100644
 +  include_directories("${LIBCXXABI_LIBUNWIND_INCLUDES}")
  endif()
  
+ add_custom_target(cxxabi-test-depends
+   COMMENT "Build dependencies required to run the libc++abi test suite.")
+ 
 +set(LIBCXXABI_LIBUNWIND_INCLUDES "${LIBCXXABI_LIBUNWIND_INCLUDES}" CACHE PATH
 +    "Specify path to libunwind includes." FORCE)
 +set(LIBCXXABI_LIBUNWIND_PATH "${LIBCXXABI_LIBUNWIND_PATH}" CACHE PATH
 +    "Specify path to libunwind source." FORCE)
-+
 +
  # Add source code. This also contains all of the logic for deciding linker flags
  # soname, etc...

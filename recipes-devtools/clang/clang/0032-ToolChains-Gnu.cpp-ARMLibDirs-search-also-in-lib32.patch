@@ -1,4 +1,4 @@
-From 3d2fdb0ab98f479679231435cb3247cfbf9dfaab Mon Sep 17 00:00:00 2001
+From fe32a4031f8fa3cd33685121acee6d3afd3695a6 Mon Sep 17 00:00:00 2001
 From: Martin Jansa <Martin.Jansa@gmail.com>
 Date: Thu, 31 Aug 2023 18:14:47 +0200
 Subject: [PATCH] ToolChains/Gnu.cpp: ARMLibDirs search also in lib32
@@ -55,12 +55,12 @@ Signed-off-by: Martin Jansa <Martin.Jansa@gmail.com>
  2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 98d979ace17b..c5aed9b47123 100644
+index f081a778cfe9..b3d656d30a78 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -2479,7 +2479,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
-   static const char *const AArch64beTriples[] = {"aarch64_be-none-linux-gnu",
-                                                  "aarch64_be-linux-gnu"};
+@@ -2475,7 +2475,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
+   static const char *const AArch64beLibDirs[] = {"/lib"};
+   static const char *const AArch64beTriples[] = {"aarch64_be-none-linux-gnu"};
  
 -  static const char *const ARMLibDirs[] = {"/lib"};
 +  static const char *const ARMLibDirs[] = {"/lib", "/lib32"};
@@ -68,10 +68,10 @@ index 98d979ace17b..c5aed9b47123 100644
    static const char *const ARMHFTriples[] = {"arm-linux-gnueabihf",
                                               "armv7hl-redhat-linux-gnueabi",
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 699ff18b1240..4ed91b852562 100644
+index 41818470cf85..3224acee8710 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -202,6 +202,7 @@ static StringRef getOSLibDir(const llvm::Triple &Triple, const ArgList &Args) {
+@@ -205,6 +205,7 @@ static StringRef getOSLibDir(const llvm::Triple &Triple, const ArgList &Args) {
    // reasoning about oslibdir spellings with the lib dir spellings in the
    // GCCInstallationDetector, but that is a more significant refactoring.
    if (Triple.getArch() == llvm::Triple::x86 || Triple.isPPC32() ||

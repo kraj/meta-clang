@@ -1,4 +1,4 @@
-From c4ec538a1e00eb60ad890df51401f27484b349d9 Mon Sep 17 00:00:00 2001
+From e1c5aa4cf7f4816d8c91d665ec536a3da039288d Mon Sep 17 00:00:00 2001
 From: Maksim Kita <maksim-kita@yandex-team.ru>
 Date: Sun, 23 May 2021 10:27:29 +0000
 Subject: [PATCH] libunwind: Added unw_backtrace method
@@ -24,10 +24,10 @@ index b2dae8feed9a..0ab974c9bfa4 100644
  extern unw_addr_space_t unw_local_addr_space;
  
 diff --git a/libunwind/src/libunwind.cpp b/libunwind/src/libunwind.cpp
-index 217dde909863..5797c806c084 100644
+index cf39ec5f7dbd..1896f20d57f8 100644
 --- a/libunwind/src/libunwind.cpp
 +++ b/libunwind/src/libunwind.cpp
-@@ -432,6 +432,26 @@ int __unw_remove_find_dynamic_unwind_sections(
+@@ -431,6 +431,26 @@ int __unw_remove_find_dynamic_unwind_sections(
  
  #endif // __APPLE__
  

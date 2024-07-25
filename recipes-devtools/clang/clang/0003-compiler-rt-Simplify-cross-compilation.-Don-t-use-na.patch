@@ -1,4 +1,4 @@
-From 3d969ae73698da3518f3230f9e40cb7bd6f2e6c3 Mon Sep 17 00:00:00 2001
+From 11d8cadd76aaf434556eeb9f42ee794ca72802a4 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 23:11:45 -0700
 Subject: [PATCH] compiler-rt: Simplify cross-compilation. Don't use
@@ -21,10 +21,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/compiler-rt/CMakeLists.txt b/compiler-rt/CMakeLists.txt
-index bbb4e8d7c333..583e5630b03c 100644
+index 2207555b03a0..c28106378bdd 100644
 --- a/compiler-rt/CMakeLists.txt
 +++ b/compiler-rt/CMakeLists.txt
-@@ -82,7 +82,16 @@ if (COMPILER_RT_STANDALONE_BUILD)
+@@ -86,7 +86,16 @@ if (COMPILER_RT_STANDALONE_BUILD)
    set(CMAKE_CXX_EXTENSIONS NO)
  
    if (NOT LLVM_RUNTIMES_BUILD)

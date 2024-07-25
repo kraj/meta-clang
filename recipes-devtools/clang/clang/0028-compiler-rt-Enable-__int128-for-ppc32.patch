@@ -1,4 +1,4 @@
-From 8ff4e362a824257f89cb77119fe8206667dd88ff Mon Sep 17 00:00:00 2001
+From fd20943309512af40d5f1b9b94220bcfa085c6a1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 9 Mar 2022 16:28:16 -0800
 Subject: [PATCH] compiler-rt: Enable __int128 for ppc32
@@ -11,12 +11,12 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  2 files changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
-index 28ded8766f25..08495c491f08 100644
+index e0b2d08c2077..1b245fd5deeb 100644
 --- a/compiler-rt/lib/builtins/CMakeLists.txt
 +++ b/compiler-rt/lib/builtins/CMakeLists.txt
-@@ -686,11 +686,9 @@ set(mips64_SOURCES ${GENERIC_TF_SOURCES}
- set(mips64el_SOURCES ${GENERIC_TF_SOURCES}
-                      ${mips_SOURCES})
+@@ -710,11 +710,9 @@ set(mips64el_SOURCES ${GENERIC_TF_SOURCES}
+ 
+ set(nvptx64_SOURCES ${GENERIC_SOURCES})
  
 -set(powerpc_SOURCES ${GENERIC_SOURCES})
 -
@@ -27,7 +27,7 @@ index 28ded8766f25..08495c491f08 100644
    ppc/divtc3.c
    ppc/fixtfdi.c
    ppc/fixunstfdi.c
-@@ -705,14 +703,15 @@ set(powerpc64_SOURCES
+@@ -729,14 +727,15 @@ set(powerpc64_SOURCES
  )
  # These routines require __int128, which isn't supported on AIX.
  if (NOT OS_NAME MATCHES "AIX")
@@ -46,7 +46,7 @@ index 28ded8766f25..08495c491f08 100644
  
  set(riscv_SOURCES
    riscv/fp_mode.c
-@@ -847,9 +846,9 @@ else ()
+@@ -888,9 +887,9 @@ else ()
          list(APPEND BUILTIN_CFLAGS_${arch} -fomit-frame-pointer -DCOMPILER_RT_ARMHF_TARGET)
        endif()
  
@@ -59,7 +59,7 @@ index 28ded8766f25..08495c491f08 100644
        endif()
  
 diff --git a/compiler-rt/lib/builtins/int_types.h b/compiler-rt/lib/builtins/int_types.h
-index ca97391fc284..6fa1dac2325f 100644
+index 48862f364217..cc47d3e33f67 100644
 --- a/compiler-rt/lib/builtins/int_types.h
 +++ b/compiler-rt/lib/builtins/int_types.h
 @@ -64,7 +64,7 @@ typedef union {
