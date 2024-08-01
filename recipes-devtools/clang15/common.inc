@@ -8,8 +8,6 @@ LICENSE = "Apache-2.0-with-LLVM-exception"
 BASEURI ??= "${LLVM_GIT}/llvm-project;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
 SRC_URI = "\
     ${BASEURI} \
-    file://llvm-config \
-    file://libunwind.pc.in \
     file://0001-libcxxabi-Find-libunwind-headers-when-LIBCXXABI_LIBU.patch \
     file://0002-compiler-rt-support-a-new-embedded-linux-target.patch \
     file://0003-compiler-rt-Simplify-cross-compilation.-Don-t-use-na.patch \
@@ -46,6 +44,7 @@ SRC_URI = "\
     file://0034-compiler-rt-Fix-stat-struct-s-size-for-O32-ABI.patch \
     file://0035-cmake-Enable-64bit-off_t-on-32bit-glibc-systems.patch \
     file://0036-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
+    file://0036-llvm-Add-libunwind.pc.in-and-llvm-config-scripts.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
