@@ -38,11 +38,19 @@ TUNE_CCARGS:remove:toolchain-clang15 = "-mel"
 TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
-TUNE_CCARGS:remove:toolchain-clang15 = "-mcpu=cortex-a57.cortex-a53 -mcpu=cortex-a72.cortex-a53 -mcpu=cortex-a15.cortex-a7 -mcpu=cortex-a17.cortex-a7 -mcpu=cortex-a72.cortex-a35 -mcpu=cortex-a73.cortex-a53 -mcpu=cortex-a75.cortex-a55 -mcpu=cortex-a76.cortex-a55"
-TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mcpu=cortex-a53", "", d)}"
-TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7", "", d)}"
-TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35", "", d)}"
-TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortexa55 cortexa76-cortexa55", " -mcpu=cortex-a55", "", d)}"
+TUNE_CCARGS:remove:toolchain-clang15 = "\
+    -mcpu=cortex-a57.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a72.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a15.cortex-a7${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a17.cortex-a7${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a72.cortex-a35${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a73.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a75.cortex-a55${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a76.cortex-a55${TUNE_CCARGS_MARCH_OPTS}"
+TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mcpu=cortex-a53${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
+TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
+TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
+TUNE_CCARGS:append:toolchain-clang15 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortexa55 cortexa76-cortexa55", " -mcpu=cortex-a55${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
 
 # Workaround for https://github.com/llvm/llvm-project/issues/85699
 # needed for 64bit rpi3/rpi4 machines
