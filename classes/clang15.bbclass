@@ -124,7 +124,7 @@ def clang_base_deps(d):
             return ret
     return ""
 
-BASE_DEFAULT_DEPS:toolchain-clang15:class-target = "${@clang_base_deps(d)}"
+BASE_DEFAULT_DEPS:append:class-target:toolchain-clang15:class-target = " ${@clang_base_deps(d)}"
 BASE_DEFAULT_DEPS:append:class-native:toolchain-clang15:runtime-llvm = " libcxx15-initial-native compiler-rt15-native"
 BASE_DEFAULT_DEPS:append:class-nativesdk:toolchain-clang15:runtime-llvm = " clang15-native nativesdk-libcxx15-initial nativesdk-compiler-rt15"
 
