@@ -44,6 +44,10 @@ TUNE_CCARGS:append:toolchain-clang16 = "${@bb.utils.contains_any("TUNE_FEATURES"
 TUNE_CCARGS:append:toolchain-clang16 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35", "", d)}"
 TUNE_CCARGS:append:toolchain-clang16 = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortexa55 cortexa76-cortexa55", " -mcpu=cortex-a55", "", d)}"
 
+# Workaround for https://github.com/llvm/llvm-project/issues/85699
+# needed for 64bit rpi3/rpi4 machines
+TUNE_CCARGS_MARCH_OPTS:append:toolchain-clang16 = "${@bb.utils.contains_any("DEFAULTTUNE", "cortexa72 cortexa53", "+nocrypto", "", d)}"
+
 # Clang does not support octeontx2 processor
 TUNE_CCARGS:remove:toolchain-clang16 = "-mcpu=octeontx2"
 
