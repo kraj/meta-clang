@@ -1,0 +1,9 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=@LIBDIR@
+includedir=/usr/include
+
+Name: libunwind
+Description: libunwind base library
+Version: @VERSION@
+Libs: -lunwind
