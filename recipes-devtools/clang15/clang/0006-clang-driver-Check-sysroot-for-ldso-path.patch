@@ -1,0 +1,61 @@
+From 3f9d367a0f519c04c0a59c6aec49898270860f46 Mon Sep 17 00:00:00 2001
+From: Dan McGregor <dan.mcgregor@usask.ca>
+Date: Wed, 26 Apr 2017 20:29:41 -0600
+Subject: [PATCH] clang: driver: Check sysroot for ldso path
+
+OE does not necessarily follow the default path for the dynamic linker,
+therefore adjust it for OE. Check for the default path, and if it isn't
+there, check /lib.
+
+Signed-off-by: Dan McGregor <dan.mcgregor@usask.ca>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/Linux.cpp | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
+index ceb1a982c3a4..69f5a4662732 100644
+--- a/clang/lib/Driver/ToolChains/Linux.cpp
++++ b/clang/lib/Driver/ToolChains/Linux.cpp
+@@ -508,11 +508,19 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+     LibDir = "lib64";
+     Loader =
+         (tools::ppc::hasPPCAbiArg(Args, "elfv2")) ? "ld64.so.2" : "ld64.so.1";
++    if (!getVFS().exists(getDriver().SysRoot + "/" + LibDir + "/" + Loader) &&
++         getVFS().exists(getDriver().SysRoot + "/lib/" + Loader)) {
++        LibDir = "lib";
++    }
+     break;
+   case llvm::Triple::ppc64le:
+     LibDir = "lib64";
+     Loader =
+         (tools::ppc::hasPPCAbiArg(Args, "elfv1")) ? "ld64.so.1" : "ld64.so.2";
++    if (!getVFS().exists(getDriver().SysRoot + "/" + LibDir + "/" + Loader) &&
++         getVFS().exists(getDriver().SysRoot + "/lib/" + Loader)) {
++        LibDir = "lib";
++    }
+     break;
+   case llvm::Triple::riscv32: {
+     StringRef ABIName = tools::riscv::getRISCVABI(Args, Triple);
+@@ -534,6 +542,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+   case llvm::Triple::sparcv9:
+     LibDir = "lib64";
+     Loader = "ld-linux.so.2";
++    if (!getVFS().exists(getDriver().SysRoot + "/" + LibDir + "/" + Loader) &&
++         getVFS().exists(getDriver().SysRoot + "/lib/" + Loader)) {
++        LibDir = "lib";
++    }
+     break;
+   case llvm::Triple::systemz:
+     LibDir = "lib";
+@@ -548,6 +560,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+ 
+     LibDir = X32 ? "libx32" : "lib64";
+     Loader = X32 ? "ld-linux-x32.so.2" : "ld-linux-x86-64.so.2";
++    if (!getVFS().exists(getDriver().SysRoot + "/" + LibDir + "/" + Loader) &&
++         getVFS().exists(getDriver().SysRoot + "/lib/" + Loader)) {
++        LibDir = "lib";
++    }
+     break;
+   }
+   case llvm::Triple::ve:
