@@ -104,7 +104,7 @@ do_install:append() {
             install -Dm 0644 ${S}/libunwind/include/$f ${D}${includedir}/$f
         done
         install -d ${D}${libdir}/pkgconfig
-        sed -e 's,@LIBDIR@,${libdir},g;s,@VERSION@,${PV},g' ${S}/../libunwind.pc.in > ${D}${libdir}/pkgconfig/libunwind.pc
+        sed -e 's,@LIBDIR@,${libdir},g;s,@VERSION@,${PV},g' ${S}/libunwind/libunwind.pc.in > ${D}${libdir}/pkgconfig/libunwind.pc
     fi
 }
 
