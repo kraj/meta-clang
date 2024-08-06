@@ -9,9 +9,9 @@ TOOLCHAIN = "clang"
 
 LIC_FILES_CHKSUM = "file://libclc/LICENSE.TXT;md5=7cc795f6cbb2d801d84336b83c8017db"
 
-inherit cmake pkgconfig python3native qemu
+inherit cmake cmake-qemu pkgconfig python3native
 
-DEPENDS += "qemu-native clang spirv-tools spirv-llvm-translator spirv-llvm-translator-native ncurses"
+DEPENDS += "clang spirv-tools spirv-llvm-translator spirv-llvm-translator-native ncurses"
 
 OECMAKE_SOURCEPATH = "${S}/libclc"
 
@@ -23,21 +23,9 @@ EXTRA_OECMAKE += "\
     -DLLVM_OPT=${STAGING_BINDIR_NATIVE}/opt \
     -DLLVM_SPIRV=${STAGING_BINDIR_NATIVE}/llvm-spirv \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-    -DCMAKE_CROSSCOMPILING_EMULATOR=${WORKDIR}/qemuwrapper \
     -Dclc_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeCLCCompiler.cmake.in \
     -Dll_comp_in:FILEPATH=${OECMAKE_SOURCEPATH}/cmake/CMakeLLAsmCompiler.cmake.in \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON"
-
-do_configure:prepend () {
-	# Write out a qemu wrapper that will be used by cmake
-	# so that it can run target helper binaries through that.
-	qemu_binary="${@qemu_wrapper_cmdline(d, d.getVar('STAGING_DIR_HOST'), [d.expand('${STAGING_DIR_HOST}${libdir}'),d.expand('${STAGING_DIR_HOST}${base_libdir}')])}"
-	cat > ${WORKDIR}/qemuwrapper << EOF
-#!/bin/sh
-$qemu_binary "\$@"
-EOF
-	chmod +x ${WORKDIR}/qemuwrapper
-}
 
 FILES:${PN} += "${datadir}/clc"
 
