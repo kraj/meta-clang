@@ -1,4 +1,4 @@
-From 34a65a1f0ff8bb2d41f32c229dc6b309a7566ecd Mon Sep 17 00:00:00 2001
+From 449b79f2475f9b184ce0dc6c959ce0e4edbcc62e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 1 Mar 2024 16:47:46 -0800
 Subject: [PATCH] compiler-rt: Fix cmake check for _Float16 and __bf16
@@ -24,10 +24,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
-index 08495c491f08..bff96ba10bcd 100644
+index affa34e3740a..93b2be032177 100644
 --- a/compiler-rt/lib/builtins/CMakeLists.txt
 +++ b/compiler-rt/lib/builtins/CMakeLists.txt
-@@ -827,10 +827,10 @@ else ()
+@@ -866,10 +866,10 @@ else ()
            endif()
          endif()
        endif()
