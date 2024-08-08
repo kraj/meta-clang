@@ -17,6 +17,7 @@ inherit cmake pkgconfig perlnative python3native python3targetconfig
 DEPENDS += "elfutils libffi clang"
 
 EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                  -DLLVM_APPEND_VC_REV=OFF \
                   -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
                   -DOPENMP_LIBDIR_SUFFIX=${@d.getVar('baselib').replace('lib', '')} \
                   -DOPENMP_STANDALONE_BUILD=ON \

@@ -16,6 +16,7 @@ DEPENDS += "clang spirv-tools spirv-llvm-translator spirv-llvm-translator-native
 OECMAKE_SOURCEPATH = "${S}/libclc"
 
 EXTRA_OECMAKE += "\
+    -DLLVM_APPEND_VC_REV=OFF \
     -DLIBCLC_CUSTOM_LLVM_TOOLS_BINARY_DIR=${STAGING_BINDIR_NATIVE} \
     -DLLVM_CLANG=${STAGING_BINDIR_NATIVE}/clang \
     -DLLVM_AS=${STAGING_BINDIR_NATIVE}/llvm-as \
