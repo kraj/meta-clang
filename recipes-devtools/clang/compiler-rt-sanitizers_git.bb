@@ -74,25 +74,25 @@ EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
         mkdir -p ${D}${nonarch_libdir}/clang
-        mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
+        mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${nonarch_libdir}/clang/${MAJOR_VER}
         rmdir --ignore-fail-on-non-empty ${D}${libdir}
-    else
-        mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
     fi
+    ln -sf ${MAJOR_VER} ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
     # Already shipped with compile-rt Orc support
-    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/liborc_rt-*.a
-    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include/orc/
+    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/liborc_rt-*.a
+    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}/include/orc/
 }
 
 FILES_SOLIBSDEV = ""
-FILES:${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
-                ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
-                ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
-FILES:${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
-                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include \
-                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
-                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.asan-preinit*.a"
+FILES:${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER} \
+				${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/lib*${SOLIBSDEV} \
+                ${nonarch_libdir}/clang/${MAJOR_VER}/*.txt \
+                ${nonarch_libdir}/clang/${MAJOR_VER}/share/*.txt"
+FILES:${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/*.a"
+FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/*.syms \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}/include \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/clang_rt.crt*.o \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/libclang_rt.asan-preinit*.a"
 INSANE_SKIP:${PN} = "dev-so libdir"
 INSANE_SKIP:${PN}-dbg = "libdir"
 
