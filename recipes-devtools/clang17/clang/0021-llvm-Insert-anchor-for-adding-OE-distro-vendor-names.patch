@@ -1,0 +1,32 @@
+From 3ee6071f459375e0534db3bd84b1a71a5694daef Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Thu, 11 Feb 2021 16:42:49 -0800
+Subject: [PATCH] llvm: Insert anchor for adding OE distro vendor names
+
+This helps in making right detection for OE built gcc toolchains
+
+The //CLANG_EXTRA_OE_VENDORS_CASES string is replaced with list of
+additional Ceses based on CLANG_EXTRA_OE_VENDORS variable in
+recipes-devtools/clang/llvm-project-source.inc:add_distro_vendor()
+
+Upstream-Status: Inappropriate [OE-specific]
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Martin Jansa <martin.jansa@gmail.com>
+---
+ llvm/lib/TargetParser/Triple.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/llvm/lib/TargetParser/Triple.cpp b/llvm/lib/TargetParser/Triple.cpp
+index a3d6a06af976..953132c543cd 100644
+--- a/llvm/lib/TargetParser/Triple.cpp
++++ b/llvm/lib/TargetParser/Triple.cpp
+@@ -569,7 +569,7 @@ static Triple::VendorType parseVendor(StringRef VendorName) {
+     .Case("amd", Triple::AMD)
+     .Case("mesa", Triple::Mesa)
+     .Case("suse", Triple::SUSE)
+-    .Case("oe", Triple::OpenEmbedded)
++    .Case("oe", Triple::OpenEmbedded)//CLANG_EXTRA_OE_VENDORS_CASES
+     .Default(Triple::UnknownVendor);
+ }
+ 
