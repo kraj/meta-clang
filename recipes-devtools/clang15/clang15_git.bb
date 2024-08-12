@@ -56,11 +56,11 @@ def get_clang_experimental_target_arch(bb, d):
 
 PACKAGECONFIG ??= "compiler-rt libcplusplus shared-libs lldb-wchar \
                    ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto lto', d)} \
-                   ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)} \
+                   ${@bb.utils.contains('TC_CXX_RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)} \
                    rtti eh libedit terminfo \
                    "
-PACKAGECONFIG:class-native = "rtti eh libedit shared-libs ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
-PACKAGECONFIG:class-nativesdk = "rtti eh libedit shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto lto', d)} ${@bb.utils.contains('RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
+PACKAGECONFIG:class-native = "rtti eh libedit shared-libs ${@bb.utils.contains('TC_CXX_RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
+PACKAGECONFIG:class-nativesdk = "rtti eh libedit shared-libs ${@bb.utils.filter('DISTRO_FEATURES', 'thin-lto lto', d)} ${@bb.utils.contains('TC_CXX_RUNTIME', 'llvm', 'compiler-rt libcplusplus unwindlib libomp', '', d)}"
 
 PACKAGECONFIG[compiler-rt] = "-DCLANG_DEFAULT_RTLIB=compiler-rt,,"
 PACKAGECONFIG[libcplusplus] = "-DCLANG_DEFAULT_CXX_STDLIB=libc++,,"
