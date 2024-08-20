@@ -41,7 +41,6 @@ BUILD_CXXFLAGS += "-stdlib=libstdc++"
 BUILD_LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
 BUILD_CPPFLAGS:remove = "-stdlib=libc++"
 BUILD_LDFLAGS:remove = "-stdlib=libc++ -lc++abi"
-TUNE_CCARGS:remove = "-mbranch-protection=standard"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
