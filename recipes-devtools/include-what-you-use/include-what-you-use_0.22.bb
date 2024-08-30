@@ -10,8 +10,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=59d01ad98720f3c50d6a8a0ef3108c88 \
 
 DEPENDS = "clang"
 
-SRC_URI = "git://github.com/include-what-you-use/include-what-you-use.git;protocol=https;branch=clang_18"
-SRCREV = "377eaef70cdda47368939f4d9beabfabe3f628f0"
+SRC_URI = "git://github.com/include-what-you-use/include-what-you-use.git;protocol=https;branch=master"
+SRCREV = "0ed29a277505735d90f4d8b15e8a90db8d961853"
 
 S = "${WORKDIR}/git"
 
