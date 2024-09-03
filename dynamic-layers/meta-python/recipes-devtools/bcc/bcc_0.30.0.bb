@@ -68,3 +68,11 @@ FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}"
 FILES:${PN}-doc += "${datadir}/${PN}/man"
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
+
+# WARNING: bcc-0.30.0+git-r0 do_package_qa: QA Issue: File /usr/lib/bcc/ptest/tests/cc/test_libbcc_no_libbpf in package bcc-ptest contains reference to TMPDIR [buildpaths]
+# this one is difficult to resolve, because the tests use CMAKE_CURRENT_BINARY_DIR directly in .cc e.g.:
+# https://github.com/iovisor/bcc/commit/7271bfc946a19413761be2e3c60c48bf72c5eea1#diff-233a0bfa490f3d7466c49935b64c86dd93956bbc0461f5af703b344cf6601461
+# we would probably need to use separate variable for "runtime" path for test assets from the standard CMAKE_CURRENT_BINARY_DIR variable or use relative
+# path from the test binary
+WARN_QA:append = "${@bb.utils.contains('PTEST_ENABLED', '1', ' buildpaths', '', d)}"
+ERROR_QA:remove = "${@bb.utils.contains('PTEST_ENABLED', '1', 'buildpaths', '', d)}"
