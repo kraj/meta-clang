@@ -53,6 +53,7 @@ SRC_URI = "\
     file://0032-ToolChains-Gnu.cpp-ARMLibDirs-search-also-in-lib32.patch \
     file://0033-clang-llvm-Add-OE-specific-ABI-triple-for-N32-ABI.patch \
     file://0034-llvm-Add-libunwind.pc.in-and-llvm-config-scripts.patch \
+    file://0035-scan-build-py-respect-LLVM_LIBDIR_SUFFIX-like-other-.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
