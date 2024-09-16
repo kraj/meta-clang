@@ -120,9 +120,8 @@ HF[vardepvalue] = "${HF}"
 
 LLVM_PROJECTS ?= "clang;clang-tools-extra;lld${LLDB}"
 LLDB ?= ";lldb"
-# LLDB support for RISCV/Mips32 does not work yet
+# LLDB support for RISCV32/Mips32 does not work yet
 LLDB:riscv32 = ""
-LLDB:riscv64 = ""
 LLDB:mips = ""
 LLDB:mipsel = ""
 LLDB:powerpc = ""
