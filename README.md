@@ -103,7 +103,7 @@ in `local.conf`.
 You can select libstdc++ per package too by writing bbappends for them containing
 
 ```shell
-LIBCPLUSPLUS:toolchain-clang:pn-<recipe> = "-stdlibc=libc++"
+LIBCPLUSPLUS:toolchain-clang:pn-<recipe> = "-stdlib=libc++"
 ```
 Defaults are chosen to be GNU for maximum compatibility with existing GNU systems. It's always
 good to use single runtime on a system, mixing runtimes can cause complications during
