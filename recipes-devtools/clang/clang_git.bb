@@ -222,6 +222,11 @@ do_configure:append:class-nativesdk() {
 
 do_install:append() {
     rm -rf ${D}${libdir}/python*/site-packages/six.py
+    for t in clang-pseudo clang-pseudo-gen clang-rename; do
+        if [ -e ${B}${BINPATHPREFIX}/bin/$t ]; then
+            install -Dm 0755 ${B}${BINPATHPREFIX}/bin/$t ${D}${bindir}/$t
+        fi
+    done
 }
 
 do_install:append:class-target () {
@@ -255,7 +260,6 @@ do_install:append:class-native () {
     if ${@bb.utils.contains('PACKAGECONFIG', 'clangd', 'true', 'false', d)}; then
         install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clangd-indexer ${D}${bindir}/clangd-indexer
     fi
-    install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-pseudo-gen ${D}${bindir}/clang-pseudo-gen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tidy-confusable-chars-gen ${D}${bindir}/clang-tidy-confusable-chars-gen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/lldb-tblgen ${D}${bindir}/lldb-tblgen
@@ -275,7 +279,6 @@ do_install:append:class-nativesdk () {
         install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clangd-indexer ${D}${bindir}/clangd-indexer
     fi
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tblgen ${D}${bindir}/clang-tblgen
-    install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-pseudo-gen ${D}${bindir}/clang-pseudo-gen
     install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clang-tidy-confusable-chars-gen ${D}${bindir}/clang-tidy-confusable-chars-gen
     for f in `find ${D}${bindir} -executable -type f -not -type l`; do
         test -n "`file -b $f|grep -i ELF`" && ${STRIP} $f
@@ -333,10 +336,10 @@ FILES:${PN}-tools = "${bindir}/analyze-build \
   ${bindir}/clang-nvlink-wrapper \
   ${bindir}/clang-offload-bundler \
   ${bindir}/clang-offload-packager \
-  ${bindir}/clang-pseudo \
+  ${bindir}/clang-pseudo* \
   ${bindir}/clang-query \
   ${bindir}/clang-refactor \
-  ${bindir}/clang-rename \
+  ${bindir}/clang-rename* \
   ${bindir}/clang-reorder-fields \
   ${bindir}/clang-repl \
   ${bindir}/clang-scan-deps \
@@ -444,9 +447,9 @@ clang_sysroot_preprocess() {
 
 	binaries="lld diagtool clang-${MAJOR_VER} clang-format clang-offload-packager
 	                clang-offload-bundler clang-scan-deps clang-repl
-	                clang-rename clang-refactor clang-check clang-extdef-mapping clang-apply-replacements
+	                clang-refactor clang-check clang-extdef-mapping clang-apply-replacements
 	                clang-reorder-fields clang-tidy clang-change-namespace clang-doc clang-include-fixer
-	                find-all-symbols clang-move clang-query pp-trace clang-pseudo modularize"
+	                find-all-symbols clang-move clang-query pp-trace modularize"
 
 	if ${@bb.utils.contains('PACKAGECONFIG', 'clangd', 'true', 'false', d)}; then
 	        binaries="${binaries} clangd"
