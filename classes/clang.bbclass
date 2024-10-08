@@ -149,17 +149,6 @@ EOF
     sed -i 's/ -mmusl / /g' ${WORKDIR}/toolchain.cmake
 }
 
-RECIPESYSROOTFUNCS = ""
-RECIPESYSROOTFUNCS:toolchain-clang = "recipe_sysroot_check_ld_is_lld"
-
-recipe_sysroot_check_ld_is_lld () {
-    if ${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', 'true', 'false', d)} &&  \
-        [ -e ${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}ld.lld ]; then
-        ln -srf ${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}ld.lld ${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}ld
-    fi
-}
-do_prepare_recipe_sysroot[postfuncs] += "${RECIPESYSROOTFUNCS}"
-#
 # dump recipes which still use gcc
 #python __anonymous() {
 #    toolchain = d.getVar("TOOLCHAIN")
