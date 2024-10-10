@@ -13,6 +13,7 @@ OBJCOPY:toolchain-clang = "${HOST_PREFIX}llvm-objcopy"
 STRIP:toolchain-clang = "${HOST_PREFIX}llvm-strip"
 STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
 READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
+LD:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', '${HOST_PREFIX}ld.lld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', '${HOST_PREFIX}ld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', d)}"
 
 LTO:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
 
