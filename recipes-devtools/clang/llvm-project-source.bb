@@ -7,4 +7,6 @@ HOMEPAGE = "https://github.com/llvm/llvm-project"
 require llvm-project-source.inc
 require clang.inc
 
+BPN = "llvm-project-source"
+
 EXCLUDE_FROM_WORLD = "1"
