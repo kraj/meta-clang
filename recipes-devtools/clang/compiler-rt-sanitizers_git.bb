@@ -15,25 +15,32 @@ LIC_FILES_CHKSUM = "file://compiler-rt/LICENSE.TXT;md5=d846d1d65baf322d4c485d6ee
 
 TUNE_CCARGS:remove = "-no-integrated-as"
 
-DEPENDS += "ninja-native virtual/crypt"
+DEPENDS += "ninja-native virtual/crypt compiler-rt"
 DEPENDS:append:class-native = " clang-native libxcrypt-native"
 DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_ARCH} nativesdk-libxcrypt"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
-PACKAGECONFIG[static-libcxx] = "-DSANITIZER_USE_STATIC_CXX_ABI=ON -DSANITIZER_USE_STATIC_LLVM_UNWINDER=ON,,"
+PACKAGECONFIG[static-libcxx] = "-DSANITIZER_USE_STATIC_CXX_ABI=ON -DSANITIZER_USE_STATIC_LLVM_UNWINDER=ON -DCOMPILER_RT_ENABLE_STATIC_UNWINDER=ON,,"
 
 HF = ""
 HF:class-target = "${@ bb.utils.contains('TUNE_CCARGS_MFLOAT', 'hard', 'hf', '', d)}"
 HF[vardepvalue] = "${HF}"
 
+CXXFLAGS:append:libc-musl = " -D_LARGEFILE64_SOURCE"
+
 OECMAKE_TARGET_COMPILE = "compiler-rt"
 OECMAKE_TARGET_INSTALL = "install-compiler-rt install-compiler-rt-headers"
 OECMAKE_SOURCEPATH = "${S}/llvm"
-EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
-                  -DCOMPILER_RT_DEFAULT_TARGET_TRIPLE=${HOST_ARCH}${HF}${HOST_VENDOR}-${HOST_OS} \
+EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                  -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
+                  -DCOMPILER_RT_STANDALONE_BUILD=OFF \
+                  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+                  -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON \
+                  -DCMAKE_C_COMPILER_TARGET=${HOST_ARCH}${HOST_VENDOR}-${HOST_OS}${HF} \
                   -DCOMPILER_RT_BUILD_BUILTINS=OFF \
-                  -DSANITIZER_CXX_ABI_LIBNAME=${@bb.utils.contains("RUNTIME", "llvm", "libc++", "libstdc++", d)} \
+                  -DCOMPILER_RT_INCLUDE_TESTS=OFF \
+                  -DSANITIZER_CXX_ABI_LIBNAME=${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "libc++", "libstdc++", d)} \
                   -DCOMPILER_RT_BUILD_XRAY=ON \
                   -DCOMPILER_RT_BUILD_SANITIZERS=ON \
                   -DCOMPILER_RT_BUILD_LIBFUZZER=ON \
@@ -41,12 +48,6 @@ EXTRA_OECMAKE += "-DCOMPILER_RT_STANDALONE_BUILD=OFF \
                   -DCOMPILER_RT_BUILD_MEMPROF=ON \
                   -DLLVM_ENABLE_PROJECTS='compiler-rt' \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
-"
-
-EXTRA_OECMAKE:append:class-target = "\
-               -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
-               -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
-               -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
 "
 
 EXTRA_OECMAKE:append:class-nativesdk = "\
@@ -57,30 +58,38 @@ EXTRA_OECMAKE:append:class-nativesdk = "\
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
 "
 
+EXTRA_OECMAKE:append:class-target = "\
+               -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
+               -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
+               -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
+               -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+"
+
 EXTRA_OECMAKE:append:libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
 EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
 do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
-        mkdir -p ${D}${nonarch_libdir}
-        mv ${D}${libdir}/clang ${D}${nonarch_libdir}/clang
+        mkdir -p ${D}${nonarch_libdir}/clang
+        mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${nonarch_libdir}/clang/${MAJOR_VER}
         rmdir --ignore-fail-on-non-empty ${D}${libdir}
     fi
+    ln -sf ${MAJOR_VER} ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
     # Already shipped with compile-rt Orc support
-    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.orc-*.a
-    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include/orc/
+    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/liborc_rt-*.a
+    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}/include/orc/
 }
 
 FILES_SOLIBSDEV = ""
-FILES:${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/lib*${SOLIBSDEV} \
-                ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/*.txt \
-                ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/share/*.txt"
-FILES:${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.a"
-FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/*.syms \
-                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/include \
-                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/clang_rt.crt*.o \
-                    ${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/libclang_rt.asan-preinit*.a \
-                   "
+FILES:${PN} += "${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER} \
+				${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/lib*${SOLIBSDEV} \
+                ${nonarch_libdir}/clang/${MAJOR_VER}/*.txt \
+                ${nonarch_libdir}/clang/${MAJOR_VER}/share/*.txt"
+FILES:${PN}-staticdev += "${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/*.a"
+FILES:${PN}-dev += "${datadir} ${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/*.syms \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}/include \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/clang_rt.crt*.o \
+                    ${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/libclang_rt.asan-preinit*.a"
 INSANE_SKIP:${PN} = "dev-so libdir"
 INSANE_SKIP:${PN}-dbg = "libdir"
 

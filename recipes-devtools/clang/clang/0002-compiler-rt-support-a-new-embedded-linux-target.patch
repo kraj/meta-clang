@@ -1,8 +1,9 @@
-From 5a1cf5bd6eb5b7ee299c11b7a39ada74fd60be1d Mon Sep 17 00:00:00 2001
+From ac1643e6e68697e6ee374535dd98413c92224076 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 19 Apr 2015 15:16:23 -0700
 Subject: [PATCH] compiler-rt: support a new embedded linux target
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  .../make/platform/clang_linux_embedded.mk     | 286 ++++++++++++++++++

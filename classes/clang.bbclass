@@ -15,7 +15,6 @@ STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
 READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
 
 LTO:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
-PACKAGE_DEBUG_SPLIT_STYLE:toolchain-clang = "debug-without-src"
 
 COMPILER_RT ??= ""
 COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
@@ -38,18 +37,26 @@ TUNE_CCARGS:remove:toolchain-clang = "-mel"
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
-TUNE_CCARGS:remove:toolchain-clang = "-mcpu=cortex-a57.cortex-a53 -mcpu=cortex-a72.cortex-a53 -mcpu=cortex-a15.cortex-a7 -mcpu=cortex-a17.cortex-a7 -mcpu=cortex-a72.cortex-a35 -mcpu=cortex-a73.cortex-a53 -mcpu=cortex-a75.cortex-a55 -mcpu=cortex-a76.cortex-a55"
-TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mcpu=cortex-a53", "", d)}"
-TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7", "", d)}"
-TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35", "", d)}"
-TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortexa55 cortexa76-cortexa55", " -mcpu=cortex-a55", "", d)}"
+TUNE_CCARGS:remove:toolchain-clang = "\
+    -mcpu=cortex-a57.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a72.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a15.cortex-a7${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a17.cortex-a7${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a72.cortex-a35${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a73.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a75.cortex-a55${TUNE_CCARGS_MARCH_OPTS} \
+    -mcpu=cortex-a76.cortex-a55${TUNE_CCARGS_MARCH_OPTS}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa53 cortexa57-cortexa53 cortexa73-cortexa53", " -mcpu=cortex-a53${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
+TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortexa55 cortexa76-cortexa55", " -mcpu=cortex-a55${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
+
+# Workaround for https://github.com/llvm/llvm-project/issues/85699
+# needed for 64bit rpi3/rpi4 machines
+TUNE_CCARGS_MARCH_OPTS:append:toolchain-clang = "${@bb.utils.contains_any("DEFAULTTUNE", "cortexa72 cortexa53", "+nocrypto", "", d)}"
 
 # Clang does not support octeontx2 processor
-TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2"
-
-# LLD does not yet support relaxation for RISCV e.g. https://reviews.freebsd.org/D25210
-TUNE_CCARGS:append:toolchain-clang:riscv32 = " -mno-relax"
-TUNE_CCARGS:append:toolchain-clang:riscv64 = " -mno-relax"
+TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2${TUNE_CCARGS_MARCH_OPTS}"
 
 # Reconcile some ppc anamolies
 TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float -mno-spe"
@@ -72,13 +79,18 @@ LDFLAGS:toolchain-clang:class-nativesdk = "${BUILDSDK_LDFLAGS} \
 # Enable lld globally"
 LDFLAGS:append:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
 
+# Remove gcc specific -fcanon-prefix-map option, added in gcc-13+
+# clang does not support it yet
+DEBUG_PREFIX_MAP:remove:toolchain-clang = "-fcanon-prefix-map"
+
 # choose between 'gcc' 'clang' an empty '' can be used as well
 TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
-RUNTIME ??= "gnu"
-#RUNTIME:toolchain-gcc = "gnu"
-RUNTIME:armeb = "gnu"
-RUNTIME:armv5 = "gnu"
+TC_CXX_RUNTIME ??= "gnu"
+# Using gcc or llvm runtime is only available when using clang for compiler
+#TC_CXX_RUNTIME:toolchain-gcc = "gnu"
+TC_CXX_RUNTIME:armeb = "gnu"
+TC_CXX_RUNTIME:armv5 = "gnu"
 
 TOOLCHAIN:class-native = "gcc"
 TOOLCHAIN:class-nativesdk = "gcc"
@@ -87,9 +99,8 @@ TOOLCHAIN:class-crosssdk = "gcc"
 TOOLCHAIN:class-cross = "gcc"
 
 OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
-OVERRIDES =. "${@['', 'runtime-${RUNTIME}:']['${RUNTIME}' != '']}"
-OVERRIDES[vardepsexclude] += "TOOLCHAIN RUNTIME"
-
+OVERRIDES =. "${@['', 'runtime-${TC_CXX_RUNTIME}:']['${TC_CXX_RUNTIME}' != '']}"
+OVERRIDES[vardepsexclude] += "TOOLCHAIN TC_CXX_RUNTIME"
 
 YOCTO_ALTERNATE_EXE_PATH:toolchain-clang:class-target = "${STAGING_BINDIR}/llvm-config"
 YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target = "/${BASELIB}"
@@ -104,16 +115,16 @@ def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
             ret = " ${MLPREFIX}clang-cross-${TARGET_ARCH} virtual/libc "
-            if (d.getVar('RUNTIME').find('android') != -1):
+            if (d.getVar('TC_CXX_RUNTIME').find('android') != -1):
                 ret += " libcxx"
                 return ret
-            if (d.getVar('RUNTIME').find('llvm') != -1):
+            if (d.getVar('TC_CXX_RUNTIME').find('llvm') != -1):
                 ret += " compiler-rt"
             elif (d.getVar('COMPILER_RT').find('-rtlib=compiler-rt') != -1):
                 ret += " compiler-rt "
             else:
                 ret += " libgcc "
-            if (d.getVar('RUNTIME').find('llvm') != -1):
+            if (d.getVar('TC_CXX_RUNTIME').find('llvm') != -1):
                 ret += " libcxx"
             elif (d.getVar('COMPILER_RT').find('--unwindlib=libunwind') != -1):
                 ret += " libcxx "
@@ -124,7 +135,7 @@ def clang_base_deps(d):
             return ret
     return ""
 
-BASE_DEFAULT_DEPS:toolchain-clang:class-target = "${@clang_base_deps(d)}"
+BASE_DEFAULT_DEPS:append:class-target:toolchain-clang:class-target = " ${@clang_base_deps(d)}"
 BASE_DEFAULT_DEPS:append:class-native:toolchain-clang:runtime-llvm = " libcxx-native compiler-rt-native"
 BASE_DEFAULT_DEPS:append:class-nativesdk:toolchain-clang:runtime-llvm = " clang-native nativesdk-libcxx nativesdk-compiler-rt"
 

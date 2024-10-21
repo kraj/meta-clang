@@ -1,4 +1,4 @@
-From e12e426d3c67b17d74879d7dec434eb64310881e Mon Sep 17 00:00:00 2001
+From 58cae5f6f4df0e6fd8529f99f940984e770f4c84 Mon Sep 17 00:00:00 2001
 From: Jim Broadus <jbroadus@xevo.com>
 Date: Thu, 26 Mar 2020 16:05:53 -0700
 Subject: [PATCH] clang: Fix resource dir location for cross toolchains
@@ -12,6 +12,7 @@ This causes clang to form a path that looks like /usr/bin/lib/clang/...
 As a fix for this, check the parent directory name. If that is "bin", then
 use that directory's parent.
 
+Upstream-Status: Pending
 Signed-off-by: Jim Broadus <jbroadus@xevo.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
@@ -19,21 +20,23 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/Driver.cpp b/clang/lib/Driver/Driver.cpp
-index 3bfddeefc7b2..8a806efb292b 100644
+index 93cddf742d52..88291dd125d3 100644
 --- a/clang/lib/Driver/Driver.cpp
 +++ b/clang/lib/Driver/Driver.cpp
-@@ -176,7 +176,13 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
+@@ -179,9 +179,15 @@ std::string Driver::GetResourcesPath(StringRef BinaryPath,
      // With a static-library build of libclang, LibClangPath will contain the
      // path of the embedding binary, which for LLVM binaries will be in bin/.
      // ../lib gets us to lib/ in both cases.
 -    P = llvm::sys::path::parent_path(Dir);
 +    Dir = std::string(llvm::sys::path::parent_path(Dir));
+     // This search path is also created in the COFF driver of lld, so any
+     // changes here also needs to happen in lld/COFF/Driver.cpp
 +
 +    // OE cross toolchains are installed, by default, in a subdir of bin.
 +    if (llvm::sys::path::filename(Dir) == "bin") {
 +      Dir = std::string(llvm::sys::path::parent_path(Dir));
 +    }
 +    P = Dir;
-     llvm::sys::path::append(P, Twine("lib") + CLANG_LIBDIR_SUFFIX, "clang",
-                             CLANG_VERSION_STRING);
+     llvm::sys::path::append(P, CLANG_INSTALL_LIBDIR_BASENAME, "clang",
+                             CLANG_VERSION_MAJOR_STRING);
    }

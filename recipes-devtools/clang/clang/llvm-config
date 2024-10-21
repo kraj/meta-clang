@@ -8,41 +8,45 @@
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 NEXT_LLVM_CONFIG="$(which -a llvm-config | sed -n 2p)"
 export YOCTO_ALTERNATE_EXE_PATH="${YOCTO_ALTERNATE_EXE_PATH:="$(readlink -f "$SCRIPT_DIR/../llvm-config")"}"
-export YOCTO_ALTERNATE_LIBDIR="${YOCTO_ALTERNATE_LIBDIR:="/lib"}"
+if [ -n "$( echo $base_libdir | sed -n '/lib64/p')" ]; then
+    export YOCTO_ALTERNATE_LIBDIR="${YOCTO_ALTERNATE_LIBDIR:="/lib64"}"
+else
+    export YOCTO_ALTERNATE_LIBDIR="${YOCTO_ALTERNATE_LIBDIR:="/lib"}"
+fi
 if [[ $# == 0 ]]; then
   exec "$NEXT_LLVM_CONFIG"
 fi
 
-if [[ $1 == "--libs" ]]; then
-  exec "$NEXT_LLVM_CONFIG" $@
-fi
-
-if [[ $1 == "--bindir" ]]; then
-  unset YOCTO_ALTERNATE_EXE_PATH
-  exec "$NEXT_LLVM_CONFIG" $@
-fi
-
-if [[ $1 == "--libfiles" ]]; then
-  exec "$NEXT_LLVM_CONFIG" $@
-fi
-
-
+remain=""
+output=""
 for arg in "$@"; do
   case "$arg" in
     --cppflags)
-      echo $TARGET_CPPFLAGS
+      output="${output} ${CPPFLAGS}"
       ;;
     --cflags)
-      echo $TARGET_CFLAGS
+      output="${output} ${CFLAGS}"
       ;;
     --cxxflags)
-      echo $TARGET_CXXFLAGS
+      output="${output} ${CXXFLAGS}"
       ;;
     --ldflags)
-      echo $TARGET_LDFLAGS
+      output="${output} ${LDFLAGS}"
+      ;;
+    --shared-mode)
+      output="${output} shared"
+      ;;
+    --link-shared)
+      break
       ;;
     *)
-      echo "$("$NEXT_LLVM_CONFIG" "$arg")"
+      remain="${remain} ${arg}"
       ;;
   esac
 done
+
+if [ "${remain}" != "" ]; then
+      output="${output} "$("$NEXT_LLVM_CONFIG" ${remain})
+fi
+
+echo "${output}"

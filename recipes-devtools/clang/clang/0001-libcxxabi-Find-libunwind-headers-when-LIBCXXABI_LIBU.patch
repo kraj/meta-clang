@@ -1,4 +1,4 @@
-From 655270f8c4caa717e10d97013ffd9ed88e06699b Mon Sep 17 00:00:00 2001
+From ec5bd3bfc9f682c90ceba06f2d76aa5234a9c846 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sun, 27 Aug 2017 10:37:49 -0700
 Subject: [PATCH] libcxxabi: Find libunwind headers when
@@ -11,32 +11,26 @@ especially for ARM targets
 This patch makes the searching synthesized directories and then set
 LIBCXXABI_LIBUNWIND_INCLUDES if its there in environment
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- libcxxabi/CMakeLists.txt | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ libcxxabi/CMakeLists.txt | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/libcxxabi/CMakeLists.txt b/libcxxabi/CMakeLists.txt
-index 5ef85c9cfc40..1afdb5a17970 100644
+index da998d2221dc..936b78e4d6dd 100644
 --- a/libcxxabi/CMakeLists.txt
 +++ b/libcxxabi/CMakeLists.txt
-@@ -535,14 +535,9 @@ endif()
- # Setup Source Code
- #===============================================================================
+@@ -422,7 +422,7 @@ set(LIBCXXABI_LIBUNWIND_PATH "${LIBCXXABI_LIBUNWIND_PATH}" CACHE PATH
+     "Specify path to libunwind source." FORCE)
  
--set(LIBCXXABI_LIBUNWIND_INCLUDES "${LIBCXXABI_LIBUNWIND_INCLUDES}" CACHE PATH
--    "Specify path to libunwind includes." FORCE)
--set(LIBCXXABI_LIBUNWIND_PATH "${LIBCXXABI_LIBUNWIND_PATH}" CACHE PATH
--    "Specify path to libunwind source." FORCE)
--
- include_directories(include)
  if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
 -  find_path(LIBCXXABI_LIBUNWIND_INCLUDES_INTERNAL libunwind.h
 +  find_path(LIBCXXABI_LIBUNWIND_INCLUDES libunwind.h
      PATHS ${LIBCXXABI_LIBUNWIND_INCLUDES}
            ${LIBCXXABI_LIBUNWIND_PATH}/include
            ${CMAKE_BINARY_DIR}/${LIBCXXABI_LIBUNWIND_INCLUDES}
-@@ -553,15 +548,21 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
+@@ -433,15 +433,21 @@ if (LIBCXXABI_USE_LLVM_UNWINDER OR LLVM_NATIVE_ARCH MATCHES ARM)
      NO_CMAKE_FIND_ROOT_PATH
    )
  
@@ -45,12 +39,12 @@ index 5ef85c9cfc40..1afdb5a17970 100644
 +  if (LIBCXXABI_LIBUNWIND_INCLUDES STREQUAL "LIBCXXABI_LIBUNWIND_INCLUDES-NOTFOUND")
 +    set(LIBCXXABI_LIBUNWIND_INCLUDES "")
    endif()
+ endif()
  
--  if (NOT LIBCXXABI_LIBUNWIND_INCLUDES_INTERNAL STREQUAL "")
--    include_directories("${LIBCXXABI_LIBUNWIND_INCLUDES_INTERNAL}")
-+  if (NOT LIBCXXABI_LIBUNWIND_INCLUDES STREQUAL "")
-+    include_directories("${LIBCXXABI_LIBUNWIND_INCLUDES}")
-   endif()
+-if (NOT "${LIBCXXABI_LIBUNWIND_INCLUDES_INTERNAL}" STREQUAL "")
+-  include_directories("${LIBCXXABI_LIBUNWIND_INCLUDES_INTERNAL}")
++if (NOT "${LIBCXXABI_LIBUNWIND_INCLUDES}" STREQUAL "")
++  include_directories("${LIBCXXABI_LIBUNWIND_INCLUDES}")
  endif()
  
 +set(LIBCXXABI_LIBUNWIND_INCLUDES "${LIBCXXABI_LIBUNWIND_INCLUDES}" CACHE PATH
@@ -61,4 +55,4 @@ index 5ef85c9cfc40..1afdb5a17970 100644
 +
  # Add source code. This also contains all of the logic for deciding linker flags
  # soname, etc...
- add_subdirectory(src)
+ add_subdirectory(include)

@@ -1,4 +1,4 @@
-From 3d7469e6d46dd19a20500fdb56f21a0cc7198e9d Mon Sep 17 00:00:00 2001
+From c0a66d4f358b24bf3acd89910e0f7fc780d16a11 Mon Sep 17 00:00:00 2001
 From: Jeremy Puhlman <jpuhlman@mvista.com>
 Date: Thu, 16 Jan 2020 21:16:10 +0000
 Subject: [PATCH] libcxx: Add compiler runtime library to link step for libcxx
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/libcxx/src/CMakeLists.txt b/libcxx/src/CMakeLists.txt
-index 12dcdf954405..54e446e2aecd 100644
+index 1b80625304a4..fe706c9e920f 100644
 --- a/libcxx/src/CMakeLists.txt
 +++ b/libcxx/src/CMakeLists.txt
-@@ -212,7 +212,7 @@ if (LIBCXX_ENABLE_SHARED)
+@@ -198,7 +198,7 @@ if (LIBCXX_ENABLE_SHARED)
    add_library(cxx_shared SHARED ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_include_directories(cxx_shared PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
    target_link_libraries(cxx_shared PUBLIC cxx-headers
@@ -26,12 +26,12 @@ index 12dcdf954405..54e446e2aecd 100644
    set_target_properties(cxx_shared
      PROPERTIES
        COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
-@@ -290,7 +290,7 @@ if (LIBCXX_ENABLE_STATIC)
+@@ -291,7 +291,7 @@ if (LIBCXX_ENABLE_STATIC)
    add_library(cxx_static STATIC ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_include_directories(cxx_static PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
    target_link_libraries(cxx_static PUBLIC cxx-headers
--                                   PRIVATE ${LIBCXX_LIBRARIES})
-+                                   PRIVATE ${LIBCXX_LIBRARIES} "$$($$CC --print-libgcc-file-name)")
+-                                   PRIVATE ${LIBCXX_LIBRARIES}
++                                   PRIVATE ${LIBCXX_LIBRARIES} "$$($$CC --print-libgcc-file-name)"
+                                    PRIVATE libcxx-abi-static)
    set_target_properties(cxx_static
      PROPERTIES
-       COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
