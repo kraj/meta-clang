@@ -167,7 +167,7 @@ EXTRA_OECMAKE:append:class-native = "\
 "
 EXTRA_OECMAKE:append:class-nativesdk = "\
                   -DCROSS_TOOLCHAIN_FLAGS_NATIVE='-DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} \
-                                                  -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON} \
+                                                  -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON_PN} \
                                                   -DLLDB_PYTHON_EXT_SUFFIX=${SOLIBSDEV} \
                                                   -DCMAKE_TOOLCHAIN_FILE=${WORKDIR}/toolchain-native.cmake' \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
@@ -178,7 +178,7 @@ EXTRA_OECMAKE:append:class-nativesdk = "\
                   -DLLVM_HEADERS_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-min-tblgen \
                   -DPYTHON_LIBRARY=${STAGING_LIBDIR}/lib${PYTHON_DIR}${PYTHON_ABI}.so \
                   -DLLDB_PYTHON_RELATIVE_PATH=${PYTHON_SITEPACKAGES_DIR} \
-                  -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON} \
+                  -DLLDB_PYTHON_EXE_RELATIVE_PATH=${PYTHON_PN} \
                   -DLLDB_PYTHON_EXT_SUFFIX=${SOLIBSDEV} \
                   -DPYTHON_INCLUDE_DIR=${STAGING_INCDIR}/${PYTHON_DIR}${PYTHON_ABI} \
                   -DPYTHON_EXECUTABLE='${PYTHON}' \
