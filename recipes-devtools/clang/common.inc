@@ -5,7 +5,9 @@ LIC_FILES_CHKSUM = "file://llvm/LICENSE.TXT;md5=${LLVMMD5SUM} \
 "
 LICENSE = "Apache-2.0-with-LLVM-exception"
 
-BASEURI ??= "${LLVM_GIT}/llvm-project;protocol=${LLVM_GIT_PROTOCOL};branch=${BRANCH}"
+BASEURI = "${LLVM_HTTP}/llvm-project/releases/download/llvmorg-${PV}/llvm-project-${PV}.src.tar.xz"
+SRC_URI[sha256sum] = "bd4b4cb6374bcd5fc5a3ba60cb80425d29da34f316b8821abc12c0db225cf6b4"
+
 SRC_URI = "\
     ${BASEURI} \
     file://llvm-config \
@@ -31,29 +33,24 @@ SRC_URI = "\
     file://0019-For-x86_64-set-Yocto-based-GCC-install-search-path.patch \
     file://0020-llvm-Do-not-use-find_library-for-ncurses.patch \
     file://0021-llvm-Insert-anchor-for-adding-OE-distro-vendor-names.patch \
-    file://0022-compiler-rt-Use-mcr-based-barrier-on-armv6.patch \
-    file://0023-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
-    file://0024-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
-    file://0025-compiler-rt-Link-scudo-with-SANITIZER_CXX_ABI_LIBRAR.patch \
-    file://0026-compiler-rt-Link-scudo-standalone-with-libatomic-on-.patch \
-    file://0027-libunwind-Added-unw_backtrace-method.patch \
-    file://0028-Do-not-force-thumb-mode-directive.patch \
-    file://0029-clang-Do-not-use-install-relative-libc-headers.patch \
-    file://0030-clang-Fix-how-driver-finds-GCC-installation-path-on-.patch \
-    file://0031-Fix-lib-paths-for-OpenEmbedded-Host.patch \
-    file://0032-Correct-library-search-path-for-OpenEmbedded-Host.patch \
-    file://0033-lldb-Link-with-libatomic-on-x86.patch \
-    file://0034-clang-exclude-openembedded-distributions-from-settin.patch \
-    file://0035-compiler-rt-Enable-__int128-for-ppc32.patch \
-    file://0036-compiler-rt-builtins-Move-DMB-definition-to-syn-opsh.patch \
-    file://0037-sanitizer-Remove-include-linux-fs.h-to-resolve-fscon.patch \
-    file://0038-lldb-Get-rid-of-__STDC_LIMIT_MACROS-and-__STDC_CONST.patch \
-    file://0039-lldb-Fix-error-non-const-lvalue.-caused-by-SWIG-4.1..patch \
+    file://0022-compiler-rt-Do-not-use-backtrace-APIs-on-non-glibc-l.patch \
+    file://0023-clang-Fix-x86-triple-for-non-debian-multiarch-linux-.patch \
+    file://0024-libunwind-Added-unw_backtrace-method.patch \
+    file://0025-clang-Do-not-use-install-relative-libc-headers.patch \
+    file://0027-Fix-lib-paths-for-OpenEmbedded-Host.patch \
+    file://0028-Correct-library-search-path-for-OpenEmbedded-Host.patch \
+    file://0029-lldb-Link-with-libatomic-on-x86.patch \
+    file://0030-compiler-rt-Enable-__int128-for-ppc32.patch \
+    file://0031-llvm-Do-not-use-cmake-infra-to-detect-libzstd.patch \
+    file://0032-compiler-rt-Fix-stat-struct-s-size-for-O32-ABI.patch \
+    file://0033-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
+    file://0034-ToolChains-Gnu.cpp-ARMLibDirs-search-also-in-lib32.patch \
+    file://0035-compiler-rt-Fix-cmake-check-for-_Float16-and-__bf16.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
 
-S = "${TMPDIR}/work-shared/llvm-project-source-${PV}-${PR}/git"
+S = "${TMPDIR}/work-shared/llvm-project-source-${PV}-${PR}/llvm-project-${PV}.src"
 B = "${WORKDIR}/llvm-project-source-${PV}/build.${HOST_SYS}.${TARGET_SYS}"
 
 # We need to ensure that for the shared work directory, the do_patch signatures match

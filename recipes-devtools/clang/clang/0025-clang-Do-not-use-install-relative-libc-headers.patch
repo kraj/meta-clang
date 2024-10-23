@@ -1,0 +1,34 @@
+From b759741be82cc87406f5b7ece236617ad5450e78 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 11 Aug 2021 18:37:11 -0700
+Subject: [PATCH] clang: Do not use install relative libc++ headers
+
+In OE we use same clang for native and cross builds, therefore we need
+to ensure that native sysroot install of libc++ is not searched for
+headers when doing cross compile instead it searches the target sysroot
+this is especially troublesome when libcxx-native is staged along with
+libcxx e.g. chromium
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ clang/lib/Driver/ToolChains/Gnu.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
+index 185ea3df16f5..d883dc3e7558 100644
+--- a/clang/lib/Driver/ToolChains/Gnu.cpp
++++ b/clang/lib/Driver/ToolChains/Gnu.cpp
+@@ -3313,8 +3313,11 @@ Generic_GCC::addLibCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
+   // incompatible with the NDK libraries.
+   SmallString<128> DriverIncludeDir(getDriver().Dir);
+   llvm::sys::path::append(DriverIncludeDir, "..", "include");
++
++  // do not add it when --sysroot is specified, since it would expect
++  // libc++ headers from sysroot and not relative to compiler install location
+   if (AddIncludePath(DriverIncludeDir,
+-                     /*TargetDirRequired=*/getTriple().isAndroid()))
++                     /*TargetDirRequired=*/getTriple().isAndroid() | !computeSysRoot().empty()))
+     return;
+   // If this is a development, non-installed, clang, libcxx will
+   // not be found at ../include/c++ but it likely to be found at

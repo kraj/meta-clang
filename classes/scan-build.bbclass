@@ -10,8 +10,7 @@ SCAN_BUILD:class-cross = ""
 SCAN_BUILD:class-crosssdk = ""
 SCAN_BUILD:class-cross-canadian = ""
 
-#CLANG_SCAN_SERVER_IP ??= "127.0.0.1"
-CLANG_SCAN_SERVER_IP ??= "10.0.0.10"
+CLANG_SCAN_SERVER_IP ??= "0.0.0.0"
 CLANG_SCAN_PORT ??= "8181"
 SCAN_RESULTS_DIR ?= "${TMPDIR}/static-scan/${PN}"
 
@@ -29,7 +28,7 @@ do_scanview() {
         bbplain "Starting scan-view server at: http://${CLANG_SCAN_SERVER_IP}:${CLANG_SCAN_PORT}"
         bbplain "Use Ctrl-C to exit"
         bbplain "================================================================"
-        scan-view --host ${CLANG_SCAN_SERVER_IP} --port ${CLANG_SCAN_PORT} --allow-all-hosts ${SCAN_RESULTS_DIR}/*/
+        scan-view --host ${CLANG_SCAN_SERVER_IP} --port ${CLANG_SCAN_PORT} --allow-all-hosts --no-browser ${SCAN_RESULTS_DIR}/*/
 }
 
 do_scanview[depends] += "${PN}:do_scanbuild"

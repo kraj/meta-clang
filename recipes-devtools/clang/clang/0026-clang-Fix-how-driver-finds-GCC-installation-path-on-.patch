@@ -1,4 +1,4 @@
-From d7b262b22c16436c836de7f39591eaafd28a4e21 Mon Sep 17 00:00:00 2001
+From c95b551389ae1622faf630be3ddaf0dc62892595 Mon Sep 17 00:00:00 2001
 From: David Abdurachmanov <david.abdurachmanov@sifive.com>
 Date: Wed, 20 Oct 2021 17:30:36 -0700
 Subject: [PATCH] clang: Fix how driver finds GCC installation path on
@@ -27,54 +27,70 @@ Upstream-Status: Pending
 Signed-off-by: David Abdurachmanov <david.abdurachmanov@sifive.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- clang/lib/Driver/ToolChains/Gnu.cpp | 39 +++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 11 deletions(-)
+ clang/lib/Driver/ToolChains/Gnu.cpp | 57 ++++++++++++++++++++---------
+ 1 file changed, 39 insertions(+), 18 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 0d04a199a7af..1e5a3cc2c1f1 100644
+index d883dc3e7558..c627602827c3 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -1641,18 +1641,29 @@ static void findRISCVMultilibs(const Driver &D,
+@@ -1909,23 +1909,38 @@ static void findRISCVMultilibs(const Driver &D,
      return findRISCVBareMetalMultilibs(D, TargetTriple, Path, Args, Result);
  
    FilterNonExistent NonExistent(Path, "/crtbegin.o", D.getVFS());
--  Multilib Ilp32 = makeMultilib("lib32/ilp32").flag("+m32").flag("+mabi=ilp32");
--  Multilib Ilp32f =
+-  MultilibBuilder Ilp32 =
+-      MultilibBuilder("lib32/ilp32").flag("-m32").flag("-mabi=ilp32");
+-  MultilibBuilder Ilp32f =
+-      MultilibBuilder("lib32/ilp32f").flag("-m32").flag("-mabi=ilp32f");
+-  MultilibBuilder Ilp32d =
+-      MultilibBuilder("lib32/ilp32d").flag("-m32").flag("-mabi=ilp32d");
+-  MultilibBuilder Lp64 =
+-      MultilibBuilder("lib64/lp64").flag("-m64").flag("-mabi=lp64");
+-  MultilibBuilder Lp64f =
+-      MultilibBuilder("lib64/lp64f").flag("-m64").flag("-mabi=lp64f");
+-  MultilibBuilder Lp64d =
+-      MultilibBuilder("lib64/lp64d").flag("-m64").flag("-mabi=lp64d");
+-  MultilibSet RISCVMultilibs =
+-      MultilibSetBuilder()
+-          .Either({Ilp32, Ilp32f, Ilp32d, Lp64, Lp64f, Lp64d})
+-          .makeMultilibSet()
+-          .FilterOut(NonExistent);
++
 +  MultilibSet RISCVMultilibs;
 +
 +  if (TargetTriple.getVendor() == llvm::Triple::OpenEmbedded) {
-+    Multilib OpenEmbeddedIlp32d = makeMultilib("").flag("+m32").flag("+mabi=ilp32d");
-+    Multilib OpenEmbeddedLp64d = makeMultilib("").flag("+m64").flag("+mabi=lp64d");
++    MultilibBuilder OpenEmbeddedIlp32d =
++        MultilibBuilder("").flag("+m32").flag("+mabi=ilp32d");
++    MultilibBuilder OpenEmbeddedLp64d =
++        MultilibBuilder("").flag("+m64").flag("+mabi=lp64d");
 +    RISCVMultilibs =
-+        MultilibSet()
++        MultilibSetBuilder()
 +            .Either({OpenEmbeddedIlp32d, OpenEmbeddedLp64d})
++            .makeMultilibSet()
 +            .FilterOut(NonExistent);
 +  } else {
-+    Multilib Ilp32 = makeMultilib("lib32/ilp32").flag("+m32").flag("+mabi=ilp32");
-+    Multilib Ilp32f =
-       makeMultilib("lib32/ilp32f").flag("+m32").flag("+mabi=ilp32f");
--  Multilib Ilp32d =
-+    Multilib Ilp32d =
-       makeMultilib("lib32/ilp32d").flag("+m32").flag("+mabi=ilp32d");
--  Multilib Lp64 = makeMultilib("lib64/lp64").flag("+m64").flag("+mabi=lp64");
--  Multilib Lp64f = makeMultilib("lib64/lp64f").flag("+m64").flag("+mabi=lp64f");
--  Multilib Lp64d = makeMultilib("lib64/lp64d").flag("+m64").flag("+mabi=lp64d");
--  MultilibSet RISCVMultilibs =
--      MultilibSet()
--          .Either({Ilp32, Ilp32f, Ilp32d, Lp64, Lp64f, Lp64d})
--          .FilterOut(NonExistent);
-+    Multilib Lp64 = makeMultilib("lib64/lp64").flag("+m64").flag("+mabi=lp64");
-+    Multilib Lp64f = makeMultilib("lib64/lp64f").flag("+m64").flag("+mabi=lp64f");
-+    Multilib Lp64d = makeMultilib("lib64/lp64d").flag("+m64").flag("+mabi=lp64d");
++    MultilibBuilder Ilp32 =
++        MultilibBuilder("lib32/ilp32").flag("-m32").flag("-mabi=ilp32");
++    MultilibBuilder Ilp32f =
++        MultilibBuilder("lib32/ilp32f").flag("-m32").flag("-mabi=ilp32f");
++    MultilibBuilder Ilp32d =
++        MultilibBuilder("lib32/ilp32d").flag("-m32").flag("-mabi=ilp32d");
++    MultilibBuilder Lp64 =
++        MultilibBuilder("lib64/lp64").flag("-m64").flag("-mabi=lp64");
++    MultilibBuilder Lp64f =
++        MultilibBuilder("lib64/lp64f").flag("-m64").flag("-mabi=lp64f");
++    MultilibBuilder Lp64d =
++        MultilibBuilder("lib64/lp64d").flag("-m64").flag("-mabi=lp64d");
 +    RISCVMultilibs =
-+        MultilibSet()
++        MultilibSetBuilder()
 +            .Either({Ilp32, Ilp32f, Ilp32d, Lp64, Lp64f, Lp64d})
++            .makeMultilibSet()
 +            .FilterOut(NonExistent);
 +  }
  
    Multilib::flags_list Flags;
    bool IsRV64 = TargetTriple.getArch() == llvm::Triple::riscv64;
-@@ -2549,13 +2560,19 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
+@@ -2945,13 +2960,19 @@ void Generic_GCC::GCCInstallationDetector::ScanLibDirForGCCTriple(
            continue; // Saw this path before; no need to look at it again.
        if (CandidateVersion.isOlderThan(4, 1, 1))
          continue;

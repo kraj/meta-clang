@@ -10,7 +10,7 @@ require common-source.inc
 
 inherit cmake cmake-native python3native
 
-PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
+PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
 PACKAGECONFIG:append:armv5 = " no-atomics"
 PACKAGECONFIG:remove:class-native = "compiler-rt"
 PACKAGECONFIG[unwind] = "-DLIBCXXABI_USE_LLVM_UNWINDER=ON -DLIBCXXABI_ENABLE_STATIC_UNWINDER=ON,-DLIBCXXABI_USE_LLVM_UNWINDER=OFF,,"
@@ -50,21 +50,26 @@ LIC_FILES_CHKSUM = "file://libcxx/LICENSE.TXT;md5=55d89dd7eec8d3b4204b680e27da39
 "
 
 OECMAKE_TARGET_COMPILE = "cxxabi cxx"
-OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi ${@bb.utils.contains("RUNTIME", "llvm", "install-unwind", "", d)}"
+OECMAKE_TARGET_INSTALL = "install-cxx install-cxxabi ${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "install-unwind", "", d)}"
 
 OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "\
+                  -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+                  -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
                   -DCMAKE_CROSSCOMPILING=ON \
                   -DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=ON \
                   -DLLVM_ENABLE_RTTI=ON \
                   -DLIBUNWIND_ENABLE_CROSS_UNWINDING=ON \
+                  -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=ON \
                   -DLIBCXXABI_INCLUDE_TESTS=OFF \
                   -DLIBCXXABI_ENABLE_SHARED=ON \
                   -DLIBCXXABI_LIBCXX_INCLUDES=${S}/libcxx/include \
                   -DLIBCXX_CXX_ABI=libcxxabi \
                   -DLIBCXX_CXX_ABI_INCLUDE_PATHS=${S}/libcxxabi/include \
                   -DLIBCXX_CXX_ABI_LIBRARY_PATH=${B}/lib${LLVM_LIBDIR_SUFFIX} \
-                  -DLLVM_ENABLE_PROJECTS='libcxx;libcxxabi;libunwind' \
+                  -S ${S}/runtimes \
+                  -DLLVM_ENABLE_RUNTIMES='libcxx;libcxxabi;libunwind' \
+                  -DLLVM_RUNTIME_TARGETS=${HOST_SYS} \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
                   -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON \
 "
@@ -74,11 +79,10 @@ EXTRA_OECMAKE:append:class-target = " \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
                   -DLLVM_DEFAULT_TARGET_TRIPLE=${HOST_SYS} \
-"
-EXTRA_OECMAKE:append:class-native = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+                  -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
 "
 
-EXTRA_OECMAKE:append:class-nativesdk = " -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT=OFF \
+EXTRA_OECMAKE:append:class-nativesdk = " \
                   -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${AR} \
                   -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${NM} \
                   -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${RANLIB} \
@@ -94,7 +98,7 @@ ALLOW_EMPTY:${PN} = "1"
 PROVIDES:append:runtime-llvm = " libunwind"
 
 do_install:append() {
-    if ${@bb.utils.contains("RUNTIME", "llvm", "true", "false", d)}
+    if ${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "true", "false", d)}
     then
         for f in libunwind.h __libunwind_config.h unwind.h unwind_itanium.h unwind_arm_ehabi.h
         do

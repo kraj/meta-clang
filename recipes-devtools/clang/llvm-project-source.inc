@@ -57,10 +57,10 @@ python add_distro_vendor() {
 
     bb.note("Adding support following TARGET_VENDOR values")
     bb.note(str(vendors_to_add))
-    bb.note("in llvm/lib/Support/Triple.cpp and ${S}/clang/lib/Driver/ToolChains/Gnu.cpp")
+    bb.note("in llvm/lib/TargetParser/Triple.cpp and ${S}/clang/lib/Driver/ToolChains/Gnu.cpp")
     cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_TRIPLES#%s#g' ${S}/clang/lib/Driver/ToolChains/Gnu.cpp" % (triple))
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
-    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_CASES#%s#g' -i ${S}/llvm/lib/Support/Triple.cpp" % (case))
+    cmd = d.expand("sed -i 's#//CLANG_EXTRA_OE_VENDORS_CASES#%s#g' -i ${S}/llvm/lib/TargetParser/Triple.cpp" % (case))
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 
 
@@ -91,6 +91,6 @@ python add_distro_vendor() {
     subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True)
 }
 
+do_patch[vardepsexclude] = "MULTILIBS"
 do_patch[postfuncs] += "add_distro_vendor"
 do_create_spdx[depends] += "${PN}:do_patch"
-

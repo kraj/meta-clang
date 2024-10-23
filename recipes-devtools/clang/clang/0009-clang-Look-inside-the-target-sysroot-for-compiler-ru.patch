@@ -1,4 +1,4 @@
-From da2647d56a98cc708a6b13e3586e7fb364ef77a0 Mon Sep 17 00:00:00 2001
+From fd99d9521a7f9ce8c8de7c05a9636efa5a5c34e2 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 16 Mar 2017 19:06:26 -0700
 Subject: [PATCH] clang: Look inside the target sysroot for compiler runtime
@@ -9,16 +9,17 @@ driver installation where the libraries are not instlled
 
 Specific to cross compiling the way yocto/OE works
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  clang/lib/Driver/ToolChain.cpp | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChain.cpp b/clang/lib/Driver/ToolChain.cpp
-index d657d21bfcdb..e83a556b708c 100644
+index 388030592b48..c59700b4a7ab 100644
 --- a/clang/lib/Driver/ToolChain.cpp
 +++ b/clang/lib/Driver/ToolChain.cpp
-@@ -13,6 +13,7 @@
+@@ -15,6 +15,7 @@
  #include "ToolChains/InterfaceStubs.h"
  #include "clang/Basic/ObjCRuntime.h"
  #include "clang/Basic/Sanitizers.h"
@@ -26,15 +27,15 @@ index d657d21bfcdb..e83a556b708c 100644
  #include "clang/Config/config.h"
  #include "clang/Driver/Action.h"
  #include "clang/Driver/Driver.h"
-@@ -419,7 +420,10 @@ StringRef ToolChain::getOSLibName() const {
+@@ -595,7 +596,10 @@ StringRef ToolChain::getOSLibName() const {
  }
  
  std::string ToolChain::getCompilerRTPath() const {
 -  SmallString<128> Path(getDriver().ResourceDir);
 +  SmallString<128> Path(getDriver().SysRoot);
-+  StringRef ClangLibdirSuffix(CLANG_LIBDIR_SUFFIX);
-+  llvm::sys::path::append(Path, "/usr/", Twine("lib") + ClangLibdirSuffix, "clang",
++  StringRef ClangLibdirBasename(CLANG_INSTALL_LIBDIR_BASENAME);
++  llvm::sys::path::append(Path, "/usr/", ClangLibdirBasename, "clang",
 +                            CLANG_VERSION_STRING);
-   if (Triple.isOSUnknown()) {
-     llvm::sys::path::append(Path, "lib");
-   } else {
+   if (isBareMetal()) {
+     llvm::sys::path::append(Path, "lib", getOSLibName());
+     if (!SelectedMultilibs.empty()) {

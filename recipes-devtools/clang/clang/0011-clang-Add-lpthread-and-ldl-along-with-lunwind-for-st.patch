@@ -1,4 +1,4 @@
-From 718bc533b5d621ee5eb24a87ed882bf82360807c Mon Sep 17 00:00:00 2001
+From bc21d17ff434af5efdb2fac86392862230c6f9e6 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 31 Jul 2019 22:51:39 -0700
 Subject: [PATCH] clang: Add -lpthread and -ldl along with -lunwind for static
@@ -14,21 +14,22 @@ libunwind/src/AddressSpace.hpp:597: undefined reference to `dladdr'
 
 therefore we need to link in libpthread and libdl to fill these symbols
 
+Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  clang/lib/Driver/ToolChains/CommonArgs.cpp | 2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/CommonArgs.cpp b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-index dfcef2304040..dbc91e427dfb 100644
+index 2b916f000336..de823347a527 100644
 --- a/clang/lib/Driver/ToolChains/CommonArgs.cpp
 +++ b/clang/lib/Driver/ToolChains/CommonArgs.cpp
-@@ -1472,6 +1472,8 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
+@@ -2179,6 +2179,8 @@ static void AddUnwindLibrary(const ToolChain &TC, const Driver &D,
          CmdArgs.push_back("-lunwind");
      } else if (LGT == LibGccType::StaticLibGcc) {
        CmdArgs.push_back("-l:libunwind.a");
 +      CmdArgs.push_back("-lpthread");
 +      CmdArgs.push_back("-ldl");
-     } else if (TC.getTriple().isOSCygMing()) {
-       if (LGT == LibGccType::SharedLibGcc)
+     } else if (LGT == LibGccType::SharedLibGcc) {
+       if (TC.getTriple().isOSCygMing())
          CmdArgs.push_back("-l:libunwind.dll.a");

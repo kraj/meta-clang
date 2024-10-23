@@ -1,0 +1,42 @@
+From 34a65a1f0ff8bb2d41f32c229dc6b309a7566ecd Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 1 Mar 2024 16:47:46 -0800
+Subject: [PATCH] compiler-rt: Fix cmake check for _Float16 and __bf16
+
+When using check_c_source_compiles cmake function, main has to be
+provided, otherwise while compile step will be fine but linking step
+will fail as there will be no main function and test will fail and
+disable building HF builtins into compiler-rt
+
+Fixes configure errors like below
+
+aarch64-yoe-linux-ld.lld: error: undefined symbol: main
+ referenced by start.S:81 (../sysdeps/aarch64/start.S:81)
+               /mnt/b/yoe/master/build/tmp/work/cortexa72-cortexa53-crypto-yoe-linux/compiler-rt/18.1.0/recipe-sysroot/usr/lib/Scrt1.o:(_start)
+ referenced by start.S:82 (../sysdeps/aarch64/start.S:82)
+               /mnt/b/yoe/master/build/tmp/work/cortexa72-cortexa53-crypto-yoe-linux/compiler-rt/18.1.0/recipe-sysroot/usr/lib/Scrt1.o:(_start)
+ aarch64-yoe-linux-clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+Upstream-Status: Submitted [https://github.com/kraj/llvm-project/pull/new/kraj/compiler-rt-float16]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ compiler-rt/lib/builtins/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
+index 08495c491f08..bff96ba10bcd 100644
+--- a/compiler-rt/lib/builtins/CMakeLists.txt
++++ b/compiler-rt/lib/builtins/CMakeLists.txt
+@@ -827,10 +827,10 @@ else ()
+           endif()
+         endif()
+       endif()
+-      check_c_source_compiles("_Float16 foo(_Float16 x) { return x; }"
++      check_c_source_compiles("_Float16 foo(_Float16 x) { return x; } int main(void) { return foo(1.0); }"
+                               COMPILER_RT_HAS_${arch}_FLOAT16)
+       append_list_if(COMPILER_RT_HAS_${arch}_FLOAT16 -DCOMPILER_RT_HAS_FLOAT16 BUILTIN_CFLAGS_${arch})
+-      check_c_source_compiles("__bf16 foo(__bf16 x) { return x; }"
++      check_c_source_compiles("__bf16 foo(__bf16 x) { return x; } int main(void) { return foo(1.0); }"
+                               COMPILER_RT_HAS_${arch}_BFLOAT16)
+       # Build BF16 files only when "__bf16" is available.
+       if(COMPILER_RT_HAS_${arch}_BFLOAT16)

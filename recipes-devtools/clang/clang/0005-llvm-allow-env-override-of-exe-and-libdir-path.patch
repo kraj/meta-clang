@@ -1,4 +1,4 @@
-From affcd7f14bca2d9ee95352cd979f66f55901272a Mon Sep 17 00:00:00 2001
+From a160c086ee25bb5db31bc497e910c3615681e948 Mon Sep 17 00:00:00 2001
 From: Martin Kelly <mkelly@xevo.com>
 Date: Fri, 19 May 2017 00:22:57 -0700
 Subject: [PATCH] llvm: allow env override of exe and libdir path
@@ -15,14 +15,14 @@ Upstream-Status: Inappropriate [OE-specific]
 Signed-off-by: Martin Kelly <mkelly@xevo.com>
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- llvm/tools/llvm-config/llvm-config.cpp | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ llvm/tools/llvm-config/llvm-config.cpp | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
 diff --git a/llvm/tools/llvm-config/llvm-config.cpp b/llvm/tools/llvm-config/llvm-config.cpp
-index 8ed88f33ead4..9e26a2b41409 100644
+index d5b76b1bb6c1..a739f0d8dbea 100644
 --- a/llvm/tools/llvm-config/llvm-config.cpp
 +++ b/llvm/tools/llvm-config/llvm-config.cpp
-@@ -247,6 +247,13 @@ Typical components:\n\
+@@ -246,6 +246,13 @@ Typical components:\n\
  
  /// Compute the path to the main executable.
  std::string GetExecutablePath(const char *Argv0) {
@@ -36,7 +36,7 @@ index 8ed88f33ead4..9e26a2b41409 100644
    // This just needs to be some symbol in the binary; C++ doesn't
    // allow taking the address of ::main however.
    void *P = (void *)(intptr_t)GetExecutablePath;
-@@ -326,7 +333,7 @@ int main(int argc, char **argv) {
+@@ -325,7 +332,7 @@ int main(int argc, char **argv) {
    // Compute various directory locations based on the derived location
    // information.
    std::string ActivePrefix, ActiveBinDir, ActiveIncludeDir, ActiveLibDir,
@@ -45,11 +45,15 @@ index 8ed88f33ead4..9e26a2b41409 100644
    std::string ActiveIncludeOption;
    if (IsInDevelopmentTree) {
      ActiveIncludeDir = std::string(LLVM_SRC_ROOT) + "/include";
-@@ -367,7 +374,17 @@ int main(int argc, char **argv) {
+@@ -366,12 +373,18 @@ int main(int argc, char **argv) {
        sys::fs::make_absolute(ActivePrefix, Path);
-       ActiveBinDir = std::string(Path.str());
+       ActiveBinDir = std::string(Path);
      }
 -    ActiveLibDir = ActivePrefix + "/lib" + LLVM_LIBDIR_SUFFIX;
+-    {
+-      SmallString<256> Path(LLVM_INSTALL_PACKAGE_DIR);
+-      sys::fs::make_absolute(ActivePrefix, Path);
+-      ActiveCMakeDir = std::string(Path);
 +    // Hack for Yocto: we need to override the lib path when we are using
 +    // llvm-config from within a target sysroot since LLVM_LIBDIR_SUFFIX
 +    // maybe different for host llvm vs target e.g. ppc64 Libdir=lib64 but
@@ -59,8 +63,9 @@ index 8ed88f33ead4..9e26a2b41409 100644
 +      BaseLibDir = std::string(YoctoLibDir);
 +    } else {
 +      BaseLibDir = std::string("/lib") + LLVM_LIBDIR_SUFFIX;
-+    }
+     }
 +    ActiveLibDir = ActivePrefix + BaseLibDir;
-     ActiveCMakeDir = ActiveLibDir + "/cmake/llvm";
++    ActiveCMakeDir = ActiveLibDir + "/cmake/llvm";
      ActiveIncludeOption = "-I" + ActiveIncludeDir;
    }
+ 

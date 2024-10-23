@@ -1,4 +1,4 @@
-From 5ce5ec34d618d694a862d345c89eaa2d12e2bfc6 Mon Sep 17 00:00:00 2001
+From 5a572d401005fb992b421d65628267e49d70ee74 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 14 Oct 2020 22:19:57 -0700
 Subject: [PATCH] clang: Use python3 in python scripts
@@ -10,76 +10,21 @@ Upstream-Status: Pending
 Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
  .../find-all-symbols/tool/run-find-all-symbols.py               | 2 +-
- clang-tools-extra/clang-tidy/add_new_check.py                   | 2 +-
- clang-tools-extra/clang-tidy/rename_check.py                    | 2 +-
- clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py            | 2 +-
- clang-tools-extra/clang-tidy/tool/run-clang-tidy.py             | 2 +-
- clang/tools/clang-format/git-clang-format                       | 2 +-
  clang/tools/scan-view/bin/scan-view                             | 2 +-
- 7 files changed, 7 insertions(+), 7 deletions(-)
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py b/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
-index 8655af137bb2..e95ba59a421c 100755
+index 471dbf8c110b..f98385dc6651 100755
 --- a/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 +++ b/clang-tools-extra/clang-include-fixer/find-all-symbols/tool/run-find-all-symbols.py
 @@ -1,4 +1,4 @@
 -#!/usr/bin/env python
 +#!/usr/bin/env python3
  #
- #=- run-find-all-symbols.py - Parallel find-all-symbols runner -*- python  -*-=#
- #
-diff --git a/clang-tools-extra/clang-tidy/add_new_check.py b/clang-tools-extra/clang-tidy/add_new_check.py
-index 50a220b3f975..ea40cbc48dd2 100755
---- a/clang-tools-extra/clang-tidy/add_new_check.py
-+++ b/clang-tools-extra/clang-tidy/add_new_check.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- #
- #===- add_new_check.py - clang-tidy check generator ---------*- python -*--===#
- #
-diff --git a/clang-tools-extra/clang-tidy/rename_check.py b/clang-tools-extra/clang-tidy/rename_check.py
-index 9c2021751e0e..4bb9af8cbe0a 100755
---- a/clang-tools-extra/clang-tidy/rename_check.py
-+++ b/clang-tools-extra/clang-tidy/rename_check.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- #
- #===- rename_check.py - clang-tidy check renamer ------------*- python -*--===#
- #
-diff --git a/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py b/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
-index 6bd05531333b..9e134123ef44 100755
---- a/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
-+++ b/clang-tools-extra/clang-tidy/tool/clang-tidy-diff.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- #
- #===- clang-tidy-diff.py - ClangTidy Diff Checker -----------*- python -*--===#
- #
-diff --git a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
-index e6cff6a7414d..582c113fb173 100755
---- a/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
-+++ b/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- #
- #===- run-clang-tidy.py - Parallel clang-tidy runner --------*- python -*--===#
- #
-diff --git a/clang/tools/clang-format/git-clang-format b/clang/tools/clang-format/git-clang-format
-index 7968c4387574..268e4dd14782 100755
---- a/clang/tools/clang-format/git-clang-format
-+++ b/clang/tools/clang-format/git-clang-format
-@@ -1,4 +1,4 @@
--#!/usr/bin/env python
-+#!/usr/bin/env python3
- #
- #===- git-clang-format - ClangFormat Git Integration ---------*- python -*--===#
+ # =- run-find-all-symbols.py - Parallel find-all-symbols runner -*- python  -*-=#
  #
 diff --git a/clang/tools/scan-view/bin/scan-view b/clang/tools/scan-view/bin/scan-view
-index 6165432e7af8..07effbca5969 100755
+index d01aebb4029a..f3375804654d 100755
 --- a/clang/tools/scan-view/bin/scan-view
 +++ b/clang/tools/scan-view/bin/scan-view
 @@ -1,4 +1,4 @@
