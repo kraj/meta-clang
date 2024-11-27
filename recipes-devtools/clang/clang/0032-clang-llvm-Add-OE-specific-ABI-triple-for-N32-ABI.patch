@@ -1,4 +1,4 @@
-From 8ba03ec78308efe868d7c97f6b2c11caf0beb4e2 Mon Sep 17 00:00:00 2001
+From 05d5bc0e32b8275f91421b24fc86494b9e81815d Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 3 Feb 2024 16:47:10 -0800
 Subject: [PATCH] clang/llvm: Add OE specific ABI triple for N32 ABI
@@ -14,7 +14,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  3 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index b3d656d30a78..f94606180099 100644
+index d5cfb99686d1..926455ac6680 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
 @@ -2538,6 +2538,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
@@ -26,7 +26,7 @@ index b3d656d30a78..f94606180099 100644
    static const char *const MIPSN32ELLibDirs[] = {"/lib32"};
    static const char *const MIPSN32ELTriples[] = {
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 3224acee8710..5302e870d30d 100644
+index 33e8ae99ba1d..58badf20d1b3 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -136,7 +136,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,
@@ -48,27 +48,27 @@ index 3224acee8710..5302e870d30d 100644
        return MT;
      if (D.getVFS().exists(concat(SysRoot, "/lib/mips64el-linux-gnu")))
 diff --git a/llvm/lib/TargetParser/Triple.cpp b/llvm/lib/TargetParser/Triple.cpp
-index fb9cbeb30351..4fa949a47791 100644
+index 32adf92c47bf..3411e3c968a2 100644
 --- a/llvm/lib/TargetParser/Triple.cpp
 +++ b/llvm/lib/TargetParser/Triple.cpp
-@@ -318,7 +318,7 @@ StringRef Triple::getEnvironmentTypeName(EnvironmentType Kind) {
-   case EABIHF: return "eabihf";
+@@ -319,7 +319,7 @@ StringRef Triple::getEnvironmentTypeName(EnvironmentType Kind) {
    case GNU: return "gnu";
+   case GNUT64: return "gnut64";
    case GNUABI64: return "gnuabi64";
 -  case GNUABIN32: return "gnuabin32";
 +  case GNUABIN32: return "gnun32";
    case GNUEABI: return "gnueabi";
+   case GNUEABIT64: return "gnueabit64";
    case GNUEABIHF: return "gnueabihf";
-   case GNUF32: return "gnuf32";
-@@ -692,6 +692,7 @@ static Triple::EnvironmentType parseEnvironment(StringRef EnvironmentName) {
+@@ -695,6 +695,7 @@ static Triple::EnvironmentType parseEnvironment(StringRef EnvironmentName) {
        .StartsWith("eabihf", Triple::EABIHF)
        .StartsWith("eabi", Triple::EABI)
        .StartsWith("gnuabin32", Triple::GNUABIN32)
 +      .StartsWith("gnun32", Triple::GNUABIN32)
        .StartsWith("gnuabi64", Triple::GNUABI64)
+       .StartsWith("gnueabihft64", Triple::GNUEABIHFT64)
        .StartsWith("gnueabihf", Triple::GNUEABIHF)
-       .StartsWith("gnueabi", Triple::GNUEABI)
-@@ -996,6 +997,7 @@ Triple::Triple(const Twine &Str)
+@@ -1002,6 +1003,7 @@ Triple::Triple(const Twine &Str)
        Environment =
            StringSwitch<Triple::EnvironmentType>(Components[0])
                .StartsWith("mipsn32", Triple::GNUABIN32)

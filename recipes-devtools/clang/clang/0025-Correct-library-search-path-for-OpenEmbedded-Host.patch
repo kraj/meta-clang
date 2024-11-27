@@ -1,4 +1,4 @@
-From e15c555d55efa0732adf97c3e858441296b4e83c Mon Sep 17 00:00:00 2001
+From 65e12e7671888531d657e0484aa0397e7e98b134 Mon Sep 17 00:00:00 2001
 From: Changqing Li <changqing.li@windriver.com>
 Date: Tue, 7 Dec 2021 04:55:48 +0000
 Subject: [PATCH] Correct library search path for OpenEmbedded Host
@@ -71,7 +71,7 @@ index 6f49e641104c..63b9ff30f0b6 100644
    return Version;
  }
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index cdea589eb226..41818470cf85 100644
+index f39c771798a8..9af52769b09a 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -82,6 +82,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,

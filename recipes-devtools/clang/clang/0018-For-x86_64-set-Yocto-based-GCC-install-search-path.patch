@@ -1,4 +1,4 @@
-From 2f718eb848503fb74e9ef403346d79240300fb43 Mon Sep 17 00:00:00 2001
+From 1acea10c68785c42d625618d5cf120e4f19138f2 Mon Sep 17 00:00:00 2001
 From: Hongxu Jia <hongxu.jia@windriver.com>
 Date: Mon, 25 Jan 2021 16:14:35 +0800
 Subject: [PATCH] For x86_64, set Yocto based GCC install search path
@@ -57,7 +57,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index e6961b023b5a..aa7bf4a2455f 100644
+index 89ffc429d059..e05dd30c3f89 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
 @@ -2498,6 +2498,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(

@@ -1,7 +1,11 @@
 # Copyright (C) 2015 Khem Raj <raj.khem@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-DESCRIPTION = "LLVM based C/C++ compiler Runtime"
+SUMMARY = "LLVM based C/C++ compiler Runtime"
+DESCRIPTIOM = "Simple builtin library that provides an \
+				implementation of the low-level target-specific \
+				hooks required by code generation and other runtime \
+				components"
 HOMEPAGE = "http://compiler-rt.llvm.org/"
 SECTION = "base"
 
@@ -22,28 +26,19 @@ INHIBIT_DEFAULT_DEPS = "1"
 
 DEPENDS += "ninja-native libgcc"
 DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc gcc-runtime"
-DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_ARCH} nativesdk-gcc-runtime"
+DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_SYS} nativesdk-gcc-runtime"
 DEPENDS:append:class-native = " clang-native"
 
 # Trick clang.bbclass into not creating circular dependencies
-UNWINDLIB:class-nativesdk = "--unwindlib=libgcc"
-COMPILER_RT:class-nativesdk:toolchain-clang:runtime-llvm = "-rtlib=libgcc --unwindlib=libgcc"
-LIBCPLUSPLUS:class-nativesdk:toolchain-clang:runtime-llvm = "-stdlib=libstdc++"
-
-CXXFLAGS += "-stdlib=libstdc++"
-LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
-BUILD_CXXFLAGS += "-stdlib=libstdc++"
-BUILD_LDFLAGS += "-unwindlib=libgcc -rtlib=libgcc -stdlib=libstdc++"
-BUILD_CPPFLAGS:remove = "-stdlib=libc++"
-BUILD_LDFLAGS:remove = "-stdlib=libc++ -lc++abi"
-
-BUILD_CC:toolchain-clang  = "${CCACHE}clang"
-BUILD_CXX:toolchain-clang = "${CCACHE}clang++"
-BUILD_CPP:toolchain-clang = "${CCACHE}clang -E"
-BUILD_CCLD:toolchain-clang = "${CCACHE}clang"
-BUILD_RANLIB:toolchain-clang = "llvm-ranlib"
-BUILD_AR:toolchain-clang = "llvm-ar"
-BUILD_NM:toolchain-clang = "llvm-nm"
+UNWINDLIB:class-nativesdk:toolchain-clang = "--unwindlib=libgcc"
+COMPILER_RT:class-nativesdk:toolchain-clang = "-rtlib=libgcc --unwindlib=libgcc"
+LIBCPLUSPLUS:class-nativesdk:toolchain-clang = "-stdlib=libstdc++"
+UNWINDLIB:class-native:toolchain-clang = "--unwindlib=libgcc"
+COMPILER_RT:class-native:toolchain-clang = "-rtlib=libgcc --unwindlib=libgcc"
+LIBCPLUSPLUS:class-native:toolchain-clang = "-stdlib=libstdc++"
+UNWINDLIB:class-target:toolchain-clang = "--unwindlib=libgcc"
+COMPILER_RT:class-target:toolchain-clang = "-rtlib=libgcc --unwindlib=libgcc"
+LIBCPLUSPLUS:class-target:toolchain-clang = "-stdlib=libstdc++"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
@@ -128,5 +123,8 @@ BBCLASSEXTEND = "native nativesdk"
 ALLOW_EMPTY:${PN} = "1"
 ALLOW_EMPTY:${PN}-dev = "1"
 
-TOOLCHAIN:forcevariable = "clang"
+TOOLCHAIN = "clang"
+# Overrides defaults from clang.bbclass
+TOOLCHAIN:class-nativesdk = "clang"
+TOOLCHAIN:class-native = "clang"
 SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
