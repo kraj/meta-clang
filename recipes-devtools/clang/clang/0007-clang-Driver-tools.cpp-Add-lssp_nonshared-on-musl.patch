@@ -1,4 +1,4 @@
-From db1a59d2537f4d843d51e0a628b8d9596fa3e1d1 Mon Sep 17 00:00:00 2001
+From 7875b568926bbec5b7e3312c55991723c917493e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 19 May 2016 21:11:06 -0700
 Subject: [PATCH] clang: Driver/tools.cpp: Add -lssp_nonshared on musl
@@ -14,7 +14,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index 543f3965dfd4..668b56db37c6 100644
+index 5e9a655eaf82..3e301f2e1d95 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
 @@ -632,6 +632,12 @@ void tools::gnutools::Linker::ConstructJob(Compilation &C, const JobAction &JA,

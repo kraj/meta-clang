@@ -5,7 +5,7 @@ LLVM_HTTP ?= "https://github.com/llvm"
 
 MAJOR_VER = "19"
 MINOR_VER = "1"
-PATCH_VER = "2"
+PATCH_VER = "4"
 # could be 'rcX' or 'git' or empty ( for release )
 VER_SUFFIX = ""
 

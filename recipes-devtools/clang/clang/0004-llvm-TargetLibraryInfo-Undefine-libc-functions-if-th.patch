@@ -1,4 +1,4 @@
-From 7791c1c014b5d2f86142a87a0ede3ad1dc9aea46 Mon Sep 17 00:00:00 2001
+From 0d94f6e299bfa76da9be6451d9e759bc3f6d08a7 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 21 May 2016 00:33:20 +0000
 Subject: [PATCH] llvm: TargetLibraryInfo: Undefine libc functions if they are

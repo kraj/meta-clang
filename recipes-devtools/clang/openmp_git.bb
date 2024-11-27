@@ -1,7 +1,7 @@
 # Copyright (C) 2017 Khem Raj <raj.khem@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-DESCRIPTION = "LLVM based C/C++ compiler Runtime"
+SUMMARY = "LLVM OpenMP compiler Runtime"
 HOMEPAGE = "https://openmp.llvm.org/"
 SECTION = "libs"
 

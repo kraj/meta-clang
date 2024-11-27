@@ -1,4 +1,4 @@
-DESCRIPTION = "LLVM based OpenCL runtime support library"
+SUMMARY = "Implementation of the library requirements of the OpenCL 1.1+ C programming language"
 HOMEPAGE = "http://libclc.llvm.org/"
 SECTION = "libs"
 
