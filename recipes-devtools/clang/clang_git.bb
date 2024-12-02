@@ -303,9 +303,6 @@ do_install:append:class-nativesdk () {
     sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
 }
 
-PROVIDES:append:class-native = " llvm-native"
-PROVIDES:append:class-target = " llvm"
-
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python ${PN}-libclang-cpp ${PN}-tidy ${PN}-format ${PN}-tools \
              libclang lldb lldb-server liblldb llvm-linker-tools"
 
