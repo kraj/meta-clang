@@ -1,0 +1,48 @@
+From d3fbf09787b9dd8a061b541cd931ffbf63e4d610 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Wed, 12 Jan 2022 10:48:36 -0800
+Subject: [PATCH] apply const trick to ptr_to_globals
+
+This was missing in the previous attempt to fix it via [1]
+
+This helps fix segfaults when compiling with clang ( seen on riscv64 )
+
+[  452.428349] less[270]: unhandled signal 11 code 0x1 at 0x000000000000000c in busybox.nosuid[2ab7491000+ba000]
+[  452.430246] CPU: 3 PID: 270 Comm: less Not tainted 5.15.13-yocto-standard #1
+[  452.431323] Hardware name: riscv-virtio,qemu (DT)
+[  452.431925] epc : 0000002ab74a19ee ra : 0000002ab74a19dc sp : 0000003fec6ec980
+[  452.432725]  gp : 0000002ab754dcb0 tp : 0000003f88783800 t0 : 0000003f8878d4a0
+[  452.433744]  t1 : 0000002ab749b00c t2 : 0000000000000000 s0 : 0000003fec6ecc38
+[  452.434732]  s1 : 000000000000004c a0 : 00000000ffffffff a1 : 0000002ab754dde0
+[  452.435861]  a2 : 0000000000000000 a3 : 0000000000000100 a4 : 0000002ab754f3a0
+[  452.436787]  a5 : 0000002ab754f3a0 a6 : 0000000000000000 a7 : 0000002ab754f2a0
+[  452.437974]  s2 : 0000000000000002 s3 : 0000002ab754b6c8 s4 : 0000002ab749b60e
+[  452.438781]  s5 : 0000000000000000 s6 : 0000002ab754b6c8 s7 : 0000003f88943060
+[  452.439723]  s8 : 0000003f88944050 s9 : 0000002ad8502e88 s10: 0000002ad8502de8
+[  452.440538]  s11: 0000000000000014 t3 : 0000003f887fceb6 t4 : 0000003f8893af0c
+[  452.441438]  t5 : 0000000000000000 t6 : 0000003f88923000
+
+[1] https://git.busybox.net/busybox/commit/?id=1f925038a
+
+Upstream-Status: Submitted [http://lists.busybox.net/pipermail/busybox/2022-January/089413.html]
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ include/libbb.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/libbb.h b/include/libbb.h
+index a487828..7b76335 100644
+--- a/include/libbb.h
++++ b/include/libbb.h
+@@ -2281,7 +2281,7 @@ struct globals;
+ /* '*const' ptr makes gcc optimize code much better.
+  * Magic prevents ptr_to_globals from going into rodata.
+  * If you want to assign a value, use SET_PTR_TO_GLOBALS(x) */
+-extern struct globals *const ptr_to_globals;
++extern struct globals *BB_GLOBAL_CONST ptr_to_globals;
+ 
+ #define barrier() asm volatile ("":::"memory")
+ 
+-- 
+2.34.1
+
