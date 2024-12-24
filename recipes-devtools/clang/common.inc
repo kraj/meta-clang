@@ -15,7 +15,7 @@ LICENSE = "Apache-2.0-with-LLVM-exception"
 RELEASE ?= "${PV}"
 BASEURI ?= "${LLVM_HTTP}/llvm-project/releases/download/llvmorg-${PV}/llvm-project-${PV}.src.tar.xz"
 SOURCEDIR ?= "llvm-project-${PV}.src"
-SRC_URI[sha256sum] = "bd8445f554aae33d50d3212a15e993a667c0ad1b694ac1977f3463db3338e542"
+SRC_URI[sha256sum] = "e3f79317adaa9196d2cfffe1c869d7c100b7540832bc44fe0d3f44a12861fa34"
 
 SRC_URI = "\
     ${BASEURI} \
