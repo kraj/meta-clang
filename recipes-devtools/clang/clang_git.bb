@@ -360,3 +360,5 @@ clang_sysroot_preprocess() {
 		install -m 755 ${D}${bindir}/$f ${SYSROOT_DESTDIR}${bindir}/
 	done
 }
+
+CCACHE_DISABLE = "1"
