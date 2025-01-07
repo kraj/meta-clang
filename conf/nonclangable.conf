@@ -433,6 +433,9 @@ LIBCPLUSPLUS:pn-cpprest:toolchain-clang = "-stdlib=libstdc++"
 # See https://lists.openembedded.org/g/openembedded-devel/topic/meta_oe_patch_2_3/108964413
 LIBCPLUSPLUS:pn-tomlplusplus:toolchain-clang = "-stdlib=libstdc++"
 LIBCPLUSPLUS:pn-doxygen:toolchain-clang = "-stdlib=libstdc++"
+# https://www.mail-archive.com/freebsd-pkg-fallout@freebsd.org/msg2394451.html
+LIBCPLUSPLUS:pn-snort3:toolchain-clang = "-stdlib=libstdc++"
+LIBCPLUSPLUS:pn-libdaq:toolchain-clang = "-stdlib=libstdc++"
 
 # Uses gcc for native tools, e.g. nsinstall and passes clang options which fails so
 # let same compiler ( gcc or clang) be native/cross compiler
