@@ -23,12 +23,12 @@ OECMAKE_FIND_ROOT_PATH_MODE_PROGRAM = "BOTH"
 
 def get_clang_experimental_arch(bb, d, arch_var):
     import re
-    a = d.getVar(arch_var, True)
+    a = d.getVar(arch_var)
     return ""
 
 def get_clang_arch(bb, d, arch_var):
     import re
-    a = d.getVar(arch_var, True)
+    a = d.getVar(arch_var)
     if   re.match('(i.86|athlon|x86.64)$', a):         return 'X86'
     elif re.match('arm$', a):                          return 'ARM'
     elif re.match('armeb$', a):                        return 'ARM'
