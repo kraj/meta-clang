@@ -1,5 +1,5 @@
 DEPENDS:append:toolchain-clang = " clang-cross-${TARGET_ARCH}"
-DEPENDS:remove:toolchain-clang = "virtual/${TARGET_PREFIX}gcc"
+DEPENDS:remove:toolchain-clang = "virtual/cross-cc"
 TOOLCHAIN:x86-x32 = "gcc"
 
 # crashes seen in malloc@plt
