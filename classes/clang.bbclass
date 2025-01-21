@@ -132,7 +132,7 @@ def clang_base_deps(d):
             elif (d.getVar('LIBCPLUSPLUS').find('-stdlib=libc++') != -1):
                 ret += " libcxx "
             else:
-                ret += " virtual/${TARGET_PREFIX}compilerlibs "
+                ret += " virtual/${MLPREFIX}compilerlibs "
             return ret
     return ""
 
