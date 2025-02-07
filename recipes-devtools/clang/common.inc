@@ -49,6 +49,7 @@ SRC_URI = "\
     file://0037-sanitizer-Remove-include-linux-fs.h-to-resolve-fscon.patch \
     file://0038-lldb-Get-rid-of-__STDC_LIMIT_MACROS-and-__STDC_CONST.patch \
     file://0039-lldb-Fix-error-non-const-lvalue.-caused-by-SWIG-4.1..patch \
+    file://0040-Install-arm_neon_sve_bridge.h.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
