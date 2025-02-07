@@ -1,0 +1,44 @@
+From c65c188643e963a857ca0d58a4b53529f8e98651 Mon Sep 17 00:00:00 2001
+From: Gyorgy Sarvari <skandigraun@gmail.com>
+Date: Fri, 7 Feb 2025 20:48:54 +0100
+Subject: [PATCH] [AArch64] Install arm_neon_sve_bridge.h
+
+arm_neon_sve_bridge.h is not generated, so the rules which ensure the
+generated files get copied into the installation prefix don't apply to
+this one.
+
+Add it to the base file set instead, which ensures it ends up
+both in the build directory and the installation directory.
+
+The original upstream patch needed to be adapted to version 14.0.6.
+
+Signed-off-by: Gyorgy Sarvari <skandigraun@gmail.com>
+
+Upstream-Status: Backport [https://github.com/llvm/llvm-project/commit/8cb9e3c3ce1e7e1658921f90420b68ca16bb98fc]
+---
+ clang/lib/Headers/CMakeLists.txt | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/clang/lib/Headers/CMakeLists.txt b/clang/lib/Headers/CMakeLists.txt
+index 078988980c52..5fa7310427c6 100644
+--- a/clang/lib/Headers/CMakeLists.txt
++++ b/clang/lib/Headers/CMakeLists.txt
+@@ -7,6 +7,7 @@ set(files
+   arm_cmse.h
+   armintr.h
+   arm64intr.h
++  arm_neon_sve_bridge.h
+   avx2intrin.h
+   avx512bf16intrin.h
+   avx512bwintrin.h
+@@ -219,10 +220,6 @@ if(ARM IN_LIST LLVM_TARGETS_TO_BUILD OR AArch64 IN_LIST LLVM_TARGETS_TO_BUILD)
+   clang_generate_header(-gen-arm-mve-header arm_mve.td arm_mve.h)
+   # Generate arm_cde.h
+   clang_generate_header(-gen-arm-cde-header arm_cde.td arm_cde.h)
+-  # Copy arm_neon_sve_bridge.h
+-  copy_header_to_output_dir(${CMAKE_CURRENT_SOURCE_DIR}
+-    arm_neon_sve_bridge.h
+-  )
+ endif()
+ if(RISCV IN_LIST LLVM_TARGETS_TO_BUILD)
+   # Generate riscv_vector.h
