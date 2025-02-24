@@ -12,6 +12,8 @@ SECTION = "base"
 require clang.inc
 require common-source.inc
 
+BPN = "compiler-rt"
+
 inherit cmake cmake-native pkgconfig python3native
 
 
