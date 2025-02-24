@@ -10,6 +10,8 @@ require common-source.inc
 
 inherit cmake cmake-native python3native
 
+BPN = "libcxx"
+
 PACKAGECONFIG ??= "compiler-rt exceptions ${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "unwind unwind-shared", "", d)}"
 PACKAGECONFIG:append:armv5 = " no-atomics"
 PACKAGECONFIG:remove:class-native = "compiler-rt"

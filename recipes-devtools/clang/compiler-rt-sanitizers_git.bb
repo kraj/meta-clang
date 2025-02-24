@@ -10,6 +10,8 @@ SECTION = "base"
 require clang.inc
 require common-source.inc
 
+BPN = "compiler-rt-sanitizers"
+
 inherit cmake pkgconfig python3native
 
 

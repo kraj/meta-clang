@@ -5,6 +5,8 @@ SECTION = "libs"
 require clang.inc
 require common-source.inc
 
+BPN = "libclc"
+
 TOOLCHAIN = "clang"
 
 LIC_FILES_CHKSUM = "file://libclc/LICENSE.TXT;md5=7cc795f6cbb2d801d84336b83c8017db"
