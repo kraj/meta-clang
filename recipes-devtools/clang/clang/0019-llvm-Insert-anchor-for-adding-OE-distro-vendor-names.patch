@@ -1,4 +1,4 @@
-From a1ae883e90cb9554e10d24277a955fb0660e85a1 Mon Sep 17 00:00:00 2001
+From a4723752be1e9398d5697741ca0be721d90f814e Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 11 Feb 2021 16:42:49 -0800
 Subject: [PATCH] llvm: Insert anchor for adding OE distro vendor names
@@ -18,15 +18,15 @@ Signed-off-by: Martin Jansa <martin.jansa@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/llvm/lib/TargetParser/Triple.cpp b/llvm/lib/TargetParser/Triple.cpp
-index 21d6c74b5956..32adf92c47bf 100644
+index e9e6f130f757..97f426dd863b 100644
 --- a/llvm/lib/TargetParser/Triple.cpp
 +++ b/llvm/lib/TargetParser/Triple.cpp
-@@ -639,7 +639,7 @@ static Triple::VendorType parseVendor(StringRef VendorName) {
-     .Case("amd", Triple::AMD)
-     .Case("mesa", Triple::Mesa)
-     .Case("suse", Triple::SUSE)
--    .Case("oe", Triple::OpenEmbedded)
-+    .Case("oe", Triple::OpenEmbedded)//CLANG_EXTRA_OE_VENDORS_CASES
-     .Default(Triple::UnknownVendor);
+@@ -663,7 +663,7 @@ static Triple::VendorType parseVendor(StringRef VendorName) {
+       .Case("mesa", Triple::Mesa)
+       .Case("suse", Triple::SUSE)
+       .Case("oe", Triple::OpenEmbedded)
+-      .Case("intel", Triple::Intel)
++      .Case("intel", Triple::Intel) //CLANG_EXTRA_OE_VENDORS_CASES
+       .Default(Triple::UnknownVendor);
  }
  

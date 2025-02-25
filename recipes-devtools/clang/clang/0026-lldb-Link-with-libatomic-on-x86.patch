@@ -1,4 +1,4 @@
-From d395cc2696d62d7d3448bc9a90f7697cf60e6273 Mon Sep 17 00:00:00 2001
+From 8b73ff82e4eec89090bd34d3fb0732321b418dcc Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 8 Feb 2022 01:31:26 -0800
 Subject: [PATCH] lldb: Link with libatomic on x86
@@ -17,7 +17,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+)
 
 diff --git a/lldb/source/Utility/CMakeLists.txt b/lldb/source/Utility/CMakeLists.txt
-index e9954d66cd1a..f36f1c9e9d28 100644
+index 6954a2508ffe..b8bf8c07fefb 100644
 --- a/lldb/source/Utility/CMakeLists.txt
 +++ b/lldb/source/Utility/CMakeLists.txt
 @@ -19,6 +19,10 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")

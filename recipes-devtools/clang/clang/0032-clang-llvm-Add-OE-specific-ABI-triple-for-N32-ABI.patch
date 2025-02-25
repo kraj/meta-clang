@@ -1,4 +1,4 @@
-From 05d5bc0e32b8275f91421b24fc86494b9e81815d Mon Sep 17 00:00:00 2001
+From 28f2573afd688996d73476e50f61dda416236bda Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Sat, 3 Feb 2024 16:47:10 -0800
 Subject: [PATCH] clang/llvm: Add OE specific ABI triple for N32 ABI
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  3 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index d5cfb99686d1..926455ac6680 100644
+index beed8d34a127..c47b93a4e142 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -2538,6 +2538,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
+@@ -2491,6 +2491,7 @@ void Generic_GCC::GCCInstallationDetector::AddDefaultGCCPrefixes(
  
    static const char *const MIPSN32LibDirs[] = {"/lib32"};
    static const char *const MIPSN32Triples[] = {"mips64-linux-gnuabin32",
@@ -26,10 +26,10 @@ index d5cfb99686d1..926455ac6680 100644
    static const char *const MIPSN32ELLibDirs[] = {"/lib32"};
    static const char *const MIPSN32ELTriples[] = {
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 33e8ae99ba1d..58badf20d1b3 100644
+index 75b32624b778..b1d9c171df81 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -136,7 +136,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,
+@@ -139,7 +139,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,
      return IsMipsR6 ? "mipsisa32r6el-linux-gnu" : "mipsel-linux-gnu";
    case llvm::Triple::mips64: {
      std::string MT = std::string(IsMipsR6 ? "mipsisa64r6" : "mips64") +
@@ -38,7 +38,7 @@ index 33e8ae99ba1d..58badf20d1b3 100644
      if (D.getVFS().exists(concat(SysRoot, "/lib", MT)))
        return MT;
      if (D.getVFS().exists(concat(SysRoot, "/lib/mips64-linux-gnu")))
-@@ -145,7 +145,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,
+@@ -148,7 +148,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,
    }
    case llvm::Triple::mips64el: {
      std::string MT = std::string(IsMipsR6 ? "mipsisa64r6el" : "mips64el") +
@@ -48,10 +48,10 @@ index 33e8ae99ba1d..58badf20d1b3 100644
        return MT;
      if (D.getVFS().exists(concat(SysRoot, "/lib/mips64el-linux-gnu")))
 diff --git a/llvm/lib/TargetParser/Triple.cpp b/llvm/lib/TargetParser/Triple.cpp
-index 32adf92c47bf..3411e3c968a2 100644
+index 97f426dd863b..dc57d5ff2d4a 100644
 --- a/llvm/lib/TargetParser/Triple.cpp
 +++ b/llvm/lib/TargetParser/Triple.cpp
-@@ -319,7 +319,7 @@ StringRef Triple::getEnvironmentTypeName(EnvironmentType Kind) {
+@@ -336,7 +336,7 @@ StringRef Triple::getEnvironmentTypeName(EnvironmentType Kind) {
    case GNU: return "gnu";
    case GNUT64: return "gnut64";
    case GNUABI64: return "gnuabi64";
@@ -60,7 +60,7 @@ index 32adf92c47bf..3411e3c968a2 100644
    case GNUEABI: return "gnueabi";
    case GNUEABIT64: return "gnueabit64";
    case GNUEABIHF: return "gnueabihf";
-@@ -695,6 +695,7 @@ static Triple::EnvironmentType parseEnvironment(StringRef EnvironmentName) {
+@@ -719,6 +719,7 @@ static Triple::EnvironmentType parseEnvironment(StringRef EnvironmentName) {
        .StartsWith("eabihf", Triple::EABIHF)
        .StartsWith("eabi", Triple::EABI)
        .StartsWith("gnuabin32", Triple::GNUABIN32)
@@ -68,7 +68,7 @@ index 32adf92c47bf..3411e3c968a2 100644
        .StartsWith("gnuabi64", Triple::GNUABI64)
        .StartsWith("gnueabihft64", Triple::GNUEABIHFT64)
        .StartsWith("gnueabihf", Triple::GNUEABIHF)
-@@ -1002,6 +1003,7 @@ Triple::Triple(const Twine &Str)
+@@ -1035,6 +1036,7 @@ Triple::Triple(const Twine &Str)
        Environment =
            StringSwitch<Triple::EnvironmentType>(Components[0])
                .StartsWith("mipsn32", Triple::GNUABIN32)

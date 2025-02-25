@@ -1,4 +1,4 @@
-From a1729e842b825919a8efe0389aa2b0f0c16a2924 Mon Sep 17 00:00:00 2001
+From f097441a66563be067016760706e0266494db800 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Tue, 3 Jan 2023 18:44:34 -0800
 Subject: [PATCH] compiler-rt: Fix stat struct's size for O32 ABI
@@ -14,10 +14,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 13 insertions(+)
 
 diff --git a/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h b/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h
-index 34bfef1f7ef4..0ba5451c1ccf 100644
+index 1a7d9e64048e..854a87e17236 100644
 --- a/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h
 +++ b/compiler-rt/lib/sanitizer_common/sanitizer_platform_limits_posix.h
-@@ -98,11 +98,24 @@ const unsigned struct_kernel_stat64_sz = 104;
+@@ -98,6 +98,18 @@ const unsigned struct_kernel_stat64_sz = 104;
  const unsigned struct_kernel_stat_sz = 144;
  const unsigned struct_kernel_stat64_sz = 104;
  #elif defined(__mips__)
@@ -33,10 +33,12 @@ index 34bfef1f7ef4..0ba5451c1ccf 100644
 +const unsigned struct_kernel_stat64_sz = 160;
 +#endif
 +#else // __mips_o32
- const unsigned struct_kernel_stat_sz =
-     SANITIZER_ANDROID
-         ? FIRST_32_SECOND_64(104, 128)
-         : FIRST_32_SECOND_64((_MIPS_SIM == _ABIN32) ? 176 : 160, 216);
+ const unsigned struct_kernel_stat_sz = SANITIZER_ANDROID
+                                            ? FIRST_32_SECOND_64(104, 128)
+ #      if defined(_ABIN32) && _MIPS_SIM == _ABIN32
+@@ -106,6 +118,7 @@ const unsigned struct_kernel_stat_sz = SANITIZER_ANDROID
+                                            : FIRST_32_SECOND_64(160, 216);
+ #      endif
  const unsigned struct_kernel_stat64_sz = 104;
 +#endif
  #elif defined(__s390__) && !defined(__s390x__)
