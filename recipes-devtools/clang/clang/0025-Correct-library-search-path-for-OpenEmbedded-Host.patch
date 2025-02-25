@@ -1,4 +1,4 @@
-From 65e12e7671888531d657e0484aa0397e7e98b134 Mon Sep 17 00:00:00 2001
+From 3bf683abe028c13dfdb4156eefb210741e43986a Mon Sep 17 00:00:00 2001
 From: Changqing Li <changqing.li@windriver.com>
 Date: Tue, 7 Dec 2021 04:55:48 +0000
 Subject: [PATCH] Correct library search path for OpenEmbedded Host
@@ -39,7 +39,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  3 files changed, 4 insertions(+)
 
 diff --git a/clang/include/clang/Driver/Distro.h b/clang/include/clang/Driver/Distro.h
-index 1404e1686848..90940e4a0bac 100644
+index b4d485dac8a2..ac0bf25b7c63 100644
 --- a/clang/include/clang/Driver/Distro.h
 +++ b/clang/include/clang/Driver/Distro.h
 @@ -45,6 +45,7 @@ public:
@@ -50,7 +50,7 @@ index 1404e1686848..90940e4a0bac 100644
      OpenSUSE,
      UbuntuHardy,
      UbuntuIntrepid,
-@@ -138,6 +139,7 @@ public:
+@@ -139,6 +140,7 @@ public:
  
    bool IsGentoo() const { return DistroVal == Gentoo; }
  
@@ -59,10 +59,10 @@ index 1404e1686848..90940e4a0bac 100644
  };
  
 diff --git a/clang/lib/Driver/Distro.cpp b/clang/lib/Driver/Distro.cpp
-index 6f49e641104c..63b9ff30f0b6 100644
+index 3cc79535de8d..595656179bdc 100644
 --- a/clang/lib/Driver/Distro.cpp
 +++ b/clang/lib/Driver/Distro.cpp
-@@ -44,6 +44,7 @@ static Distro::DistroType DetectOsRelease(llvm::vfs::FileSystem &VFS) {
+@@ -43,6 +43,7 @@ static Distro::DistroType DetectOsRelease(llvm::vfs::FileSystem &VFS) {
                      .Case("sles", Distro::OpenSUSE)
                      .Case("opensuse", Distro::OpenSUSE)
                      .Case("exherbo", Distro::Exherbo)
@@ -71,7 +71,7 @@ index 6f49e641104c..63b9ff30f0b6 100644
    return Version;
  }
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index f39c771798a8..9af52769b09a 100644
+index a9ee2b671f2e..ec1705af3cbd 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
 @@ -82,6 +82,7 @@ std::string Linux::getMultiarchTriple(const Driver &D,

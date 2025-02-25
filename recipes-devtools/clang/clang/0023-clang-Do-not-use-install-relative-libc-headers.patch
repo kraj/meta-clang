@@ -1,4 +1,4 @@
-From 081655795d08178e20bcfbaef5dab4a97230f095 Mon Sep 17 00:00:00 2001
+From 89348e6c2cf3f65eb244c5b01145309355573ade Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 11 Aug 2021 18:37:11 -0700
 Subject: [PATCH] clang: Do not use install relative libc++ headers
@@ -16,10 +16,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Gnu.cpp b/clang/lib/Driver/ToolChains/Gnu.cpp
-index e05dd30c3f89..d9efd09d9da6 100644
+index 6873892372ea..b5485970a0c5 100644
 --- a/clang/lib/Driver/ToolChains/Gnu.cpp
 +++ b/clang/lib/Driver/ToolChains/Gnu.cpp
-@@ -3316,8 +3316,11 @@ Generic_GCC::addLibCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
+@@ -3275,8 +3275,11 @@ Generic_GCC::addLibCxxIncludePaths(const llvm::opt::ArgList &DriverArgs,
    // incompatible with the NDK libraries.
    SmallString<128> DriverIncludeDir(getDriver().Dir);
    llvm::sys::path::append(DriverIncludeDir, "..", "include");

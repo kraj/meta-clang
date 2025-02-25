@@ -1,4 +1,4 @@
-From df4c35c458e7f0b752e76500316ce3ab7583dd5b Mon Sep 17 00:00:00 2001
+From 9767cb6318047148affd5217ffaa27519a3cf921 Mon Sep 17 00:00:00 2001
 From: Dan McGregor <dan.mcgregor@usask.ca>
 Date: Wed, 26 Apr 2017 20:29:41 -0600
 Subject: [PATCH] clang: driver: Check sysroot for ldso path
@@ -15,10 +15,10 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 21 insertions(+), 1 deletion(-)
 
 diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
-index 35bf39069605..e4f593e462d6 100644
+index 0767fe6c5879..4d0c7e63c68e 100644
 --- a/clang/lib/Driver/ToolChains/Linux.cpp
 +++ b/clang/lib/Driver/ToolChains/Linux.cpp
-@@ -511,7 +511,11 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -523,7 +523,11 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
          Triple.getEnvironment() == llvm::Triple::GNUEABIHFT64 ||
          tools::arm::getARMFloatABI(*this, Args) == tools::arm::FloatABI::Hard;
  
@@ -31,7 +31,7 @@ index 35bf39069605..e4f593e462d6 100644
      Loader = HF ? "ld-linux-armhf.so.3" : "ld-linux.so.3";
      break;
    }
-@@ -566,11 +570,19 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -578,11 +582,19 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
      LibDir = "lib64";
      Loader =
          (tools::ppc::hasPPCAbiArg(Args, "elfv2")) ? "ld64.so.2" : "ld64.so.1";
@@ -51,7 +51,7 @@ index 35bf39069605..e4f593e462d6 100644
      break;
    case llvm::Triple::riscv32:
    case llvm::Triple::riscv64: {
-@@ -588,6 +600,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -600,6 +612,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
    case llvm::Triple::sparcv9:
      LibDir = "lib64";
      Loader = "ld-linux.so.2";
@@ -62,7 +62,7 @@ index 35bf39069605..e4f593e462d6 100644
      break;
    case llvm::Triple::systemz:
      LibDir = "lib";
-@@ -602,6 +618,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
+@@ -614,6 +630,10 @@ std::string Linux::getDynamicLinker(const ArgList &Args) const {
  
      LibDir = X32 ? "libx32" : "lib64";
      Loader = X32 ? "ld-linux-x32.so.2" : "ld-linux-x86-64.so.2";

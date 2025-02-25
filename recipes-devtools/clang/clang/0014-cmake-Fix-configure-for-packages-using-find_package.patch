@@ -1,4 +1,4 @@
-From 6c4f71af6a8c5c0e9261cd20522ecf8d1cdb9e48 Mon Sep 17 00:00:00 2001
+From 93141cee493022d9f39dbd1f5f0bb0a1110ac829 Mon Sep 17 00:00:00 2001
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 Date: Fri, 31 Jan 2020 10:56:11 +0200
 Subject: [PATCH] cmake: Fix configure for packages using find_package()
@@ -26,15 +26,15 @@ Upstream-Status: Inappropriate [oe-specific]
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 ---
  clang/cmake/modules/AddClang.cmake | 2 --
- llvm/cmake/modules/AddLLVM.cmake   | 7 +------
+ llvm/cmake/modules/AddLLVM.cmake   | 9 ++-------
  llvm/cmake/modules/TableGen.cmake  | 6 ------
- 3 files changed, 1 insertion(+), 14 deletions(-)
+ 3 files changed, 2 insertions(+), 15 deletions(-)
 
 diff --git a/clang/cmake/modules/AddClang.cmake b/clang/cmake/modules/AddClang.cmake
-index 9d09be193684..d6123b834337 100644
+index cdc8bd5cd503..5faa9117a30f 100644
 --- a/clang/cmake/modules/AddClang.cmake
 +++ b/clang/cmake/modules/AddClang.cmake
-@@ -169,7 +169,6 @@ macro(add_clang_tool name)
+@@ -182,7 +182,6 @@ macro(add_clang_tool name)
      if (CLANG_BUILD_TOOLS)
        get_target_export_arg(${name} Clang export_to_clangtargets)
        install(TARGETS ${name}
@@ -42,38 +42,40 @@ index 9d09be193684..d6123b834337 100644
          RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
          COMPONENT ${name})
  
-@@ -178,7 +177,6 @@ macro(add_clang_tool name)
+@@ -191,7 +190,6 @@ macro(add_clang_tool name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
 -      set_property(GLOBAL APPEND PROPERTY CLANG_EXPORTS ${name})
      endif()
    endif()
- endmacro()
+   set_target_properties(${name} PROPERTIES XCODE_GENERATE_SCHEME ON)
 diff --git a/llvm/cmake/modules/AddLLVM.cmake b/llvm/cmake/modules/AddLLVM.cmake
-index 03f4e1f190fd..6335ab262d19 100644
+index d3e9377c8d2f..fe22d6f2b35a 100644
 --- a/llvm/cmake/modules/AddLLVM.cmake
 +++ b/llvm/cmake/modules/AddLLVM.cmake
-@@ -1435,7 +1435,6 @@ macro(llvm_add_tool project name)
+@@ -1492,7 +1492,6 @@ macro(llvm_add_tool project name)
        if( LLVM_BUILD_TOOLS )
-         get_target_export_arg(${name} LLVM export_to_llvmexports)
+         get_target_export_arg(${name} ${project} export_to_llvmexports)
          install(TARGETS ${name}
 -                ${export_to_llvmexports}
                  RUNTIME DESTINATION ${${project}_TOOLS_INSTALL_DIR}
                  COMPONENT ${name})
  
-@@ -1446,9 +1445,7 @@ macro(llvm_add_tool project name)
+@@ -1503,10 +1502,8 @@ macro(llvm_add_tool project name)
          endif()
        endif()
      endif()
 -    if( LLVM_BUILD_TOOLS )
--      set_property(GLOBAL APPEND PROPERTY LLVM_EXPORTS ${name})
+-      string(TOUPPER "${project}" project_upper)
+-      set_property(GLOBAL APPEND PROPERTY ${project_upper}_EXPORTS ${name})
 -    endif()
++    string(TOUPPER "${project}" project_upper)
 +    set_target_properties(${name} PROPERTIES FOLDER "Tools")
    endif()
    get_subproject_title(subproject_title)
    set_target_properties(${name} PROPERTIES FOLDER "${subproject_title}/Tools")
-@@ -1497,7 +1494,6 @@ macro(add_llvm_utility name)
+@@ -1556,7 +1553,6 @@ macro(add_llvm_utility name)
      if (LLVM_INSTALL_UTILS AND LLVM_BUILD_UTILS)
        get_target_export_arg(${name} LLVM export_to_llvmexports)
        install(TARGETS ${name}
@@ -81,7 +83,7 @@ index 03f4e1f190fd..6335ab262d19 100644
                RUNTIME DESTINATION ${LLVM_UTILS_INSTALL_DIR}
                COMPONENT ${name})
  
-@@ -1506,7 +1502,6 @@ macro(add_llvm_utility name)
+@@ -1565,7 +1561,6 @@ macro(add_llvm_utility name)
                                   DEPENDS ${name}
                                   COMPONENT ${name})
        endif()
