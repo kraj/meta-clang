@@ -205,6 +205,17 @@ do_install() {
         install -d ${D}${bindir}
         install -m0755 ${B}/mkbootimg/mkbootimg ${D}${bindir}
     fi
+
+    if echo ${TOOLS_TO_BUILD} | grep -q "img2simg" ; then
+        install -d ${D}${bindir}
+        install -m0755 ${S}/debian/out/usr/bin/img2simg ${D}${bindir}
+    fi
+
+    if echo ${TOOLS_TO_BUILD} | grep -q "simg2img" ; then
+        install -d ${D}${bindir}
+        install -m0755 ${S}/debian/out/usr/bin/simg2img ${D}${bindir}
+    fi
+
 }
 
 PACKAGES += "${PN}-fstools"
