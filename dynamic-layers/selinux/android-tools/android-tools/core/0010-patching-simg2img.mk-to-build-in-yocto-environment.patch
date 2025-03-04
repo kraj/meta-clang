@@ -16,7 +16,12 @@ are searched in the output folder.
 
 Modified the build rule so that it outputs the binary to the OUT_DIR
 
+Update LDFLAGS to use a relative rpath instead of a fixed location
+to ensure libraries are found at runtime relative to binary location.
+Link additional libraries which might help with dependency resolution.
+
 Signed-off-by: Nisha Parrakat <Nisha.Parrakat@kpit.com>
+Signed-off-by: Bhabu Bindu <bindu.bhabu@kpit.com>
 
 Upstream-Status: Pending
 ---
@@ -34,11 +39,10 @@ index 07fb56b4..d319c87e 100644
  SOURCES := $(foreach source, $(SOURCES), libsparse/$(source))
  CPPFLAGS += -Ilibsparse/include -Iinclude -std=gnu++17
 -LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
--           -Wl,-rpath-link=. \
++LDFLAGS += -Wl,-rpath='$$ORIGIN/../lib/android' \
+            -Wl,-rpath-link=. \
 -           -L. -lsparse
-+LDFLAGS += -Wl,-rpath=$(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-+           -Wl,-rpath-link=$(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-+           -L$(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android -lsparse
++           -L$(OUT_DIR)/usr/lib/$(DEB_HOST_MULTIARCH)/android/ -lbase -llog -lpthread -lsparse
  
  build: $(SOURCES)
 -	$(CXX) $^ -o libsparse/$(NAME) $(CPPFLAGS) $(LDFLAGS)
