@@ -5,17 +5,21 @@ DESCRIPTION = "For every symbol (type, function, variable, or macro) that you \
 HOMEPAGE = "https://include-what-you-use.org"
 BUGTRACKER = "https://github.com/include-what-you-use/include-what-you-use/issues"
 LICENSE = "NCSA"
-LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=59d01ad98720f3c50d6a8a0ef3108c88 \
+LIC_FILES_CHKSUM = "file://LICENSE.TXT;md5=3bb66a14534286912cd6f26649b5c60a \
                     file://iwyu-check-license-header.py;md5=7bdb749831163fbe9232b3cb7186116f"
 
 DEPENDS = "clang"
 
 SRC_URI = "git://github.com/include-what-you-use/include-what-you-use.git;protocol=https;branch=master"
-SRCREV = "0ed29a277505735d90f4d8b15e8a90db8d961853"
+SRCREV = "fa1094c0b3848f82244778bc6153cc84f8a890f6"
+
+PV .= "+git"
 
 S = "${WORKDIR}/git"
 
 inherit cmake python3native
+
+EXTRA_OECMAKE = "-DIWYU_RESOURCE_RELATIVE_TO=iwyu"
 
 FILES:${PN} += "${datadir}/${BPN}"
 
