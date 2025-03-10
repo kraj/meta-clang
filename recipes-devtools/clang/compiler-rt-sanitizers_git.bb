@@ -21,7 +21,8 @@ TUNE_CCARGS:remove = "-no-integrated-as"
 
 DEPENDS += "ninja-native virtual/crypt compiler-rt"
 DEPENDS:append:class-native = " clang-native libxcrypt-native"
-DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_SYS} nativesdk-libxcrypt"
+DEPENDS:append:class-nativesdk = " clang-native clang-crosssdk-${SDK_SYS} nativesdk-libxcrypt nativesdk-gcc-runtime"
+DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} virtual/${MLPREFIX}libc gcc-runtime"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[crt] = "-DCOMPILER_RT_BUILD_CRT:BOOL=ON,-DCOMPILER_RT_BUILD_CRT:BOOL=OFF"
@@ -40,10 +41,8 @@ OECMAKE_TARGET_INSTALL = "install-compiler-rt install-compiler-rt-headers"
 OECMAKE_SOURCEPATH = "${S}/llvm"
 EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
                   -DLLVM_ENABLE_PER_TARGET_RUNTIME_DIR=OFF \
-                  -DCOMPILER_RT_STANDALONE_BUILD=OFF \
-                  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+                  -DCOMPILER_RT_STANDALONE_BUILD=ON \
                   -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON \
-                  -DCMAKE_C_COMPILER_TARGET=${HOST_ARCH}${HOST_VENDOR}-${HOST_OS}${HF} \
                   -DCOMPILER_RT_BUILD_BUILTINS=OFF \
                   -DCOMPILER_RT_INCLUDE_TESTS=OFF \
                   -DSANITIZER_CXX_ABI_LIBNAME=${@bb.utils.contains("TC_CXX_RUNTIME", "llvm", "libc++", "libstdc++", d)} \
@@ -52,9 +51,19 @@ EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
                   -DCOMPILER_RT_BUILD_LIBFUZZER=ON \
                   -DCOMPILER_RT_BUILD_PROFILE=ON \
                   -DCOMPILER_RT_BUILD_MEMPROF=ON \
-                  -DLLVM_ENABLE_PROJECTS='compiler-rt' \
+                  -DLLVM_ENABLE_RUNTIMES='compiler-rt' \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
                   -DLLVM_APPEND_VC_REV=OFF \
+                  -S ${S}/runtimes \
+"
+
+EXTRA_OECMAKE:append:class-target = "\
+               -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
+               -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
+               -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
+               -DCMAKE_C_COMPILER_TARGET=${HOST_ARCH}${HOST_VENDOR}-${HOST_OS}${HF} \
+               -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
+               -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
 "
 
 EXTRA_OECMAKE:append:class-nativesdk = "\
@@ -63,13 +72,8 @@ EXTRA_OECMAKE:append:class-nativesdk = "\
                -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
                -DLLVM_TABLEGEN=${STAGING_BINDIR_NATIVE}/llvm-tblgen \
                -DCLANG_TABLEGEN=${STAGING_BINDIR_NATIVE}/clang-tblgen \
-"
-
-EXTRA_OECMAKE:append:class-target = "\
-               -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
-               -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
-               -DCMAKE_NM=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-nm \
-               -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+               -DCMAKE_C_COMPILER_TARGET=${HOST_ARCH}${HOST_VENDOR}-${HOST_OS}${HF} \
+               -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON \
 "
 
 EXTRA_OECMAKE:append:libc-musl = " -DLIBCXX_HAS_MUSL_LIBC=ON "
@@ -77,11 +81,12 @@ EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 
 do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
-        mkdir -p ${D}${nonarch_libdir}/clang
-        mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
-        rmdir --ignore-fail-on-non-empty ${D}${libdir}/clang ${D}${libdir}
+        mkdir -p ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
+        mv ${D}${libdir}/linux ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
+        rmdir --ignore-fail-on-non-empty ${D}${libdir}
     else
-    	mv ${D}${libdir}/clang/${MAJOR_VER} ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}
+        mkdir -p ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
+        mv ${D}${libdir}/linux ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
     fi
     # Already shipped with compile-rt Orc support
     rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/liborc_rt-*.a
@@ -117,7 +122,10 @@ BBCLASSEXTEND = "native nativesdk"
 ALLOW_EMPTY:${PN} = "1"
 ALLOW_EMPTY:${PN}-dev = "1"
 
-TOOLCHAIN:forcevariable = "clang"
+TOOLCHAIN = "clang"
+# Overrides defaults from clang.bbclass
+TOOLCHAIN:class-nativesdk = "clang"
+TOOLCHAIN:class-native = "clang"
 SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
 
 # riscv and x86_64 Sanitizers work on musl too

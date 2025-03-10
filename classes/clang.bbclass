@@ -1,6 +1,7 @@
 # Add the necessary override
 CCACHE_COMPILERCHECK:toolchain-clang ?= "%compiler% -v"
-HOST_CC_ARCH:prepend:toolchain-clang = "-target ${HOST_SYS} "
+HOST_CC_ARCH:prepend:toolchain-clang:class-target = "-target ${HOST_SYS} "
+HOST_CC_ARCH:prepend:toolchain-clang:class-nativesdk = "-target ${HOST_SYS} "
 CC:toolchain-clang  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 CXX:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
 CPP:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
