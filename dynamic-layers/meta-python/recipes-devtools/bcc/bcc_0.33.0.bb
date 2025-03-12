@@ -16,18 +16,17 @@ DEPENDS += "bison-native \
             "
 
 RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
-RDEPENDS:${PN}-ptest = "cmake python3 python3-netaddr python3-pyroute2"
+RDEPENDS:${PN}-ptest = "kernel-devsrc packagegroup-core-buildessential cmake python3 python3-netaddr python3-pyroute2"
 
 SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
            file://0001-Vendor-just-enough-extra-headers-to-allow-libbpf-to-.patch \
-           file://0001-tests-cc-Use-c-14-standard.patch \
            file://0001-CMakeLists.txt-don-t-modify-.gitconfig-on-build-host.patch \
            file://run-ptest \
            file://ptest_wrapper.sh \
            "
 
-SRCREV = "1d8daaa395f066b328a56a36fbd40a0de3a7b3c1"
+SRCREV = "92e32ff8a06616779f3a3191b75da6881d59fd17"
 
 PV .= "+git"
 
@@ -40,6 +39,7 @@ PACKAGECONFIG[manpages] = "-DENABLE_MAN=ON,-DENABLE_MAN=OFF,"
 PACKAGECONFIG[examples] = "-DENABLE_EXAMPLES=ON,-DENABLE_EXAMPLES=OFF,"
 
 EXTRA_OECMAKE = " \
+    -DREVISION='${PV}' \
     -DCMAKE_USE_LIBBPF_PACKAGE=ON \
     -DENABLE_LLVM_SHARED=ON \
     -DENABLE_CLANG_JIT=ON \
