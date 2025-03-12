@@ -26,7 +26,7 @@ SRCREV = "339a2f571505616832379ca216627aceb0e5d0bb"
 
 S = "${WORKDIR}/git"
 
-inherit cmake ptest
+inherit bash-completion cmake ptest
 
 PACKAGECONFIG ?= "${@bb.utils.contains('PTEST_ENABLED', '1', 'tests', '', d)}"
 
