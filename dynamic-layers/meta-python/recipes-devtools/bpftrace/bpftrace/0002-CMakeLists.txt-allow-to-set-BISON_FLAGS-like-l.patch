@@ -10,11 +10,9 @@ Upstream-Status: Pending
  CMakeLists.txt | 10 +++++++---
  1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2b60fa26..89bead59 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -100,16 +100,20 @@ include_directories(SYSTEM ${LIBCEREAL_INCLUDE_DIRS})
+@@ -100,16 +100,20 @@ include_directories(SYSTEM ${LIBCEREAL_I
  
  find_package(BISON REQUIRED)
  find_package(FLEX REQUIRED)
@@ -36,5 +34,5 @@ index 2b60fa26..89bead59 100644
 -flex_target(flex_lexer src/lexer.l ${CMAKE_BINARY_DIR}/lex.yy.cc)
 +flex_target(flex_lexer src/lexer.l ${CMAKE_BINARY_DIR}/lex.yy.cc COMPILE_FLAGS ${FLEX_FLAGS})
  add_flex_bison_dependency(flex_lexer bison_parser)
- add_library(parser ${BISON_bison_parser_OUTPUTS} ${FLEX_flex_lexer_OUTPUTS})
+ add_library(parser STATIC ${BISON_bison_parser_OUTPUTS} ${FLEX_flex_lexer_OUTPUTS})
  target_compile_options(parser PRIVATE "-w")
