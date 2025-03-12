@@ -18,12 +18,11 @@ RDEPENDS:${PN} += "bash python3 xz"
 
 PV .= "+git"
 
-SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
+SRC_URI = "git://github.com/iovisor/bpftrace;branch=release/0.23.x;protocol=https \
            file://run-ptest \
-           file://0001-cmake-Bump-max-LLVM-version-to-19.patch \
            file://0002-CMakeLists.txt-allow-to-set-BISON_FLAGS-like-l.patch \
 "
-SRCREV = "b2e255870ba010d4a7e4852bffcf1c567b016fd0"
+SRCREV = "339a2f571505616832379ca216627aceb0e5d0bb"
 
 S = "${WORKDIR}/git"
 
