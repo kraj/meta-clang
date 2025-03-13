@@ -13,14 +13,18 @@ require common-source.inc
 inherit cross
 DEPENDS += "clang-native virtual/cross-binutils"
 
+#INHIBIT_PACKAGE_STRIP = "1"
+INHIBIT_SYSROOT_STRIP = "1"
 do_install() {
         install -d ${D}${bindir}
-	for tool in clang clang++ clang-tidy lld ld.lld llvm-profdata \
+	for tool in clang-tidy lld ld.lld llvm-profdata \
             llvm-nm llvm-ar llvm-as llvm-ranlib llvm-strip llvm-objcopy llvm-objdump llvm-readelf \
             llvm-addr2line llvm-dwp llvm-size llvm-strings llvm-cov
 	do
 		ln -sf ../$tool ${D}${bindir}/${TARGET_PREFIX}$tool
 	done
+	install -m 0755 ${STAGING_BINDIR_NATIVE}/clang ${D}${bindir}/${TARGET_PREFIX}clang
+	install -m 0755 ${STAGING_BINDIR_NATIVE}/clang ${D}${bindir}/${TARGET_PREFIX}clang++
 }
 SSTATE_SCAN_FILES += "*-clang *-clang++ *-llvm-profdata *-lld *-ld.lld \
                       *-llvm-nm *-llvm-ar *-llvm-as *-llvm-ranlib *-llvm-strip \
