@@ -276,7 +276,9 @@ do_install:append:class-native () {
 }
 
 do_install:append:class-nativesdk () {
-    sed -i -e "s|${B}/./bin/||g" ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
+    if [ -e ${D}${libdir}/cmake/llvm/LLVMConfig.cmake ] ; then
+        sed -i -e "s|${B}/./bin/||g" ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
+    fi
     if ${@bb.utils.contains('PACKAGECONFIG', 'clangd', 'true', 'false', d)}; then
         install -Dm 0755 ${B}${BINPATHPREFIX}/bin/clangd-indexer ${D}${bindir}/clangd-indexer
     fi
@@ -293,7 +295,9 @@ do_install:append:class-nativesdk () {
     rm -rf ${D}${datadir}/llvm
 
     #reproducibility
-    sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
+    if [ -e ${D}${libdir}/cmake/llvm/LLVMConfig.cmake ] ; then
+        sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
+    fi
 }
 
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python ${PN}-libclang-cpp ${PN}-tidy ${PN}-format ${PN}-tools \
