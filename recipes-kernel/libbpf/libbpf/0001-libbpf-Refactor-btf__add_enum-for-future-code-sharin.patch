@@ -1,0 +1,83 @@
+From 25fd7a1cf58f79db2bd84c6a9de9457107f1ed21 Mon Sep 17 00:00:00 2001
+From: Yonghong Song <yhs@fb.com>
+Date: Mon, 6 Jun 2022 23:26:15 -0700
+Subject: [PATCH] libbpf: Refactor btf__add_enum() for future code sharing
+
+Refactor btf__add_enum() function to create a separate
+function btf_add_enum_common() so later the common function
+can be used to add enum64 btf type. There is no functionality
+change for this patch.
+
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20220607062615.3718063-1-yhs@fb.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+Upstream-Status: Backport [https://github.com/libbpf/libbpf/commit/25fd7a1cf58f79db2bd84c6a9de9457107f1ed21]
+
+Signed-off-by: Soumya Sambu <soumya.sambu@windriver.com>
+---
+ src/btf.c | 36 +++++++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 15 deletions(-)
+
+diff --git a/src/btf.c b/src/btf.c
+index 1383e26..5e0bf3c 100644
+--- a/src/btf.c
++++ b/src/btf.c
+@@ -2115,20 +2115,8 @@ int btf__add_field(struct btf *btf, const char *name, int type_id,
+	return 0;
+ }
+
+-/*
+- * Append new BTF_KIND_ENUM type with:
+- *   - *name* - name of the enum, can be NULL or empty for anonymous enums;
+- *   - *byte_sz* - size of the enum, in bytes.
+- *
+- * Enum initially has no enum values in it (and corresponds to enum forward
+- * declaration). Enumerator values can be added by btf__add_enum_value()
+- * immediately after btf__add_enum() succeeds.
+- *
+- * Returns:
+- *   - >0, type ID of newly added BTF type;
+- *   - <0, on error.
+- */
+-int btf__add_enum(struct btf *btf, const char *name, __u32 byte_sz)
++static int btf_add_enum_common(struct btf *btf, const char *name, __u32 byte_sz,
++			       bool is_signed, __u8 kind)
+ {
+	struct btf_type *t;
+	int sz, name_off = 0;
+@@ -2153,12 +2141,30 @@ int btf__add_enum(struct btf *btf, const char *name, __u32 byte_sz)
+
+	/* start out with vlen=0; it will be adjusted when adding enum values */
+	t->name_off = name_off;
+-	t->info = btf_type_info(BTF_KIND_ENUM, 0, 0);
++	t->info = btf_type_info(kind, 0, is_signed);
+	t->size = byte_sz;
+
+	return btf_commit_type(btf, sz);
+ }
+
++/*
++ * Append new BTF_KIND_ENUM type with:
++ *   - *name* - name of the enum, can be NULL or empty for anonymous enums;
++ *   - *byte_sz* - size of the enum, in bytes.
++ *
++ * Enum initially has no enum values in it (and corresponds to enum forward
++ * declaration). Enumerator values can be added by btf__add_enum_value()
++ * immediately after btf__add_enum() succeeds.
++ *
++ * Returns:
++ *   - >0, type ID of newly added BTF type;
++ *   - <0, on error.
++ */
++int btf__add_enum(struct btf *btf, const char *name, __u32 byte_sz)
++{
++	return btf_add_enum_common(btf, name, byte_sz, false, BTF_KIND_ENUM);
++}
++
+ /*
+  * Append new enum value for the current ENUM type with:
+  *   - *name* - name of the enumerator value, can't be NULL or empty;
+--
+2.40.0

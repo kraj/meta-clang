@@ -1,0 +1,91 @@
+From e85e26492d2c10029c6fe66b6d318a05fffe8b10 Mon Sep 17 00:00:00 2001
+From: Jiri Olsa <jolsa@kernel.org>
+Date: Wed, 16 Mar 2022 13:24:09 +0100
+Subject: [PATCH] bpf: Add multi kprobe link
+
+Adding new link type BPF_LINK_TYPE_KPROBE_MULTI that attaches kprobe
+program through fprobe API.
+
+The fprobe API allows to attach probe on multiple functions at once
+very fast, because it works on top of ftrace. On the other hand this
+limits the probe point to the function entry or return.
+
+The kprobe program gets the same pt_regs input ctx as when it's attached
+through the perf API.
+
+Adding new attach type BPF_TRACE_KPROBE_MULTI that allows attachment
+kprobe to multiple function with new link.
+
+User provides array of addresses or symbols with count to attach the
+kprobe program to. The new link_create uapi interface looks like:
+
+  struct {
+          __u32           flags;
+          __u32           cnt;
+          __aligned_u64   syms;
+          __aligned_u64   addrs;
+  } kprobe_multi;
+
+The flags field allows single BPF_TRACE_KPROBE_MULTI bit to create
+return multi kprobe.
+
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20220316122419.933957-4-jolsa@kernel.org
+
+Upstream-Status: Backport [https://github.com/libbpf/libbpf/commit/e85e26492d2c10029c6fe66b6d318a05fffe8b10]
+
+Signed-off-by: Soumya Sambu <soumya.sambu@windriver.com>
+---
+ include/uapi/linux/bpf.h | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index a7f0dde..39a32fc 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -997,6 +997,7 @@ enum bpf_attach_type {
+	BPF_SK_REUSEPORT_SELECT,
+	BPF_SK_REUSEPORT_SELECT_OR_MIGRATE,
+	BPF_PERF_EVENT,
++	BPF_TRACE_KPROBE_MULTI,
+	__MAX_BPF_ATTACH_TYPE
+ };
+
+@@ -1011,6 +1012,7 @@ enum bpf_link_type {
+	BPF_LINK_TYPE_NETNS = 5,
+	BPF_LINK_TYPE_XDP = 6,
+	BPF_LINK_TYPE_PERF_EVENT = 7,
++	BPF_LINK_TYPE_KPROBE_MULTI = 8,
+
+	MAX_BPF_LINK_TYPE,
+ };
+@@ -1118,6 +1120,11 @@ enum bpf_link_type {
+  */
+ #define BPF_F_XDP_HAS_FRAGS	(1U << 5)
+
++/* link_create.kprobe_multi.flags used in LINK_CREATE command for
++ * BPF_TRACE_KPROBE_MULTI attach type to create return probe.
++ */
++#define BPF_F_KPROBE_MULTI_RETURN	(1U << 0)
++
+ /* When BPF ldimm64's insn[0].src_reg != 0 then this can have
+  * the following extensions:
+  *
+@@ -1472,6 +1479,12 @@ union bpf_attr {
+				 */
+				__u64		bpf_cookie;
+			} perf_event;
++			struct {
++				__u32		flags;
++				__u32		cnt;
++				__aligned_u64	syms;
++				__aligned_u64	addrs;
++			} kprobe_multi;
+		};
+	} link_create;
+
+--
+2.40.0

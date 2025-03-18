@@ -1,0 +1,183 @@
+From a945df2439020ca182513b6e2f24175cbf2a2dc4 Mon Sep 17 00:00:00 2001
+From: Yonghong Song <yhs@fb.com>
+Date: Mon, 6 Jun 2022 23:26:36 -0700
+Subject: [PATCH] libbpf: Add enum64 sanitization
+
+When old kernel does not support enum64 but user space btf
+contains non-zero enum kflag or enum64, libbpf needs to
+do proper sanitization so modified btf can be accepted
+by the kernel.
+
+Sanitization for enum kflag can be achieved by clearing
+the kflag bit. For enum64, the type is replaced with an
+union of integer member types and the integer member size
+must be smaller than enum64 size. If such an integer
+type cannot be found, a new type is created and used
+for union members.
+
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20220607062636.3721375-1-yhs@fb.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+Upstream-Status: Backport [https://github.com/libbpf/libbpf/commit/a945df2439020ca182513b6e2f24175cbf2a2dc4]
+
+Signed-off-by: Soumya Sambu <soumya.sambu@windriver.com>
+---
+ src/btf.h             |  3 ++-
+ src/libbpf.c          | 56 +++++++++++++++++++++++++++++++++++++++----
+ src/libbpf_internal.h |  2 ++
+ 3 files changed, 56 insertions(+), 5 deletions(-)
+
+diff --git a/src/btf.h b/src/btf.h
+index 951ac74..bddc4b3 100644
+--- a/src/btf.h
++++ b/src/btf.h
+@@ -393,9 +393,10 @@ btf_dump__dump_type_data(struct btf_dump *d, __u32 id,
+ #ifndef BTF_KIND_FLOAT
+ #define BTF_KIND_FLOAT		16	/* Floating point	*/
+ #endif
+-/* The kernel header switched to enums, so these two were never #defined */
++/* The kernel header switched to enums, so the following were never #defined */
+ #define BTF_KIND_DECL_TAG	17	/* Decl Tag */
+ #define BTF_KIND_TYPE_TAG	18	/* Type Tag */
++#define BTF_KIND_ENUM64		19	/* Enum for up-to 64bit values */
+
+ static inline __u16 btf_kind(const struct btf_type *t)
+ {
+diff --git a/src/libbpf.c b/src/libbpf.c
+index 2262bcd..5321025 100644
+--- a/src/libbpf.c
++++ b/src/libbpf.c
+@@ -2110,6 +2110,7 @@ static const char *__btf_kind_str(__u16 kind)
+	case BTF_KIND_FLOAT: return "float";
+	case BTF_KIND_DECL_TAG: return "decl_tag";
+	case BTF_KIND_TYPE_TAG: return "type_tag";
++	case BTF_KIND_ENUM64: return "enum64";
+	default: return "unknown";
+	}
+ }
+@@ -2634,12 +2635,13 @@ static bool btf_needs_sanitization(struct bpf_object *obj)
+	bool has_func = kernel_supports(obj, FEAT_BTF_FUNC);
+	bool has_decl_tag = kernel_supports(obj, FEAT_BTF_DECL_TAG);
+	bool has_type_tag = kernel_supports(obj, FEAT_BTF_TYPE_TAG);
++	bool has_enum64 = kernel_supports(obj, FEAT_BTF_ENUM64);
+
+	return !has_func || !has_datasec || !has_func_global || !has_float ||
+-	       !has_decl_tag || !has_type_tag;
++	       !has_decl_tag || !has_type_tag || !has_enum64;
+ }
+
+-static void bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *btf)
++static int bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *btf)
+ {
+	bool has_func_global = kernel_supports(obj, FEAT_BTF_GLOBAL_FUNC);
+	bool has_datasec = kernel_supports(obj, FEAT_BTF_DATASEC);
+@@ -2647,6 +2649,8 @@ static void bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *btf)
+	bool has_func = kernel_supports(obj, FEAT_BTF_FUNC);
+	bool has_decl_tag = kernel_supports(obj, FEAT_BTF_DECL_TAG);
+	bool has_type_tag = kernel_supports(obj, FEAT_BTF_TYPE_TAG);
++	bool has_enum64 = kernel_supports(obj, FEAT_BTF_ENUM64);
++	__u32 enum64_placeholder_id = 0;
+	struct btf_type *t;
+	int i, j, vlen;
+
+@@ -2709,8 +2713,32 @@ static void bpf_object__sanitize_btf(struct bpf_object *obj, struct btf *btf)
+			/* replace TYPE_TAG with a CONST */
+			t->name_off = 0;
+			t->info = BTF_INFO_ENC(BTF_KIND_CONST, 0, 0);
+-		}
++		} else if (!has_enum64 && btf_is_enum(t)) {
++			/* clear the kflag */
++			t->info = btf_type_info(btf_kind(t), btf_vlen(t), false);
++		} else if (!has_enum64 && btf_is_enum64(t)) {
++			/* replace ENUM64 with a union */
++			struct btf_member *m;
++
++			if (enum64_placeholder_id == 0) {
++				enum64_placeholder_id = btf__add_int(btf, "enum64_placeholder", 1, 0);
++				if (enum64_placeholder_id < 0)
++					return enum64_placeholder_id;
++
++				t = (struct btf_type *)btf__type_by_id(btf, i);
++			}
++
++			m = btf_members(t);
++			vlen = btf_vlen(t);
++			t->info = BTF_INFO_ENC(BTF_KIND_UNION, 0, vlen);
++			for (j = 0; j < vlen; j++, m++) {
++				m->type = enum64_placeholder_id;
++				m->offset = 0;
++			}
++                }
+	}
++
++	return 0;
+ }
+
+ static bool libbpf_needs_btf(const struct bpf_object *obj)
+@@ -3008,7 +3036,9 @@ static int bpf_object__sanitize_and_load_btf(struct bpf_object *obj)
+
+		/* enforce 8-byte pointers for BPF-targeted BTFs */
+		btf__set_pointer_size(obj->btf, 8);
+-		bpf_object__sanitize_btf(obj, kern_btf);
++		err = bpf_object__sanitize_btf(obj, kern_btf);
++		if (err)
++			return err;
+	}
+
+	if (obj->gen_loader) {
+@@ -3515,6 +3545,10 @@ static enum kcfg_type find_kcfg_type(const struct btf *btf, int id,
+		if (strcmp(name, "libbpf_tristate"))
+			return KCFG_UNKNOWN;
+		return KCFG_TRISTATE;
++	case BTF_KIND_ENUM64:
++		if (strcmp(name, "libbpf_tristate"))
++			return KCFG_UNKNOWN;
++		return KCFG_TRISTATE;
+	case BTF_KIND_ARRAY:
+		if (btf_array(t)->nelems == 0)
+			return KCFG_UNKNOWN;
+@@ -4662,6 +4696,17 @@ static int probe_perf_link(void)
+	return link_fd < 0 && err == -EBADF;
+ }
+
++static int probe_kern_btf_enum64(void)
++{
++	static const char strs[] = "\0enum64";
++	__u32 types[] = {
++		BTF_TYPE_ENC(1, BTF_INFO_ENC(BTF_KIND_ENUM64, 0, 0), 8),
++	};
++
++	return probe_fd(libbpf__load_raw_btf((char *)types, sizeof(types),
++					     strs, sizeof(strs)));
++}
++
+ enum kern_feature_result {
+	FEAT_UNKNOWN = 0,
+	FEAT_SUPPORTED = 1,
+@@ -4724,6 +4769,9 @@ static struct kern_feature_desc {
+	[FEAT_MEMCG_ACCOUNT] = {
+		"memcg-based memory accounting", probe_memcg_account,
+	},
++	[FEAT_BTF_ENUM64] = {
++		"BTF_KIND_ENUM64 support", probe_kern_btf_enum64,
++	},
+ };
+
+ bool kernel_supports(const struct bpf_object *obj, enum kern_feature_id feat_id)
+diff --git a/src/libbpf_internal.h b/src/libbpf_internal.h
+index bc86b82..2b72531 100644
+--- a/src/libbpf_internal.h
++++ b/src/libbpf_internal.h
+@@ -329,6 +329,8 @@ enum kern_feature_id {
+	FEAT_BTF_TYPE_TAG,
+	/* memcg-based accounting for BPF maps and progs */
+	FEAT_MEMCG_ACCOUNT,
++	/* BTF_KIND_ENUM64 support and BTF_KIND_ENUM kflag support */
++	FEAT_BTF_ENUM64,
+	__FEAT_CNT,
+ };
+
+--
+2.40.0

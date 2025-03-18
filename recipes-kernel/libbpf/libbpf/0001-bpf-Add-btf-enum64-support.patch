@@ -1,0 +1,113 @@
+From 9a976c6b98de8da85341b341adb9be5b9850ad10 Mon Sep 17 00:00:00 2001
+From: Yonghong Song <yhs@fb.com>
+Date: Mon, 6 Jun 2022 23:26:00 -0700
+Subject: [PATCH] bpf: Add btf enum64 support
+
+Currently, BTF only supports upto 32bit enum value with BTF_KIND_ENUM.
+But in kernel, some enum indeed has 64bit values, e.g.,
+in uapi bpf.h, we have
+  enum {
+        BPF_F_INDEX_MASK                = 0xffffffffULL,
+        BPF_F_CURRENT_CPU               = BPF_F_INDEX_MASK,
+        BPF_F_CTXLEN_MASK               = (0xfffffULL << 32),
+  };
+In this case, BTF_KIND_ENUM will encode the value of BPF_F_CTXLEN_MASK
+as 0, which certainly is incorrect.
+
+This patch added a new btf kind, BTF_KIND_ENUM64, which permits
+64bit value to cover the above use case. The BTF_KIND_ENUM64 has
+the following three fields followed by the common type:
+  struct bpf_enum64 {
+    __u32 nume_off;
+    __u32 val_lo32;
+    __u32 val_hi32;
+  };
+Currently, btf type section has an alignment of 4 as all element types
+are u32. Representing the value with __u64 will introduce a pad
+for bpf_enum64 and may also introduce misalignment for the 64bit value.
+Hence, two members of val_hi32 and val_lo32 are chosen to avoid these issues.
+
+The kflag is also introduced for BTF_KIND_ENUM and BTF_KIND_ENUM64
+to indicate whether the value is signed or unsigned. The kflag intends
+to provide consistent output of BTF C fortmat with the original
+source code. For example, the original BTF_KIND_ENUM bit value is 0xffffffff.
+The format C has two choices, printing out 0xffffffff or -1 and current libbpf
+prints out as unsigned value. But if the signedness is preserved in btf,
+the value can be printed the same as the original source code.
+The kflag value 0 means unsigned values, which is consistent to the default
+by libbpf and should also cover most cases as well.
+
+The new BTF_KIND_ENUM64 is intended to support the enum value represented as
+64bit value. But it can represent all BTF_KIND_ENUM values as well.
+The compiler ([1]) and pahole will generate BTF_KIND_ENUM64 only if the value has
+to be represented with 64 bits.
+
+In addition, a static inline function btf_kind_core_compat() is introduced which
+will be used later when libbpf relo_core.c changed. Here the kernel shares the
+same relo_core.c with libbpf.
+
+  [1] https://reviews.llvm.org/D124641
+
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20220607062600.3716578-1-yhs@fb.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+Upstream-Status: Backport [https://github.com/libbpf/libbpf/commit/9a976c6b98de8da85341b341adb9be5b9850ad10]
+
+Signed-off-by: Soumya Sambu <soumya.sambu@windriver.com>
+---
+ include/uapi/linux/btf.h | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/include/uapi/linux/btf.h b/include/uapi/linux/btf.h
+index b0d8fea..9932126 100644
+--- a/include/uapi/linux/btf.h
++++ b/include/uapi/linux/btf.h
+@@ -36,10 +36,10 @@ struct btf_type {
+	 * bits 24-27: kind (e.g. int, ptr, array...etc)
+	 * bits 28-30: unused
+	 * bit     31: kind_flag, currently used by
+-	 *             struct, union and fwd
++	 *             struct, union, enum, fwd and enum64
+	 */
+	__u32 info;
+-	/* "size" is used by INT, ENUM, STRUCT, UNION and DATASEC.
++	/* "size" is used by INT, ENUM, STRUCT, UNION, DATASEC and ENUM64.
+	 * "size" tells the size of the type it is describing.
+	 *
+	 * "type" is used by PTR, TYPEDEF, VOLATILE, CONST, RESTRICT,
+@@ -63,7 +63,7 @@ enum {
+	BTF_KIND_ARRAY		= 3,	/* Array	*/
+	BTF_KIND_STRUCT		= 4,	/* Struct	*/
+	BTF_KIND_UNION		= 5,	/* Union	*/
+-	BTF_KIND_ENUM		= 6,	/* Enumeration	*/
++	BTF_KIND_ENUM		= 6,	/* Enumeration up to 32-bit values */
+	BTF_KIND_FWD		= 7,	/* Forward	*/
+	BTF_KIND_TYPEDEF	= 8,	/* Typedef	*/
+	BTF_KIND_VOLATILE	= 9,	/* Volatile	*/
+@@ -76,6 +76,7 @@ enum {
+	BTF_KIND_FLOAT		= 16,	/* Floating point	*/
+	BTF_KIND_DECL_TAG	= 17,	/* Decl Tag */
+	BTF_KIND_TYPE_TAG	= 18,	/* Type Tag */
++	BTF_KIND_ENUM64		= 19,	/* Enumeration up to 64-bit values */
+
+	NR_BTF_KINDS,
+	BTF_KIND_MAX		= NR_BTF_KINDS - 1,
+@@ -186,4 +187,14 @@ struct btf_decl_tag {
+        __s32   component_idx;
+ };
+
++/* BTF_KIND_ENUM64 is followed by multiple "struct btf_enum64".
++ * The exact number of btf_enum64 is stored in the vlen (of the
++ * info in "struct btf_type").
++ */
++struct btf_enum64 {
++	__u32	name_off;
++	__u32	val_lo32;
++	__u32	val_hi32;
++};
++
+ #endif /* _UAPI__LINUX_BTF_H__ */
+--
+2.40.0
