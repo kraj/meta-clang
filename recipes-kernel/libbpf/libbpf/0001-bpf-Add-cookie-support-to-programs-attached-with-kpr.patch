@@ -1,0 +1,44 @@
+From 50ae8c25d225c79f711e2484ccd15d9a4c228470 Mon Sep 17 00:00:00 2001
+From: Jiri Olsa <jolsa@kernel.org>
+Date: Wed, 16 Mar 2022 13:24:12 +0100
+Subject: [PATCH] bpf: Add cookie support to programs attached with kprobe
+ multi link
+
+Adding support to call bpf_get_attach_cookie helper from
+kprobe programs attached with kprobe multi link.
+
+The cookie is provided by array of u64 values, where each
+value is paired with provided function address or symbol
+with the same array index.
+
+When cookie array is provided it's sorted together with
+addresses (check bpf_kprobe_multi_cookie_swap). This way
+we can find cookie based on the address in
+bpf_get_attach_cookie helper.
+
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/bpf/20220316122419.933957-7-jolsa@kernel.org
+
+Upstream-Status: Backport [https://github.com/libbpf/libbpf/commit/50ae8c25d225c79f711e2484ccd15d9a4c228470]
+
+Signed-off-by: Soumya Sambu <soumya.sambu@windriver.com>
+---
+ include/uapi/linux/bpf.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 39a32fc..5413a84 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -1484,6 +1484,7 @@ union bpf_attr {
+				__u32		cnt;
+				__aligned_u64	syms;
+				__aligned_u64	addrs;
++				__aligned_u64	cookies;
+			} kprobe_multi;
+		};
+	} link_create;
+--
+2.40.0
