@@ -54,6 +54,7 @@ SRC_URI = "\
     file://0033-llvm-Add-libunwind.pc.in-and-llvm-config-scripts.patch \
     file://0034-scan-build-py-respect-LLVM_LIBDIR_SUFFIX-like-other-.patch \
     file://0035-compiler-rt-Do-not-pass-target-to-clang-compiler.patch \
+    file://0036-Fix-build-on-ppc64-musl.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
