@@ -55,6 +55,7 @@ SRC_URI = "\
     file://0034-scan-build-py-respect-LLVM_LIBDIR_SUFFIX-like-other-.patch \
     file://0035-compiler-rt-Do-not-pass-target-to-clang-compiler.patch \
     file://0036-Fix-build-on-ppc64-musl.patch \
+    file://0037-clangd-Add-a-build-option-to-disable-building-dexp.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
