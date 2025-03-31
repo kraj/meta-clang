@@ -91,8 +91,8 @@ EXTRA_OECMAKE:append:powerpc = " -DCOMPILER_RT_DEFAULT_TARGET_ARCH=powerpc "
 do_install:append () {
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
         mkdir -p ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
-        mv ${D}${libdir}/linux ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
-        rmdir --ignore-fail-on-non-empty ${D}${libdir}
+        mv ${D}${nonarch_libdir}/linux ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
+        rmdir --ignore-fail-on-non-empty ${D}${nonarch_libdir}
     else
         mkdir -p ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
         mv ${D}${libdir}/linux ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
