@@ -16,7 +16,7 @@ CLANGMD5SUM = "ff42885ed2ab98f1ecb8c1fc41205343"
 LLDMD5SUM = "ae7dc7c027b1fa89b5b013d391d3ee2b"
 LLDBMD5SUM = "2e0d44968471fcde980034dbb826bea9"
 
-LLVM_LIBDIR_SUFFIX="${@d.getVar('baselib').replace('lib', '')}"
+LLVM_LIBDIR_SUFFIX = "${@d.getVar('baselib').replace('lib', '')}"
 
 # set the default pigz thread
 export PIGZ = "-p ${@oe.utils.cpu_count(at_least=2)}"
