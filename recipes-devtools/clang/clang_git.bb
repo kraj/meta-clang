@@ -126,7 +126,7 @@ LLVM_BUILD_TOOLS;LLVM_USE_HOST_TOOLS;LLVM_CONFIG_PATH;\
 # Gennerally setting LLVM_TARGETS_TO_BUILD = "" in local.conf is ok in most simple situations
 # where only one target architecture is needed along with just one build arch (usually X86)
 #
-LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86;LoongArch"
+LLVM_TARGETS_TO_BUILD ?= "AMDGPU;AArch64;ARM;BPF;Mips;PowerPC;RISCV;X86;LoongArch;NVPTX;SPIRV"
 
 LLVM_EXPERIMENTAL_TARGETS_TO_BUILD ?= ""
 
