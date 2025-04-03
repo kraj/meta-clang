@@ -289,6 +289,20 @@ do_install:append:class-native () {
     ln -sf clang-tblgen ${D}${bindir}/clang-tblgen${PV}
     ln -sf llvm-tblgen ${D}${bindir}/llvm-tblgen${PV}
     ln -sf llvm-config ${D}${bindir}/llvm-config${PV}
+
+    if ${@ 'false' if 'llvm' in d.getVar('PROVIDES') or '' else 'true' } ; then
+        for f in bugpoint dsymutil llc lli opt reduce-chunk-list sancov sanstats verify-uselistorder ; do
+            rm -f ${D}${bindir}/$f
+        done
+        rm -f ${D}${bindir}/llvm-*
+
+        rm -rf ${D}${includedir}/llvm
+        rm -rf ${D}${includedir}/llvm-c
+        rm -rf ${D}${libdir}/cmake/llvm
+        rm -rf ${D}${libdir}/libLLVM*
+        rm -rf ${D}${libdir}/libLTO*
+        rm -rf ${D}${libdir}/libRemarks*
+    fi
 }
 
 do_install:append:class-nativesdk () {
