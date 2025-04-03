@@ -14,7 +14,7 @@ SRCREV_FORMAT = "default_headers"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "spirv-tools clang"
+DEPENDS = "spirv-tools clang llvm"
 
 inherit cmake pkgconfig python3native
 
