@@ -35,7 +35,7 @@ new file mode 100644
 index 000000000000..6a0dd54b8eab
 --- /dev/null
 +++ b/llvm/tools/llvm-config/llvm-config
-@@ -0,0 +1,52 @@
+@@ -0,0 +1,55 @@
 +#!/bin/bash
 +#
 +# Wrapper script for llvm-config. Supplies the right environment variables
@@ -67,6 +67,9 @@ index 000000000000..6a0dd54b8eab
 +      ;;
 +    --cxxflags)
 +      output="${output} ${CXXFLAGS}"
++      ;;
++    --libdir)
++      output="${output} ${libdir}"
 +      ;;
 +    --ldflags)
 +      output="${output} ${LDFLAGS}"
