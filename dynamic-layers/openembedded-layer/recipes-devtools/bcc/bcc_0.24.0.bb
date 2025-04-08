@@ -29,6 +29,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://0001-Vendor-just-enough-extra-headers-to-allow-libbpf-to-.patch \
            file://run-ptest \
            file://ptest_wrapper.sh \
+           file://CVE-2024-2314.patch \
            "
 
 SRCREV = "8f40d6f57a8d94e7aee74ce358572d34d31b4ed4"
