@@ -26,11 +26,15 @@ SRCREV = "339a2f571505616832379ca216627aceb0e5d0bb"
 
 S = "${WORKDIR}/git"
 
-inherit bash-completion cmake ptest
+inherit bash-completion cmake ptest pkgconfig
 
-PACKAGECONFIG ?= "${@bb.utils.contains('PTEST_ENABLED', '1', 'tests', '', d)}"
+PACKAGECONFIG ?= " \
+        ${@bb.utils.contains('PTEST_ENABLED', '1', 'tests', '', d)} \
+        ${@bb.utils.contains("DISTRO_FEATURES", "systemd", "systemd", "", d)} \
+        "
 
 PACKAGECONFIG[tests] = "-DBUILD_TESTING=ON,-DBUILD_TESTING=OFF,gtest xxd-native"
+PACKAGECONFIG[systemd] = "-DENABLE_SYSTEMD=ON,-DENABLE_SYSTEMD=OFF,systemd"
 
 do_install_ptest() {
     if [ -e ${B}/tests/bpftrace_test ]; then
