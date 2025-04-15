@@ -473,6 +473,7 @@ LIBCPLUSPLUS:class-nativesdk:toolchain-clang:runtime-llvm = "-stdlib=libstdc++"
 SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
 
 SYSROOT_PREPROCESS_FUNCS:append:class-target = " clang_sysroot_preprocess"
+SYSROOT_PREPROCESS_FUNCS:append:class-nativesdk = " clang_sysroot_preprocess"
 
 clang_sysroot_preprocess() {
 	install -d ${SYSROOT_DESTDIR}${bindir_crossscripts}/
