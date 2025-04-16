@@ -214,8 +214,9 @@ EXTRA_OECMAKE:append:class-target = "\
 "
 
 DEPENDS = "binutils zlib zstd libffi libxml2 libxml2-native ninja-native swig-native"
-DEPENDS:append:class-nativesdk = " clang-crosssdk-${SDK_SYS} virtual/nativesdk-cross-binutils nativesdk-python3"
-DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} python3 compiler-rt libcxx"
+DEPENDS:append:class-native = "${@['llvm-native', '']['llvm' in (d.getVar('PROVIDES') or '')]}"
+DEPENDS:append:class-nativesdk = " clang-crosssdk-${SDK_SYS} virtual/nativesdk-cross-binutils nativesdk-python3 ${@['nativesdk-llvm', '']['llvm' in (d.getVar('PROVIDES') or '')]}"
+DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} python3 compiler-rt libcxx ${@['llvm', '']['llvm' in (d.getVar('PROVIDES') or '')]}"
 
 RRECOMMENDS:${PN} = "binutils"
 RRECOMMENDS:${PN}:append:class-target = " libcxx-dev"
@@ -272,6 +273,8 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
 
     # reproducibility
     sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
+
+    clean_clang_llvm
 }
 
 do_install:append:class-native () {
@@ -290,6 +293,10 @@ do_install:append:class-native () {
     ln -sf llvm-tblgen ${D}${bindir}/llvm-tblgen${PV}
     ln -sf llvm-config ${D}${bindir}/llvm-config${PV}
 
+    clean_clang_llvm
+}
+
+clean_clang_llvm() {
     if ${@ 'false' if 'llvm' in d.getVar('PROVIDES') or '' else 'true' } ; then
         for f in bugpoint dsymutil llc lli opt reduce-chunk-list sancov sanstats verify-uselistorder ; do
             rm -f ${D}${bindir}/$f
@@ -327,6 +334,8 @@ do_install:append:class-nativesdk () {
     if [ -e ${D}${libdir}/cmake/llvm/LLVMConfig.cmake ] ; then
         sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
     fi
+
+    clean_clang_llvm
 }
 
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python ${PN}-libclang-cpp ${PN}-tidy ${PN}-format ${PN}-tools \
@@ -475,9 +484,12 @@ SYSROOT_DIRS:append:class-target = " ${nonarch_libdir}"
 SYSROOT_PREPROCESS_FUNCS:append:class-target = " clang_sysroot_preprocess"
 
 clang_sysroot_preprocess() {
-	install -d ${SYSROOT_DESTDIR}${bindir_crossscripts}/
-	install -m 0755 ${S}/llvm/tools/llvm-config/llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/
-	ln -sf llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/llvm-config${PV}
+	if ${@ 'true' if 'llvm' in d.getVar('PROVIDES') or '' else 'false' } ; then
+		install -d ${SYSROOT_DESTDIR}${bindir_crossscripts}/
+		install -m 0755 ${S}/llvm/tools/llvm-config/llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/
+		ln -sf llvm-config ${SYSROOT_DESTDIR}${bindir_crossscripts}/llvm-config${PV}
+	fi
+
 	# LLDTargets.cmake references the lld executable(!) that some modules/plugins link to
 	install -d ${SYSROOT_DESTDIR}${bindir}
 
