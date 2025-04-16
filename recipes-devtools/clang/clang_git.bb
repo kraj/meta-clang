@@ -273,6 +273,8 @@ endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
 
     # reproducibility
     sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
+
+    clean_clang_llvm
 }
 
 do_install:append:class-native () {
@@ -291,6 +293,10 @@ do_install:append:class-native () {
     ln -sf llvm-tblgen ${D}${bindir}/llvm-tblgen${PV}
     ln -sf llvm-config ${D}${bindir}/llvm-config${PV}
 
+    clean_clang_llvm
+}
+
+clean_clang_llvm() {
     if ${@ 'false' if 'llvm' in d.getVar('PROVIDES') or '' else 'true' } ; then
         for f in bugpoint dsymutil llc lli opt reduce-chunk-list sancov sanstats verify-uselistorder ; do
             rm -f ${D}${bindir}/$f
@@ -328,6 +334,8 @@ do_install:append:class-nativesdk () {
     if [ -e ${D}${libdir}/cmake/llvm/LLVMConfig.cmake ] ; then
         sed -i -e 's,${B},,g' ${D}${libdir}/cmake/llvm/LLVMConfig.cmake
     fi
+
+    clean_clang_llvm
 }
 
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python ${PN}-libclang-cpp ${PN}-tidy ${PN}-format ${PN}-tools \
