@@ -214,7 +214,7 @@ EXTRA_OECMAKE:append:class-target = "\
 "
 
 DEPENDS = "binutils zlib zstd libffi libxml2 libxml2-native ninja-native swig-native"
-DEPENDS:append:class-nativesdk = " clang-crosssdk-${SDK_SYS} virtual/nativesdk-cross-binutils nativesdk-python3"
+DEPENDS:append:class-nativesdk = " clang-crosssdk-${SDK_SYS} ${@bb.utils.contains_any('LAYERSERIES_CORENAMES', 'scarthgap styhead', 'virtual/${HOST_PREFIX}binutils', 'virtual/nativesdk-cross-binutils', d)} nativesdk-python3"
 DEPENDS:append:class-target = " clang-cross-${TARGET_ARCH} python3 compiler-rt libcxx"
 
 RRECOMMENDS:${PN} = "binutils"
