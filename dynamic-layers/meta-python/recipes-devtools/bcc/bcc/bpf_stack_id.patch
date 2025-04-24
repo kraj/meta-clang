@@ -1,0 +1,13 @@
+Upstream-Status: Submitted [https://github.com/iovisor/bcc/pull/5292]
+Signed-off-by: Harish Sadineni <Harish.Sadineni@windriver.com>
+
+--- a/tests/cc/test_bpf_table.cc
++++ b/tests/cc/test_bpf_table.cc
+@@ -260,6 +260,7 @@
+   /* libc locations on different distributions are added below*/
+   bpf.add_module("/lib/x86_64-linux-gnu/libc.so.6"); //Location of libc in ubuntu
+   bpf.add_module("/lib64/libc.so.6"); //Location of libc fedora machine
++  bpf.add_module("/lib/libc.so.6");//location of libc in image
+
+   int stack_id = id[0];
+   REQUIRE(stack_id >= 0);
