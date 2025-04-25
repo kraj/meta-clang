@@ -9,6 +9,6 @@ SRCREV = "f38c024b395187814f14f77974d8f5240bb2e71f"
 S = "${WORKDIR}/git"
 
 DEPENDS = "clang"
-inherit cmake cmake-native pkgconfig python3native
+inherit cmake pkgconfig python3native
 
 BBCLASSEXTEND = "native nativesdk"
