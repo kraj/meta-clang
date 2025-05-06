@@ -78,8 +78,9 @@ LDFLAGS:toolchain-clang:class-nativesdk = "${BUILDSDK_LDFLAGS} \
                                            -Wl,-rpath-link,${STAGING_LIBDIR}/.. \
                                            -Wl,-rpath,${libdir}/.. "
 
-# Enable lld globally"
+# Enable lld globally except for ppc32 where it causes random segfaults in Qemu usermode
 LDFLAGS:append:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
+LDFLAGS:remove:toolchain-clang:powerpc = "-fuse-ld=lld"
 
 # Remove gcc specific -fcanon-prefix-map option, added in gcc-13+
 # clang does not support it yet
