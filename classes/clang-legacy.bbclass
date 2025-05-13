@@ -139,8 +139,8 @@ def clang_base_deps(d):
     return ""
 
 BASE_DEFAULT_DEPS:append:class-target:toolchain-clang:class-target = " ${@clang_base_deps(d)}"
-BASE_DEFAULT_DEPS:append:class-native:toolchain-clang:runtime-llvm = " libcxx-native compiler-rt-native"
-BASE_DEFAULT_DEPS:append:class-nativesdk:toolchain-clang:runtime-llvm = " clang-native nativesdk-libcxx nativesdk-compiler-rt"
+BASE_DEFAULT_DEPS:append:class-native:runtime-llvm = " libcxx-native compiler-rt-native"
+BASE_DEFAULT_DEPS:append:class-nativesdk:runtime-llvm = " clang-native nativesdk-libcxx nativesdk-compiler-rt"
 
 # do_populate_sysroot needs STRIP
 POPULATESYSROOTDEPS:toolchain-clang:class-target = "${MLPREFIX}clang-cross-${TARGET_ARCH}:do_populate_sysroot"
