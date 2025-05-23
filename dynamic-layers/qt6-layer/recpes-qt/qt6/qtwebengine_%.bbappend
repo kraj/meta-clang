@@ -1,1 +1,1 @@
-inherit clang-native
+inherit toolchain/clang-native
