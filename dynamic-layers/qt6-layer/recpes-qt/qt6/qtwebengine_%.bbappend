@@ -1,1 +1,1 @@
-inherit toolchain/clang-native
+TOOLCHAIN:class-native ?= "clang"
