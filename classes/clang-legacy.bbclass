@@ -2,21 +2,11 @@
 CCACHE_COMPILERCHECK:toolchain-clang ?= "%compiler% -v"
 HOST_CC_ARCH:prepend:toolchain-clang:class-target = "-target ${HOST_SYS} "
 HOST_CC_ARCH:prepend:toolchain-clang:class-nativesdk = "-target ${HOST_SYS} "
-CC:toolchain-clang  = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-CXX:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang++ ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-CPP:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS} -E"
-CCLD:toolchain-clang = "${CCACHE}${HOST_PREFIX}clang ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}"
-RANLIB:toolchain-clang = "${HOST_PREFIX}llvm-ranlib"
-AR:toolchain-clang = "${HOST_PREFIX}llvm-ar"
-NM:toolchain-clang = "${HOST_PREFIX}llvm-nm"
-OBJDUMP:toolchain-clang = "${HOST_PREFIX}llvm-objdump"
-OBJCOPY:toolchain-clang = "${HOST_PREFIX}llvm-objcopy"
-STRIP:toolchain-clang = "${HOST_PREFIX}llvm-strip"
-STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
-READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
-LD:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', '${HOST_PREFIX}ld.lld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', '${HOST_PREFIX}ld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', d)}"
+LD:toolchain-clang:class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', '${HOST_PREFIX}ld.lld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', '${HOST_PREFIX}ld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', d)}"
+LD:toolchain-clang:class-nativesdk = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', '${HOST_PREFIX}ld.lld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', '${HOST_PREFIX}ld${TOOLCHAIN_OPTIONS} ${HOST_LD_ARCH}', d)}"
 
-LTO:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
+LTO:toolchain-clang:class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
+LTO:toolchain-clang:class-nativesdk = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
 
 COMPILER_RT ??= ""
 COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
@@ -33,10 +23,6 @@ LIBCPLUSPLUS:armv5 = "-stdlib=libstdc++"
 
 CXXFLAGS:append:toolchain-clang = " ${LIBCPLUSPLUS}"
 LDFLAGS:append:toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
-
-TUNE_CCARGS:remove:toolchain-clang = "-meb"
-TUNE_CCARGS:remove:toolchain-clang = "-mel"
-TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains("TUNE_FEATURES", "bigendian", " -mbig-endian", " -mlittle-endian", d)}"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
 TUNE_CCARGS:remove:toolchain-clang = "\
@@ -79,7 +65,8 @@ LDFLAGS:toolchain-clang:class-nativesdk = "${BUILDSDK_LDFLAGS} \
                                            -Wl,-rpath,${libdir}/.. "
 
 # Enable lld globally except for ppc32 where it causes random segfaults in Qemu usermode
-LDFLAGS:append:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
+LDFLAGS:append:toolchain-clang:class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
+LDFLAGS:append:toolchain-clang:class-nativesdk = "${@bb.utils.contains('DISTRO_FEATURES', 'ld-is-lld', ' -fuse-ld=lld', '', d)}"
 LDFLAGS:remove:toolchain-clang:powerpc = "-fuse-ld=lld"
 
 # Remove gcc specific -fcanon-prefix-map option, added in gcc-13+
@@ -95,15 +82,15 @@ TC_CXX_RUNTIME ??= "gnu"
 TC_CXX_RUNTIME:armeb = "gnu"
 TC_CXX_RUNTIME:armv5 = "gnu"
 
-TOOLCHAIN:class-native = "gcc"
-TOOLCHAIN:class-nativesdk = "gcc"
-TOOLCHAIN:class-cross-canadian = "gcc"
-TOOLCHAIN:class-crosssdk = "gcc"
-TOOLCHAIN:class-cross = "gcc"
+#TOOLCHAIN:class-native = "gcc"
+#TOOLCHAIN:class-nativesdk = "gcc"
+#TOOLCHAIN:class-cross-canadian = "gcc"
+#TOOLCHAIN:class-crosssdk = "gcc"
+#TOOLCHAIN:class-cross = "gcc"
 
-OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
+#OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
 OVERRIDES =. "${@['', 'runtime-${TC_CXX_RUNTIME}:']['${TC_CXX_RUNTIME}' != '']}"
-OVERRIDES[vardepsexclude] += "TOOLCHAIN TC_CXX_RUNTIME"
+OVERRIDES[vardepsexclude] += "TC_CXX_RUNTIME"
 
 YOCTO_ALTERNATE_EXE_PATH:toolchain-clang:class-target = "${STAGING_BINDIR}/llvm-config"
 YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target = "/${BASELIB}"
