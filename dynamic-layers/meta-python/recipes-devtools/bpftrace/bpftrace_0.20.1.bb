@@ -25,6 +25,7 @@ SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://0004-cmake-Bump-max-LLVM-version-to-18.patch \
            file://0001-use-64bit-alignment-for-map-counter-atomic-add.patch \
            file://run-ptest \
+           file://0001-CMakeLists.txt-allow-to-set-BISON_FLAGS-like-l.patch \
 "
 SRCREV = "fe6362b4e2c1b9d0833c7d3f308c1d4006b54723"
 
@@ -55,6 +56,7 @@ EXTRA_OECMAKE = " \
     -DCMAKE_BUILD_TYPE=Release \
     -DUSE_SYSTEM_BPF_BCC=ON \
     -DENABLE_MAN=OFF \
+    -DBISON_FLAGS='--file-prefix-map=${WORKDIR}=' \
 "
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
@@ -63,3 +65,6 @@ COMPATIBLE_HOST:libc-musl = "null"
 INHIBIT_PACKAGE_STRIP_FILES += "\
     ${PKGD}${PTEST_PATH}/tests/testprogs/uprobe_test \
 "
+
+WARN_QA:append = "${@bb.utils.contains('PTEST_ENABLED', '1', ' buildpaths', '', d)}"
+ERROR_QA:remove = "${@bb.utils.contains('PTEST_ENABLED', '1', 'buildpaths', '', d)}"
