@@ -73,8 +73,6 @@ LDFLAGS:remove:toolchain-clang:powerpc = "-fuse-ld=lld"
 # clang does not support it yet
 DEBUG_PREFIX_MAP:remove:toolchain-clang = "-fcanon-prefix-map"
 
-# choose between 'gcc' 'clang' an empty '' can be used as well
-TOOLCHAIN ??= "gcc"
 # choose between 'gnu' 'llvm'
 TC_CXX_RUNTIME ??= "gnu"
 # Using gcc or llvm runtime is only available when using clang for compiler
