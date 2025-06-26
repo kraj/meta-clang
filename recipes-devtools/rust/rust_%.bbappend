@@ -1,3 +1,3 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-TOOLCHAIN:class-native ?= "clang"
+TOOLCHAIN_NATIVE ?= "clang"
