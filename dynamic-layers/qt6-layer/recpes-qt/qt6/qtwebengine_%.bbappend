@@ -1,1 +1,1 @@
-TOOLCHAIN:class-native ?= "clang"
+TOOLCHAIN_NATIVE ?= "clang"

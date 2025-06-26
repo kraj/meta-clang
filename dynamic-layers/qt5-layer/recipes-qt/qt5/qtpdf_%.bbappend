@@ -1,3 +1,4 @@
 # its needed to build gn-native which is embedded into
 # qtpdf directly
-inherit toolchain/clang-native
+
+TOOLCHAIN_NATIVE = "clang"
