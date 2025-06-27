@@ -9,12 +9,10 @@ LTO:toolchain-clang:class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'thi
 LTO:toolchain-clang:class-nativesdk = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
 
 COMPILER_RT ??= ""
-COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:armeb = "-rtlib=libgcc ${UNWINDLIB}"
 COMPILER_RT:libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
 
 UNWINDLIB ??= ""
-UNWINDLIB:class-native = "--unwindlib=libgcc"
 UNWINDLIB:armeb = "--unwindlib=libgcc"
 UNWINDLIB_libc-klibc = "--unwindlib=libgcc"
 
