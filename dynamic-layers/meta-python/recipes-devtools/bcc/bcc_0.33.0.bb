@@ -31,8 +31,6 @@ SRCREV = "92e32ff8a06616779f3a3191b75da6881d59fd17"
 
 PV .= "+git"
 
-S = "${WORKDIR}/git"
-
 PACKAGECONFIG ??= "examples"
 PACKAGECONFIG:remove:libc-musl = "examples"
 
