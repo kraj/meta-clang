@@ -1,0 +1,49 @@
+Upstream-Status: Backport [https://github.com/iovisor/bcc/pull/5302/commits/b24519e1ba7b87c9676ae3a7f70772215cd5819d]
+Signed-off-by: Harish Sadineni <Harish.Sadineni@windriver.com>
+
+diff --git a/tests/python/test_histogram.py b/tests/python/test_histogram.py
+--- a/tests/python/test_histogram.py
++++ b/tests/python/test_histogram.py
+@@ -64,7 +64,7 @@
+ #include <linux/version.h>
+ typedef struct { char name[TASK_COMM_LEN]; u64 slot; } Key;
+ BPF_HISTOGRAM(hist1, Key, 1024);
+-int kprobe__finish_task_switch(struct pt_regs *ctx, struct task_struct *prev) {
++int count_prev_task_start_time(struct pt_regs *ctx, struct task_struct *prev) {
+ #if LINUX_VERSION_CODE < KERNEL_VERSION(5,5,0)
+     Key k = {.slot = bpf_log2l(prev->real_start_time)};
+ #else
+@@ -77,6 +77,10 @@
+     return 0;
+ }
+ """)
++        b.attach_kprobe(
++            event_re=r'^finish_task_switch$|^finish_task_switch\.isra\.\d$',
++            fn_name=b"count_prev_task_start_time"
++        )
+         for i in range(0, 100): time.sleep(0.01)
+         b[b"hist1"].print_log2_hist()
+         b.cleanup()
+diff --git a/tests/python/test_clang.py b/tests/python/test_clang.py
+--- a/tests/python/test_clang.py
++++ b/tests/python/test_clang.py
+@@ -399,7 +399,7 @@
+   u32 curr_pid;
+ };
+ BPF_HASH(stats, struct key_t, u64, 1024);
+-int kprobe__finish_task_switch(struct pt_regs *ctx, struct task_struct *prev) {
++int count_sched(struct pt_regs *ctx, struct task_struct *prev) {
+   struct key_t key = {};
+   u64 zero = 0, *val;
+   key.curr_pid = bpf_get_current_pid_tgid();
+@@ -412,6 +412,10 @@
+   return 0;
+ }
+ """)
++        b.attach_kprobe(
++            event_re=r'^finish_task_switch$|^finish_task_switch\.isra\.\d$',
++            fn_name=b"count_sched"
++        )
+ 
+     def test_probe_simple_assign(self):
+         b = BPF(text=b"""
