@@ -25,8 +25,6 @@ SRC_URI = "git://github.com/iovisor/bpftrace;branch=release/0.23.x;protocol=http
 "
 SRCREV = "01e806d24c61f996f1809e1e991646311499db4f"
 
-S = "${WORKDIR}/git"
-
 inherit bash-completion cmake ptest pkgconfig
 
 PACKAGECONFIG ?= " \
