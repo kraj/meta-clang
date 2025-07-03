@@ -15,8 +15,6 @@ SRCREV = "fa1094c0b3848f82244778bc6153cc84f8a890f6"
 
 PV .= "+git"
 
-S = "${WORKDIR}/git"
-
 inherit cmake python3native
 
 EXTRA_OECMAKE = "-DIWYU_RESOURCE_RELATIVE_TO=iwyu"
