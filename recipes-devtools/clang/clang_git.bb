@@ -287,6 +287,9 @@ do_install:append:class-nativesdk () {
 PACKAGES =+ "${PN}-libllvm ${PN}-lldb-python ${PN}-libclang-cpp ${PN}-tidy ${PN}-format ${PN}-tools \
              libclang lldb lldb-server liblldb llvm-linker-tools"
 
+PROVIDES += "llvm llvm${PV}"
+PROVIDES:append:class-native = " llvm-native"
+
 BBCLASSEXTEND = "native nativesdk"
 
 RDEPENDS:lldb += "${PN}-lldb-python lldb-server"
