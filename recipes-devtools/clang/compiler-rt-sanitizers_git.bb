@@ -50,6 +50,10 @@ EXTRA_OECMAKE += "-DCMAKE_BUILD_TYPE=RelWithDebInfo \
                   -DLLVM_LIBDIR_SUFFIX=${LLVM_LIBDIR_SUFFIX} \
 "
 
+EXTRA_OECMAKE:append:class-native = "\
+               -DCOMPILER_RT_USE_BUILTINS_LIBRARY=OFF \
+"
+
 EXTRA_OECMAKE:append:class-nativesdk = "\
                -DCMAKE_RANLIB=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ranlib \
                -DCMAKE_AR=${STAGING_BINDIR_TOOLCHAIN}/${TARGET_PREFIX}llvm-ar \
