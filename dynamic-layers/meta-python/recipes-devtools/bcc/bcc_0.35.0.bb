@@ -18,20 +18,15 @@ DEPENDS += "bison-native \
 RDEPENDS:${PN} += "bash python3 python3-core python3-setuptools xz"
 RDEPENDS:${PN}-ptest = "kernel-devsrc packagegroup-core-buildessential cmake bash python3 python3-netaddr python3-pyroute2"
 
-SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
+SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https;tag=v${PV} \
            file://0001-CMakeLists.txt-override-the-PY_CMD_ESCAPED.patch \
            file://0001-Vendor-just-enough-extra-headers-to-allow-libbpf-to-.patch \
-           file://0001-CMakeLists.txt-don-t-modify-.gitconfig-on-build-host.patch \
            file://run-ptest \
            file://ptest_wrapper.sh \
-           file://bpf_stack_id.patch \
-           file://support_finish_task_switch_isra_0.patch \
            file://fix_for_memleak.patch \
            "
 
-SRCREV = "92e32ff8a06616779f3a3191b75da6881d59fd17"
-
-PV .= "+git"
+SRCREV = "c31a1ca305f787ba53e001ead45ebf65233a32cf"
 
 PACKAGECONFIG ??= "examples"
 PACKAGECONFIG:remove:libc-musl = "examples"
@@ -72,11 +67,11 @@ do_install_ptest() {
     cp -rf ${S}/tests/python ${D}${PTEST_PATH}/tests/python
     install ${UNPACKDIR}/ptest_wrapper.sh ${D}${PTEST_PATH}/tests
     install ${S}/examples/networking/simulation.py ${D}${PTEST_PATH}/tests/python
-    find ${B}/../sources/bcc-0.33.0+git/tools/ -type f -name "*.py" -exec \
+    find ${S}/tools/ -type f -name "*.py" -exec \
     sed -i \
     -e 's@^#! */usr/bin/env python$@#!/usr/bin/env python3@' \
     -e 's@^#! */usr/bin/python.*@#!/usr/bin/env python3@' {} +
-    cp -rf ${B}/../sources/bcc-0.33.0+git/tools/ ${D}${PTEST_PATH}/../../tools/
+    cp -rf ${S}/tools/ ${D}${PTEST_PATH}/../../tools/
 }
 
 FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}"
