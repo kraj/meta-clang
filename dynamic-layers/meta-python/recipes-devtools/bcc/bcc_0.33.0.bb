@@ -25,6 +25,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://run-ptest \
            file://ptest_wrapper.sh \
            file://bpf_stack_id.patch \
+           file://support_finish_task_switch_isra_0.patch \
            "
 
 SRCREV = "92e32ff8a06616779f3a3191b75da6881d59fd17"
