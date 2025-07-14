@@ -24,6 +24,7 @@ SRC_URI = "gitsm://github.com/iovisor/bcc;branch=master;protocol=https \
            file://0001-CMakeLists.txt-don-t-modify-.gitconfig-on-build-host.patch \
            file://run-ptest \
            file://ptest_wrapper.sh \
+           file://bpf_stack_id.patch \
            "
 
 SRCREV = "92e32ff8a06616779f3a3191b75da6881d59fd17"
