@@ -76,6 +76,7 @@ do_install_ptest() {
 
 FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}"
 FILES:${PN} += "${B}/tests/cc"
+FILES:${PN}-ptest += "${libdir}/libbcc.so"
 FILES:${PN}-ptest += "${libdir}/tools/"
 FILES:${PN}-ptest += "/opt/"
 FILES:${PN}-doc += "${datadir}/${PN}/man"
