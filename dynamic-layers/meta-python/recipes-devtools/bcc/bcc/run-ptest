@@ -17,6 +17,29 @@ print_test_result() {
     fi
 }
 
+ARCH=$(uname -m)
+
+case "$ARCH" in
+  x86_64)
+    KDIR="x86"
+    ;;
+  riscv64)
+    KDIR="riscv"
+    ;;
+  aarch64)
+    KDIR="arm64"
+    ;;
+  powerpc64le | ppc64le)
+    KDIR="powerpc"
+    ;;
+  *)
+    echo "Architecture not present, Add the architecture in run-ptest: $ARCH"
+    exit 1
+    ;;
+esac
+
+export BCC_KERNEL_SOURCE="/usr/src/kernel/arch/$KDIR"
+
 # Run CC tests, set IFS as test names have spaces
 IFS=$(printf '\n\t')
 for test_name in $(./cc/test_libbcc_no_libbpf --list-test-names-only); do
