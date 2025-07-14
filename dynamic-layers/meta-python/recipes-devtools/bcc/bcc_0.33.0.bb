@@ -48,6 +48,10 @@ EXTRA_OECMAKE = " \
     -DPYTHON_FLAGS=--install-lib=${PYTHON_SITEPACKAGES_DIR} \
 "
 
+# Avoid stripping debuginfo.so to fix some tests.
+INHIBIT_PACKAGE_STRIP = "1"
+INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
+
 do_install:append() {
         sed -e 's@#!/usr/bin/env python@#!/usr/bin/env python3@g' \
             -i $(find ${D}${datadir}/${PN} -type f)
@@ -58,6 +62,10 @@ do_install:append() {
 
 do_install_ptest() {
     install -d ${D}${PTEST_PATH}/tests/cc
+    # ptest searches for shared libs and archive files in the build folder.
+    # Hence, these files are copied to the image to fix these tests.
+    install -d ${D}${B}/tests/cc
+    install ${B}/tests/cc/archive.zip ${B}/tests/cc/libdebuginfo_test_lib.so ${B}/tests/cc/with_gnu_debuglink.so ${B}/tests/cc/with_gnu_debugdata.so ${B}/tests/cc/debuginfo.so ${D}${B}/tests/cc
     install ${B}/tests/cc/test_libbcc_no_libbpf ${B}/tests/cc/libusdt_test_lib.so ${D}${PTEST_PATH}/tests/cc
     cp -rf ${S}/tests/python ${D}${PTEST_PATH}/tests/python
     install ${UNPACKDIR}/ptest_wrapper.sh ${D}${PTEST_PATH}/tests
@@ -65,6 +73,7 @@ do_install_ptest() {
 }
 
 FILES:${PN} += "${PYTHON_SITEPACKAGES_DIR}"
+FILES:${PN} += "${B}/tests/cc"
 FILES:${PN}-doc += "${datadir}/${PN}/man"
 
 COMPATIBLE_HOST = "(x86_64.*|aarch64.*|powerpc64.*|riscv64.*)-linux"
