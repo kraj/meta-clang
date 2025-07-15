@@ -20,7 +20,7 @@ LIBCPLUSPLUS ??= ""
 LIBCPLUSPLUS:armv5 = "-stdlib=libstdc++"
 
 CXXFLAGS:append:toolchain-clang = " ${LIBCPLUSPLUS}"
-LDFLAGS:append:toolchain-clang = " ${COMPILER_RT} ${LIBCPLUSPLUS}"
+LDFLAGS:append:toolchain-clang = " ${COMPILER_RT} ${UNWINDLIB} ${LIBCPLUSPLUS}"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
 TUNE_CCARGS:remove:toolchain-clang = "\
