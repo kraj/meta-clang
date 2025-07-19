@@ -5,11 +5,7 @@ LTO:toolchain-clang:class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'thi
 LTO:toolchain-clang:class-nativesdk = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
 
 COMPILER_RT:toolchain-clang:armeb = "-rtlib=libgcc ${UNWINDLIB}"
-COMPILER_RT:toolchain-clang:libc-klibc = "-rtlib=libgcc ${UNWINDLIB}"
-
 UNWINDLIB:toolchain-clang:armeb = "--unwindlib=libgcc"
-UNWINDLIB:toolchain-clang:libc-klibc = "--unwindlib=libgcc"
-
 LIBCPLUSPLUS::toolchain-clang:armv5 = "-stdlib=libstdc++"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
