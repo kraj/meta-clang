@@ -9,6 +9,7 @@ UNWINDLIB:toolchain-clang:armeb = "--unwindlib=libgcc"
 LIBCPLUSPLUS::toolchain-clang:armv5 = "-stdlib=libstdc++"
 
 # Clang does not yet support big.LITTLE performance tunes, so use the LITTLE for tunes
+TUNE_CCARGS_MARCH_OPTS ??= ""
 TUNE_CCARGS:remove:toolchain-clang = "\
     -mcpu=cortex-a57.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
     -mcpu=cortex-a72.cortex-a53${TUNE_CCARGS_MARCH_OPTS} \
@@ -22,10 +23,6 @@ TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", 
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa15-cortexa7 cortexa17-cortexa7", " -mcpu=cortex-a7${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa72-cortexa35", " -mcpu=cortex-a35${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
 TUNE_CCARGS:append:toolchain-clang = "${@bb.utils.contains_any("TUNE_FEATURES", "cortexa75-cortexa55 cortexa76-cortexa55", " -mcpu=cortex-a55${TUNE_CCARGS_MARCH_OPTS}", "", d)}"
-
-# Workaround for https://github.com/llvm/llvm-project/issues/85699
-# needed for 64bit rpi3/rpi4 machines
-TUNE_CCARGS_MARCH_OPTS:append:toolchain-clang = "${@bb.utils.contains_any("DEFAULTTUNE", "cortexa72 cortexa53", "+nocrypto", "", d)}"
 
 # Clang does not support octeontx2 processor
 TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2${TUNE_CCARGS_MARCH_OPTS}"
