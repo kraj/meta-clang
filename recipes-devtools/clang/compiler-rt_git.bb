@@ -114,7 +114,7 @@ INSANE_SKIP:${PN} = "dev-so libdir"
 INSANE_SKIP:${PN}-dbg = "libdir"
 
 #PROVIDES:append:class-target = "\
-#        virtual/${MLPREFIX}compilerlibs \
+#        virtual/${TARGET_PREFIX}compilerlibs \
 #        libgcc \
 #        libgcc-initial \
 #        libgcc-dev \

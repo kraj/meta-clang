@@ -11,7 +11,7 @@ PN = "clang-crosssdk-${SDK_SYS}"
 require clang.inc
 require common-source.inc
 inherit crosssdk
-DEPENDS += "clang-native nativesdk-clang-glue virtual/nativesdk-cross-binutils virtual/nativesdk-libc"
+DEPENDS += "clang-native nativesdk-clang-glue virtual/${TARGET_PREFIX}binutils virtual/nativesdk-libc"
 
 do_install() {
         install -d ${D}${bindir}
