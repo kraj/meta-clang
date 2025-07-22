@@ -11,7 +11,7 @@ PN = "clang-cross-${TARGET_ARCH}"
 require clang.inc
 require common-source.inc
 inherit cross
-DEPENDS += "clang-native virtual/cross-binutils"
+DEPENDS += "clang-native virtual/${TARGET_PREFIX}binutils"
 
 #INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
