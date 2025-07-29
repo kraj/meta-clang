@@ -31,10 +31,6 @@ TC_CXX_RUNTIME:armv5 = "gnu"
 #TOOLCHAIN:class-crosssdk = "gcc"
 #TOOLCHAIN:class-cross = "gcc"
 
-#OVERRIDES =. "${@['', 'toolchain-${TOOLCHAIN}:']['${TOOLCHAIN}' != '']}"
-OVERRIDES =. "${@['', 'runtime-${TC_CXX_RUNTIME}:']['${TC_CXX_RUNTIME}' != '']}"
-OVERRIDES[vardepsexclude] += "TC_CXX_RUNTIME"
-
 YOCTO_ALTERNATE_EXE_PATH:toolchain-clang:class-target = "${STAGING_BINDIR}/llvm-config"
 YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target = "/${BASELIB}"
 
