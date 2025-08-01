@@ -6,10 +6,6 @@ COMPILER_RT:toolchain-clang:armeb = "-rtlib=libgcc ${UNWINDLIB}"
 UNWINDLIB:toolchain-clang:armeb = "--unwindlib=libgcc"
 LIBCPLUSPLUS::toolchain-clang:armv5 = "-stdlib=libstdc++"
 
-# Clang does not support octeontx2 processor
-TUNE_CCARGS_MARCH_OPTS ??= ""
-TUNE_CCARGS:remove:toolchain-clang = "-mcpu=octeontx2${TUNE_CCARGS_MARCH_OPTS}"
-
 # Reconcile some ppc anamolies
 TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float -mno-spe"
 TUNE_CCARGS:append:toolchain-clang:libc-musl:powerpc64 = " -mlong-double-64"
