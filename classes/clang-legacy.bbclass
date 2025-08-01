@@ -23,12 +23,6 @@ TC_CXX_RUNTIME:armv5 = "gnu"
 #TOOLCHAIN:class-crosssdk = "gcc"
 #TOOLCHAIN:class-cross = "gcc"
 
-YOCTO_ALTERNATE_EXE_PATH:toolchain-clang:class-target = "${STAGING_BINDIR}/llvm-config"
-YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target = "/${BASELIB}"
-
-#YOCTO_ALTERNATE_EXE_PATH:toolchain-clang:class-target[export] = "1"
-#YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target[export] = "1"
-
 #DEPENDS:append:toolchain-clang:class-target = " clang-cross-${TARGET_ARCH} "
 #DEPENDS:remove:toolchain-clang:allarch = "clang-cross-${TARGET_ARCH}"
 
