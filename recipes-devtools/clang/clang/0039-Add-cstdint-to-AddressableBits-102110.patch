@@ -1,0 +1,24 @@
+From 662cec01a55c65b3e8e9a147dcc52a771a7f4b60 Mon Sep 17 00:00:00 2001
+From: Sam James <sam@gentoo.org>
+Date: Tue, 6 Aug 2024 09:58:36 +0100
+Subject: [PATCH] Add `<cstdint>` to AddressableBits (#102110)
+
+Upstream-Status: Backport [https://github.com/llvm/llvm-project/commit/bb59f04e7e75dcbe39f1bf952304a157f0035314]
+Signed-off-by: Martin Jansa <martin.jansa@gmail.com>
+---
+ lldb/include/lldb/Utility/AddressableBits.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/lldb/include/lldb/Utility/AddressableBits.h b/lldb/include/lldb/Utility/AddressableBits.h
+index 13c21329a..0b0fd8bb2 100644
+--- a/lldb/include/lldb/Utility/AddressableBits.h
++++ b/lldb/include/lldb/Utility/AddressableBits.h
+@@ -11,6 +11,8 @@
+ 
+ #include "lldb/lldb-forward.h"
+ 
++#include <cstdint>
++
+ namespace lldb_private {
+ 
+ /// \class AddressableBits AddressableBits.h "lldb/Core/AddressableBits.h"
