@@ -46,6 +46,10 @@ SRC_URI = "\
     file://0033-compiler-rt-Undef-_TIME_BITS-along-with-_FILE_OFFSET.patch \
     file://0034-ToolChains-Gnu.cpp-ARMLibDirs-search-also-in-lib32.patch \
     file://0035-compiler-rt-Fix-cmake-check-for-_Float16-and-__bf16.patch \
+    file://0036-Add-cstdint-to-SmallVector-101761.patch \
+    file://0037-Include-cstdint-in-AMDGPUMCTargetDesc-101766.patch \
+    file://0038-Add-missing-include-to-X86MCTargetDesc.h-123320.patch \
+    file://0039-Add-cstdint-to-AddressableBits-102110.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
