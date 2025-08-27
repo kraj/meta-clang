@@ -1,4 +1,4 @@
-[![Yoe Distro CI](https://github.com/kraj/meta-clang/workflows/Yoe%20Distro%20CI/badge.svg?branch=master)](https://github.com/kraj/meta-clang/actions/workflows/yoe.yml?query=workflow%3AYoe+branch%3Amaster)
+[![Yoe Distro CI](https://github.com/kraj/meta-clang/actions/workflows/yoe.yml/badge.svg)](https://github.com/kraj/meta-clang/actions/workflows/yoe.yml)
 <table border="0" rules="none">
 <tr border="0">
 <td width="250" height="150"><img alt="Yocto Project Layer Compatible"
