@@ -60,7 +60,7 @@ do_install_ptest() {
     install -d ${D}${PTEST_PATH}/tests/cc
     install ${B}/tests/cc/test_libbcc_no_libbpf ${B}/tests/cc/libusdt_test_lib.so ${D}${PTEST_PATH}/tests/cc
     cp -rf ${S}/tests/python ${D}${PTEST_PATH}/tests/python
-    install ${UNPACKDIR}/ptest_wrapper.sh ${D}${PTEST_PATH}/tests
+    install ${WORKDIR}/ptest_wrapper.sh ${D}${PTEST_PATH}/tests
     install ${S}/examples/networking/simulation.py ${D}${PTEST_PATH}/tests/python
 }
 
