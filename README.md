@@ -83,27 +83,21 @@ compiler, switching to use LLVM runtime is done via a config metadata knob
 TC_CXX_RUNTIME = "llvm"
 ```
 
-TC_CXX_RUNTIME variable influences individual runtime elements and can be set explicitly as well
-e.g. `LIBCPLUSPLUS` `COMPILER_RT` and `UNWINDLIB`.
+TC_CXX_RUNTIME variable influences individual runtime elements  for C runtime
+C++ runtime and unwinding support.
 
-Please note that this will still use crt files from GNU compiler always, while llvm now
-do provide crt files, they have not been yet integrated into the toolchain.
+Please note that this will still use crt files from GNU compiler, while LLVM
+does provide crt files, they have not been yet integrated into the toolchain.
 
 # Default C++ Standard Library Switch
 
-Using TC_CXX_RUNTIME variable will select which C++ runtime is used, however it can be overridden
-if needed to by modifying `LIBCPLUSPLUS` variable, usually defaults used by `TC_CXX_RUNTIME` are
-best fit. e.g. below we select LLVM C++ as default C++ runtime.
-
-```shell
-LIBCPLUSPLUS = "-stdlib=libc++"
-```
+Using TC_CXX_RUNTIME variable will select which C++ runtime is used.
 
 in `local.conf`.
-You can select libstdc++ per package too by writing bbappends for them containing
+You can select a C++ runtime per package by writing bbappends for them containing
 
 ```shell
-LIBCPLUSPLUS:toolchain-clang:pn-<recipe> = "-stdlib=libc++"
+TC_CXX_RUNTIME:toolchain-clang:pn-<recipe> = "llvm"
 ```
 Defaults are chosen to be GNU for maximum compatibility with existing GNU systems. It's always
 good to use single runtime on a system, mixing runtimes can cause complications during
@@ -187,7 +181,8 @@ and OE will start using gcc to cross compile that recipe.
 If a component does not build with libc++, you can add it to `conf/nonclangable.inc` e.g.
 
 ```shell
-CXX:remove:pn-<recipe>:toolchain-clang = " -stdlib=libc++ "
+CXXFLAGS:append:pn-<recipe>:toolchain-clang = " -stdlib=libstdc++ "
+LDFLAGS:append:pn-<recipe>:toolchain-clang = " -stdlib=libstdc++ "
 ```
 
 # compiler-rt failing in do_configure with custom TARGET_VENDOR
