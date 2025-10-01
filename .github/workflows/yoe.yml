@@ -81,4 +81,4 @@ jobs:
       - name: Clean shared state
         run: |
           cd yoe
-          /bin/bash -c ". ./envsetup.sh qemuarm64 && ./sources/poky/scripts/sstate-cache-management.py -d --remove-orphans -y "
+          /bin/bash -c ". ./envsetup.sh qemuarm64 && sstate-cache-management.py -d --remove-orphans -y "
