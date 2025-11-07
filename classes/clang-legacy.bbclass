@@ -1,6 +1,7 @@
 # Add the necessary override
 LTO:toolchain-clang:class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin -ffat-lto-objects', '-flto -ffat-lto-objects -fuse-ld=lld', d)}"
 LTO:toolchain-clang:class-nativesdk = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin -ffat-lto-objects', '-flto -ffat-lto-objects -fuse-ld=lld', d)}"
+SELECTED_OPTIMIZATION:remove:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'lto', '-fuse-ld=lld', '', d)}"
 
 # Reconcile some ppc anamolies
 TUNE_CCARGS:remove:toolchain-clang:powerpc = "-mhard-float -mno-spe"
