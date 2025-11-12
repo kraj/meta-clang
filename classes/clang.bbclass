@@ -114,7 +114,7 @@ YOCTO_ALTERNATE_LIBDIR:toolchain-clang:class-target = "/${BASELIB}"
 def clang_base_deps(d):
     if not d.getVar('INHIBIT_DEFAULT_DEPS', False):
         if not oe.utils.inherits(d, 'allarch') :
-            ret = " ${MLPREFIX}clang-cross-${TARGET_ARCH} virtual/libc "
+            ret = " clang-native ${MLPREFIX}clang-cross-${TARGET_ARCH} virtual/libc "
             if (d.getVar('TC_CXX_RUNTIME').find('android') != -1):
                 ret += " libcxx"
                 return ret
