@@ -26,6 +26,7 @@ SRC_URI = "git://github.com/iovisor/bpftrace;branch=master;protocol=https \
            file://0001-use-64bit-alignment-for-map-counter-atomic-add.patch \
            file://run-ptest \
            file://0001-CMakeLists.txt-allow-to-set-BISON_FLAGS-like-l.patch \
+           file://CVE-2024-2313.patch \
 "
 SRCREV = "fe6362b4e2c1b9d0833c7d3f308c1d4006b54723"
 
