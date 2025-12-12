@@ -185,40 +185,6 @@ CXXFLAGS:append:pn-<recipe>:toolchain-clang = " -stdlib=libstdc++ "
 LDFLAGS:append:pn-<recipe>:toolchain-clang = " -stdlib=libstdc++ "
 ```
 
-# compiler-rt failing in do_configure with custom TARGET_VENDOR
-
-If your DISTRO sets its own value of TARGET_VENDOR, then it needs to be added in
-CLANG_EXTRA_OE_VENDORS, it should be done automatically, but if compiler-rt fails
-like bellow, then check the end of work-shared/llvm-project-source-12.0.0-r0/temp/log.do_patch
-it should have a line like:
-NOTE: Adding support following TARGET_VENDOR values: foo in
-  /OE/build/oe-core/tmp-glibc/work-shared/llvm-project-source-12.0.0-r0/git/llvm/lib/Support/Triple.cpp and
-  /OE/build/oe-core/tmp-glibc/work-shared/llvm-project-source-12.0.0-r0/git/clang/lib/Driver/ToolChains/Gnu.cpp
-and check these files if //CLANG_EXTRA_OE_VENDORS* strings were replaced correctly.
-Read add_distro_vendor function in recipes-devtools/clang/llvm-project-source.inc for more details.
-
-http://errors.yoctoproject.org/Errors/Details/574365/
-```shell
--- Found assembler: TOPDIR/tmp-glibc/work/core2-64-foo-linux/compiler-rt/12.0.0-r0/recipe-sysroot-native/usr/bin/x86_64-foo-linux/x86_64-foo-linux-clang
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - failed
--- Check for working C compiler: TOPDIR/tmp-glibc/work/core2-64-foo-linux/compiler-rt/12.0.0-r0/recipe-sysroot-native/usr/bin/x86_64-foo-linux/x86_64-foo-linux-clang
--- Check for working C compiler: TOPDIR/tmp-glibc/work/core2-64-foo-linux/compiler-rt/12.0.0-r0/recipe-sysroot-native/usr/bin/x86_64-foo-linux/x86_64-foo-linux-clang - broken
-CMake Error at TOPDIR/tmp-glibc/work/core2-64-foo-linux/compiler-rt/12.0.0-r0/recipe-sysroot-native/usr/share/cmake-3.19/Modules/CMakeTestCCompiler.cmake:66 (message):
-  The C compiler
-
-    "TOPDIR/tmp-glibc/work/core2-64-foo-linux/compiler-rt/12.0.0-r0/recipe-sysroot-native/usr/bin/x86_64-foo-linux/x86_64-foo-linux-clang"
-
-  is not able to compile a simple test program.
-
-  It fails with the following output:
-
-    Change Dir: TOPDIR/tmp-glibc/work/core2-64-foo-linux/compiler-rt/12.0.0-r0/build/CMakeFiles/CMakeTmp
-
-    Run Build Command(s):ninja cmTC_928f4 && [1/2] Building C object CMakeFiles/cmTC_928f4.dir/testCCompiler.c.o
-    [2/2] Linking C executable cmTC_928f4
-```
-
 # Dependencies
 
 ```shell
