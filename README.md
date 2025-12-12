@@ -192,7 +192,7 @@ URI: https://github.com/openembedded/openembedded-core.git
 branch: master
 revision: HEAD
 
-URI: ghttps://github.com/openembedded/bitbake.git
+URI: https://github.com/openembedded/bitbake.git
 branch: master
 revision: HEAD
 ```
