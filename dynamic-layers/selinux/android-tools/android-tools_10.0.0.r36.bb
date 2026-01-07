@@ -20,12 +20,12 @@ SRCREV_build = "28768b3120f751583a2743101b892f210d4715cf"
 SRCREV_libunwind = "03a963ecf6ea836b38b3537cbcda0ecfd7a77393"
 
 SRC_URI = " \
-    git://salsa.debian.org/android-tools-team/android-platform-external-boringssl;name=boringssl;protocol=https;destsuffix=git/external/boringssl \
-    git://salsa.debian.org/android-tools-team/android-platform-system-core;name=core;protocol=https;destsuffix=git/system/core \
-    git://salsa.debian.org/android-tools-team/android-platform-system-extras;name=extras;protocol=https;destsuffix=git/system/extras \
+    git://salsa.debian.org/android-tools-team/android-platform-external-boringssl;name=boringssl;protocol=https;branch=master;destsuffix=git/external/boringssl \
+    git://salsa.debian.org/android-tools-team/android-platform-system-core;name=core;protocol=https;branch=master;destsuffix=git/system/core \
+    git://salsa.debian.org/android-tools-team/android-platform-system-extras;name=extras;protocol=https;branch=master;destsuffix=git/system/extras \
     git://${ANDROID_MIRROR}/platform/hardware/libhardware;name=libhardware;protocol=https;branch=android10-qpr2-release;destsuffix=git/hardware/libhardware \
-    git://salsa.debian.org/android-tools-team/android-platform-build.git;name=build;protocol=https;destsuffix=git/build \
-    git://salsa.debian.org/android-tools-team/android-platform-external-libunwind.git;protocol=https;name=libunwind;destsuffix=git/external/libunwind \
+    git://salsa.debian.org/android-tools-team/android-platform-build.git;name=build;protocol=https;branch=master;destsuffix=git/build \
+    git://salsa.debian.org/android-tools-team/android-platform-external-libunwind.git;protocol=https;name=libunwind;branch=master;destsuffix=git/external/libunwind \
 "
 
 # Patches copied from android-platform-system-core/debian/patches
