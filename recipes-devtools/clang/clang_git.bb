@@ -249,16 +249,21 @@ do_install:append() {
 }
 
 do_install:append:class-target () {
-    # Allow bin path to change based on YOCTO_ALTERNATE_EXE_PATH
-    sed -i 's;${_IMPORT_PREFIX}/bin;${_IMPORT_PREFIX_BIN};g' ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
+    # Find the actual LLVMExports file that was generated (works with any build type)
+    LLVM_EXPORTS_FILE=$(find ${D}${libdir}/cmake/llvm/ -name "LLVMExports-*.cmake" -type f | head -1)
 
-    # Insert function to populate Import Variables
-    sed -i "4i\
+    if [ -f "$LLVM_EXPORTS_FILE" ]; then
+        # Allow bin path to change based on YOCTO_ALTERNATE_EXE_PATH
+        sed -i 's;${_IMPORT_PREFIX}/bin;${_IMPORT_PREFIX_BIN};g' "$LLVM_EXPORTS_FILE"
+
+        # Insert function to populate Import Variables
+        sed -i "4i\
 if(DEFINED ENV{YOCTO_ALTERNATE_EXE_PATH})\n\
   execute_process(COMMAND \"llvm-config\" \"--bindir\" OUTPUT_VARIABLE _IMPORT_PREFIX_BIN OUTPUT_STRIP_TRAILING_WHITESPACE)\n\
 else()\n\
   set(_IMPORT_PREFIX_BIN \"\${_IMPORT_PREFIX}/bin\")\n\
-endif()\n" ${D}${libdir}/cmake/llvm/LLVMExports-release.cmake
+endif()\n" "$LLVM_EXPORTS_FILE"
+    fi
 
     if [ -n "${LLVM_LIBDIR_SUFFIX}" ]; then
         mkdir -p ${D}${nonarch_libdir}
