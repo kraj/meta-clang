@@ -14,7 +14,7 @@ STRIP:toolchain-clang = "${HOST_PREFIX}llvm-strip"
 STRINGS:toolchain-clang = "${HOST_PREFIX}llvm-strings"
 READELF:toolchain-clang = "${HOST_PREFIX}llvm-readelf"
 
-LTO:toolchain-clang = "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
+LTO:toolchain-clang ?= "${@bb.utils.contains('DISTRO_FEATURES', 'thin-lto', '-flto=thin', '-flto -fuse-ld=lld', d)}"
 
 COMPILER_RT ??= ""
 COMPILER_RT:class-native = "-rtlib=libgcc ${UNWINDLIB}"
