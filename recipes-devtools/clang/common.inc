@@ -50,6 +50,7 @@ SRC_URI = "\
     file://0037-Include-cstdint-in-AMDGPUMCTargetDesc-101766.patch \
     file://0038-Add-missing-include-to-X86MCTargetDesc.h-123320.patch \
     file://0039-Add-cstdint-to-AddressableBits-102110.patch \
+    file://CVE-2024-7883.patch \
     "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""
