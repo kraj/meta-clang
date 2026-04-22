@@ -55,6 +55,8 @@ SRC_URI = "\
     file://0034-scan-build-py-respect-LLVM_LIBDIR_SUFFIX-like-other-.patch \
     file://0035-compiler-rt-Do-not-pass-target-to-clang-compiler.patch \
     file://0036-Fix-build-on-ppc64-musl.patch \
+    file://0037-perf-training-Propagate-OE-sysroot-flags-to-sub-buil.patch \
+    file://0038-PGO.cmake-Add-stage2-install-to-bootstrap-targets.patch \
 "
 # Fallback to no-PIE if not set
 GCCPIE ??= ""

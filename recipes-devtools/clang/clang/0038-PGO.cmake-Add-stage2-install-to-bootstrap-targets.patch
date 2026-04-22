@@ -1,0 +1,50 @@
+From f8718cecff4479b446b57b20be8e6a580f23b892 Mon Sep 17 00:00:00 2001
+From: "mark.yang" <mark.yang@lge.com>
+Date: Thu, 19 Mar 2026 17:47:36 +0900
+Subject: [PATCH 2/2] PGO.cmake: Add stage2-install to bootstrap targets
+
+PGO.cmake defines stage2-install-distribution as a bootstrap target,
+but does not define stage2-install.
+In build environments where LLVM_DISTRIBUTION_COMPONENTS is not set
+(e.g. Yocto/OE), the install-distribution target does nothing and installs nothing.
+
+The clang bootstrap mechanism (clang/CMakeLists.txt:840-847) already creates
+the ${NEXT_CLANG_STAGE}-install target at each stage via the "really-install" ExternalProject step.
+This target executes the command "cmake --build <BINARY_DIR> --target install"
+within the build directory of the next stage.
+
+If you add stage2-install to CLANG_BOOTSTRAP_TARGETS in PGO.cmake,
+the following installation chain is constructed.
+Stage 1: ExternalProject step "stage2-install"
+  cmake --build stage2-instrumented-bins/ --target stage2-install
+Stage 2: really-install mechanism's stage2-install target
+  cmake --build stage2-bins/ --target install
+Stage 3: install target executes
+  PGO+ThinLTO optimized binaries install to ${DESTDIR}
+
+The reason why it is not necessary to add "install" to CLANG_BOOTSTRAP_TARGETS
+in PGO-stage2-instrumented.cmake is as follows.
+1. "install" is a reserved ExternalProject built-in step name.
+ExternalProject_Add_Step would conflict with the existing install step's stamp file
+(stage2-stamps/stage2-install.rule)
+2. "really-install" mechanism aleary creates the ${NEXT_CLANG_STAGE}-install
+target independently of CLANG_BOOTSTRAP_TARGETS
+
+Upstream-Status: Inappropriate [OE specific]
+Signed-off-by: mark.yang <mark.yang@lge.com>
+---
+ clang/cmake/caches/PGO.cmake | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/clang/cmake/caches/PGO.cmake b/clang/cmake/caches/PGO.cmake
+index 15bc755d1..0c7586769 100644
+--- a/clang/cmake/caches/PGO.cmake
++++ b/clang/cmake/caches/PGO.cmake
+@@ -9,6 +9,7 @@ set(BOOTSTRAP_LLVM_BUILD_INSTRUMENTED ON CACHE BOOL "")
+ set(CLANG_BOOTSTRAP_TARGETS
+   generate-profdata
+   stage2
++  stage2-install
+   stage2-distribution
+   stage2-install-distribution
+   stage2-install-distribution-toolchain

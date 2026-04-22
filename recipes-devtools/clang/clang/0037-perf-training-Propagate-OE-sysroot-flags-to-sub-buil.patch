@@ -1,0 +1,44 @@
+From f95b9d48d00583c3acf05df3581f803afbaf953c Mon Sep 17 00:00:00 2001
+From: "mark.yang" <mark.yang@lge.com>
+Date: Thu, 19 Mar 2026 17:42:22 +0900
+Subject: [PATCH 1/2] perf-training: Propagate OE sysroot flags to sub-build
+
+Propagate OE sysroot paths to sub-builds (cmake projects) in PGO/BOLT perf-training.
+If sysroot paths from the OE build environment are not passed to sub-builds,
+headers/libraries cannot be found, causing build failures.
+
+The lit framework only passes its own environment variables (such as PATH) when running tests,
+and does not pass CFLAGS/CXXFLAGS/LDFLAGS (see lit/TestingConfig.py).
+Therefore, these must be explicitly added to config.environment to propagate to sub-build cmake.
+
+cmake automatically uses CFLAGS/CXXFLAGS environment variables as initial values for CMAKE_C/CXX_FLAGS
+on the first configure. The environment variables exported by OE's do_compile
+contain only sysroot paths (such as -isystem), and do not include PGO/LTO/BOLT flags
+(these are added at the cmake level). Thus, sysroot paths can be cleanly propagated via environment variables.
+
+However, LDFLAGS are not automatically used by cmake, so they must be explicitly passed as CMAKE_EXE_LINKER_FLAGS.
+
+Upstream-Status: Inappropriate [OE specific]
+Signed-off-by: mark.yang <mark.yang@lge.com>
+---
+ clang/utils/perf-training/lit.cfg | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/clang/utils/perf-training/lit.cfg b/clang/utils/perf-training/lit.cfg
+index adefc7893..a99c5be87 100644
+--- a/clang/utils/perf-training/lit.cfg
++++ b/clang/utils/perf-training/lit.cfg
+@@ -34,6 +34,13 @@ config.test_format = lit.formats.ShTest(use_lit_shell == "0")
+ config.cmake_compiler_args = '-DCMAKE_C_COMPILER="{0}" -DCMAKE_CXX_COMPILER="{0};--driver-mode=g++"'.format(
+    config.clang.replace(' ', ';')
+ )
++for var in ['CFLAGS', 'CXXFLAGS']:
++    val = os.environ.get(var, '')
++    if val:
++        config.environment[var] = val
++ldflags = os.environ.get('LDFLAGS', '')
++if ldflags:
++    config.cmake_compiler_args += ' -DCMAKE_EXE_LINKER_FLAGS="{}"'.format(ldflags)
+ config.substitutions.append( ('%clang_cpp_skip_driver', ' %s %s %s ' % (cc1_wrapper, config.clang, sysroot_flags)))
+ config.substitutions.append( ('%clang_cpp', ' %s --driver-mode=g++ %s ' % (config.clang, sysroot_flags)))
+ config.substitutions.append( ('%clang_skip_driver', ' %s %s %s ' % (cc1_wrapper, config.clang, sysroot_flags)))
