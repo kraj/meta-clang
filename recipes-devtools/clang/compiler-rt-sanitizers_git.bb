@@ -89,7 +89,7 @@ do_install:append () {
         mv ${D}${libdir}/linux ${D}${libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib
     fi
     # Already shipped with compile-rt Orc support
-    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}/lib/linux/liborc_rt-*.a
+    rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}.${MINOR_VER}.${PATCH_VER}/lib/linux/liborc_rt-*.a
     rm -rf ${D}${nonarch_libdir}/clang/${MAJOR_VER}/include/orc/
 }
 
