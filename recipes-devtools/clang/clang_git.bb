@@ -466,3 +466,5 @@ clang_sysroot_preprocess() {
 		install -m 755 ${D}${bindir}/$f ${SYSROOT_DESTDIR}${bindir}/
 	done
 }
+
+CVE_STATUS[CVE-2024-7883] = "fixed-version: Fixed via CVE-2024-7883.patch included here. Patch applied via llvm-project-source do_patch (CVE-2024-7883.patch)"
